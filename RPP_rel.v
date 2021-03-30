@@ -128,36 +128,145 @@ Proof.
     apply (E_ItN Su p [n] [n+Z.abs(Z.neg p+1)] [n+Z.abs(Z.neg p)]); intuition.
 Qed.
 
-Lemma Z_pos_minus_1 : ∀ p, Z.abs (Z.pos p - 1) = Z.abs (Z.pos p) - 1.
+Proposition list_or : ∀ {X} (l : list X),
+  l = [] ∨ ∃ l' x, l = l' ++ [x].
 Proof.
-  intuition.
-Search(Z.abs (Z.pos _)). Check Z.abs_pos. induction p using Pos.peano_ind.
-  - reflexivity.
-  - rewrite Pos2Z.inj_succ. Search(Z.abs (Z.succ _)).
-
-
-
-destruct m.
-  - rewrite Z.add_0_r. exact (E_ItZ Su [n]).
-  - induction p using Pos.peano_ind.
-    +
-
- induction m using Z_nat_ind.
-  - rewrite Z.add_0_r. exact (E_ItZ Su [n]).
-  - pose( E_Su (n + (Z.abs m)) ).
-    unfold Z.succ.
-    replace (Z.abs (m + 1)) with (Z.abs m + 1); intuition.
-    rewrite Z.add_assoc.
-    apply (E_ItP Su m [n] [n + Z.abs m] [n + Z.abs m + 1]); intuition.
-  - pose( E_Su (n + (Z.abs m)) ).
-    unfold Z.pred.
-    replace (Z.abs (m + -1)) with (Z.abs m + 1); intuition.
-    rewrite Z.add_assoc.
-    apply (E_ItN Su m [n] [n + Z.abs m] [n + Z.abs m + 1]); intuition.
+  intros. destruct l eqn:eqn.
+  - left. reflexivity.
+  - right.
+    assert(l <> []). {rewrite eqn. discriminate. }
+    pose (@app_removelast_last _ l x H).
+    exists (removelast l).
+    exists (last l x). rewrite <- eqn. assumption.
 Qed.
 
-Ltac inv_clean H :=
-  apply inj_pair2_eq_dec in H; trivial; try apply eq_nat_dec.
+Lemma absurd_app : ∀ {X} (x : X) (l : list X), l ++ [x] <> [].
+Proof.
+  unfold not. intros.
+  symmetry in H. apply app_cons_not_nil in H.
+  assumption.
+Qed.
+
+Ltac inv_clean H := inversion H;
+  repeat match goal with
+  | H : _ = _ |- _ => apply inj_pair2_eq_dec in H; trivial;
+  try apply eq_nat_dec; try subst end.
+
+Ltac all_app_inj_tail := 
+  repeat match goal with
+  | H : _ |- _ => apply app_inj_tail in H; destruct H end;
+  try congruence.
+
+Lemma rel_false : ∀ {j} (f : RPP j) l, [] <=[ f ]=> l → False.
+Proof.
+  induction f; intros; inv_clean H;
+  try match goal with
+    H : ?l ++ [?n] = [] |- _ => apply (absurd_app _ _ H) end.
+  - apply (IHf1 _ H3).
+  - apply app_eq_nil in H7. destruct H7. subst. apply (IHf1 _ H8).
+Qed.
+
+Lemma it_ex : ∀ {j} (f : RPP j) l l',
+  l <=[ It f ]=> l' → ∃ l1 l1' x,
+  l = l1 ++ [x] ∧ l' = l1' ++ [x].
+Proof.
+  intros. inv_clean H.
+  - exists l0. exists l0. exists 0. intuition.
+  - exists l0. exists l''. exists (Z.pos p). intuition.
+  - exists l0. exists l''. exists (Z.neg p). intuition.
+Qed.
+
+Lemma it_0: ∀ {j} (f : RPP j) l l',
+  (l ++ [0]) <=[ It f ]=> (l' ++ [0]) → l = l'.
+Proof.
+  intros. inversion H; all_app_inj_tail.
+Qed.
+
+Lemma it_p: ∀ {j} (f : RPP j) l l' p,
+  (l ++ [Z.pos p]) <=[ It f ]=> (l' ++ [Z.pos p]) → ∃ l'',
+  (l++[Z.pos p-1]) <=[ It f ]=> (l''++[Z.pos p-1]) ∧
+  l'' <=[ f ]=> l'.
+Proof.
+  intros. inv_clean H; all_app_inj_tail.
+  assert(p = p0). congruence. subst.
+  exists l'0. intuition.
+Qed.
+
+Lemma it_n: ∀ {j} (f : RPP j) l l' p,
+  (l ++ [Z.neg p]) <=[ It f ]=> (l' ++ [Z.neg p]) → ∃ l'',
+  (l++[Z.neg p+1]) <=[ It f ]=> (l''++[Z.neg p+1]) ∧
+  l'' <=[ f ]=> l'.
+Proof.
+  intros. inv_clean H; all_app_inj_tail.
+  assert(p = p0). congruence. subst.
+  exists l'0. intuition.
+Qed.
+
+Lemma it_p_rev: ∀ {j} (f : RPP j) l l' p,
+  (l ++ [Z.pos p]) <=[ It f ]=> (l' ++ [Z.pos p]) → ∃ l'',
+  l <=[ f ]=> l'' ∧
+  (l''++[Z.pos p-1]) <=[ It f ]=> (l'++[Z.pos p-1]).
+Proof.
+  intros.
+  generalize dependent l.
+  generalize dependent l'.
+  induction p using Pos.peano_ind.
+  - intros. destruct (it_p _ _ _ _ H) as (l0 & H0 & H1).
+    apply it_0 in H0. subst.
+    exists l'. intuition. constructor.
+  - intros. destruct (it_p _ _ _ _ H) as (l0 & H0 & H1).
+    replace (Z.pos (Pos.succ p) - 1) with (Z.pos p) in *; intuition.
+    apply IHp in H0. destruct H0 as [l'' [H2 H3]].
+    exists l''. intuition. apply (E_ItP f p l'' l0 l'); intuition.
+Qed.
+
+Lemma it_n_rev: ∀ {j} (f : RPP j) l l' p,
+  (l ++ [Z.neg p]) <=[ It f ]=> (l' ++ [Z.neg p]) → ∃ l'',
+  l <=[ f ]=> l'' ∧
+  (l''++[Z.neg p+1]) <=[ It f ]=> (l'++[Z.neg p+1]).
+Proof.
+  intros.
+  generalize dependent l.
+  generalize dependent l'.
+  induction p using Pos.peano_ind.
+  - intros. destruct (it_n _ _ _ _ H) as (l0 & H0 & H1).
+    apply it_0 in H0. subst.
+    exists l'. intuition. constructor.
+  - intros. destruct (it_n _ _ _ _ H) as (l0 & H0 & H1).
+    replace (Z.neg (Pos.succ p) + 1) with (Z.neg p) in *; intuition.
+    apply IHp in H0. destruct H0 as (l'' & H2 & H3).
+    exists l''. intuition. apply (E_ItN f p l'' l0 l'); intuition.
+Qed.
+
+Proposition proposition_1_r : ∀ {j} (f : RPP j) l l',
+  l <=[ f ]=> l' → l' <=[ inv f ]=> l.
+Proof.
+  induction f; intros.
+  - inversion H. constructor.
+  - inversion H. replace n with (--n) at 2; intuition. constructor.
+  - inversion H. replace n with ((n+1)-1) at 2; intuition. constructor.
+  - inversion H. replace n with ((n-1)+1) at 2; intuition. constructor.
+  - inversion H. constructor.
+  - inv_clean H.
+    apply IHf1 in H3. apply IHf2 in H6.
+    apply E_Co with l'0; trivial.
+  - inv_clean H. constructor; intuition.
+  - destruct (it_ex _ _ _ H) as [l1 [l1' [n [H1 H1']]]]. subst.
+    generalize dependent l1.
+    generalize dependent l1'.
+    induction n using Z_pos_ind.
+    + intros. subst. apply it_0 in H. rewrite H. constructor.
+    + intros. subst. destruct (it_p_rev _ _ _ _ H) as [l' [H0 H1]].
+      apply IHf in H0. apply IHn in H1.
+      apply (E_ItP (inv f) p l1' l' l1); intuition.
+    + intros. subst. destruct (it_n_rev _ _ _ _ H) as [l' [H0 H1]].
+      apply IHf in H0. apply IHn in H1.
+      apply (E_ItN (inv f) p l1' l' l1); intuition.
+  - inv_clean H.
+    + apply IHf1 in H9; constructor; intuition.
+    + apply IHf2 in H9; apply E_IfZ; intuition.
+    + apply IHf3 in H9; apply E_IfN; intuition.
+Qed.
 
 Proposition eq_tail : ∀ {X} (l l' : list X) x,
   l = l' → l ++ [x] = l' ++ [x].
