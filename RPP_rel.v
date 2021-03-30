@@ -65,16 +65,14 @@ Inductive rel : forall {j}, RPP j → list Z → list Z → Prop :=
       (l1++l2) <=[ Pa f g ]=> (l1'++l2')
   | E_ItZ : ∀ {j} (f : RPP j) l,
       (l++[0]) <=[ It f ]=> (l++[0])
-  | E_ItP : ∀ {j} (f : RPP j) n l l' l'',
-      n > - 1 →
-      (l++[n]) <=[ It f ]=> (l'++[n]) →
+  | E_ItP : ∀ {j} (f : RPP j) p l l' l'',
+      (l ++ [Z.pos p - 1]) <=[ It f ]=> (l' ++ [Z.pos p - 1]) →
       l' <=[ f ]=> l'' →
-      (l++[n + 1]) <=[ It f ]=> (l''++[n + 1])
-  | E_ItN : ∀ {j} (f : RPP j) n l l' l'',
-      n < 1 →
-      (l++[n]) <=[ It f ]=> (l'++[n]) →
+      (l ++ [Z.pos p]) <=[ It f ]=> (l'' ++ [Z.pos p])
+  | E_ItN : ∀ {j} (f : RPP j) p l l' l'',
+      (l ++ [Z.neg p + 1]) <=[ It f ]=> (l' ++ [Z.neg p + 1]) →
       l' <=[ f ]=> l'' →
-      (l++[n - 1]) <=[ It f ]=> (l''++[n - 1])
+      (l ++ [Z.neg p]) <=[ It f ]=> (l'' ++ [Z.neg p])
   | E_IfP : ∀ {j} (f g h : RPP j) n l l',
       n > 0 →
       l <=[ f ]=> l' →
@@ -93,26 +91,58 @@ Inductive rel : forall {j}, RPP j → list Z → list Z → Prop :=
 Lemma Z_neg_pos_succ : ∀ p, Z.neg (Pos.succ p) = Z.pred (Z.neg p).
 Proof. intuition. Qed.
 
-Proposition Z_nat_ind : ∀ P : Z → Prop, P 0 →
-  (∀ x : Z, x >= 0 → P x → P (Z.succ x)) →
-  (∀ x : Z, x <= 0 → P x → P (Z.pred x)) →
+Proposition Z_pos_ind : ∀ P : Z → Prop, P 0 →
+  (∀ p : positive, P (Z.pos p - 1) → P (Z.pos p)) →
+  (∀ p : positive, P (Z.neg p + 1) → P (Z.neg p)) →
   ∀ z : Z, P z.
 Proof.
   intros. destruct z.
   - assumption.
   - induction p using Pos.peano_ind.
-    + apply (H0 0); intuition.
-    + rewrite Pos2Z.inj_succ. apply H0; intuition.
+    + apply (H0 1%positive). trivial.
+    + rewrite Pos2Z.inj_succ.
+      replace (Z.pos p) with (Z.pred (Z.succ (Z.pos p))) in IHp; intuition.
+      apply (H0 _ IHp).
   - induction p using Pos.peano_ind.
-    + apply (H1 0); intuition.
-    + rewrite Z_neg_pos_succ. apply H1; intuition.
+    + apply (H1 1%positive). trivial.
+    + rewrite Z_neg_pos_succ.
+      replace (Z.neg p) with (Z.succ (Z.pred (Z.neg p))) in IHp; intuition.
+      apply (H1 _ IHp).
 Qed.
+
+Goal ∀ p : positive, Z.abs (Z.pos p) = Z.pos p.
+Proof. reflexivity. Qed.
 
 Definition inc := It Su.
 Proposition inc_rel : ∀ n m,
   [n; m] <=[inc]=> [n + Z.abs m; m].
 Proof.
-  intros. unfold inc. induction m using Z_nat_ind.
+  intros. unfold inc.
+  induction m using Z_pos_ind.
+  - rewrite Z.add_0_r. exact (E_ItZ Su [n]).
+  - pose( E_Su (n + (Z.abs (Z.pos p - 1)))).
+    replace (n+Z.abs(Z.pos p-1)+1) with (n+Z.abs(Z.pos p)) in r; intuition.
+    apply (E_ItP Su p [n] [n+Z.abs(Z.pos p-1)] [n+Z.abs(Z.pos p)]); intuition.
+  - pose( E_Su (n + (Z.abs (Z.neg p + 1)))).
+    replace (n+Z.abs(Z.neg p+1)+1) with (n+Z.abs(Z.neg p)) in r; intuition.
+    apply (E_ItN Su p [n] [n+Z.abs(Z.neg p+1)] [n+Z.abs(Z.neg p)]); intuition.
+Qed.
+
+Lemma Z_pos_minus_1 : ∀ p, Z.abs (Z.pos p - 1) = Z.abs (Z.pos p) - 1.
+Proof.
+  intuition.
+Search(Z.abs (Z.pos _)). Check Z.abs_pos. induction p using Pos.peano_ind.
+  - reflexivity.
+  - rewrite Pos2Z.inj_succ. Search(Z.abs (Z.succ _)).
+
+
+
+destruct m.
+  - rewrite Z.add_0_r. exact (E_ItZ Su [n]).
+  - induction p using Pos.peano_ind.
+    +
+
+ induction m using Z_nat_ind.
   - rewrite Z.add_0_r. exact (E_ItZ Su [n]).
   - pose( E_Su (n + (Z.abs m)) ).
     unfold Z.succ.
@@ -200,7 +230,7 @@ Proof.
     apply E_Co with l'0; trivial.
   - inversion H. inv_clean H5. inv_clean H6. subst.
     constructor; intuition.
-  -
+  - induction contra; try discriminate.
 
 destruct (list_or l).
     + rewrite H0 in H. apply rel_false in H. contradiction.
