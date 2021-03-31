@@ -2,10 +2,6 @@ Require Import Unicode.Utf8 List ZArith Lia.
 Import ListNotations.
 Require Import LibTactics.
 
-(** https://stackoverflow.com/questions/24720137/inverts-produces-unexpected-existt-in-coq **)
-Require Import Coq.Logic.Eqdep_dec.
-Require Import Coq.Arith.Peano_dec.
-
 Open Scope Z_scope.
 
 Inductive RPP : nat → Type :=
@@ -41,7 +37,7 @@ Reserved Notation
   (at level 40,
   l constr, l' constr at next level).
 
-Inductive rel : forall {j}, RPP j → list Z → list Z → Prop :=
+Inductive RPP_rel : forall {j}, RPP j → list Z → list Z → Prop :=
   | E_Id : ∀ n,
       [n] <=[ Id ]=> [n]
   | E_Ne : ∀ n,
@@ -83,10 +79,10 @@ Inductive rel : forall {j}, RPP j → list Z → list Z → Prop :=
       l <=[ h ]=> l' →
       (l++[n]) <=[ If f g h ]=> (l'++[n])
 
-  where "l <=[ f ]=> l'" := (rel f l l').
+  where "l <=[ f ]=> l'" := (RPP_rel f l l').
 
-Create HintDb relDb.
-Hint Constructors rel : relDb.
+Create HintDb RPP_Db.
+#[export] Hint Constructors RPP_rel : RPP_Db.
 
 Lemma Z_neg_pos_succ : ∀ p, Z.neg (Pos.succ p) = Z.pred (Z.neg p).
 Proof. intuition. Qed.
@@ -220,11 +216,15 @@ Proof.
   induction m using Z_pos_ind.
   - rewrite Z.add_0_r. exact (E_ItZ Su [n]).
   - pose( E_Su (n + (Z.abs (Z.pos p - 1))) ).
-    replace (n+Z.abs(Z.pos p-1)+1) with (n+Z.abs(Z.pos p)) in r; intuition.
-    apply (E_ItP Su p [n] [n+Z.abs(Z.pos p-1)] [n+Z.abs(Z.pos p)]); intuition.
-  - pose( E_Su (n + (Z.abs (Z.neg p + 1)))).
-    replace (n+Z.abs(Z.neg p+1)+1) with (n+Z.abs(Z.neg p)) in r; intuition.
-    apply (E_ItN Su p [n] [n+Z.abs(Z.neg p+1)] [n+Z.abs(Z.neg p)]); intuition.
+    replaces (n+Z.abs(Z.pos p-1)+1)
+    with (n+Z.abs(Z.pos p)) in r; intuition.
+    applys @E_ItP Su p [n] [n+Z.abs(Z.pos p-1)] [n+Z.abs(Z.pos p)];
+    intuition.
+  - pose( E_Su (n + (Z.abs (Z.neg p + 1))) ).
+    replace (n+Z.abs(Z.neg p+1)+1)
+    with (n+Z.abs(Z.neg p)) in r; intuition.
+    applys @E_ItN Su p [n] [n+Z.abs(Z.neg p+1)] [n+Z.abs(Z.neg p)];
+    intuition.
 Qed.
 
 Definition dec := inv inc.
