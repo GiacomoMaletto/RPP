@@ -308,3 +308,86 @@ Proof.
     exists <{ f1 ; f2 }>.
     eapply E_Co; eauto.
 Qed.
+
+Proposition rel_length : ∀ f l l',
+  l <=[ f ]=> l' → length l = length l'.
+Proof.
+  intros. gen l l'.
+  induction f; intros; try (inverts H; reflexivity).
+  - inverts H. apply IHf1 in H2. apply IHf2 in H5. intuition.
+  - inverts H. repeat rewrite app_length. intuition.
+  - lets (l1 & l1' & n & H1 & H1') : it_ex H. subst.
+    gen l1 l1'. induction n using Z_pos_ind; intros.
+    + apply it_0 in H. rewrite H. reflexivity.
+    + lets (l' & H0 & H1) : it_p_rev H. apply IHn in H1.
+      repeat rewrite app_length in *. simpl in *.
+      apply IHf in H0. intuition.
+    + lets (l' & H0 & H1) : it_n_rev H. apply IHn in H1.
+      repeat rewrite app_length in *. simpl in *.
+      apply IHf in H0. intuition.
+  - inverts H;
+    [apply IHf1 in H6 | apply IHf2 in H6 | apply IHf3 in H6];
+    repeat rewrite app_length; rewrite H6; intuition.
+Qed.
+
+Lemma length_Sn_ex : ∀ {X n} {l : list X},
+  length l = S n → ∃ l' x, l = l' ++ [x] ∧ length l' = n.
+Proof.
+  intros.
+  assert (l ≠ []).
+  { intro. assert (length l = O); intuition.
+    rewrite H0. reflexivity. }
+  lets (l' & x & eq) : exists_last H0.
+  exists l' x.
+  split. assumption.
+  assert ( length l = S (length l') ).
+  { rewrite eq. rewrite app_length.
+    rewrite Nat.add_comm. reflexivity. }
+  intuition.
+Qed.
+
+Lemma sublist_same_length : ∀ {X} (a b c d : list X),
+  a ++ b = c ++ d → length a = length c → a = c ∧ b = d.
+Proof.
+  intros. assert (a = c).
+  - remember (length a) as n.
+    symmetry in Heqn. symmetry in H0.
+    gen a b c d.
+    induction n; intros.
+    + rewrite length_zero_iff_nil in *.
+      rewrite Heqn. rewrite H0. reflexivity.
+    + lets (l & x & Hl & Hx) : @length_Sn_ex Heqn.
+      lets (m & y & Hm & Hy) : @length_Sn_ex H0.
+      assert (l = m).
+      { applys IHn l ([x]++b) m ([y]++d); intuition.
+        repeat rewrite app_assoc.
+        rewrite <- Hl. rewrite <- Hm. assumption. }
+      assert (x = y).
+      { subst. repeat rewrite <- app_assoc in H.
+        rewrite (app_inv_head_iff m) in H.
+        inverts H. reflexivity. }
+      subst. reflexivity.
+  - split.
+    + assumption.
+    + rewrite H1 in H. apply app_inv_head in H. assumption.
+Qed.
+
+Theorem same_length : ∀ f a b c d,
+  a <=[ f ]=> b → c <=[ f ]=> d →
+  length a = length c ∧ length b = length d.
+
+Theorem deterministic : ∀ f l l0 l1,
+     l <=[ f ]=> l0 →
+     l <=[ f ]=> l1 →
+     l0 = l1.
+Proof.
+  intros. gen l l0 l1.
+  induction f; try (intros; inverts H; inverts H0; reflexivity).
+  - intros. inverts H. inverts H0.
+    assert (l' = l'0). applys IHf1 H3 H2. subst.
+    applys IHf2 H6 H7.
+  - intros. inverts H. inverts H0.
+    lets (H' & H'') : @sublist_same_length H2.
+    apply IHf1 in H3.
+    assert (l0 = l3).
+    { 

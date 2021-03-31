@@ -1,0 +1,54 @@
+I programmi del linguaggio rever prende stati (funzioni String -> Z) e li mette in relazione ad altri stati. Non ci sono espressioni, solamente comandi/procedure (no X += 3*2 + 5 ad esempio).
+
+Alcuni comandi:
+x += a;           //a può essere sia un numero sia una variabile
+x -= a;
+neg(&x);           //& indica che la variabile può essere modificata; si dice che x è un parametro mutabile
+                  //i parametri senza & si dicono immutabili
+inc(&x, y);       //procedura che prende x e y ma può solo modificare x
+x <=> y;          //scambia il valore di x e y
+skip;
+inv inc(&x, y);   //ogni procedura è reversibile!
+Si potrebbe decidere di semplificare la sintassi ulteriormente togliendo le notazioni simboliche, in tal caso si avrebbe add(&x, y), sub(&x, y), swap(&x, &y)
+
+In ogni punto del programma, le variabili sono in uno di questi 2 stati:
+- An : alterata n volte (di default tutte le variabili sono A0)
+- D : definitivamente alterata
+
+Esempio di programma:
+            //per ora tutte le variabili sono A0    
+inc(&x, y); //x ora è D perchè è passata come mutabile, mentre y è A0
+z += w;     //"z += w" sarebbe la stessa cosa che una procedura add(&z, w) quindi z è D, w è A0
+
+Una variabile passa da A0 a A1 se è passata come mutabile in una procedura ma è garantito che poi sarà chiamata la procedura inversa. Questa garanzia è data dal comando with:
+    with f(&x, y) do g(&z, x, y) end
+è equivalente a
+    f(&x, y); g(&z, x, y); (inv f)(&x, y)
+il che significa che x viene alterata, viene usata come immutabile in g e poi ritorna al suo valore originale.
+Prima e dopo with ... end, la variabile x è A0. In do ... end invece è A1.
+Similmente, se x è A1 e viene modificata in with ... do allora diventa A2.
+Ci sono alcune restrizioni su che variabili possono essere usate in procedure chiamate dentro with ... do: ogni parametro 1) deve essere non D e 2) non può diventarlo in do ... end. Ciò è motivato dal fatto che se una variabile x diventasse D in mezzo a do ... end allora quando si chiama la funzione inversa si potrebbe non ottenere gli stessi valori precedenti (perchè il parametro x è cambiato). L'ipotesi 1) forse non è necessaria, probabilmente a patto che venga cambiata l'organizzazione degli stati delle variabili (si potrebbe usare un tipo induttivo stato := O | A stato | D stato).
+
+Quando chiamiamo una procedura f(&x, y) diciamo che y è un parametro immutabile. In realtà dentro la funzione y può variare: l'importante è che il suo stato non diventi mai D, ovvero ogni suo cambiamento avvenga tramite with, in modo che alla fine della procedura la variabile abbia lo stato originale.
+
+Dentro ai programmi possono essere dichiarate nuove variabili con
+    x := 0;
+ma non è permesso che il loro stato diventi D in nessun punto del programma.
+
+Il programma
+    * f(&x, y); g(...)
+è equivalente a
+    with f(&x, y) do g(...) end
+
+Altri comandi sono
+    repeat x do g(...) end
+che ripete g(...) per un numero |x| di volte (o x, se immaginiamo ad esempio che It -3 chiami la funzione inversa 3 volte) e
+    if x positive then f(...) end
+    if x zero then f(...) end
+    if x negative then f(...) end
+(si potrebbe pensare di introdurre un tipo bool ma non voglio rendere il tutto troppo complesso).
+
+Sintassi per la definizione di funzioni:
+def inc(&x, y)
+  
+end
