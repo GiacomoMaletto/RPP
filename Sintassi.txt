@@ -1,9 +1,9 @@
 I programmi del linguaggio rever prende stati (funzioni String -> Z) e li mette in relazione ad altri stati. Non ci sono espressioni, solamente comandi/procedure (no X += 3*2 + 5 ad esempio).
 
 Alcuni comandi:
-x += a;           //a può essere sia un numero sia una variabile
+x += a; add(&x, a);   //a può essere sia un numero sia una variabile
 x -= a;
-neg(&x);           //& indica che la variabile può essere modificata; si dice che x è un parametro mutabile
+neg(&x);          //& indica che la variabile può essere modificata; si dice che x è un parametro mutabile
                   //i parametri senza & si dicono immutabili
 inc(&x, y);       //procedura che prende x e y ma può solo modificare x
 x <=> y;          //scambia il valore di x e y
@@ -23,7 +23,7 @@ z += w;     //"z += w" sarebbe la stessa cosa che una procedura add(&z, w) quind
 Una variabile passa da A0 a A1 se è passata come mutabile in una procedura ma è garantito che poi sarà chiamata la procedura inversa. Questa garanzia è data dal comando with:
     with f(&x, y) do g(&z, x, y) end
 è equivalente a
-    f(&x, y); g(&z, x, y); (inv f)(&x, y)
+    f(&x, y); g(&z, x, y); !f(&x, y)
 il che significa che x viene alterata, viene usata come immutabile in g e poi ritorna al suo valore originale.
 Prima e dopo with ... end, la variabile x è A0. In do ... end invece è A1.
 Similmente, se x è A1 e viene modificata in with ... do allora diventa A2.
@@ -49,6 +49,9 @@ che ripete g(...) per un numero |x| di volte (o x, se immaginiamo ad esempio che
 (si potrebbe pensare di introdurre un tipo bool ma non voglio rendere il tutto troppo complesso).
 
 Sintassi per la definizione di funzioni:
+
+inc(&w, z)
+
 def inc(&x, y)
   
 end

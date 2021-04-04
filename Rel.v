@@ -1,64 +1,17 @@
 Require Import Unicode.Utf8 List ZArith Lia Permutation.
 Import ListNotations.
-
+Require Import Base ListLemmas Ev.
 (* https://softwarefoundations.cis.upenn.edu/plf-current/UseTactics.html *)
 Require Import LibTactics.
 
 Open Scope Z_scope.
-
-Inductive RPP : Type :=
-  | Nu : RPP
-  | Id : RPP
-  | Ne : RPP
-  | Su : RPP
-  | Pr : RPP
-  | Sw : RPP
-  | Co : RPP → RPP → RPP
-  | Pa : RPP → RPP → RPP
-  | It : RPP → RPP
-  | If : RPP → RPP → RPP → RPP.
-
-Fixpoint inv (f : RPP) : RPP :=
-  match f with
-  | Nu => Nu
-  | Id => Id
-  | Ne => Ne
-  | Su => Pr
-  | Pr => Su
-  | Sw => Sw
-  | Co f g => Co (inv g) (inv f)
-  | Pa f g => Pa (inv f) (inv g)
-  | It f => It (inv f)
-  | If f g h => If (inv f) (inv g) (inv h)
-  end.
-
-Lemma double_inverse : ∀ f, inv (inv f) = f.
-Proof. induction f; try constructor; try simpl; congruence. Qed.
-
-Declare Custom Entry rpp.
-Declare Scope rpp_scope.
-Notation "<{ e }>" := e
-  (at level 0, e custom rpp at level 99) : rpp_scope.
-Notation "( x )" := x
-  (in custom rpp, x at level 99) : rpp_scope.
-Notation "x" := x
-  (in custom rpp at level 0, x constr at level 0) : rpp_scope.
-Notation "f x .. y" := (.. (f x) .. y)
-  (in custom rpp at level 0, only parsing,
-  f constr at level 0, x constr at level 9,
-  y constr at level 9) : rpp_scope.
-Notation "f ; g" := (Co f g)
-  (in custom rpp at level 50, right associativity).
-Notation "f ‖ g" := (Pa f g)
-  (in custom rpp at level 50, right associativity).
-Open Scope rpp_scope.
 
 Reserved Notation
   "l '<=[' c ']=>' l'"
   (at level 40, c custom rpp at level 99,
   l constr, l' constr at next level).
 
-Inductive RPP_rel : RPP → list Z → list Z → Prop :=
+Inductive RPP_rel : ∀ {j}, RPP j → list Z → list Z → Prop :=
   | E_Nu :
       [] <=[ Nu ]=> []
   | E_Id : ∀ n,
@@ -71,36 +24,25 @@ Inductive RPP_rel : RPP → list Z → list Z → Prop :=
       [n] <=[ Pr ]=> [n - 1]
   | E_Sw : ∀ n m,
       [n; m] <=[ Sw ]=> [m; n]
-  | E_Co : ∀ f g l l' l'',
+  | E_Co : ∀ {j} (f g : RPP j) l l' l'',
       l <=[ f ]=> l' →
       l' <=[ g ]=> l'' →
       l <=[ f ; g ]=> l''
-  | E_Pa : ∀ f g l1 l1' l2 l2',
+  | E_Pa : ∀ {j k} (f : RPP j) (g : RPP k) l1 l1' l2 l2',
       l1 <=[ f ]=> l1' →
       l2 <=[ g ]=> l2' →
       (l1++l2) <=[ f ‖ g ]=> (l1'++l2')
-  | E_ItZ : ∀ f l,
+  | E_ItZ : ∀ {j} (f : RPP j) l,
+      length l = j →
       (l++[0]) <=[ It f ]=> (l++[0])
-  | E_ItP : ∀ f p l l' l'',
+  | E_ItP : ∀ {j} (f : RPP j) p l l' l'',
       (l ++ [Z.pos p - 1]) <=[ It f ]=> (l' ++ [Z.pos p - 1]) →
       l' <=[ f ]=> l'' →
       (l ++ [Z.pos p]) <=[ It f ]=> (l'' ++ [Z.pos p])
-  | E_ItN : ∀ f p l l' l'',
+  | E_ItN : ∀ {j} (f : RPP j) p l l' l'',
       (l ++ [Z.neg p + 1]) <=[ It f ]=> (l' ++ [Z.neg p + 1]) →
       l' <=[ f ]=> l'' →
       (l ++ [Z.neg p]) <=[ It f ]=> (l'' ++ [Z.neg p])
-<<<<<<< Updated upstream
-  | E_IfP : ∀ f g h n l l',
-      n > 0 →
-      l <=[ f ]=> l' →
-      (l++[n]) <=[ If f g h ]=> (l'++[n])
-  | E_IfZ : ∀ f g h n l l',
-      n = 0 →
-      l <=[ g ]=> l' →
-      (l++[n]) <=[ If f g h ]=> (l'++[n])
-  | E_IfN : ∀ f g h n l l',
-      n < 0 →
-=======
   | E_IfP : ∀ {j} (f g h : RPP j) p l l',
       l <=[ f ]=> l' →
       (l++[Z.pos p]) <=[ If f g h ]=> (l'++[Z.pos p])
@@ -108,14 +50,12 @@ Inductive RPP_rel : RPP → list Z → list Z → Prop :=
       l <=[ g ]=> l' →
       (l++[0]) <=[ If f g h ]=> (l'++[0])
   | E_IfN : ∀ {j} (f g h : RPP j) p l l',
->>>>>>> Stashed changes
       l <=[ h ]=> l' →
       (l++[Z.neg p]) <=[ If f g h ]=> (l'++[Z.neg p])
 
   where "l <=[ f ]=> l'" := (RPP_rel f l l').
 
-Create HintDb RPP_Db.
-#[export] Hint Constructors RPP_rel : RPP_Db.
+#[export] Hint Constructors RPP_rel : r.
 
 (* Principio di induzione comodo per It *)
 Proposition Z_pos_ind : ∀ P : Z → Prop, P 0 →
@@ -133,31 +73,27 @@ Proof.
     applys H1 IHp.
 Qed.
 
-<<<<<<< Updated upstream
-Lemma it_ex : ∀ f l l',
-=======
 (* i prossimi lemmi sono utili per "invertire" It tagliando via le parti inutili *)
 Lemma it_ex : ∀ {j} (f : RPP j) l l',
->>>>>>> Stashed changes
   l <=[ It f ]=> l' → ∃ l1 l1' x,
   l = l1 ++ [x] ∧ l' = l1' ++ [x].
-Proof.
-  intros. inverts keep H.
-  - exists l1 l1 0. intuition.
-  - exists l1 l'' (Z.pos p). intuition.
-  - exists l1 l'' (Z.neg p). intuition.
-Qed.
+Proof. intros. inverts keep H; eauto. Qed.
+
+Lemma if_ex : ∀ {j} (f g h : RPP j) l l',
+  l <=[ If f g h]=> l' → ∃ l1 l1' x,
+  l = l1 ++ [x] ∧ l' = l1' ++ [x].
+Proof. intros. inverts keep H; eauto. Qed.
 
 Ltac all_app_inj_tail := 
   repeat match goal with
   | H : _ |- _ => apply app_inj_tail in H; destruct H end;
   try congruence.
 
-Lemma it_0: ∀ f l l',
-  (l ++ [0]) <=[ It f ]=> (l' ++ [0]) → l = l'.
-Proof. intros. inverts H; all_app_inj_tail. Qed.
+Lemma it_0: ∀ {j} (f : RPP j) l l',
+  (l ++ [0]) <=[ It f ]=> (l' ++ [0]) → l = l' ∧ length l = j.
+Proof. intros. split; inverts H; all_app_inj_tail. Qed.
 
-Lemma it_p: ∀ f l l' p,
+Lemma it_p: ∀ {j} (f : RPP j) l l' p,
   (l ++ [Z.pos p]) <=[ It f ]=> (l' ++ [Z.pos p]) → ∃ l'',
   (l++[Z.pos p-1]) <=[ It f ]=> (l''++[Z.pos p-1]) ∧
   l'' <=[ f ]=> l'.
@@ -166,7 +102,7 @@ Proof.
   assert(p = p0). congruence. subst. eauto.
 Qed.
 
-Lemma it_n: ∀ f l l' p,
+Lemma it_n: ∀ {j} (f : RPP j) l l' p,
   (l ++ [Z.neg p]) <=[ It f ]=> (l' ++ [Z.neg p]) → ∃ l'',
   (l++[Z.neg p+1]) <=[ It f ]=> (l''++[Z.neg p+1]) ∧
   l'' <=[ f ]=> l'.
@@ -175,9 +111,6 @@ Proof.
   assert(p = p0). congruence. subst. eauto.
 Qed.
 
-<<<<<<< Updated upstream
-Lemma it_p_rev: ∀ f l l' p,
-=======
 
 Ltac inverts_it :=
   match goal with
@@ -209,7 +142,6 @@ Proof.
 Qed.
 
 Lemma it_p_rev: ∀ {j} (f : RPP j) l l' p,
->>>>>>> Stashed changes
   (l ++ [Z.pos p]) <=[ It f ]=> (l' ++ [Z.pos p]) → ∃ l'',
   l <=[ f ]=> l'' ∧
   (l''++[Z.pos p-1]) <=[ It f ]=> (l'++[Z.pos p-1]).
@@ -217,29 +149,18 @@ Proof.
   intros.
   gen l l'.
   induction p using Pos.peano_ind.
-<<<<<<< Updated upstream
-  - intros. lets (l0 & H0 & H1) : it_p H.
-    apply it_0 in H0. subst.
-    exists l'. intuition.
-  - intros. lets (l0 & H0 & H1) : it_p H.
-=======
   - intros. lets (l0 & H0 & H1) : @it_p H.
     lets (H2 & H3) : @it_0 H0. rewrite <- H2 in *.
     exists l'. split. assumption.
     simpl. constructor. apply rel_length in H1. intuition.
   - intros. lets (l0 & H0 & H1) : @it_p H.
->>>>>>> Stashed changes
     replace (Z.pos (Pos.succ p) - 1) with (Z.pos p) in *; intuition.
     apply IHp in H0. lets (l'' & H2 & H3) : H0.
     exists l''. intuition.
     eapply E_ItP; eauto.
 Qed.
 
-<<<<<<< Updated upstream
-Lemma it_n_rev: ∀ f l l' p,
-=======
 Lemma it_n_rev: ∀ {j} (f : RPP j) l l' p,
->>>>>>> Stashed changes
   (l ++ [Z.neg p]) <=[ It f ]=> (l' ++ [Z.neg p]) → ∃ l'',
   l <=[ f ]=> l'' ∧
   (l''++[Z.neg p+1]) <=[ It f ]=> (l'++[Z.neg p+1]).
@@ -295,14 +216,13 @@ Proof.
 Qed.
 
 Proposition proposition_1 : ∀ {j} (f : RPP j) l l',
-  l <=[ f ]=> l' <-> l' <=[ inv f ]=> l.
+  l <=[ f ]=> l' ↔ l' <=[ inv f ]=> l.
 Proof. split; [apply proposition_1_r | apply proposition_1_l]. Qed.
 
-Definition inc := It Su.
 Proposition inc_rel : ∀ n m,
   [n; m] <=[inc]=> [n + Z.abs m; m].
 Proof.
-  intros. unfold inc.
+  intros.
   induction m using Z_pos_ind.
   - rewrite Z.add_0_r. applys @E_ItZ Su [n]; intuition.
   - applys @E_ItP [n] [n+Z.abs(Z.pos p-1)] [n+Z.abs(Z.pos p)]; intuition.
@@ -311,7 +231,6 @@ Proof.
     replace (n+Z.abs(Z.neg p)) with (n + Z.abs (Z.neg p + 1)+1); intuition.
 Qed.
 
-Definition dec := inv inc.
 Proposition dec_rel : ∀ n m,
   [n; m] <=[dec]=> [n - (Z.abs m); m].
 Proof.
@@ -320,12 +239,6 @@ Proof.
   unfold dec. rewrite proposition_1.
   apply inc_rel.
 Qed.
-
-Fixpoint Id' (n : nat) : RPP n :=
-  match n as m0 return (RPP m0) with
-    | 0%nat => Nu
-    | S m0 => <{ Id ‖ (Id' m0) }>
-  end.
 
 Lemma Id'_identity : ∀ l,
   l <=[ Id' (length l) ]=> l.
@@ -363,23 +276,6 @@ Proof.
     eapply @E_Co; eauto.
 Qed.
 
-Fixpoint arity {j} (f : RPP j) : nat :=
-  match f with
-  | Nu => 0
-  | Id | Ne | Su | Pr => 1
-  | Sw => 2
-  | <{ f; g }> => arity f
-  | <{ f ‖ g }> => (arity f) + (arity g)
-  | It f => S (arity f)
-  | If f g h => S (arity f)
-  end.
-
-Proposition arity_index : ∀ {j} (f : RPP j),
-  arity f = j.
-Proof.
-  intros. induction f; try simpl; try intuition.
-Qed.
-
 Proposition arity_length : ∀ {j} (f : RPP j) l l',
   l <=[ f ]=> l' → length l = arity f.
 Proof.
@@ -401,53 +297,10 @@ Proof.
     simpl; intuition.
 Qed.
 
-
-Lemma length_Sn_ex : ∀ {X n} {l : list X},
-  length l = S n → ∃ l' x, l = l' ++ [x] ∧ length l' = n.
-Proof.
-  intros.
-  assert (l ≠ []).
-  { intro. assert (length l = O); intuition.
-    rewrite H0. reflexivity. }
-  lets (l' & x & eq) : exists_last H0.
-  exists l' x.
-  split. assumption.
-  assert ( length l = S (length l') ).
-  { rewrite eq. rewrite app_length.
-    rewrite Nat.add_comm. simpl. reflexivity. }
-  intuition.
-Qed.
-
-Lemma sublist_same_length : ∀ {X} (a b c d : list X),
-  a ++ b = c ++ d → length a = length c → a = c ∧ b = d.
-Proof.
-  intros. assert (a = c).
-  - remember (length a) as n.
-    symmetry in Heqn. symmetry in H0.
-    gen a b c d.
-    induction n; intros.
-    + rewrite length_zero_iff_nil in *.
-      rewrite Heqn. rewrite H0. reflexivity.
-    + lets (l & x & Hl & Hx) : @length_Sn_ex Heqn.
-      lets (m & y & Hm & Hy) : @length_Sn_ex H0.
-      assert (l = m).
-      { applys IHn l ([x]++b) m ([y]++d); intuition.
-        repeat rewrite app_assoc.
-        rewrite <- Hl. rewrite <- Hm. assumption. }
-      assert (x = y).
-      { subst. repeat rewrite <- app_assoc in H.
-        rewrite (app_inv_head_iff m) in H.
-        inverts H. reflexivity. }
-      subst. reflexivity.
-  - split.
-    + assumption.
-    + rewrite H1 in H. apply app_inv_head in H. assumption.
-Qed.
-
 Theorem deterministic : ∀ {j} (f : RPP j) l l0 l1,
-     l <=[ f ]=> l0 →
-     l <=[ f ]=> l1 →
-     l0 = l1.
+  l <=[ f ]=> l0 →
+  l <=[ f ]=> l1 →
+  l0 = l1.
 Proof.
   intros. gen l l0 l1.
   induction f; try (intros; inverts H; inverts H0; reflexivity).
@@ -496,3 +349,46 @@ Proof.
       * discriminate.
       * assert(l' = l'0). applys IHf3 H9 H11. subst. reflexivity.
 Qed.
+
+Open Scope nat_scope.
+
+Theorem rel_ev : ∀ {j} (f : RPP j) l l',
+  length l = j → («f» l = l') → l <=[ f ]=> l'.
+Proof.
+  intros. gen l l'. induction f; intros;
+    try (fixedlength l; subst; constructor).
+  - destruct l. discriminate. simpl in H. injection H as H.
+    lets (H1 & x) : @length_one H. subst. constructor.
+  - simpl in H0.
+    lets H1 : IHf1 l H @eq_refl.
+    lets Hl : @length_evaluate f1 H.
+    lets H2 : IHf2 («f1» l) Hl l' H0.
+    eapply E_Co; eauto.
+  - simpl in H0.
+    assert (length (firstn j l) = j). { apply firstn_length_le. lia. }
+    assert (length (skipn j l) = k).
+    { replace k with (length l - j); intuition. applys skipn_length. }
+    lets Hf : IHf1 (firstn j l) H1 @eq_refl.
+    lets Hs : IHf2 (skipn j l) H2 @eq_refl.
+    asserts_rewrite (l = firstn j l ++ skipn j l).
+    { symmetry. eapply firstn_skipn. }
+    rewrite <- H0.
+    eapply E_Pa; eauto.
+  - admit.
+  - lets (l0 & x & Ha0 & Hl0) : @length_Sn_ex H.
+    lets H' : @length_evaluate (If f1 f2 f3) H. rewrite H0 in H'.
+    lets (l0' & x' & Ha0' & Hl0') : @length_Sn_ex H'.
+    simpl in H0.
+    assert (last l 0%Z = x). { rewrite Ha0. apply last_last. }
+    rewrite H1 in H0. destruct x.
+    + assert (length (removelast l) = j). { applys @removelast_length H. }
+      assert ((removelast l) <=[ f2 ]=> l0'). { applys IHf2 H2.
+
+ asserts_rewrite (l = (removelast l) ++ [0%Z]).
+      { symmetry. rewrite <- H1. applys @removelast_Sn H. }
+      applys @E_IfZ (removelast l).
+
+
+
+
+
