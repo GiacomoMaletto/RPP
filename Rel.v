@@ -216,63 +216,6 @@ Proposition proposition_1 : ∀ {j} (f : RPP j) l l',
   l <=[ f ]=> l' ↔ l' <=[ inv f ]=> l.
 Proof. split; [apply proposition_1_r | apply proposition_1_l]. Qed.
 
-Proposition inc_rel : ∀ n m,
-  [n; m] <=[inc]=> [n + Z.abs m; m].
-Proof.
-  intros.
-  induction m using Z_pos_ind.
-  - rewrite Z.add_0_r. applys @E_ItZ Su [n]; intuition.
-  - applys @E_ItP [n] [n+Z.abs(Z.pos p-1)] [n+Z.abs(Z.pos p)]; intuition.
-    replace (n+Z.abs(Z.pos p)) with (n+Z.abs(Z.pos p-1)+1); intuition.
-  - applys @E_ItN [n] [n+Z.abs(Z.neg p+1)] [n+Z.abs(Z.neg p)]; intuition.
-    replace (n+Z.abs(Z.neg p)) with (n + Z.abs (Z.neg p + 1)+1); intuition.
-Qed.
-
-Proposition dec_rel : ∀ n m,
-  [n; m] <=[dec]=> [n - (Z.abs m); m].
-Proof.
-  intros. remember (n - Z.abs m) as n'.
-  replace n with (n' + Z.abs m); intuition.
-  unfold dec. rewrite proposition_1.
-  apply inc_rel.
-Qed.
-
-Lemma Id'_identity : ∀ l,
-  l <=[ Id' (length l) ]=> l.
-Proof.
-  intros.
-  remember (length l) as n. gen l.
-  induction n.
-  - intros.
-    asserts_rewrite(l = []). apply length_zero_iff_nil. auto.
-    constructor.
-  - intros. simpl.
-    destruct l; try discriminate.
-    assert(n = length l); intuition.
-    applys @E_Pa Id [z] [z] l l; intuition.
-Qed.
-
-Proposition RPP_perm : ∀ {l l'} (p : Permutation l l'),
-  ∃ (f : RPP (length l)), l <=[ f ]=> l'.
-Proof.
-  intros.
-  induction p.
-  - exists Nu. constructor.
-  - lets f H : IHp.
-    exists <{ Id ‖ f }>.
-    pose (E_Id x).
-    applys @E_Pa f r H.
-  - exists <{ Sw ‖ Id' (length l) }>.
-    pose (E_Sw y x).
-    pose (Id'_identity l).
-    applys @E_Pa Sw [y;x] [x;y] l; intuition.
-  - lets f1 H1 : IHp1.
-    lets H : @rel_length H1. rewrite <- H in IHp2.
-    lets f2 H2 : IHp2.
-    exists <{ f1 ; f2 }>.
-    eapply @E_Co; eauto.
-Qed.
-
 Proposition arity_length : ∀ {j} (f : RPP j) l l',
   l <=[ f ]=> l' → length l = arity f.
 Proof.
@@ -370,6 +313,10 @@ Proof.
     simpl; last_rmlast; rewrite app_inj_tail_iff; intuition.
 Qed.
 
+Theorem ev_rel' : ∀ {j} (f : RPP j) l,
+  length l = j → l <=[ f ]=> «f» l.
+Proof. intros. applys @rel_ev H @eq_refl. Qed.
+
 Theorem determininistic : ∀ {j} (f : RPP j) l l0 l1,
   l <=[ f ]=> l0 →
   l <=[ f ]=> l1 →
@@ -382,6 +329,38 @@ Proof.
   rewrite <- e. rewrite <- e0. reflexivity.
 Qed.
 
-Theorem ev_rel' : ∀ {j} (f : RPP j) l,
-  length l = j → l <=[ f ]=> «f» l.
-Proof. intros. applys @rel_ev H @eq_refl. Qed.
+Lemma Id'_identity : ∀ l,
+  l <=[ Id' (length l) ]=> l.
+Proof.
+  intros.
+  remember (length l) as n. gen l.
+  induction n.
+  - intros.
+    asserts_rewrite(l = []). apply length_zero_iff_nil. auto.
+    constructor.
+  - intros. simpl.
+    destruct l; try discriminate.
+    assert(n = length l); intuition.
+    applys @E_Pa Id [z] [z] l l; intuition.
+Qed.
+
+Proposition RPP_perm : ∀ {l l'} (p : Permutation l l'),
+  ∃ (f : RPP (length l)), l <=[ f ]=> l'.
+Proof.
+  intros.
+  induction p.
+  - exists Nu. constructor.
+  - lets f H : IHp.
+    exists <{ Id ‖ f }>.
+    pose (E_Id x).
+    applys @E_Pa f r H.
+  - exists <{ Sw ‖ Id' (length l) }>.
+    pose (E_Sw y x).
+    pose (Id'_identity l).
+    applys @E_Pa Sw [y;x] [x;y] l; intuition.
+  - lets f1 H1 : IHp1.
+    lets H : @rel_length H1. rewrite <- H in IHp2.
+    lets f2 H2 : IHp2.
+    exists <{ f1 ; f2 }>.
+    eapply @E_Co; eauto.
+Qed.
