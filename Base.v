@@ -52,7 +52,7 @@ Create HintDb rpp_hint.
 #[export] Hint Unfold inv : rpp_hint.
 Arguments inv {j} _ %rpp_scope.
 
-Lemma double_inverse : ∀ [j] (f : RPP j), inv (inv f) = f.
+Lemma double_inverse : ∀ {j} (f : RPP j), inv (inv f) = f.
 Proof. induction f; try constructor; try simpl; congruence. Qed.
 
 Fixpoint Id' (n : nat) : RPP n :=

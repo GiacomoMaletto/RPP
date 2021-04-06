@@ -55,7 +55,7 @@ Inductive RPP_rel : ∀ {j}, RPP j → list Z → list Z → Prop :=
 
   where "l <=[ f ]=> l'" := (RPP_rel f l l').
 
-#[export] Hint Constructors RPP_rel : r.
+#[export] Hint Constructors RPP_rel : rpp.
 
 (* Principio di induzione comodo per It *)
 Proposition Z_pos_ind : ∀ P : Z → Prop, P 0 →
@@ -201,10 +201,7 @@ Proof.
   - inverts H. intuition.
   - inverts H. eapply E_Co; eauto.
   - inverts H. eapply E_Pa; eauto.
-  - inverts_it_rev.
-    + eapply E_ItZ; eauto.
-    + eapply E_ItP; eauto.
-    + eapply E_ItN; eauto.
+  - inverts_it_rev; [eapply E_ItZ | eapply E_ItP | eapply E_ItN ]; eauto.
   - inverts H; [eapply E_IfP | eapply E_IfZ | eapply E_IfN]; eauto.
 Qed.
 
@@ -297,98 +294,94 @@ Proof.
     simpl; intuition.
 Qed.
 
-Theorem deterministic : ∀ {j} (f : RPP j) l l0 l1,
-  l <=[ f ]=> l0 →
-  l <=[ f ]=> l1 →
-  l0 = l1.
+Proposition index_length : ∀ {j} (f : RPP j) l l',
+  l <=[ f ]=> l' → length l = j.
 Proof.
-  intros. gen l l0 l1.
-  induction f; try (intros; inverts H; inverts H0; reflexivity).
-  - intros. inverts H. inverts H0.
-    assert (l' = l'0). applys IHf1 H3. auto. subst.
-    applys IHf2 H7 H8.
-  - intros. inverts H. inverts H0.
-    assert(l0 = l3 ∧ l2 = l4).
-    { applys @sublist_same_length; auto.
-    rewrite (arity_length _ _ _ H9).
-    rewrite (arity_length _ _ _ H12).
-    reflexivity. }
-    lets (H' & H'') : H0. clear H0. subst.
-    assert (l1' = l1'0). applys IHf1 H9 H12.
-    assert (l2' = l2'0). applys IHf2 H10 H13.
-    subst. reflexivity.
-  - intros.
-    lets (l' & l0' & n & H' & H0') : @it_ex H.
-    lets (l'0 & l0'' & n' & H'' & H0'') : @it_ex H0. subst.
-    apply app_inj_tail in H''. destruct H''. subst.
-    gen l0' l'0 l0''.
-    induction n' using Z_pos_ind.
-    + intros. subst. apply it_0 in H. apply it_0 in H0.
-      intuition. subst. reflexivity.
-    + intros.
-      lets (a & b & c) : @it_p H.
-      lets (a' & b' & c') : @it_p H0.
-      pose (IHn' a l'0 b a' b'). apply app_inj_tail in e. destruct e. subst.
-      assert(l0' = l0''). applys IHf a' c c'. rewrite H1. reflexivity.
-    + intros.
-      lets (a & b & c) : @it_n H.
-      lets (a' & b' & c') : @it_n H0.
-      pose (IHn' a l'0 b a' b'). apply app_inj_tail in e. destruct e. subst.
-      assert(l0' = l0''). applys IHf a' c c'. rewrite H1. reflexivity.
-  - intros. inverts H.
-    + inverts H0; apply app_inj_tail in H10; destruct H10; subst; rewrite H4.
-      * assert(l' = l'0). applys IHf1 H9 H11. subst. reflexivity.
-      * discriminate.
-      * discriminate.
-    + inverts H0; apply app_inj_tail in H10; destruct H10.
-      * discriminate.
-      * subst. assert(l' = l'0). applys IHf2 H9 H11. subst. reflexivity.
-      * discriminate.
-    + inverts H0; apply app_inj_tail in H10; destruct H10; subst; rewrite H4.
-      * discriminate.
-      * discriminate.
-      * assert(l' = l'0). applys IHf3 H9 H11. subst. reflexivity.
+  intros.
+  apply arity_length in H.
+  rewrite arity_index in H.
+  assumption.
 Qed.
 
 Open Scope nat_scope.
+
+Ltac last_rmlast := rewrite last_last in *; rewrite removelast_last in *.
 
 Theorem rel_ev : ∀ {j} (f : RPP j) l l',
   length l = j → («f» l = l') → l <=[ f ]=> l'.
 Proof.
   intros. gen l l'. induction f; intros;
-    try (fixedlength l; subst; constructor).
-  - destruct l. discriminate. simpl in H. injection H as H.
-    lets (H1 & x) : @length_one H. subst. constructor.
-  - simpl in H0.
-    lets H1 : IHf1 l H @eq_refl.
-    lets Hl : @length_evaluate f1 H.
-    lets H2 : IHf2 («f1» l) Hl l' H0.
-    eapply E_Co; eauto.
-  - simpl in H0.
-    assert (length (firstn j l) = j). { apply firstn_length_le. lia. }
-    assert (length (skipn j l) = k).
-    { replace k with (length l - j); intuition. applys skipn_length. }
-    lets Hf : IHf1 (firstn j l) H1 @eq_refl.
-    lets Hs : IHf2 (skipn j l) H2 @eq_refl.
-    asserts_rewrite (l = firstn j l ++ skipn j l).
-    { symmetry. eapply firstn_skipn. }
-    rewrite <- H0.
-    eapply E_Pa; eauto.
-  - admit.
-  - lets (l0 & x & Ha0 & Hl0) : @length_Sn_ex H.
-    lets H' : @length_evaluate (If f1 f2 f3) H. rewrite H0 in H'.
-    lets (l0' & x' & Ha0' & Hl0') : @length_Sn_ex H'.
-    simpl in H0.
-    assert (last l 0%Z = x). { rewrite Ha0. apply last_last. }
-    rewrite H1 in H0. destruct x.
-    + assert (length (removelast l) = j). { applys @removelast_length H. }
-      assert ((removelast l) <=[ f2 ]=> l0'). { applys IHf2 H2.
+  try (fixedlength l; subst; constructor).
+  - applys @E_Co; auto using length_evaluate.
+  - replace l with ( (firstn j l) ++ (skipn j l) ); try apply firstn_skipn.
+    simpl in H0. rewrite <- H0.
+    applys @E_Pa.
+    applys IHf1. rewrite firstn_length_le; lia. reflexivity.
+    applys IHf2. rewrite skipn_length; lia. reflexivity.
+  - lets (l0 & x & c & d) : @length_Sn_ex H.
+    rewrite c in H0. simpl in H0. last_rmlast. subst.
+    remember (Z.abs_nat x) as n. gen l0 x.
+    induction n.
+    + intros. asserts_rewrite (x = 0%Z); try lia. constructor. auto.
+    + intros. simpl. destruct x.
+      * discriminate.
+      * applys @E_ItP.
+        applys IHn IHf. rewrite app_length. reflexivity. lia.
+        applys IHf; try apply length_power; reflexivity.
+      * applys @E_ItN.
+        applys IHn IHf. rewrite app_length. reflexivity. lia.
+        applys IHf; try apply length_power; reflexivity.
+  - lets (l0 & x & c & d) : @length_Sn_ex H. subst.
+    destruct x; simpl; last_rmlast; constructor; eauto.
+Qed.
 
- asserts_rewrite (l = (removelast l) ++ [0%Z]).
-      { symmetry. rewrite <- H1. applys @removelast_Sn H. }
-      applys @E_IfZ (removelast l).
+Theorem ev_rel : ∀ {j} (f : RPP j) l l',
+  l <=[ f ]=> l' → «f» l = l'.
+Proof.
+  intros. gen l l'.
+  induction f;
+  try (intros; inverts H; reflexivity).
+  - intros. inverts H.
+    apply IHf1 in H3. apply IHf2 in H6.
+    simpl. rewrite H3. rewrite H6. reflexivity.
+  - intros. inverts H. clear H0 H1. simpl.
+    pose (index_length _ _ _ H8) as Hl.
+    asserts_rewrite (firstn j (l1 ++ l2) = l1). applys firstn_app_all; auto.
+    asserts_rewrite (skipn j (l1 ++ l2) = l2). applys skipn_app_all; auto.
+    clear Hl.
+    apply IHf1 in H8. apply IHf2 in H9. subst. reflexivity.
+  - intros. inverts_it.
+    + simpl. last_rmlast. reflexivity.
+    + simpl. apply IHf in H1.
+      apply IHy in H0. unfold evaluate in H0. fold @evaluate in H0.
+      last_rmlast.
+      rewrite app_inv_tail_iff in H0.
+      rewrite app_inj_tail_iff; intuition.
+      replace (Z.abs_nat (Z.pos p)) with (S(Z.abs_nat (Z.pos p - 1))); try lia.
+      rewrite power_S_1. rewrite H0. rewrite H1. reflexivity.
+    + simpl. apply IHf in H1.
+      apply IHy in H0. unfold evaluate in H0. fold @evaluate in H0.
+      last_rmlast.
+      rewrite app_inv_tail_iff in H0.
+      rewrite app_inj_tail_iff; intuition.
+      replace (Z.abs_nat (Z.neg p)) with (S(Z.abs_nat (Z.neg p + 1))); try lia.
+      rewrite power_S_1. rewrite H0. rewrite H1. reflexivity.
+  - intros. inverts H;
+    simpl; last_rmlast; rewrite app_inj_tail_iff; intuition.
+Qed.
 
+Theorem determininistic : ∀ {j} (f : RPP j) l l0 l1,
+  l <=[ f ]=> l0 →
+  l <=[ f ]=> l1 →
+  l0 = l1.
+Proof.
+  intros.
+  pose (index_length _ _ _ H) as Hl.
+  pose (ev_rel f l l0 H).
+  pose (ev_rel f l l1 H0).
+  rewrite <- e. rewrite <- e0. reflexivity.
+Qed.
 
-
-
-
+Theorem ev_rel' : ∀ {j} (f : RPP j) l,
+  length l = j → l <=[ f ]=> «f» l.
+Proof. intros. applys @rel_ev H @eq_refl. Qed.

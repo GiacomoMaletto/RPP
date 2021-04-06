@@ -74,10 +74,9 @@ Proof.
       { simpl in IHn. intuition. }
       rewrite (IHf _ H0). reflexivity.
   - intros. simpl. rewrite app_length. simpl.
-    destruct (last l 0%Z).
-    + rewrite IHf2. reflexivity. apply removelast_length. assumption.
-    + rewrite IHf1. reflexivity. apply removelast_length. assumption.
-    + rewrite IHf3. reflexivity. apply removelast_length. assumption.
+    destruct (last l 0%Z);
+    [ rewrite IHf2 | rewrite IHf1 | rewrite IHf3 ];
+    try reflexivity; apply removelast_length; assumption.
 Qed.
 
 Lemma ev_comp : ∀ {n} (f g : RPP n) (l : list Z),
@@ -142,9 +141,7 @@ Lemma length_power : ∀ {n} {f : RPP n} {m} {l : list Z},
 Proof.
   intros. induction m.
   - reflexivity.
-  - simpl. destruct m.
-    + rewrite length_evaluate; intuition.
-    + rewrite length_evaluate; intuition.
+  - simpl. destruct m; rewrite length_evaluate; intuition.
 Qed.
 
 Lemma power_inverse : ∀ {n m} {f g : RPP n}
