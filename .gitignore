@@ -6,3 +6,4 @@
 *.aux
 .lia.cache
 Maps.v
+*.v#
