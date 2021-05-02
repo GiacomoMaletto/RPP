@@ -178,6 +178,29 @@ Inductive ceval : com → state → state → Prop :=
 
   where "st <=[ c ]=> st'" := (ceval c st st').
 
+Fixpoint is_valid (c : com) : bool :=
+  match c with
+  | CSk | CNe _ | CSu _ | CPr _ | CSw _ _ => true
+  | CCo c1 c2 => is_valid c1 && is_valid c2
+  | CIt x c1 => is_valid c1 && negb ((comvarst c1) x)
+  | CIf x c1 c2 c3 =>
+    is_valid c1 && is_valid c2 && is_valid c3 &&
+    negb ((comvarst c1) x) &&
+    negb ((comvarst c1) x) &&
+    negb ((comvarst c1) x)
+  end.
+
+Inductive cfun (c : com) (st : state) : state :=
+  match c with
+  | CSk => st
+  | CNe x => (x !-> - st x ; st)
+  | CSu x => (x !-> st x + 1 ; st)
+  | CPr x => CSu x
+  | CSw x y => CSw x y
+  | CCo c1 c2 => CCo (inv c2) (inv c1)
+  | CIt x c1 => CIt x (inv c1)
+  | CIf x c1 c2 c3 => CIf x (inv c1) (inv c2) (inv c3)
+  end.
 (* Principio di induzione comodo per It *)
 Proposition Z_pos_ind : ∀ P : Z → Prop, P 0 →
   (∀ p : positive, P (Z.pos p - 1) → P (Z.pos p)) →
@@ -194,6 +217,20 @@ Proof.
     applys H1 IHp.
 Qed.
 
+Lemma eq_func : ∀ A B (f g : A → B) (x : A), f = g → f x = g x.
+Proof. intros. f_equal. Qed.
+
+Lemma it_zero : ∀ st st' v c,
+  (v !-> 0; st) <=[ repeat v do c end ]=> (v !-> 0; st') →
+  st = st'.
+Proof.
+  intros. inverts H.
+  - apply eq_func with (x:=v) in H2.
+    rewrite !t_update_eq in H2. discriminate.
+  - admit.
+  - apply eq_func with (x:=v) in H2.
+    rewrite !t_update_eq in H2. discriminate.
+Admitted.
 
 Lemma it_sum : ∀ st st' st'' n m v c,
   v ∉ comvarst c →
@@ -201,7 +238,9 @@ Lemma it_sum : ∀ st st' st'' n m v c,
   (v !-> m; st') <=[ CIt v c ]=> (v !-> m; st'') →
   (v !-> n+m; st) <=[ CIt v c ]=> (v !-> n+m; st'').
 Proof.
-  intros. gen st st' st''
+  intros. gen st st' st''.
+  induction m using Z_pos_ind.
+  - intros. inverts H1. replace (n+0) with n; try lia.
 
 Proposition proposition_1_r : ∀ c st st',
   st <=[ c ]=> st' → st' <=[ inv c ]=> st.
