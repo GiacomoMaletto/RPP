@@ -190,17 +190,18 @@ Fixpoint is_valid (c : com) : bool :=
     negb ((comvarst c1) x)
   end.
 
-Inductive cfun (c : com) (st : state) : state :=
+Definition cfun (c : com) (st : state) : state :=
   match c with
   | CSk => st
   | CNe x => (x !-> - st x ; st)
   | CSu x => (x !-> st x + 1 ; st)
-  | CPr x => CSu x
+  | CPr x => (x !-> st x + 1 ; st)
   | CSw x y => CSw x y
   | CCo c1 c2 => CCo (inv c2) (inv c1)
   | CIt x c1 => CIt x (inv c1)
   | CIf x c1 c2 c3 => CIf x (inv c1) (inv c2) (inv c3)
   end.
+
 (* Principio di induzione comodo per It *)
 Proposition Z_pos_ind : ∀ P : Z → Prop, P 0 →
   (∀ p : positive, P (Z.pos p - 1) → P (Z.pos p)) →
