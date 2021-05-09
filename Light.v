@@ -15,7 +15,6 @@ Inductive RPP : nat → Type :=
   | It j (f : RPP j) : RPP (S j)
   | If j (f g h : RPP j) : RPP (S j).
 
-(* \! *)
 Notation "f ;; g" := (Co f g) (at level 65, left associativity).
 (* \Vert *)
 Notation "f ‖ g" := (Pa f g) (at level 65, left associativity).
