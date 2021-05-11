@@ -35,39 +35,17 @@ Proof.
   intros. induction f; try reflexivity; simpl; congruence.
 Qed.
 
-Definition state := string → option Z.
+Definition state := string → Z.
 
-(* \equi *)
-Notation "x ≡ y" := (eqb x y) (at level 70).
-(* \nequ *)
-Notation "x ≢ y" := (negb (eqb x y)) (at level 70).
-
-Definition empty : state := λ _, Some 0.
+Definition empty : state := λ _, 0.
 Definition update (st : state) x o : state :=
-  λ y, if x ≡ y then o else st y.
+  λ y, if x =? y then o else st y.
 
 (* \map *)
-Notation "x ↦ n ; st" := (update st x (Some n))
+Notation "x ↦ n ; st" := (update st x n)
   (at level 100, n at next level, right associativity).
-Notation "x ↦ n" := (update empty x (Some n))
+Notation "x ↦ n" := (update empty x  n)
   (at level 100).
-(* \dar *)
-Notation "x ↓ ; st" := (update st x None)
-  (at level 100, right associativity).
-Notation "x ↓" := (update empty x None)
-  (at level 100).
-
-Definition raise (o : option Z) : Z :=
-  match o with
-  | None => 0
-  | Some n => n
-  end.
-
-(* \uar *)
-Notation "↑ o" := (raise o) (at level 0).
-
-Definition is_some (o : option Z) := ∃ n, o = Some n.
-Notation "o ?" := (is_some o) (at level 0).
 
 Fixpoint iter X (f : X → X) (n : nat) x :=
   match n with
@@ -78,46 +56,99 @@ Fixpoint iter X (f : X → X) (n : nat) x :=
 Fixpoint evaluate (f : RPPM) (st : state) : state :=
   match f with
   | Id => st
-  | Ne x => match st x with
-    | None => st
-    | Some n => x ↦ -n; st
-    end
-  | Su x => match st x with
-    | None => st
-    | Some n => x ↦ n + 1; st
-    end
-  | Pr x => match st x with
-    | None => st
-    | Some n => x ↦ n - 1; st
-    end
+  | Ne x => x ↦ -(st x); st
+  | Su x => x ↦ st x + 1; st
+  | Pr x => x ↦ st x - 1; st
   | Co f g => (evaluate g) (evaluate f st)
-  | It x f => match st x with
-    | None => st
-    | Some n => x ↦ n; iter (evaluate f) (Z.abs_nat n) (x↓; st)
-    end
-  | If x f g h => match st x with
-    | None => st
-    | Some n => x ↦ n; evaluate (match n with
-      | Zpos _ => f
-      | Z0 => g
-      | Zneg _ => h
-      end) (x↓; st)
-    end
+  | It x f => iter (evaluate f) (Z.abs_nat (st x)) st
+  | If x f g h => evaluate (match st x with
+    | Zpos _ => f
+    | Z0 => g
+    | Zneg _ => h
+    end) st
   end.
 
 (* \laq f \raq *)
 Notation "« f »" := (evaluate f).
 
-Definition inc j i := It j (Su i).
+Fixpoint inb x l : bool :=
+  match l with
+  | [] => false
+  | y::l => (x =? y) || (inb x l)
+  end.
+
+Fixpoint bad' (f : RPPM) (l : list string) : bool :=
+  match f with
+  | Id => false
+  | Ne x => inb x l
+  | Su x => inb x l
+  | Pr x => inb x l
+  | Co f g => bad' f l || bad' g l
+  | It x f => bad' f (x :: l)
+  | If x f g h => bad' f (x :: l) || bad' g (x :: l) || bad' h (x :: l)
+  end.
+
+Definition bad (f : RPPM) := bad' f [].
+
+Fixpoint modified' (f : RPPM) l :=
+  match f with
+  | Id => []
+  | Ne x => x :: l
+  | Su x => x :: l
+  | Pr x => x :: l
+  | Co f g => modified' g (modified' f l)
+  | It x f => modified' f l
+  | If x f g h => modified' h (modified' g (modified' f l))
+  end.
+
+Fixpoint nodup_str l :=
+  match l with
+  | [] => []
+  | x :: l => if inb x l then nodup_str l else x :: nodup_str l
+  end.
+
+Definition modified (f : RPPM) := nodup_str (modified' f []).
+
+Definition W : string := "W".
+Definition X : string := "X".
+Definition Y : string := "Y".
+
+Definition inc := It Y (Su X).
+
+Fixpoint eq_each X Y (f g : X → Y) (l : list X) :=
+  match l with
+  | [] => True
+  | x :: [] => f(x) = g(x)
+  | x :: l => f(x) = g(x) ∧ eq_each f g l
+  end.
+
+Theorem eq_modified : ∀ f st st', «f» st = st' ↔
+  eq_each («f» st) st' (modified f).
+Admitted.
+
+Lemma inc_good : bad inc = false.
+Proof. reflexivity. Qed.
+
+Goal ∀ x, (modified (Ne x;; Ne x)) = [x].
+Proof.
+  intros. unfold modified. simpl. rewrite eqb_refl. reflexivity.
+Qed.
+
+Proposition inc_def : ∀ st,
+  «inc» st = (X ↦ (st X) + (Z.abs (st Y)); st).
+Proof.
+  intros. apply eq_modified. simpl.
+  rewrite <- Zabs2Nat.id_abs.
+  remember (Z.abs_nat (st Y)) as n.
+  induction n.
+  - cbv. destruct (st "X"); reflexivity.
+  - cbv. rewrite IHn.
+
 Definition dec j i := inv (inc j i).
 Definition mult k j i := It k (inc j i) ;;
   If k (If j Id Id (Ne i)) Id (If j (Ne i) Id Id).
 
-Proposition inc_def : ∀ j i st, j ≠ i → (st i)? → (st j)? →
-  «inc j i» st = (i ↦ ↑(st i) + Z.abs(↑(st j)); st).
-Proof.
-  intros. destruct H0. destruct H1. rewrite H0. rewrite H1. simpl.
-
+Proposition 
 
 
 
