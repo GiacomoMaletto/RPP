@@ -10,16 +10,16 @@ Inductive RPP : nat → Type :=
   | Su : RPP 1
   | Pr : RPP 1
   | Sw : RPP 2
-  | Co j (f g : RPP j) : RPP j
-  | Pa j k (f : RPP j) (g : RPP k) : RPP (j + k)
-  | It j (f : RPP j) : RPP (S j)
-  | If j (f g h : RPP j) : RPP (S j).
+  | Co n (f g : RPP n) : RPP n
+  | Pa n m (f : RPP n) (g : RPP m) : RPP (n + m)
+  | It n (f : RPP n) : RPP (S n)
+  | If n (f g h : RPP n) : RPP (S n).
 
 Notation "f ;; g" := (Co f g) (at level 65, left associativity).
 (* \Vert *)
 Notation "f ‖ g" := (Pa f g) (at level 65, left associativity).
 
-Fixpoint inv {j} (f : RPP j) : RPP j :=
+Fixpoint inv n (f : RPP n) : RPP n :=
   match f with
   | Nu => Nu
   | Id => Id
@@ -33,7 +33,7 @@ Fixpoint inv {j} (f : RPP j) : RPP j :=
   | If f g h => If (inv f) (inv g) (inv h)
   end.
 
-Lemma inv_involute : ∀ j (f : RPP j), inv (inv f) = f.
+Lemma inv_involute : ∀ n (f : RPP n), inv (inv f) = f.
 Proof. induction f; try constructor; simpl; congruence. Qed.
 
 Fixpoint iter X (f : X → X) (n : nat) x :=
@@ -44,7 +44,7 @@ Fixpoint iter X (f : X → X) (n : nat) x :=
 
 Open Scope Z_scope.
 
-Fixpoint evaluate j (f : RPP j) (l : list Z) : list Z :=
+Fixpoint evaluate n (f : RPP n) (l : list Z) : list Z :=
   match f with
   | Nu => l
   | Id => l
@@ -53,8 +53,8 @@ Fixpoint evaluate j (f : RPP j) (l : list Z) : list Z :=
   | Pr => match l with []=>l | x::l' => x-1 :: l' end
   | Sw => match l with x::y::l' => y::x::l' | _=>l end
   | Co f g => (evaluate g) (evaluate f l)
-  | @Pa j _ f g =>
-    (evaluate f (firstn j l)) ++ (evaluate g (skipn j l))
+  | @Pa n _ f g =>
+    (evaluate f (firstn n l)) ++ (evaluate g (skipn n l))
   | It f => match l with []=>l
     | x::l' => x::iter (evaluate f) (Z.abs_nat x) l' end
   | If f g h => match l with []=>l
@@ -69,9 +69,7 @@ Fixpoint evaluate j (f : RPP j) (l : list Z) : list Z :=
 (* \laquo f \raquo *)
 Notation "« f »" := (evaluate f).
 
-Open Scope nat_scope.
-
-Lemma evaluate_nil : ∀ j (f : RPP j), «f» [] = [].
+Lemma evaluate_nil : ∀ n (f : RPP n), «f» [] = [].
 Proof.
   induction f; try reflexivity.
   - simpl. congruence.
@@ -102,23 +100,23 @@ Ltac liast :=
   try rewrite app_nil_r;
   simpl; try lia; auto.
 
-Theorem proposition_2 : ∀ j k (f g : RPP j) (f' g' : RPP k) l,
+Theorem proposition_2 : ∀ n m (f g : RPP n) (f' g' : RPP m) l,
   «(f‖f');;(g‖g')» l = «(f;;g)‖(f';;g')» l.
 Proof.
   intros. simpl.
   rewrite firstn_app. rewrite skipn_app.
   rewrite length_evaluate.
-  destruct (Nat.le_ge_cases (length l) j).
+  destruct (Nat.le_ge_cases (length l) n).
   - rewrite !firstn_all2. rewrite !skipn_all2.
     rewrite !evaluate_nil. rewrite !app_nil_r. reflexivity.
     all : liast.
-  - assert (length (firstn j l) = j). liast. rewrite H0.
-    asserts_rewrite (j - j = 0). lia.
-    replace (firstn j _) with (« f » (firstn j l)).
-    replace (skipn j (« f » (firstn j l))) with (nil:list Z).
+  - assert (length (firstn n l) = n). liast. rewrite H0.
+    asserts_rewrite (n - n = 0)%nat. lia.
+    replace (firstn n _) with (« f » (firstn n l)).
+    replace (skipn n (« f » (firstn n l))) with ([]:list Z).
     rewrite firstn_O. rewrite skipn_O. liast.
     rewrite skipn_all2; liast.
-    remember (« f » (firstn j l)).
+    remember (« f » (firstn n l)).
     rewrite firstn_all2; subst; liast.
 Qed.
 
@@ -140,14 +138,14 @@ Proof.
   simpl. rewrite iter_comm; auto. rewrite H. assumption.
 Qed.
 
-Lemma co_if : ∀ j (f g h f' g' h': RPP j) l,
+Lemma co_if : ∀ n (f g h f' g' h': RPP n) l,
   «If f g h;;If f' g' h'» l = «If (f;;f') (g;;g') (h;;h') » l.
 Proof.
   intros. nil_case l.
   simpl. destruct z; reflexivity.
 Qed.
 
-Theorem proposition_1_l : ∀ j (f : RPP j) l,
+Theorem proposition_1_l : ∀ n (f : RPP n) l,
   «f;;inv f» l = l.
 Proof.
   intros. gen l. induction f; try (nil_case l; simpl; f_equal; lia).
@@ -160,7 +158,7 @@ Proof.
     destruct z; congruence.
 Qed.
 
-Theorem proposition_1_r : ∀ j (f : RPP j) l,
+Theorem proposition_1_r : ∀ n (f : RPP n) l,
   «inv f;;f» l = l.
 Proof.
   intros. rewrite <- (inv_involute f) at 2. apply proposition_1_l.
@@ -168,7 +166,7 @@ Qed.
 
 Fixpoint Id' n : RPP n :=
   match n  with
-    | 0 => Nu
+    | O => Nu
     | S n' => Id ‖ Id' n'
   end.
 
@@ -180,29 +178,69 @@ Proof.
   destruct l; rewrite IHn; reflexivity.
 Qed.
 
-Definition w {j} (f : RPP j) n := Id' n ‖ f.
+Fixpoint Sw' i n : RPP n :=
+  match i, n with
+  | _, O => Nu
+  | O, S m => Id' (S m)
+  | S O, S (S m) => Sw ‖ Id' m
+  | S j, S m => Id ‖ Sw' j m
+  end.
 
-Definition Ne' n := w Ne n.
-Definition Su' n := w Su n.
-Definition Pr' n := w Pr n.
+Fixpoint call i n : RPP n :=
+  match i with
+  | O => Id' n
+  | S j => Sw' j n ;; call j n
+  end.
 
-Proposition ex_rewiring : ∀ l l' (p : Permutation l l'),
-  ∃ (f : RPP (length l)), «f» l = l'.
+Fixpoint call_list (l : list nat) n :=
+  match l with
+  | [] => Id' n
+  | i::l => call i n ;; call_list l n
+  end.
+
+Fixpoint prepared (l : list nat) :=
+  match l with
+  | [] => []
+  | i :: l' => i + length (filter (λ j, i <? j) l') :: prepared l'
+  end%nat.
+
+Definition perm (l : list nat) n := call_list (rev (prepared l)) n.
+
+Notation "\ l \^ n" := (perm l n) (at level 50).
+
+Compute «\[5;2;3;6]\^8»%nat [1;2;3;4;5;6;7;8].
+
+Open Scope nat_scope.
+Definition cast n (f : RPP n) m : RPP m.
+  remember (n <=? m).
+  destruct b.
+  - pose (f ‖ Id' (m - n)).
+    assert (n + (m - n) = m).
+      apply le_plus_minus_r. apply Nat.leb_le. auto.
+    rewrite H in r. exact r.
+  - exact (Id' m).
+Defined.
+
+Compute cast Su 1.
+
+Program Definition cast n (f : RPP n) m : RPP m :=
+  match (n <=? m)%nat with
+  | true => f ‖ Id' (m - n)
+  | false => Id' m
+  end.
+Next Obligation.
+  apply le_plus_minus_r.
+  apply Nat.leb_le.
+  symmetry. assumption.
+Defined.
+
+Definition It' i l m n (f : RPP n) := \i :: l\^m;;cast (It f) m;;inv(\i :: l\^m).
+
+Definition inc j i m := It' i [j] m Su.
+
+Goal «cast Su 1» [1;2;3;4;5] = [2;2;3;4;5].
 Proof.
-  intros. induction p.
-  - exists Nu. reflexivity.
-  - lets f H : IHp.
-    exists (Id ‖ f). simpl. rewrite H. reflexivity. 
-  - exists (Sw ‖ Id' (length l)).
-    simpl. rewrite id'_identity. reflexivity.
-  - assert (length l = length l').
-    apply Permutation_length. auto. rewrite <- H in IHp2.
-    lets f1 H1 : IHp1.
-    lets f2 H2 : IHp2.
-    exists (f1 ;; f2). subst. auto.
-Qed.
-
-
+  unfold cast. simpl. cbv.
 
 
 
