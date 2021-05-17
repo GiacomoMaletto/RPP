@@ -171,8 +171,6 @@ Compute «mult "x" "y" "z"» ("x"↦10; "y"↦15; "z"↦-30) "x".
 Definition less x y z := sub y z;;If y Id Id (Su x);;add y z.
 Compute «less "x" "y" "z"» ("x"↦10; "y"↦15; "z"↦16) "x".
 
-Definition cp x y z i := 
-
 
 
 
