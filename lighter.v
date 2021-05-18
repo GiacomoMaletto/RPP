@@ -201,18 +201,20 @@ Qed.
 Fixpoint Id' n :=
   match n with
     | O => Nu
+    | S O => Id
     | S n' => Id ‖ Id' n'
   end.
 
 Lemma id'_identity : ∀ n l, «Id' n» l = l.
 Proof.
   intros n. induction n. reflexivity.
+  destruct n. reflexivity.
   unfold Id'. fold Id'. simpl.
   destruct l; rewrite IHn; reflexivity.
 Qed.
 
 Lemma arity_id' : ∀ n, arity (Id' n) = n.
-Proof. induction n; simpl; auto. Qed.
+Proof. destruct n. auto. induction n; simpl; auto. Qed.
 
 (* Ora viene definita perm: data ad esempio la lista [6;4;1;5], la funzione RPP perm [6;4;1;5] = \[6;4;1;5]\ ha l'effetto di portare il 6° elemento in 1° posizione, il 4° elemento in 2°, il 1° elemento in 3° e il 5° elemento in 4°, ponendo nelle posizioni successive tutti gli altri elementi.
 Bisogna prima definire alcune funzioni ausiliarie. *)
@@ -224,6 +226,7 @@ Open Scope nat_scope.
 Definition w n f :=
   match n with
   | O => Nu
+  | 1 => f
   | S i => Id' i ‖ f
   end.
 
@@ -232,12 +235,15 @@ Definition Sw' i := w i Sw.
 Fixpoint call i :=
   match i with
   | O => Nu
+  | 1 => Nu
+  | 2 => Sw
   | S j => Sw' j ;; call j
   end.
 
 Fixpoint call_list l :=
   match l with
   | [] => Nu
+  | i::[] => call i
   | i::l => call i ;; call_list l
   end.
 
@@ -336,6 +342,21 @@ Compute «less 1 2 3 4 5» [-5;-3;0;0;2].
 Compute «cp» [5;7;0;0].
 Compute «cu» [83;0;0;0;0;0;0;0].
 Compute «push» [5;7;0;0;0;0;0;0;0;0].
+Compute «pop» [83;0;0;0;0;0;0;0;0;0].
+
+(* Fatto divertente: push è composto da 2651 comandi RPP, di cui la stragrande maggioranza servono nelle permutazioni. Probabilmente per migliorare la performance sarebbe importante trovare modi di usare meno permutazioni quando si scrivono le funzioni, oppure nella definizione di RPP anzichè avere swap converrebbe mettere direttamente perm, che tanto è ovvio che ogni permutazione è possibile in RPP. *)
+Compute push.
+
+Fixpoint count f : nat :=
+  match f with
+  | Nu | Id | Ne | Su | Pr | Sw => 1
+  | Co f g => count f + count g
+  | Pa f g => count f + count g
+  | It f => count f
+  | If f g h => count f + count g + count h
+  end.
+
+Compute count push.
 
 
 
