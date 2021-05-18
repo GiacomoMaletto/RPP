@@ -75,20 +75,20 @@ Fixpoint evaluate f (l : list Z) : list Z :=
   match f with
   | Nu => l
   | Id => l
-  | Ne => match l with []=>l | x::l' => -x :: l' end
-  | Su => match l with []=>l | x::l' => x+1 :: l' end
-  | Pr => match l with []=>l | x::l' => x-1 :: l' end
+  | Ne => match l with []=>[] | x::l' => -x::l' end
+  | Su => match l with []=>[] | x::l' => x+1::l' end
+  | Pr => match l with []=>[] | x::l' => x-1::l' end
   | Sw => match l with x::y::l' => y::x::l' | _=>l end
   | Co f g => (evaluate g) (evaluate f l)
   | Pa f g => let n := arity f in
     evaluate f (firstn n l) ++ evaluate g (skipn n l)
-  | It f => match l with []=>l
+  | It f => match l with []=>[]
     | x::l' => x::iter (evaluate f) (Z.abs_nat x) l' end
-  | If f g h => match l with []=>l
+  | If f g h => match l with []=>[]
     | x::l' => match x with
-      | Zpos p => x::(evaluate f) l'
-      | Z0 => x::(evaluate g) l'
-      | Zneg p => x::(evaluate h) l'
+      | Zpos _ => x::evaluate f l'
+      | Z0 => x::evaluate g l'
+      | Zneg _ => x::evaluate h l'
       end
     end
   end.
@@ -214,7 +214,7 @@ Qed.
 Lemma arity_id' : ∀ n, arity (Id' n) = n.
 Proof. induction n; simpl; auto. Qed.
 
-(* Ora viene definita perm: data ad esempio la lista [5;2;1;4], la funzione RPP perm [5;2;1;4] = \[6;4;1;5]\ ha l'effetto di portare il 6° elemento in 1° posizione, il 4° elemento in 2°, il 1° elemento in 3° e il 5° elemento in 4°, ponendo nelle posizioni successive tutti gli altri elementi.
+(* Ora viene definita perm: data ad esempio la lista [6;4;1;5], la funzione RPP perm [6;4;1;5] = \[6;4;1;5]\ ha l'effetto di portare il 6° elemento in 1° posizione, il 4° elemento in 2°, il 1° elemento in 3° e il 5° elemento in 4°, ponendo nelle posizioni successive tutti gli altri elementi.
 Bisogna prima definire alcune funzioni ausiliarie. *)
 
 Open Scope nat_scope.
