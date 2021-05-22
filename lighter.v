@@ -344,7 +344,7 @@ Compute «cu» [83;0;0;0;0;0;0;0].
 Compute «push» [5;7;0;0;0;0;0;0;0;0].
 Compute «pop» [83;0;0;0;0;0;0;0;0;0].
 
-(* Fatto divertente: push è composto da 2651 comandi RPP, di cui la stragrande maggioranza servono nelle permutazioni. Probabilmente per migliorare la performance sarebbe importante trovare modi di usare meno permutazioni quando si scrivono le funzioni, oppure nella definizione di RPP anzichè avere swap converrebbe mettere direttamente perm, che tanto è ovvio che ogni permutazione è possibile in RPP. *)
+(* Fatto divertente: push è composto da 2729 comandi RPP, di cui la stragrande maggioranza servono nelle permutazioni. Probabilmente per migliorare la performance sarebbe importante trovare modi di usare meno permutazioni quando si scrivono le funzioni, oppure nella definizione di RPP anzichè avere swap converrebbe mettere direttamente perm, che tanto è ovvio che ogni permutazione è possibile in RPP. *)
 Compute push.
 
 Fixpoint count f : nat :=
@@ -352,8 +352,8 @@ Fixpoint count f : nat :=
   | Nu | Id | Ne | Su | Pr | Sw => 1
   | Co f g => count f + count g
   | Pa f g => count f + count g
-  | It f => count f
-  | If f g h => count f + count g + count h
+  | It f => 1 + count f
+  | If f g h => 1 + count f + count g + count h
   end.
 
 Compute count push.
