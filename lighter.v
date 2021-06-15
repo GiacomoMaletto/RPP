@@ -8,8 +8,7 @@ Set Implicit Arguments.
 Inoltre c'è Nu, la funzione RPP di arità 0. *)
 
 Inductive RPP :=
-  | Nu
-  | Id
+  | Id (n : nat)
   | Ne
   | Su
   | Pr
@@ -19,14 +18,13 @@ Inductive RPP :=
   | It (f : RPP)
   | If (f g h : RPP).
 
-Notation "f ;; g" := (Co f g) (at level 65, left associativity).
+Notation "f ;; g" := (Co f g) (at level 66, left associativity).
 (* \Vert ‖ *)
 Notation "f ‖ g" := (Pa f g) (at level 65, left associativity).
 
 Fixpoint inv f :=
   match f with
-  | Nu => Nu
-  | Id => Id
+  | Id n => Id n
   | Ne => Ne
   | Su => Pr
   | Pr => Su
@@ -44,8 +42,7 @@ Proof. induction f; try constructor; simpl; congruence. Qed.
 
 Fixpoint arity f :=
   match f with
-  | Nu => 0
-  | Id => 1
+  | Id n => n
   | Ne => 1
   | Su => 1
   | Pr => 1
@@ -56,7 +53,7 @@ Fixpoint arity f :=
   | If f g h => S (max (arity f) (max (arity g) (arity h)))
   end.
 
-Lemma arity_inv : ∀ f, arity (inv f) = arity f.
+Lemma arity_inv : ∀  f, arity (inv f) = arity f.
 Proof. induction f; auto; simpl; lia. Qed.
 
 Fixpoint iter X (f : X → X) (n : nat) x :=
@@ -73,8 +70,7 @@ Open Scope Z_scope.
 
 Fixpoint evaluate f (l : list Z) : list Z :=
   match f with
-  | Nu => l
-  | Id => l
+  | Id n => l
   | Ne => match l with []=>[] | x::l' => -x::l' end
   | Su => match l with []=>[] | x::l' => x+1::l' end
   | Pr => match l with []=>[] | x::l' => x-1::l' end
@@ -83,7 +79,7 @@ Fixpoint evaluate f (l : list Z) : list Z :=
   | Pa f g => let n := arity f in
     evaluate f (firstn n l) ++ evaluate g (skipn n l)
   | It f => match l with []=>[]
-    | x::l' => x::iter (evaluate f) (Z.abs_nat x) l' end
+    | x::l' => x::iter (evaluate f) (Z.to_nat x) l' end
   | If f g h => match l with []=>[]
     | x::l' => match x with
       | Zpos _ => x::evaluate f l'
@@ -121,7 +117,7 @@ Proof.
   - simpl. rewrite app_length.
     rewrite IHf1. rewrite IHf2.
     rewrite <- app_length. rewrite firstn_skipn. reflexivity.
-  - simpl. induction (Z.abs_nat z); auto. simpl. rewrite IHf; lia.
+  - simpl. induction (Z.to_nat z); auto. simpl. rewrite IHf; lia.
   - destruct z; simpl; congruence.
 Qed.
 
@@ -134,7 +130,7 @@ Ltac liast :=
   simpl; try lia; auto.
 
 Theorem proposition_2 : ∀ f g f' g' l, arity f = arity g →
-  «(f‖f');;(g‖g')» l = «(f;;g)‖(f';;g')» l.
+  «f‖f';;g‖g'» l = «(f;;g)‖(f';;g')» l.
 Proof.
   intros. simpl.
   rewrite firstn_app. rewrite skipn_app.
@@ -198,23 +194,9 @@ Proof.
   intros. rewrite <- (inv_involute f) at 2. apply proposition_1_l.
 Qed.
 
-Fixpoint Id' n :=
-  match n with
-    | O => Nu
-    | S O => Id
-    | S n' => Id ‖ Id' n'
-  end.
 
-Lemma id'_identity : ∀ n l, «Id' n» l = l.
-Proof.
-  intros n. induction n. reflexivity.
-  destruct n. reflexivity.
-  unfold Id'. fold Id'. simpl.
-  destruct l; rewrite IHn; reflexivity.
-Qed.
-
-Lemma arity_id' : ∀ n, arity (Id' n) = n.
-Proof. destruct n. auto. induction n; simpl; auto. Qed.
+Definition Ita f := It f ;; Ne ;; It f ;; Ne.
+Definition Itr f := It f ;; Ne ;; It (inv f) ;; Ne.
 
 (* Ora viene definita perm: data ad esempio la lista [6;4;1;5], la funzione RPP perm [6;4;1;5] = \[6;4;1;5]\ ha l'effetto di portare il 6° elemento in 1° posizione, il 4° elemento in 2°, il 1° elemento in 3° e il 5° elemento in 4°, ponendo nelle posizioni successive tutti gli altri elementi.
 Bisogna prima definire alcune funzioni ausiliarie. *)
@@ -223,26 +205,23 @@ Open Scope nat_scope.
 
 (* Ho chiamato questa funzione w come weakening anche se ha un significato diverso rispetto all'originale: serve ad applicare la funzione f a partire dall'i-esima posizione (e non fa nulla se i=0). *)
 
-Definition w n f :=
-  match n with
-  | O => Nu
-  | 1 => f
-  | S i => Id' i ‖ f
-  end.
+Definition Id1 := Id 1.
+
+Definition w n f := Id (n - 1) ‖ f.
 
 Definition Sw' i := w i Sw.
 
 Fixpoint call i :=
   match i with
-  | O => Nu
-  | 1 => Nu
+  | O => Id 0
+  | 1 => Id 0
   | 2 => Sw
   | S j => Sw' j ;; call j
   end.
 
 Fixpoint call_list l :=
   match l with
-  | [] => Nu
+  | [] => Id 0
   | i::[] => call i
   | i::l => call i ;; call_list l
   end.
@@ -256,8 +235,12 @@ Fixpoint prepare l :=
 Definition perm l := call_list (rev (prepare l)).
 
 Notation "\ l \" := (perm l) (at level 50).
+Notation "f \\ l" := ((perm l) ;; f ;; inv (perm l)) (at level 50).
+Notation "l \\\ f" := ((perm l) ;; f ;; inv (perm l)) (at level 50).
 
-Definition It' i l f := \i::l\ ;; It f ;; inv(\i::l\).
+Definition It' i l f := \i::l\ ;; It f ;; inv (\i::l\).
+Definition Ita' i l f := \i::l\ ;; Ita f ;; inv(\i::l\).
+Definition Itr' i l f := \i::l\ ;; Itr f ;; inv(\i::l\).
 Definition If' i l f g h := \i::l\ ;; If f g h ;; inv(\i::l\).
 
 Definition Su' i := w i Su.
@@ -267,56 +250,48 @@ Definition Pr' i := w i Pr.
 
 Definition cast n f :=
   match arity f <=? n with
-  | true => f ‖ Id' (n - arity f)
-  | false => Id' n
+  | true => f ‖ Id (n - arity f)
+  | false => Id n
   end.
 
 Lemma arity_cast : ∀ f n, arity (cast n f) = n.
 Proof.
   intros. unfold cast.
   remember (arity f <=? n).
-  destruct b.
-  - simpl. rewrite arity_id'.
-    apply le_plus_minus_r. apply Nat.leb_le. auto.
-  - apply arity_id'.
+  destruct b; auto.
+  simpl. apply le_plus_minus_r. apply Nat.leb_le. auto.
 Qed.
 
 Definition Su'' i n := cast n (w i Su).
 
 (* Si possono ora definire le funzioni descritte nell'articolo. *)
 
-Definition inc j i := It' j [i] Su.
-Definition dec j i := inv(inc j i).
-
-(* La definizione originale di less mi sembra errata nel caso x_i < 0, x_j < 0, perciò anzichè un'unica same_sign ho scritto pos_sign e neg_sign. *)
-
-Definition pos_sign := dec 2 3 ;; If' 3 [1;2] Su Id Id ;; inv (dec 2 3).
-Definition neg_sign := dec 2 3 ;; If' 3 [1;2] Id Id Su ;; inv (dec 2 3).
-Definition f_less := If' 5 [1;2;3;4]
-  (If' 4 [1;2;3] pos_sign Su Su)
-  (If' 4 [1;2;3] Id Id Su)
-  (If' 4 [1;2;3] Id Id neg_sign).
-Definition less i j p q k :=
-  \[k;p;q;i;j]\ ;; inc 5 3 ;; inc 4 2 ;;
-  f_less ;;
-  inv (\[k;p;q;i;j]\ ;; inc 5 3 ;; inc 4 2).
-
-(* La funzione mult nell'articolo sembra avere un piccolo errore, nel secondo If bisognerebbe avere <j,i> anzichè <i,j> *)
-
-Definition mult k j i := It' k [i;j] (inc 2 1) ;;
-  If' k [j;i] (If Id Id Ne) Id (If Ne Id Id).
-
+Definition inc := It Su.
+Definition dec := inv inc.
+Definition less := Itr Pr ;; Id1 ‖ If Su Id1 Id1 ;; inv(Itr Pr).
 Definition min F i j := let n := arity F in
-  It' (n+4) [] (
+  It' [n+4] (
     F ;;
-    If' j [n+1;n+2;n+3] Id Id (If' 3 [] Id (inc 2 1) Id ;; Su' 3) ;;
+    If' [j;n+3;n+2;n+1] Id1 Id1 (If Id1 inc Id1 ;; Su) ;;
+    inv F ;;
+    we i n Su ‖ Id1 ‖ Su
+  ) ;;
+  
+
+  [n+3;n+4;n+1]\\\(If Id1 inc Id1) ;;
+  
+
+
+It (
+    F ;;
+    (If Id1 Id1 (If Id1 inc Id1 ;; Su))\\[j;n+3;n+2;n+1] ;;
     inv F ;;
     (Su'' i n ‖ Su' 2)
-  ) ;;
-  If' (n+3) [n+1;n+4] Id (inc 2 1) Id ;;
+  )\\[n+4] ;;
+  If' (n+3) [n+1;n+4] Id1 (inc 2 1) Id1 ;;
   inv(It' (n+4) [] (
     F ;;
-    If' j [n+1;n+2;n+3] Id Id (Su' 3) ;;
+    If' j [n+1;n+2;n+3] Id1 Id1 (Su' 3) ;;
     inv F ;;
     (Su'' i n ‖ Su' 2)
   )).
