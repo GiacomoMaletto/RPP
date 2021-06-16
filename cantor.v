@@ -2,6 +2,14 @@ Require Import Unicode.Utf8 List ZArith.
 Import ListNotations.
 Set Implicit Arguments.
 
+Fixpoint iter X (f : X → X) (n : nat) x :=
+  match n with
+  | 0 => x
+  | S n => f (iter f n x)
+  end.
+
+Module RPP.
+
 Inductive RPP :=
   | Id (n : nat)
   | Ne
@@ -41,12 +49,6 @@ Fixpoint arity f :=
   | Pa f g => arity f + arity g
   | It f => S (arity f)
   | If f g h => S (max (arity f) (max (arity g) (arity h)))
-  end.
-
-Fixpoint iter X (f : X → X) (n : nat) x :=
-  match n with
-  | 0 => x
-  | S n => f (iter f n x)
   end.
 
 Open Scope Z_scope.
@@ -144,6 +146,55 @@ Compute «push» [5;7;0;0].
 Compute «pop» [83;0;0;0].
 Compute push.
 
+End RPP.
+
+Module PRF.
+
+Open Scope nat_scope.
+
+Inductive PRF :=
+  | Ze : nat → PRF
+  | Su : nat → PRF
+  | Pr : nat → PRF
+  | Co : PRF → PRF → PRF
+  | Pa : PRF → PRF → PRF
+  | Re : PRF → PRF → PRF.
+
+Fixpoint arity (f : PRF) :=
+  match f with
+  | Ze n | Su n | Pr n => n
+  | Co f g => max (arity f) (arity g)
+  | Pa f g => arity f + arity g
+  | Re f g => S (arity f)
+  end.
+Definition miao : nat*nat*nat := (3,1,2).
+Definition bau (p : nat*nat*nat) : nat*nat*nat :=
+  match p with (a, b, c) => (3,2,1)
+  end.
+Fixpoint evaluate f (l : list nat) : list nat :=
+  match f with
+  | Ze n => [O]
+  | Su n => [S (nth (pred n) l O)]
+  | Pr n => [(nth (pred n) l O)]
+  | Co f g => (evaluate f) (evaluate g l)
+  | Pa f g => let n := arity f in
+    evaluate f (firstn n l) ++ evaluate g (skipn n l)
+  | Re f g => match l with []=>[]
+    | n::l' => fst (fst (iter
+      (λ p, match p with (a,x,y) => (evaluate g (x::a++y), S x, y) end)
+      n
+      (evaluate f l', O, l')))
+    end
+  end.
+
+Definition add := Re (Pr 1) (Co (Su 1) (Pr 2)).
+Definition pre := Re (Ze 1) (Pr 1).
+Definition sub := Re (Pr 1) (Co pre (Pr 2)).
+Definition pro := Re (Ze 1) (Co add (Pa (Pr 2) (Pr 1))).
+Compute evaluate add [4;4].
+Compute evaluate pre [4].
+Compute evaluate sub [3;5].
+Compute evaluate pro [44;313].
 
 
 
