@@ -174,7 +174,7 @@ Fixpoint EVALUATE F (l : list nat) : nat :=
   end.
 
 Definition ADD := RE (PR 1 1) (CO (SU 1 1) [PR 1 3]).
-Definition PRE := RE (ZE 0) (PR 2 3).
+Definition PRE := RE (ZE 0) (PR 2 2).
 Definition SUB := RE (PR 1 1) (CO PRE [PR 1 3]).
 Definition MUL := RE (ZE 1) (CO ADD [PR 1 3;PR 3 3]).
 Compute EVALUATE ADD [4;4].
@@ -194,19 +194,26 @@ Fixpoint convert (F : PRF) : RPP :=
   | SU i n => Su ;; \[1+i;1]\ ;; inc ;; inv(\[1+i;1]\) ‖ Id (n - i)
   | PR i n => \[1+i;1]\ ;; inc ;; inv(\[1+i;1]\) ‖ Id (n - i)
   | CO F Gs => let (n, m) := (ARITY (CO F Gs), length Gs) in
+
     co_loading 1 (1+n) (map convert Gs) ;;
     \seq (2+m) n\ ;;
+
     Id n ‖ (convert F) ;;
+
     inv (co_loading 1 (1+n) (map convert Gs) ;;
     \seq (2+m) n\)
-  | RE F G => let n := pred (ARITY (RE F G)) in
-    Id 2 ‖ \seq (1+n) 6\ ;;
+
+  | RE F G => let n := ARITY (RE F G) in
+
+    Id 2 ‖ \seq n 6\ ;;
     Id 7 ‖ convert F ;;
     Id 6 ‖ Sw ;;
     Id 1 ‖ It (Id 3 ‖ (convert G ;; Sw) ;; \[1;4]\ ;; push ;; Id 5 ‖ Su) ;;
     \[7;1]\ ;;
+
     inc ;;
-    inv (Id 2 ‖ \seq (1+n) 6\ ;;
+
+    inv (Id 2 ‖ \seq n 6\ ;;
     Id 7 ‖ convert F ;;
     Id 6 ‖ Sw ;;
     Id 1 ‖ It (Id 3 ‖ (convert G ;; Sw) ;; \[1;4]\ ;; push ;; Id 5 ‖ Su) ;;
