@@ -49,8 +49,6 @@ Fixpoint iter X (f : X → X) (n : nat) x :=
   | S n => f (iter f n x)
   end.
 
-Open Scope Z_scope.
-
 Fixpoint evaluate f (l : list Z) : list Z :=
   match f with
   | Id n => l
@@ -70,31 +68,12 @@ Fixpoint evaluate f (l : list Z) : list Z :=
       | Zneg _ => x::evaluate h l'
       end
     end
-  end.
+  end%Z.
 
 (* \laq « f » \raq *)
 Notation "« f »" := (evaluate f).
 
-Open Scope nat_scope.
-
-Definition id := Id 1.
-
 Definition weak n f := Id (n - 1) ‖ f.
-Definition cast n f :=
-  match arity f <=? n with
-  | true => f ‖ Id (n - arity f)
-  | false => Id n
-  end.
-Definition wc i n f := cast n (weak i f).
-
-Definition ita f := It f ;; Ne ;; It f ;; Ne.
-Definition itr f := It f ;; Ne ;; inv (It f) ;; Ne.
-
-Definition inc := It Su.
-Definition dec := inv inc.
-Definition add := itr Su.
-Definition sub := inv add.
-Definition less := sub ;; id ‖ If Su id id ;; add.
 
 Fixpoint call i :=
   match i with
@@ -117,7 +96,12 @@ Fixpoint prepare l :=
 Definition perm l := call_list (rev (prepare l)).
 Notation "\ l \" := (perm l) (at level 50).
 
-Definition ifzsw := If inc id id ;; \[3;2;1]\ ;;
+Definition id := Id 1.
+Definition inc := It Su.
+Definition dec := inv inc.
+
+Definition ifzsw :=
+  If inc id id ;; \[3;2;1]\ ;;
   If id Sw id ;; dec ;; \[3;1;2]\.
 
 Definition cu :=
@@ -128,42 +112,27 @@ Definition cp :=
   \[1;4;2]\ ;; inc ;; \[1;3;2]\.
 
 Definition push := cp ;; \[3;1;2]\ ;; inv cu.
-
 Definition pop := inv push.
 
-Open Scope Z_scope.
-
-Compute «add» [-5;2;3;4].
-Compute «less» [-5;2;3;4].
-Compute «\[4;2;6;1]%nat\» [1;2;3;4;5;6;7;8].
-Compute «ifzsw» [0;2;0].
-Compute «ifzsw» [1;2;0].
-Compute «cu» [83;0;0;0].
-Compute «cp» [5;7;0;0].
-Compute «push» [5;7;0;0].
-Compute «pop» [83;0;0;0].
-
-Open Scope nat_scope.
-
 Inductive PRF :=
-  | ZE : nat → PRF
-  | SU : nat → nat → PRF
-  | PR : nat → nat → PRF
-  | CO : PRF → list PRF → PRF
-  | RE : PRF → PRF → PRF.
+  | ZE (n : nat)
+  | SU (i n : nat)
+  | PR (i n : nat)
+  | CO (F : PRF) (Gs : list PRF)
+  | RE (F G : PRF).
 
 Fixpoint ARITY (F : PRF) : nat :=
   match F with
   | ZE n | SU _ n | PR _ n => n
   | CO F Gs => list_max (map ARITY Gs)
-  | RE F G => max (S (ARITY F)) (pred (ARITY G))
+  | RE F G => S (ARITY F)
   end.
 
 Fixpoint EVALUATE F (l : list nat) : nat :=
   match F with
-  | ZE n => O
-  | SU i n => S (nth (pred i) l O)
-  | PR i n => (nth (pred i) l O)
+  | ZE n => 0
+  | SU i n => S (nth (pred i) l 0)
+  | PR i n => nth (pred i) l 0
   | CO F Gs => EVALUATE F (map (λ G, EVALUATE G l) Gs)
   | RE F G => match l with []=>0
     | n::l' => fst (fst (iter
@@ -172,15 +141,6 @@ Fixpoint EVALUATE F (l : list nat) : nat :=
       (EVALUATE F l', 0, l')))
     end
   end.
-
-Definition ADD := RE (PR 1 1) (CO (SU 1 1) [PR 1 3]).
-Definition PRE := RE (ZE 0) (PR 2 2).
-Definition SUB := RE (PR 1 1) (CO PRE [PR 1 3]).
-Definition MUL := RE (ZE 1) (CO ADD [PR 1 3;PR 3 3]).
-Compute EVALUATE ADD [4;4].
-Compute EVALUATE PRE [4].
-Compute EVALUATE SUB [3;5].
-Compute EVALUATE MUL [44;313].
 
 Fixpoint co_loading n m gs :=
   match gs with
@@ -219,24 +179,6 @@ Fixpoint convert (F : PRF) : RPP :=
     Id 1 ‖ It (Id 3 ‖ (convert G ;; Sw) ;; \[1;4]\ ;; push ;; Id 5 ‖ Su) ;;
     \[7;1]\)
   end.
-
-Definition pad f l := evaluate f (l ++ repeat 0%Z (arity f - length l)).
-
-Compute pad (convert PRE) [0;5]%Z.
-Compute pad (convert ADD) [0;3;4]%Z.
-Compute pad (convert SUB) [0;2;5]%Z.
-Compute pad (convert MUL) [0;2;2]%Z.
-
-Fixpoint count f : nat :=
-  match f with
-  | Id _ | Ne | Su | Pr | Sw => 1
-  | Co f g => count f + count g
-  | Pa f g => count f + count g
-  | It f => 1 + count f
-  | If f g h => 1 + count f + count g + count h
-  end.
-
-Compute count (convert ADD).
 
 
 
