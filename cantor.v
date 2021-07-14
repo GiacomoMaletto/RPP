@@ -8,6 +8,8 @@ Inductive RPP :=
   | Su
   | Pr
   | Sw
+  | Pl
+  | Mi
   | Co (f g : RPP)
   | Pa (f g : RPP)
   | It (f : RPP)
@@ -24,6 +26,8 @@ Fixpoint inv f :=
   | Su => Pr
   | Pr => Su
   | Sw => Sw
+  | Pl => Mi
+  | Mi => Pl
   | Co f g => Co (inv g) (inv f)
   | Pa f g => Pa (inv f) (inv g)
   | It f => It (inv f)
@@ -37,6 +41,8 @@ Fixpoint arity f :=
   | Su => 1
   | Pr => 1
   | Sw => 2
+  | Pl => 2
+  | Mi => 2
   | Co f g => max (arity f) (arity g)
   | Pa f g => arity f + arity g
   | It f => S (arity f)
@@ -56,6 +62,8 @@ Fixpoint evaluate f (l : list Z) : list Z :=
   | Su => match l with []=>[] | x::l' => x+1::l' end
   | Pr => match l with []=>[] | x::l' => x-1::l' end
   | Sw => match l with x::y::l' => y::x::l' | _=>l end
+  | Pl => match l with x::y::l' => x::y+x::l' | _=>l end
+  | Mi => match l with x::y::l' => x::y-x::l' | _=>l end
   | Co f g => (evaluate g) (evaluate f l)
   | Pa f g => let n := arity f in
     evaluate f (firstn n l) ++ evaluate g (skipn n l)
@@ -73,14 +81,12 @@ Fixpoint evaluate f (l : list Z) : list Z :=
 (* \laq « f » \raq *)
 Notation "« f »" := (evaluate f).
 
-Definition weak n f := Id (n - 1) ‖ f.
-
 Fixpoint call i :=
   match i with
   | O => Id 0
   | 1 => Id 0
   | 2 => Sw
-  | S j => weak j Sw ;; call j
+  | S j => Id (j - 1) ‖ Sw ;; call j
   end.
 Fixpoint call_list l :=
   match l with
@@ -101,8 +107,8 @@ Definition inc := It Su.
 Definition dec := inv inc.
 
 Definition ifzsw :=
-  If inc id id ;; \[3;2;1]\ ;;
-  If id Sw id ;; dec ;; \[3;1;2]\.
+  If Pl id id ;; \[3;2;1]\ ;;
+  If id Sw id ;; Mi ;; \[3;1;2]\.
 
 Definition cu :=
   It (id ‖ Su ;; If id Su id ;; ifzsw ;; Pr) ;; id ‖ Sw.
@@ -113,6 +119,28 @@ Definition cp :=
 
 Definition push := cp ;; \[3;1;2]\ ;; inv cu.
 Definition pop := inv push.
+
+Definition div := It (Pr ‖ Su ;; If id (Id 2 ‖ Su) id ;; ifzsw).
+Definition mul := It inc.
+Definition mul_clean := mul ;; \[3;1;4;5;2]\ ;; inv(div) ;; Sw.
+
+Definition power := Sw ;; Pr ;; id ‖ Pl ;; It mul_clean ;; Su ;; Sw.
+
+Definition pad f l := evaluate f (l ++ repeat 0%Z (arity f - length l)).
+
+Open Scope Z.
+
+Compute «cu» [112300;0;0;0].
+Compute «cu» [10;0;0;0].
+Compute «cp» [199;274;0;0].
+Compute (199+274)*(199+274+1)/2 + 199.
+Compute «div» [1200;30;0;0;0].
+Compute «mul» [3000;40;0].
+Compute pad mul_clean [30;40].
+Compute pad (inv mul_clean) [30;1200].
+Compute pad power [300;2].
+
+Open Scope nat.
 
 Inductive PRF :=
   | ZE (n : nat)
@@ -180,7 +208,17 @@ Fixpoint convert (F : PRF) : RPP :=
     \[7;1]\)
   end.
 
+Definition ADD := RE (PR 1 1) (CO (SU 1 1) [PR 1 3]).
+Definition PRE := RE (ZE 0) (PR 2 2).
+Definition SUB := RE (PR 1 1) (CO PRE [PR 1 3]).
+Definition MUL := RE (ZE 1) (CO ADD [PR 1 3;PR 3 3]).
 
+Open Scope Z.
+
+Compute pad (convert PRE) [0;5].
+Compute pad (convert ADD) [0;3;4].
+Compute pad (convert SUB) [0;2;5].
+Compute pad (convert MUL) [0;2;2].
 
 
 

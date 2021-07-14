@@ -5,8 +5,4 @@
 *.vos
 *.aux
 .lia.cache
-Maps.v
 *.v#
-lighht.v
-perf.v
-faaas.v
