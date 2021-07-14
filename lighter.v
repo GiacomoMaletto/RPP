@@ -211,9 +211,8 @@ Open Scope nat.
 Fixpoint call i :=
   match i with
   | O => Id O
-  | 1 => Id O
-  | 2 => Sw
-  | S j => Id (j - 1) ‖ Sw ;; call j
+  | 1 => Sw
+  | S j => Id j ‖ Sw ;; call j
   end.
 Fixpoint call_list l :=
   match l with
@@ -397,8 +396,8 @@ Proof.
 Qed.
 
 Definition ifzsw :=
-  If inc id id ;; \[3;2;1]\ ;;
-  If id Sw id ;; dec ;; \[3;1;2]\.
+  If inc id id ;; \[2;1;0]\ ;;
+  If id Sw id ;; dec ;; \[2;0;1]\.
 
 Open Scope Z.
 Lemma ifzsw_z : ∀ n, «ifzsw» [0;n;0] = [n;0;0].
@@ -414,7 +413,7 @@ Proof.
     («If inc id id» [Zp p; Zp q; 0] = [Zp p; Zp q; Zp q]).
   { unfold evaluate. fold evaluate. rewrite inc_def. intuition. lia. }
   asserts_rewrite
-    («\[3;2;1]%nat\» [Zp p; Zp q; Zp q] = [Zp q; Zp q; Zp p]).
+    («\[2;1;0]%nat\» [Zp p; Zp q; Zp q] = [Zp q; Zp q; Zp p]).
   { reflexivity. }
   asserts_rewrite
     («If id Sw id» [Zp q; Zp q; Zp p] = [Zp q; Zp q; Zp p]).
@@ -437,7 +436,7 @@ Definition tr := It (Su;; inc).
 
 Definition cp :=
   inc ;; id ‖ (tr ;; dec) ;; dec ;;
-  \[1;4;2]\ ;; inc ;; \[1;3;2]\.
+  \[0;3;1]\ ;; inc ;; \[0;2;1]\.
 
 (* \dow ↓ *)
 Notation "↓ n" := (Z.to_nat n) (at level 20).
@@ -512,7 +511,7 @@ Proof.
     rewrite dec_def. replace (↑n+↑m-↑n) with (↑m).
     auto. lia. lia. }
   asserts_rewrite (
-    «\[1;4;2]%nat\» [↑n; ↑m; 0; ↑list_sum (seq 1 (n+m))] =
+    «\[0;3;1]%nat\» [↑n; ↑m; 0; ↑list_sum (seq 1 (n+m))] =
     [↑n; ↑list_sum (seq 1 (n+m)); ↑m; 0] ).
   { reflexivity. }
   asserts_rewrite (
@@ -678,7 +677,7 @@ Proof.
   rewrite cu_def_iter. reflexivity.
 Qed.
 
-Definition push := cp ;; \[3;1;2]%nat\ ;; inv cu.
+Definition push := cp ;; \[2;0;1]%nat\ ;; inv cu.
 Definition pop := inv push.
 
 Lemma push_def : ∀ n m,
@@ -686,11 +685,232 @@ Lemma push_def : ∀ n m,
 Proof.
   intros. unfold push. segment.
   rewrite cp_def.
-  simpl («\[3;1;2]%nat\» [↑n; ↑m; ↑cp' n m; 0]).
+  simpl («\[2;0;1]%nat\» [↑n; ↑m; ↑cp' n m; 0]).
   rewrite <- proposition_1. rewrite cu_def. reflexivity.
 Qed.
 
+Open Scope nat.
 
+Inductive PRF :=
+  | ZE (n : nat)
+  | SU (i n : nat)
+  | PR (i n : nat)
+  | CO (F : PRF) (Gs : list PRF)
+  | RE (F G : PRF).
+
+Fixpoint ARITY (F : PRF) : nat :=
+  match F with
+  | ZE n | SU _ n | PR _ n => n
+  | CO F Gs => list_max (map ARITY Gs)
+  | RE F G => S (ARITY F)
+  end.
+
+Fixpoint EVALUATE F (l : list nat) : nat :=
+  match F with
+  | ZE n => 0
+  | SU i n => S (nth i l 0)
+  | PR i n => nth i l 0
+  | CO F Gs => EVALUATE F (map (λ G, EVALUATE G l) Gs)
+  | RE F G => match l with []=>0
+    | n::l' => fst (fst (iter
+      (λ p, match p with (a,x,y) => (EVALUATE G (a::x::y), S x, y) end)
+      n
+      (EVALUATE F l', 0, l')))
+    end
+  end.
+
+Definition ADD := RE (PR 0 1) (CO (SU 0 1) [PR 0 3]).
+Compute EVALUATE ADD [3;4].
+
+Definition conv_su i n :=
+  Su ;; \[S i; 1]\ ;; inc ;; inv(\[S i; 1]\) ‖ Id (n - i).
+
+Definition up_list (l : list nat) := map Z.of_nat l.
+Notation "↑↑ l" := (up_list l) (at level 20).
+
+Open Scope Z.
+
+Lemma su_def : ∀ n l, «Su» (n :: l) = n + 1 :: l.
+Proof. reflexivity. Qed.
+
+Definition part X i j (l : list X) := firstn (j - i) (skipn i l).
+Compute part 4 7 [0;1;2;3;4;5;6;7;8;9].
+
+Lemma id_def : ∀ n l, «Id n» l = l.
+Proof. reflexivity. Qed.
+
+Lemma co_def : ∀ f g l,
+  «f ‖ g» l = «f» (firstn (arity f) l) ++ «g» (skipn (arity f) l).
+Proof. reflexivity. Qed.
+
+Lemma nth_Sn : ∀ X n (l : list X) d,
+  nth (S n) l d = nth n (tail l) d.
+Proof.
+  intros. destruct l.
+  - simpl. destruct n; reflexivity.
+  - reflexivity.
+Qed.
+
+Open Scope nat.
+Lemma nth_sum : ∀ X n m (l : list X) d,
+  nth (n+m) l d = nth n (skipn m l) d.
+Proof.
+  intros. gen l. induction m.
+  - intros. simpl. f_equal. auto.
+  - intros. replace (n + S m) with (S (n + m)).
+    rewrite nth_Sn. rewrite IHm.
+    destruct l. simpl. rewrite skipn_nil.
+    destruct n; auto. reflexivity. lia.
+Qed.
+
+Open Scope Z.
+Lemma id_swap_def : ∀ n l, (2+n <= length l)%nat →
+  «Id n ‖ Sw» l =
+  firstn n l ++ [nth (1+n) l 0; nth n l 0] ++ skipn (2+n) l.
+Proof.
+  intros. rewrite co_def. rewrite id_def. simpl (arity (Id n)).
+  f_equal. replace (nth n l 0) with (nth (0+n) l 0).
+  rewrite !nth_sum.
+  replace (skipn (2+n) l) with (skipn 2 (skipn n l)).
+  remember (skipn n l) as m.
+  destruct m. assert(length (skipn n l) = O). rewrite <- Heqm. auto.
+  rewrite skipn_length in H0. lia.
+  destruct m. assert(length (skipn n l) = 1%nat). rewrite <- Heqm. auto.
+  rewrite skipn_length in H0. lia. reflexivity.
+  apply skipn_skipn. auto.
+Qed.
+
+Lemma call_def : ∀ n l, (n < length l)%nat → «call n» l =
+nth n l 0 :: firstn n l ++ skipn (S n) l.
+Proof.
+  intros. gen l. destruct n.
+  - intros.
+    destruct l. simpl in H. lia.
+    reflexivity.
+  - induction n.
+    + intros. unfold call.
+      destruct l. simpl in H. lia.
+      destruct l. simpl in H. lia.
+      reflexivity.
+    + intros.
+      replace (call (S (S n))) with (Id (S n) ‖ Sw ;; call (S n)).
+      segment. rewrite id_swap_def. rewrite IHn.
+      rewrite firstn_app. rewrite skipn_app.
+      rewrite firstn_firstn. simpl.
+
+replace (nth (S n) (firstn (S n) l ++  
+   [nth (1 + S n) l 0; nth (S n) l 0] ++
+   skipn (2 + S n) l) 0
+      simpl. rewrite <- nth_sum.
+   remember (S n) as m. unfold call. destruct m. lia.
+
+Definition l := [0;1;2;3;4;5;6;7].
+Compute «\[S 4; 0]\%nat» l.
+Compute nth (S 4) l 0 :: 0 :: part 1 (S 4) l ++ skipn (S (S 4)) l.
+
+
+
+
+Goal ∀ n x l, «\[n; 0]%nat\» (x::l) =
+  nth n l 0 :: x :: part 1 n l ++ skipn (S n) l.
+Proof.
+  intros. unfold perm. simpl prepare. simpl rev. simpl call_list.
+  segment. rewrite id_def. replace (n+0)%nat with n; try auto.
+
+
+Lemma conv_su_def : ∀ i n l x, length l = n → (i < n)%nat →
+  «conv_su i n» (x::↑↑l) = x + ↑ S (nth i l O) :: ↑↑l.
+Proof.
+  intros. unfold conv_su. segment.
+  rewrite su_def.
+  
+  \S i; 1\ (x+1 :: l) =
+  nth (S i) l :: x+1 :: part 1 (S i) l ++ skipn (S (S i)) l
+
+
+
+
+
+Fixpoint co_loading n m gs :=
+  match gs with
+  | [] => Id 0
+  | g::gs' => Id n ‖ (\[m]\ ;; g) ;; co_loading (S n) m gs'
+  end.
+
+
+
+
+
+
+
+Fixpoint convert (F : PRF) : RPP :=
+  match F with
+  | ZE n => Id n
+  | SU i n => su i n
+  | PR i n => \[1+i;1]\ ;; inc ;; inv(\[1+i;1]\) ‖ Id (n - i)
+  | CO F Gs => let (n, m) := (ARITY (CO F Gs), length Gs) in
+
+    co_loading 1 (1+n) (map convert Gs) ;;
+    \seq (2+m) n\ ;;
+
+    Id n ‖ (convert F) ;;
+
+    inv (co_loading 1 (1+n) (map convert Gs) ;;
+    \seq (2+m) n\)
+
+  | RE F G => let n := ARITY (RE F G) in
+
+    Id 2 ‖ \seq n 6\ ;;
+    Id 7 ‖ convert F ;;
+    Id 6 ‖ Sw ;;
+    Id 1 ‖ It (Id 3 ‖ (convert G ;; Sw) ;; \[1;4]\ ;; push ;; Id 5 ‖ Su) ;;
+    \[7;1]\ ;;
+
+    inc ;;
+
+    inv (Id 2 ‖ \seq n 6\ ;;
+    Id 7 ‖ convert F ;;
+    Id 6 ‖ Sw ;;
+    Id 1 ‖ It (Id 3 ‖ (convert G ;; Sw) ;; \[1;4]\ ;; push ;; Id 5 ‖ Su) ;;
+    \[7;1]\)
+  end.
+
+
+
+Definition anc F := pred (arity (convert F) - ARITY F).
+
+Definition zeros n := repeat 0%Z n.
+
+Open Scope Z.
+
+Definition thesis F l x := ARITY F = length l →
+  «convert F» (x :: ↑↑l ++ zeros (anc F)) =
+  x + ↑(EVALUATE F l) :: ↑↑l ++ zeros (anc F).
+
+Goal ∀ n l x, thesis (ZE n) l x.
+Proof.
+  unfold thesis. simpl. intros. equal_list.
+Qed.
+
+Goal ∀ i n l x, thesis (SU i n) l x.
+Proof.
+  unfold thesis. intros. unfold convert. simpl. f_equal.
+Qed.
+
+Theorem theorem_5 : ∀ F l x, thesis F l x.
+Admitted.
+
+
+
+Definition ADD := RE (PR 1 1) (CO (SU 1 1) [PR 1 3]).
+
+Compute «convert ADD» (0 :: ↑↑[3;4]%nat ++ zeros (anc ADD)).
+Compute 0 + ↑(EVALUATE ADD [3;4]%nat) :: ↑↑[3;4]%nat ++ zeros (anc ADD).
+Compute arity (convert ADD).
+Compute (1 + 2 + anc ADD)%nat.
+
+Definition pad f l :=
+  evaluate f (l ++ repeat 0%Z (arity f - length l)).
 
 
 

@@ -215,6 +215,7 @@ Definition MUL := RE (ZE 1) (CO ADD [PR 1 3;PR 3 3]).
 
 Open Scope Z.
 
+Compute EVALUATE ADD [3;4]%nat.
 Compute pad (convert PRE) [0;5].
 Compute pad (convert ADD) [0;3;4].
 Compute pad (convert SUB) [0;2;5].
