@@ -164,16 +164,17 @@ Fixpoint EVALUATE F (l : list nat) : nat :=
   | CO F Gs => EVALUATE F (map (λ G, EVALUATE G l) Gs)
   | RE F G => match l with []=>0
     | n::l' => fst (fst (iter
-      (λ p, match p with (a,x,y) => (EVALUATE G (a::x::y), S x, y) end)
+      (λ p, match p with (a,x,y) =>
+        (EVALUATE G (a::x::y), S x, y) end)
       n
       (EVALUATE F l', 0, l')))
     end
   end.
 
-Fixpoint co_loading n m gs :=
+Fixpoint co_loading m gs :=
   match gs with
   | [] => Id 0
-  | g::gs' => Id n ‖ (\[m]\ ;; g) ;; co_loading (S n) m gs'
+  | g::gs' => \[m]\ ;; g ;; id ‖ co_loading m gs'
   end.
 
 Fixpoint convert (F : PRF) : RPP :=
@@ -183,12 +184,12 @@ Fixpoint convert (F : PRF) : RPP :=
   | PR i n => \[1+i;1]\ ;; inc ;; inv(\[1+i;1]\) ‖ Id (n - i)
   | CO F Gs => let (n, m) := (ARITY (CO F Gs), length Gs) in
 
-    co_loading 1 (1+n) (map convert Gs) ;;
+    id ‖ co_loading (1+n) (map convert Gs) ;;
     \seq (2+m) n\ ;;
 
     Id n ‖ (convert F) ;;
 
-    inv (co_loading 1 (1+n) (map convert Gs) ;;
+    inv (id ‖ co_loading (1+n) (map convert Gs) ;;
     \seq (2+m) n\)
 
   | RE F G => let n := ARITY (RE F G) in
@@ -196,7 +197,8 @@ Fixpoint convert (F : PRF) : RPP :=
     Id 2 ‖ \seq n 6\ ;;
     Id 7 ‖ convert F ;;
     Id 6 ‖ Sw ;;
-    Id 1 ‖ It (Id 3 ‖ (convert G ;; Sw) ;; \[1;4]\ ;; push ;; Id 5 ‖ Su) ;;
+    Id 1 ‖ It (Id 3 ‖ (convert G ;; Sw) ;;
+               \[1;4]\ ;; push ;; Id 5 ‖ Su) ;;
     \[7;1]\ ;;
 
     inc ;;
@@ -204,18 +206,22 @@ Fixpoint convert (F : PRF) : RPP :=
     inv (Id 2 ‖ \seq n 6\ ;;
     Id 7 ‖ convert F ;;
     Id 6 ‖ Sw ;;
-    Id 1 ‖ It (Id 3 ‖ (convert G ;; Sw) ;; \[1;4]\ ;; push ;; Id 5 ‖ Su) ;;
+    Id 1 ‖ It (Id 3 ‖ (convert G ;; Sw)
+               ;; \[1;4]\ ;; push ;; Id 5 ‖ Su) ;;
     \[7;1]\)
   end.
 
-Definition ADD := RE (PR 1 1) (CO (SU 1 1) [PR 1 3]).
 Definition PRE := RE (ZE 0) (PR 2 2).
+Definition ADD := RE (PR 1 1) (CO (SU 1 1) [PR 1 3]).
 Definition SUB := RE (PR 1 1) (CO PRE [PR 1 3]).
 Definition MUL := RE (ZE 1) (CO ADD [PR 1 3;PR 3 3]).
 
 Open Scope Z.
 
+Compute EVALUATE PRE [5]%nat.
 Compute EVALUATE ADD [3;4]%nat.
+Compute EVALUATE SUB [2;5]%nat.
+Compute EVALUATE MUL [2;10]%nat.
 Compute pad (convert PRE) [0;5].
 Compute pad (convert ADD) [0;3;4].
 Compute pad (convert SUB) [0;2;5].

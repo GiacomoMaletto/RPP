@@ -211,7 +211,6 @@ Open Scope nat.
 Fixpoint call i :=
   match i with
   | O => Id O
-  | 1 => Sw
   | S j => Id j ‖ Sw ;; call j
   end.
 Fixpoint call_list l :=
@@ -723,7 +722,7 @@ Definition ADD := RE (PR 0 1) (CO (SU 0 1) [PR 0 3]).
 Compute EVALUATE ADD [3;4].
 
 Definition conv_su i n :=
-  Su ;; \[S i; 1]\ ;; inc ;; inv(\[S i; 1]\) ‖ Id (n - i).
+  Su ;; \[S i; 0]\ ;; inc ;; inv(\[S i; 0]\) ‖ Id (n - i).
 
 Definition up_list (l : list nat) := map Z.of_nat l.
 Notation "↑↑ l" := (up_list l) (at level 20).
@@ -780,49 +779,79 @@ Proof.
   apply skipn_skipn. auto.
 Qed.
 
+Open Scope nat.
+Lemma firstn_Sn : ∀ X n (l : list X) d, n < length l →
+  firstn (1+n) l = firstn n l ++ [nth n l d].
+Proof.
+  intros. lets (l0 & l1 & H0 & H1) : nth_split d H.
+  rewrite H0. rewrite !firstn_app.
+  rewrite firstn_all2.
+  replace (1 + n - length l0) with (S (n - length l0)).
+  rewrite firstn_cons.
+  replace (n - length l0) with 0. simpl.
+  rewrite <- H1. rewrite nth_middle. rewrite firstn_all2.
+  f_equal. rewrite app_nil_r. reflexivity. all:lia.
+Qed.
+
+Open Scope Z.
 Lemma call_def : ∀ n l, (n < length l)%nat → «call n» l =
 nth n l 0 :: firstn n l ++ skipn (S n) l.
 Proof.
-  intros. gen l. destruct n.
+  intros. gen l. induction n.
   - intros.
     destruct l. simpl in H. lia.
     reflexivity.
-  - induction n.
-    + intros. unfold call.
-      destruct l. simpl in H. lia.
-      destruct l. simpl in H. lia.
-      reflexivity.
-    + intros.
-      replace (call (S (S n))) with (Id (S n) ‖ Sw ;; call (S n)).
-      segment. rewrite id_swap_def. rewrite IHn.
-      rewrite firstn_app. rewrite skipn_app.
-      rewrite firstn_firstn. simpl.
+  - intros. simpl call.
+    segment. rewrite id_swap_def. rewrite IHn.
+    asserts_rewrite (
+      nth n (firstn n l++[nth (1 + n) l 0; nth n l 0]
+      ++skipn (2 + n) l) 0 =
+      nth (S n) l 0).
+    { replace (1+n)%nat with (S n).
+      replace (nth n (firstn n l ++ [nth (S n) l 0; nth n l 0] ++
+        skipn (2 + n) l) 0) with
+        (nth (length (firstn n l)) (firstn n l ++ nth (S n) l 0 ::
+        (nth n l 0 :: skipn (2+n) l)) 0). 
+      rewrite nth_middle. reflexivity.
+      f_equal. rewrite firstn_length. lia. lia. }
+    asserts_rewrite (
+      firstn n (firstn n l ++
+      [nth (1 + n) l 0; nth n l 0] ++ skipn (2 + n) l) =
+      firstn n l).
+    { rewrite firstn_app. rewrite firstn_firstn.
+      replace (Init.Nat.min n n) with n.
+      rewrite firstn_length_le. replace (n-n)%nat with O.
+      simpl. rewrite app_nil_r. reflexivity. all:lia. }
+    f_equal.
+    asserts_rewrite (
+      skipn (S n) (firstn n l ++
+      [nth (1+n) l 0; nth n l 0] ++ skipn (2 + n) l) =
+      nth n l 0 :: skipn (2+n) l).
+    { rewrite skipn_app. rewrite skipn_all2.
+      replace (S n - length (firstn n l))%nat with 1%nat.
+      reflexivity. all:rewrite firstn_length. lia. lia. }
+    rewrite firstn_Sn with (d:=0). rewrite <- app_assoc.
+    reflexivity. lia. rewrite app_length. simpl.
+    rewrite firstn_length. lia. lia.
+Qed.
 
-replace (nth (S n) (firstn (S n) l ++  
-   [nth (1 + S n) l 0; nth (S n) l 0] ++
-   skipn (2 + S n) l) 0
-      simpl. rewrite <- nth_sum.
-   remember (S n) as m. unfold call. destruct m. lia.
-
-Definition l := [0;1;2;3;4;5;6;7].
-Compute «\[S 4; 0]\%nat» l.
-Compute nth (S 4) l 0 :: 0 :: part 1 (S 4) l ++ skipn (S (S 4)) l.
-
-
-
-
-Goal ∀ n x l, «\[n; 0]%nat\» (x::l) =
-  nth n l 0 :: x :: part 1 n l ++ skipn (S n) l.
+Lemma perm1 : ∀ n x l, (n < length l)%nat → «\[1+n; 0]%nat\» (x::l) =
+  nth n l 0 :: x :: firstn n l ++ skipn (S n) l.
 Proof.
-  intros. unfold perm. simpl prepare. simpl rev. simpl call_list.
-  segment. rewrite id_def. replace (n+0)%nat with n; try auto.
-
+  intros. unfold perm. simpl prepare. simpl rev.
+  replace (n+0)%nat with n. remember (S n) as m. simpl call_list.
+  segment. rewrite id_def. rewrite call_def. subst.
+  rewrite nth_Sn. simpl tl. rewrite skipn_cons.
+  f_equal. simpl. lia. lia.
+Qed.
 
 Lemma conv_su_def : ∀ i n l x, length l = n → (i < n)%nat →
   «conv_su i n» (x::↑↑l) = x + ↑ S (nth i l O) :: ↑↑l.
 Proof.
   intros. unfold conv_su. segment.
-  rewrite su_def.
+  rewrite su_def. rewrite perm1.
+  rewrite inc_def.
+  partial.
   
   \S i; 1\ (x+1 :: l) =
   nth (S i) l :: x+1 :: part 1 (S i) l ++ skipn (S (S i)) l
