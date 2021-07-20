@@ -2,6 +2,7 @@ Require Import Unicode.Utf8 List ZArith Lia.
 Import ListNotations.
 (* https://softwarefoundations.cis.upenn.edu/plf-current/UseTactics.html *)
 Require Import LibTactics.
+Require Import splice.
 Set Implicit Arguments.
 
 (* In questa versione RPP non è un dependent type, quindi non si ha ad esempio RPP 3, RPP 5... ma solo RPP. Tale indice è infatti ridondante: è possibile calcolare meccanicamente l'arità, grazie alla funzione arity. Non avere l'indice rende molto più facile definire funzioni che ritornano RPP di arità variabile.
@@ -77,7 +78,7 @@ Fixpoint evaluate f (l : list Z) : list Z :=
   | Sw => match l with x::y::l' => y::x::l' | _=>l end
   | Co f g => (evaluate g) (evaluate f l)
   | Pa f g => let n := arity f in
-    evaluate f (firstn n l) ++ evaluate g (skipn n l)
+    evaluate f (l^[0,n)) ++ evaluate g (l^[n,∞))
   | It f => match l with []=>[]
     | x::l' => x::iter (evaluate f) (Z.to_nat x) l' end
   | If f g h => match l with []=>[]
@@ -99,7 +100,7 @@ Lemma evaluate_nil : ∀ f, «f» [] = [].
 Proof.
   induction f; try reflexivity.
   - simpl. congruence.
-  - simpl. rewrite firstn_nil. rewrite skipn_nil.
+  - simpl. rewrite splice_nil. rewrite skipn_nil.
     rewrite IHf1. rewrite IHf2. reflexivity.
 Qed.
 
@@ -116,39 +117,42 @@ Proof.
   - simpl. rewrite IHf2. rewrite IHf1. reflexivity.
   - simpl. rewrite app_length.
     rewrite IHf1. rewrite IHf2.
-    rewrite <- app_length. rewrite firstn_skipn. reflexivity.
+    rewrite <- app_length.
+    rewrite splice_app_skipn. reflexivity. lia.
   - simpl. induction (Z.to_nat z); auto. simpl. rewrite IHf; lia.
   - destruct z; simpl; congruence.
 Qed.
 
 (* La proposizione 2 ha una dimostrazione bruttina per il fatto che non c'è alcuna ipotesi sulla lunghezza di l. *)
 
-Ltac liast :=
-  try rewrite length_evaluate; try rewrite evaluate_nil;
-  try rewrite firstn_length; try rewrite skipn_length;
-  try rewrite app_nil_r;
-  simpl; try lia; auto.
+Ltac liast := simpl;
+  try rewrite !evaluate_nil; try rewrite !app_nil_r;
+  try rewrite !app_length; try rewrite !length_evaluate;
+  try rewrite !splice_length; try rewrite !skipn_length;
+  try lia; try reflexivity.
 
+Lemma co_def : ∀ f g l, «f;;g» l = «g» («f» l).
+Proof. reflexivity. Qed.
+
+Lemma pa_def : ∀ f g l,
+  «f ‖ g» l = «f» (l^[0, arity f)) ++ «g» (l^[arity f, ∞)).
+Proof. reflexivity. Qed.
+
+Open Scope nat.
 Theorem proposition_2 : ∀ f g f' g' l, arity f = arity g →
   «f‖f';;g‖g'» l = «(f;;g)‖(f';;g')» l.
 Proof.
-  intros. simpl.
-  rewrite firstn_app. rewrite skipn_app.
-  rewrite length_evaluate.
-  remember (arity f) as n. rewrite <- H.
-  replace (Init.Nat.max n n) with n; try lia.
-  destruct (Nat.le_ge_cases (length l) n).
-  - rewrite !firstn_all2. rewrite !skipn_all2.
-    rewrite !evaluate_nil. rewrite !app_nil_r. reflexivity.
-    all : liast.
-  - assert (length (firstn n l) = n). liast. rewrite H1.
-    asserts_rewrite (n - n = 0)%nat. lia.
-    replace (firstn n _) with (« f » (firstn n l)).
-    replace (skipn n (« f » (firstn n l))) with ([]:list Z).
-    rewrite firstn_O. rewrite skipn_O. liast.
-    rewrite skipn_all2; liast.
-    remember (« f » (firstn n l)).
-    rewrite firstn_all2; subst; liast.
+  intros. rewrite co_def. rewrite !pa_def.
+  rewrite <- H.
+  destruct (Nat.le_ge_cases (length l) (arity f)).
+  - rewrite !splice_all. rewrite !skipn_all2.
+    all: liast.
+  - rewrite splice_app. rewrite skipn_app. liast.
+    rewrite <- H. rewrite Nat.max_id. rewrite min_l.
+    replace (arity f - (arity f - 0)) with 0.
+    f_equal. all: liast.
+    + rewrite splice_all. unfold splice. all: liast.
+    + f_equal. rewrite skipn_all2. all: liast.
 Qed.
 
 Lemma iter_succ : ∀ X (f : X → X) n x,
@@ -279,8 +283,7 @@ Proof.
   auto. auto.
 Qed.
 
-Lemma ev_co_def : ∀ f g l, «f;;g» l = «g» («f» l).
-Proof. reflexivity. Qed.
+
 
 Lemma skipn_Sn : ∀ X n (l : list X), skipn (S n) l = tl (skipn n l).
 Proof.
@@ -301,39 +304,28 @@ Proof.
 Qed.
 
 Lemma firstn_ev : ∀ f n l, arity f ≤ n →
-  firstn n («f» l) = «f» (firstn n l).
+  («f» l)^[0,n) = «f» (l^[0,n)).
 Proof.
-  intros. gen n l. induction f.
-  - reflexivity.
-  - intros. destruct n. simpl in H. lia.
-    destruct l. reflexivity. reflexivity.
-  - intros. destruct n. simpl in H. lia.
-    destruct l. reflexivity. reflexivity.
-  - intros. destruct n. simpl in H. lia.
-    destruct l. reflexivity. reflexivity.
-  - intros. destruct n. simpl in H. lia.
-    destruct n. simpl in H. lia.
-    destruct l. reflexivity. destruct l.
-    reflexivity. reflexivity.
-  - intros. simpl in *.
+  intros. gen n l. induction f; intros;
+  try (destruct n; destruct l; liast; fail).
+  - destruct n; destruct l; liast.
+    destruct n; destruct l; liast.
+    simpl in H. lia.
+  - simpl in *.
     rewrite IHf2. rewrite IHf1.
-    reflexivity. lia. lia.
-  - intros.
-    destruct (Nat.le_ge_cases (length («f1» l)) (arity f1)).
-    rewrite length_evaluate in H0. simpl in H.
-    rewrite !firstn_all2. reflexivity. lia.
-    rewrite length_evaluate. lia.
-    simpl in *. rewrite <- IHf1.
-    rewrite firstn_app. rewrite !firstn_firstn.
-    rewrite min_r. rewrite min_l.
-    rewrite IHf2. rewrite firstn_skipn_comm.
-    rewrite firstn_length. rewrite min_l.
-    replace (arity f1 + (n - arity f1)) with n.
-    rewrite IHf1. reflexivity.
-    lia. lia. auto. rewrite firstn_length. rewrite min_l.
-    lia. auto. lia. lia. reflexivity.
-  - intros. destruct n. simpl in H. lia.
-    destruct l. reflexivity. simpl in *. f_equal.
+    all: liast.
+  - simpl in *. rewrite splice_app.
+    rewrite splice_all. rewrite splice_comp.
+    repeat f_equal. lia.
+    rewrite IHf2. f_equal.
+    rewrite skipn_comp_splice. rewrite splice_comp_skipn.
+    all: liast.
+    destruct (Nat.le_ge_cases (arity f1) (length l)).
+    + f_equal. all:liast.
+    + rewrite !splice_all2. all: liast.
+  - destruct n. simpl in *. lia.
+    destruct l. reflexivity.
+    simpl in *. unfold splice. simpl. f_equal.
     induction (Z.to_nat z). reflexivity.
     simpl. rewrite IHf. rewrite IHn0. reflexivity. lia.
   - intros. destruct n. simpl in H. lia.
