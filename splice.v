@@ -22,16 +22,22 @@ Proof.
     + rewrite !skipn_cons. auto.
 Qed.
 
+Lemma skipn_Sn : ∀ X n (l : list X), skipn (S n) l = tl (skipn n l).
+Proof.
+  intros. gen l. induction n.
+  - reflexivity.
+  - intros. destruct l.
+    + reflexivity.
+    + rewrite skipn_cons. rewrite IHn. reflexivity.
+Qed.
+
 Lemma skipn_skipn : ∀ X a b (l : list X),
   skipn a (skipn b l) = skipn (a + b) l.
 Proof.
   intros. gen l. induction a.
   - reflexivity.
-  - intros. destruct l.
-    + rewrite skipn_nil. reflexivity.
-    + rewrite skipn_skipn_S.
-      change (S a + b) with (S (a + b)).
-      rewrite !skipn_cons. auto.
+  - intros. change (S a + b) with (S (a + b)).
+    rewrite !skipn_Sn. rewrite IHa. reflexivity.
 Qed.
 
 Lemma skipn_splice : ∀ X a b c (l : list X), a ≤ b →
@@ -49,6 +55,12 @@ Proof.
   rewrite firstn_splice with (c:=c). f_equal.
   rewrite skipn_splice with (a:=a). reflexivity.
   assumption. assumption.
+Qed.
+
+Lemma app_splice' : ∀ X a b c d (l : list X), a ≤ b → c ≤ d → b = c →
+  splice l a b ++ splice l c d = splice l a d.
+Proof.
+  intros. rewrite H1. apply app_splice. all: lia.
 Qed.
 
 Lemma splice_skipn : ∀ X a (l : list X),
@@ -158,6 +170,31 @@ Proof.
     rewrite !firstn_length. lia.
 Qed.
 
-Notation "l ^[ n , m )" := (splice l n m) (at level 10).
-Notation "l ^[ n , ∞ )" := (skipn n l) (at level 10).
+Lemma splice_cons : ∀ X a (x : X) l,
+  splice (x::l) 0 (S a) = x :: splice l 0 a.
+Proof. reflexivity. Qed.
+
+Lemma firstn_eq_splice : ∀ X a (l : list X),
+  firstn a l = splice l 0 a.
+Proof. reflexivity. Qed.
+
+Lemma splice_same : ∀ X a (l : list X), splice l a a = [].
+Proof.
+  intros. unfold splice. rewrite skipn_all2.
+  reflexivity. rewrite firstn_length. lia.
+Qed.
+
+Lemma splice_same' : ∀ X a b (l : list X), a = b → splice l a b = [].
+Proof.
+  intros. rewrite H. apply splice_same.
+Qed.
+
+Lemma splice_gt : ∀ X a b (l : list X), b ≤ a → splice l a b = [].
+Proof.
+  intros. unfold splice. rewrite skipn_all2.
+  reflexivity. rewrite firstn_length. lia.
+Qed.
+
+Notation "l ^[ n , m ]" := (splice l n m) (at level 10).
+Notation "l ^[ n , ∞ ]" := (skipn n l) (at level 10).
 Notation "l ^[ n ]" := (splice l n (1+n)) (at level 10).

@@ -78,7 +78,7 @@ Fixpoint evaluate f (l : list Z) : list Z :=
   | Sw => match l with x::y::l' => y::x::l' | _=>l end
   | Co f g => (evaluate g) (evaluate f l)
   | Pa f g => let n := arity f in
-    evaluate f (l^[0,n)) ++ evaluate g (l^[n,∞))
+    evaluate f (l^[0,n]) ++ evaluate g (l^[n,∞])
   | It f => match l with []=>[]
     | x::l' => x::iter (evaluate f) (Z.to_nat x) l' end
   | If f g h => match l with []=>[]
@@ -125,17 +125,33 @@ Qed.
 
 (* La proposizione 2 ha una dimostrazione bruttina per il fatto che non c'è alcuna ipotesi sulla lunghezza di l. *)
 
-Ltac liast := simpl;
+Ltac liast := simpl in *;
   try rewrite !evaluate_nil; try rewrite !app_nil_r;
   try rewrite !app_length; try rewrite !length_evaluate;
   try rewrite !splice_length; try rewrite !skipn_length;
   try lia; try reflexivity.
 
+Lemma id_def : ∀ n l, «Id n» l = l.
+Proof. reflexivity. Qed.
+
+Lemma su_def : ∀ n l, «Su» (n :: l) = n + 1 :: l.
+Proof. reflexivity. Qed.
+
 Lemma co_def : ∀ f g l, «f;;g» l = «g» («f» l).
 Proof. reflexivity. Qed.
 
 Lemma pa_def : ∀ f g l,
-  «f ‖ g» l = «f» (l^[0, arity f)) ++ «g» (l^[arity f, ∞)).
+  «f ‖ g» l = «f» (l^[0, arity f]) ++ «g» (l^[arity f, ∞]).
+Proof. reflexivity. Qed.
+
+Lemma if_def : ∀ f g h l, «If f g h» l =
+  match l with []=>[]
+  | x::l' => match x with
+    | Zpos _ => x::evaluate f l'
+    | Z0 => x::evaluate g l'
+    | Zneg _ => x::evaluate h l'
+    end
+  end.
 Proof. reflexivity. Qed.
 
 Open Scope nat.
@@ -283,34 +299,16 @@ Proof.
   auto. auto.
 Qed.
 
-
-
-Lemma skipn_Sn : ∀ X n (l : list X), skipn (S n) l = tl (skipn n l).
-Proof.
-  intros. gen l. induction n.
-  - reflexivity.
-  - intros. destruct l.
-    + reflexivity.
-    + rewrite skipn_cons. rewrite IHn. reflexivity.
-Qed.
-
-Open Scope nat.
-Lemma skipn_skipn : ∀ X n m (l : list X), skipn n (skipn m l) = skipn (n + m) l.
-Proof.
-  intros. gen l. induction n.
-  - reflexivity.
-  - intros. change (S n + m) with (S (n + m)).
-    rewrite !skipn_Sn. rewrite IHn. reflexivity.
-Qed.
+Ltac simpl_splice := unfold splice; simpl firstn; simpl skipn;
+  try rewrite !firstn_eq_splice.
 
 Lemma firstn_ev : ∀ f n l, arity f ≤ n →
-  («f» l)^[0,n) = «f» (l^[0,n)).
+  («f» l)^[0,n] = «f» (l^[0,n]).
 Proof.
   intros. gen n l. induction f; intros;
   try (destruct n; destruct l; liast; fail).
   - destruct n; destruct l; liast.
     destruct n; destruct l; liast.
-    simpl in H. lia.
   - simpl in *.
     rewrite IHf2. rewrite IHf1.
     all: liast.
@@ -323,69 +321,50 @@ Proof.
     destruct (Nat.le_ge_cases (arity f1) (length l)).
     + f_equal. all:liast.
     + rewrite !splice_all2. all: liast.
-  - destruct n. simpl in *. lia.
-    destruct l. reflexivity.
-    simpl in *. unfold splice. simpl. f_equal.
+  - destruct n. liast.
+    destruct l. liast. simpl_splice. simpl. f_equal.
     induction (Z.to_nat z). reflexivity.
-    simpl. rewrite IHf. rewrite IHn0. reflexivity. lia.
-  - intros. destruct n. simpl in H. lia.
-    destruct l. reflexivity. simpl in *.
-    destruct z. rewrite IHf2. reflexivity. lia.
-    rewrite IHf1. reflexivity. lia.
-    rewrite IHf3. reflexivity. lia.
+    simpl. rewrite IHf. rewrite IHn0. all: liast.
+  - destruct n. liast.
+    destruct l. liast.
+    simpl in H. destruct z;
+    simpl_splice; simpl; f_equal;
+    intuition.
 Qed.
 
 Lemma skipn_ev : ∀ f n l, arity f ≤ n →
-  skipn n («f» l) = skipn n l.
+  («f» l)^[n,∞] = l^[n,∞].
 Proof.
-  intros. gen n l. induction f.
-  - reflexivity.
-  - intros. destruct n. simpl in H. lia.
-    destruct l. reflexivity. reflexivity.
-  - intros. destruct n. simpl in H. lia.
-    destruct l. reflexivity. reflexivity.
-  - intros. destruct n. simpl in H. lia.
-    destruct l. reflexivity. reflexivity.
-  - intros. destruct n. simpl in H. lia.
-    destruct n. simpl in H. lia.
-    destruct l. reflexivity. destruct l.
-    reflexivity. reflexivity.
-  - intros. simpl in *.
+  intros. gen n l. induction f; intros;
+  try (destruct n; destruct l; liast; fail).
+  - destruct n; destruct l; liast.
+    destruct n; destruct l; liast.
+  - simpl in *.
     rewrite IHf2. rewrite IHf1.
-    reflexivity. lia. lia.
-  - intros.
-    destruct (Nat.le_ge_cases (length l) (arity f1)).
-    simpl in H.
-    rewrite !skipn_all2. reflexivity. lia.
-    rewrite length_evaluate. lia.
-    intros. simpl in *. rewrite skipn_app.
-    rewrite IHf1. rewrite skipn_all2. rewrite IHf2.
-    rewrite skipn_skipn.
-    asserts_rewrite
-      (n-length («f1»(firstn(arity f1)l))+arity f1 = n).
-    rewrite length_evaluate. rewrite firstn_length.
-    rewrite min_l. lia. auto. auto.
-    rewrite length_evaluate. rewrite firstn_length.
-    rewrite min_l. lia. auto. rewrite firstn_length.
-    rewrite min_l. lia. auto. lia.
-  - intros. destruct n. simpl in H. lia.
-    destruct l. reflexivity. simpl in *.
+    all: liast.
+  - simpl in *. rewrite skipn_app.
+    rewrite skipn_all2. rewrite IHf2.
+    rewrite skipn_skipn. all: liast.
+    destruct (Nat.le_ge_cases (arity f1) (length l)).
+    + f_equal. liast.
+    + rewrite !skipn_all2. all: liast.
+  - destruct n. liast.
+    destruct l. liast. simpl in *.
     induction (Z.to_nat z). reflexivity.
-    simpl. rewrite IHf. rewrite IHn0. reflexivity. lia.
-  - intros. destruct n. simpl in H. lia.
-    destruct l. reflexivity. simpl in *.
-    destruct z. rewrite IHf2. reflexivity. lia.
-    rewrite IHf1. reflexivity. lia.
-    rewrite IHf3. reflexivity. lia.
+    simpl. rewrite IHf. rewrite IHn0. all: liast.
+  - destruct n. liast.
+    destruct l. liast.
+    destruct z; simpl in *; intuition.
 Qed.
 
 Lemma longer : ∀ f l,
-  «f» l = «f» (firstn (arity f) l) ++ skipn (arity f) l.
+  «f» l = «f» (l^[0,arity f]) ++ l^[arity f,∞].
 Proof.
-  intros. rewrite <- firstn_ev. rewrite <- (skipn_ev f).
-  rewrite firstn_skipn. reflexivity. auto. auto.
+  intros. rewrite <- firstn_ev. rewrite <- skipn_ev with (f:=f).
+  rewrite splice_app_skipn. all: liast.
 Qed.
 
+Open Scope nat.
 Definition ifzsw :=
   If inc id id ;; \[2;1;0]\ ;;
   If id Sw id ;; dec ;; \[2;0;1]\.
@@ -397,27 +376,25 @@ Proof. unfold ifzsw. reflexivity. Qed.
 Notation Zp := Zpos.
 Notation Zn := Zneg.
 
+Ltac partial := rewrite longer; simpl_splice.
+Ltac segment := repeat rewrite co_def.
+Ltac equal_list := unfold app; auto; repeat f_equal; lia.
+
 Lemma ifzsw_p : ∀ p q, «ifzsw» [Zp p; Zp q; 0] = [Zp p; Zp q; 0].
 Proof.
-  intros. unfold ifzsw. repeat rewrite ev_co_def.
+  intros. unfold ifzsw. repeat rewrite co_def.
   asserts_rewrite
     («If inc id id» [Zp p; Zp q; 0] = [Zp p; Zp q; Zp q]).
-  { unfold evaluate. fold evaluate. rewrite inc_def. intuition. lia. }
-  asserts_rewrite
-    («\[2;1;0]%nat\» [Zp p; Zp q; Zp q] = [Zp q; Zp q; Zp p]).
-  { reflexivity. }
-  asserts_rewrite
-    («If id Sw id» [Zp q; Zp q; Zp p] = [Zp q; Zp q; Zp p]).
-  { reflexivity. }
+  { rewrite if_def. rewrite inc_def. all: liast. }
+  simpl («\[2;1;0]%nat\» [Zp p; Zp q; Zp q]).
+  simpl («If id Sw id» [Zp q; Zp q; Zp p]).
   asserts_rewrite
     («dec» [Zp q; Zp q; Zp p] = [Zp q; 0; Zp p]).
-  { rewrite longer. simpl firstn. simpl skipn. rewrite dec_def.
-    unfold app. repeat f_equal. lia. lia. }
+  { partial. rewrite dec_def. equal_list. liast. }
   reflexivity.
 Qed.
 
 Open Scope nat.
-
 Definition cu_step := id ‖ Su ;; If id Su id ;; ifzsw ;; Pr.
 
 Definition cu :=
@@ -437,9 +414,6 @@ Notation "↑ n" := (Z.of_nat n) (at level 20).
 Definition cp' (n m : nat) := (list_sum (seq 1 (n+m)) + n).
 Open Scope Z.
 
-Ltac partial := rewrite longer; simpl firstn; simpl skipn.
-Ltac segment := repeat rewrite ev_co_def.
-Ltac equal_list := auto; repeat f_equal; lia.
 
 Open Scope nat.
 Lemma list_sum_last : ∀ n : nat,
@@ -466,8 +440,7 @@ Proof.
     rewrite iter_succ. rewrite IHn.
     segment. partial. rewrite inc_def.
     simpl app. f_equal. lia.
-    replace (↑n + 1) with (↑(S n)). rewrite up_add. auto.
-    lia. lia.
+    replace (↑n + 1) with (↑(S n)). rewrite up_add. all: liast.
 Qed.
 
 Lemma cp_def : ∀ n m : nat,
@@ -476,14 +449,13 @@ Proof.
   intros. unfold cp. segment.
   asserts_rewrite (
     « inc » [↑ n; ↑ m; 0; 0] = [↑ n; ↑ m + ↑ n; 0; 0]).
-  { partial.
-    rewrite inc_def. auto. lia. }
+  { partial. rewrite inc_def. equal_list. lia. }
   asserts_rewrite (↑m + ↑n = ↑n + ↑m). lia.
   asserts_rewrite (
-    «id ‖ (tr;; dec)» [↑n;↑n + ↑m;0;0] =
+  «id ‖ (tr;; dec)» [↑n;↑n + ↑m;0;0] =
     ↑n :: («tr;; dec» [↑n + ↑m;0;0]) ).
   { reflexivity. }
-  rewrite ev_co_def.
+  segment.
   asserts_rewrite (
     «tr» [↑n+↑m; 0; 0] =
     [↑n+↑m; ↑n+↑m; ↑list_sum (seq 1 (n+m))] ).
@@ -491,16 +463,14 @@ Proof.
   asserts_rewrite (
     «dec» [↑n+↑m; ↑n+↑m; ↑list_sum (seq 1 (n+m))] =
     [↑n+↑m; 0; ↑list_sum (seq 1 (n+m))] ).
-  { partial.
-    rewrite dec_def.
-    replace (↑n+↑m - (↑n+↑m)) with 0.
-    auto. lia. lia. }
+  { partial. rewrite dec_def.
+    replace (↑n+↑m - (↑n+↑m)) with 0. auto. all: lia. }
   asserts_rewrite (
     «dec» [↑n; ↑n+↑m; 0; ↑list_sum (seq 1 (n + m))] =
     [↑n; ↑m; 0; ↑list_sum (seq 1 (n + m))] ).
   { partial.
     rewrite dec_def. replace (↑n+↑m-↑n) with (↑m).
-    auto. lia. lia. }
+    auto. all: lia. }
   asserts_rewrite (
     «\[0;3;1]%nat\» [↑n; ↑m; 0; ↑list_sum (seq 1 (n+m))] =
     [↑n; ↑list_sum (seq 1 (n+m)); ↑m; 0] ).
@@ -720,19 +690,91 @@ Definition up_list (l : list nat) := map Z.of_nat l.
 Notation "↑↑ l" := (up_list l) (at level 20).
 
 Open Scope Z.
+Lemma id_swap_def : ∀ n l, (2+n ≤ length l)%nat →
+  «Id n ‖ Sw» l =
+  l^[0,n] ++ l^[1+n] ++ l^[n] ++ l^[2+n,∞].
+Proof.
+  intros.
+  rewrite pa_def. simpl arity. rewrite id_def. f_equal.
+  replace (l^[1+n]) with ((l^[n,∞])^[1]).
+  replace (l^[n]) with ((l^[n,∞])^[0]).
+  replace (l^[2+n,∞]) with ((l^[n,∞])^[2,∞]).
+  remember (l^[n,∞]) as m.
+  destruct m. liast.
+  destruct m. liast. reflexivity.
+  rewrite skipn_skipn. reflexivity.
+  rewrite skipn_comp_splice. f_equal. all: liast.
+  rewrite skipn_comp_splice. f_equal. all: liast.
+Qed.
 
-Lemma su_def : ∀ n l, «Su» (n :: l) = n + 1 :: l.
-Proof. reflexivity. Qed.
+Open Scope nat.
 
-Definition part X i j (l : list X) := firstn (j - i) (skipn i l).
-Compute part 4 7 [0;1;2;3;4;5;6;7;8;9].
+Create HintDb arith_base.
+Hint Rewrite
+  Nat.sub_0_r
+  Nat.add_0_l
+  Nat.sub_diag 
+  Nat.add_sub
+  Nat.add_0_r : arith_base.
 
-Lemma id_def : ∀ n l, «Id n» l = l.
-Proof. reflexivity. Qed.
+Lemma call_def : ∀ n l, n < length l →
+  «call n» l = l^[n] ++ l^[0,n] ++ l^[1+n, ∞].
+Proof.
+  intros. gen l. induction n.
+  - intros. destruct l. all: liast.
+  - intros. change (S n) with (1+n).
+    simpl call. segment. rewrite IHn.
+    replace (l^[0,1+n]) with (l^[0,n] ++ l^[n]).
+    replace ((« Id n ‖ Sw » l)^[1+n,∞])
+    with ((« Id n ‖ Sw » l)^[1+n] ++ (« Id n ‖ Sw » l)^[2+n,∞]).
+    rewrite <- app_assoc. rewrite id_swap_def.
 
-Lemma co_def : ∀ f g l,
-  «f ‖ g» l = «f» (firstn (arity f) l) ++ «g» (skipn (arity f) l).
-Proof. reflexivity. Qed.
+    rewrite !splice_app. rewrite !skipn_app.
+    rewrite !splice_comp. rewrite !splice_comp_skipn.
+    rewrite !skipn_comp_splice. rewrite !skipn_skipn.
+    rewrite <- !app_assoc. rewrite !splice_length.
+    repeat (try (rewrite min_l; [| lia]);
+            try (rewrite min_r; [| lia])).
+
+    autorewrite with arith_base.
+
+    rewrite !splice_same. rewrite !app_nil_l.
+    f_equal.
+    f_equal.
+    rewrite splice_gt. rewrite app_nil_l.
+    rewrite splice_gt. rewrite app_nil_l.
+    f_equal. f_equal. lia.
+    rewrite splice_gt. rewrite app_nil_l.
+    rewrite splice_gt. rewrite app_nil_l.
+    rewrite splice_gt. rewrite app_nil_l.
+    rewrite splice_gt. rewrite app_nil_l.
+    f_equal. all: try lia.
+
+    apply splice_app_skipn; lia.
+    apply app_splice; lia.
+    rewrite length_evaluate; lia.
+Qed.
+
+Open Scope Z.
+Lemma perm1 : ∀ n x l, (n < length l)%nat → «\[1+n;0]%nat\» (x::l) =
+  l^[n] ++ x :: l^[0,n] ++ l^[1+n,∞].
+Proof.
+  intros. unfold perm. simpl prepare. simpl rev.
+  replace (n+0)%nat with n. remember (S n) as m. simpl call_list.
+  segment. rewrite id_def. rewrite call_def. subst. all: liast.
+Qed.
+
+Lemma conv_su_def : ∀ i n l x, length l = n → (i < n)%nat →
+  «conv_su i n» (x::↑↑l) = x + ↑ S (nth i l O) :: ↑↑l.
+Proof.
+  intros. unfold conv_su. segment.
+  rewrite su_def. rewrite perm1.
+  rewrite inc_def.
+  partial.
+  
+  \S i; 1\ (x+1 :: l) =
+  nth (S i) l :: x+1 :: part 1 (S i) l ++ skipn (S (S i)) l
+
 
 Lemma nth_Sn : ∀ X n (l : list X) d,
   nth (S n) l d = nth n (tail l) d.
@@ -742,34 +784,6 @@ Proof.
   - reflexivity.
 Qed.
 
-Open Scope nat.
-Lemma nth_sum : ∀ X n m (l : list X) d,
-  nth (n+m) l d = nth n (skipn m l) d.
-Proof.
-  intros. gen l. induction m.
-  - intros. simpl. f_equal. auto.
-  - intros. replace (n + S m) with (S (n + m)).
-    rewrite nth_Sn. rewrite IHm.
-    destruct l. simpl. rewrite skipn_nil.
-    destruct n; auto. reflexivity. lia.
-Qed.
-
-Open Scope Z.
-Lemma id_swap_def : ∀ n l, (2+n <= length l)%nat →
-  «Id n ‖ Sw» l =
-  firstn n l ++ [nth (1+n) l 0; nth n l 0] ++ skipn (2+n) l.
-Proof.
-  intros. rewrite co_def. rewrite id_def. simpl (arity (Id n)).
-  f_equal. replace (nth n l 0) with (nth (0+n) l 0).
-  rewrite !nth_sum.
-  replace (skipn (2+n) l) with (skipn 2 (skipn n l)).
-  remember (skipn n l) as m.
-  destruct m. assert(length (skipn n l) = O). rewrite <- Heqm. auto.
-  rewrite skipn_length in H0. lia.
-  destruct m. assert(length (skipn n l) = 1%nat). rewrite <- Heqm. auto.
-  rewrite skipn_length in H0. lia. reflexivity.
-  apply skipn_skipn. auto.
-Qed.
 
 Open Scope nat.
 Lemma firstn_Sn : ∀ X n (l : list X) d, n < length l →
@@ -785,71 +799,17 @@ Proof.
   f_equal. rewrite app_nil_r. reflexivity. all:lia.
 Qed.
 
-Open Scope Z.
-Lemma call_def : ∀ n l, (n < length l)%nat → «call n» l =
-nth n l 0 :: firstn n l ++ skipn (S n) l.
+Open Scope nat.
+Lemma nth_sum : ∀ X n m (l : list X) d,
+  nth (n+m) l d = nth n (skipn m l) d.
 Proof.
-  intros. gen l. induction n.
-  - intros.
-    destruct l. simpl in H. lia.
-    reflexivity.
-  - intros. simpl call.
-    segment. rewrite id_swap_def. rewrite IHn.
-    asserts_rewrite (
-      nth n (firstn n l++[nth (1 + n) l 0; nth n l 0]
-      ++skipn (2 + n) l) 0 =
-      nth (S n) l 0).
-    { replace (1+n)%nat with (S n).
-      replace (nth n (firstn n l ++ [nth (S n) l 0; nth n l 0] ++
-        skipn (2 + n) l) 0) with
-        (nth (length (firstn n l)) (firstn n l ++ nth (S n) l 0 ::
-        (nth n l 0 :: skipn (2+n) l)) 0). 
-      rewrite nth_middle. reflexivity.
-      f_equal. rewrite firstn_length. lia. lia. }
-    asserts_rewrite (
-      firstn n (firstn n l ++
-      [nth (1 + n) l 0; nth n l 0] ++ skipn (2 + n) l) =
-      firstn n l).
-    { rewrite firstn_app. rewrite firstn_firstn.
-      replace (Init.Nat.min n n) with n.
-      rewrite firstn_length_le. replace (n-n)%nat with O.
-      simpl. rewrite app_nil_r. reflexivity. all:lia. }
-    f_equal.
-    asserts_rewrite (
-      skipn (S n) (firstn n l ++
-      [nth (1+n) l 0; nth n l 0] ++ skipn (2 + n) l) =
-      nth n l 0 :: skipn (2+n) l).
-    { rewrite skipn_app. rewrite skipn_all2.
-      replace (S n - length (firstn n l))%nat with 1%nat.
-      reflexivity. all:rewrite firstn_length. lia. lia. }
-    rewrite firstn_Sn with (d:=0). rewrite <- app_assoc.
-    reflexivity. lia. rewrite app_length. simpl.
-    rewrite firstn_length. lia. lia.
+  intros. gen l. induction m.
+  - intros. simpl. f_equal. auto.
+  - intros. replace (n + S m) with (S (n + m)).
+    rewrite nth_Sn. rewrite IHm.
+    destruct l. simpl. rewrite skipn_nil.
+    destruct n; auto. reflexivity. lia.
 Qed.
-
-Lemma perm1 : ∀ n x l, (n < length l)%nat → «\[1+n; 0]%nat\» (x::l) =
-  nth n l 0 :: x :: firstn n l ++ skipn (S n) l.
-Proof.
-  intros. unfold perm. simpl prepare. simpl rev.
-  replace (n+0)%nat with n. remember (S n) as m. simpl call_list.
-  segment. rewrite id_def. rewrite call_def. subst.
-  rewrite nth_Sn. simpl tl. rewrite skipn_cons.
-  f_equal. simpl. lia. lia.
-Qed.
-
-Lemma conv_su_def : ∀ i n l x, length l = n → (i < n)%nat →
-  «conv_su i n» (x::↑↑l) = x + ↑ S (nth i l O) :: ↑↑l.
-Proof.
-  intros. unfold conv_su. segment.
-  rewrite su_def. rewrite perm1.
-  rewrite inc_def.
-  partial.
-  
-  \S i; 1\ (x+1 :: l) =
-  nth (S i) l :: x+1 :: part 1 (S i) l ++ skipn (S (S i)) l
-
-
-
 
 
 Fixpoint co_loading n m gs :=
