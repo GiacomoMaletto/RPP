@@ -684,10 +684,9 @@ Definition ADD := RE (PR 0 1) (CO (SU 0 1) [PR 0 3]).
 Compute EVALUATE ADD [3;4].
 
 Definition conv_su i n :=
-  Su ;; \[S i; 0]\ ;; inc ;; inv(\[S i; 0]\) ‖ Id (n - i).
+  Id n ;; Su ;; \[S i; 0]\ ;; inc ;; inv(\[S i; 0]\).
 
-Definition up_list (l : list nat) := map Z.of_nat l.
-Notation "↑↑ l" := (up_list l) (at level 20).
+Notation "↑↑ l" := (map Z.of_nat l) (at level 20).
 
 Open Scope Z.
 Lemma id_swap_def : ∀ n l, (2+n ≤ length l)%nat →
@@ -756,21 +755,81 @@ Proof.
 Qed.
 
 Open Scope Z.
-Lemma perm1 : ∀ n x l, (n < length l)%nat → «\[1+n;0]%nat\» (x::l) =
-  l^[n] ++ x :: l^[0,n] ++ l^[1+n,∞].
+
+Lemma perm_n_0 : ∀ n l, (n < length l)%nat → «\[n;0]%nat\» l =
+  l^[n] ++ l^[0,n] ++ l^[1+n,∞].
 Proof.
   intros. unfold perm. simpl prepare. simpl rev.
   replace (n+0)%nat with n. remember (S n) as m. simpl call_list.
   segment. rewrite id_def. rewrite call_def. subst. all: liast.
 Qed.
 
+Lemma inv_perm_n_0 : ∀ n l, (n < length l)%nat →
+  «inv (\[n;0]%nat\)» l = l^[1,1+n] ++ l^[0] ++ l^[1+n,∞].
+Proof.
+  intros. rewrite <- proposition_1. rewrite perm_n_0.
+
+  rewrite !splice_app. rewrite !skipn_app.
+    rewrite !splice_comp. rewrite !splice_comp_skipn.
+    rewrite !skipn_comp_splice. rewrite !skipn_skipn.
+    rewrite <- !app_assoc. rewrite !splice_length.
+    repeat (try (rewrite min_l; [| lia]);
+            try (rewrite min_r; [| lia])).
+
+    autorewrite with arith_base.
+    rewrite !splice_same. rewrite !app_nil_l.
+    rewrite !app_assoc. rewrite !app_splice'.
+    rewrite splice_app_skipn'.
+    replace (n-(1+n-1))%nat with O. reflexivity. all: try lia.
+
+Qed.
+
+Lemma cons_app : ∀ X (x : X) l, x::l = [x]++l.
+Proof. reflexivity. Qed.
+
+Lemma map_firstn : ∀ X Y (f : X → Y) n l,
+  firstn n (map f l) = map f (firstn n l).
+Proof.
+  intros. gen n. induction l.
+  - intros. rewrite !firstn_nil. reflexivity.
+  - intros. destruct n.
+    + reflexivity.
+    + simpl. rewrite IHl. reflexivity.
+Qed.
+
+Lemma map_skipn : ∀ X Y (f : X → Y) n l,
+  skipn n (map f l) = map f (skipn n l).
+Proof.
+  intros. gen n. induction l.
+  - intros. rewrite !skipn_nil. reflexivity.
+  - intros. destruct n.
+    + reflexivity.
+    + simpl. rewrite IHl. reflexivity.
+Qed.
+
+Lemma map_splice : ∀ X Y (f : X → Y) l a b,
+  (map f l)^[a,b] = map f (l^[a,b]).
+Proof.
+  intros. unfold splice.
+  rewrite map_firstn. rewrite map_skipn.
+  reflexivity.
+Qed.
+
 Lemma conv_su_def : ∀ i n l x, length l = n → (i < n)%nat →
   «conv_su i n» (x::↑↑l) = x + ↑ S (nth i l O) :: ↑↑l.
 Proof.
   intros. unfold conv_su. segment.
-  rewrite su_def. rewrite perm1.
-  rewrite inc_def.
-  partial.
+  rewrite id_def. rewrite su_def. rewrite perm1.
+  rewrite !map_splice. rewrite map_skipn.
+  rewrite (splice_nth l O).
+  asserts_rewrite (
+    ↑↑ [nth i l 0%nat] ++ x+1 :: ↑↑ l ^[0,i] ++ ↑↑l^[1+i,∞] =
+    ↑(nth i l O) :: x + 1 :: ↑↑l^[0,i] ++ ↑↑l^[1+i,∞]).
+  { reflexivity. }
+  asserts_rewrite (
+    «inc» (↑nth i l 0%nat :: x+1 :: ↑↑l^[0,i] ++ ↑↑l^[1+i,∞]) =
+    ↑nth i l 0%nat :: x+1+↑nth i l 0%nat :: ↑↑l^[0,i] ++ ↑↑l^[1+i,∞]).
+  { partial. rewrite inc_def. reflexivity. lia. }
   
   \S i; 1\ (x+1 :: l) =
   nth (S i) l :: x+1 :: part 1 (S i) l ++ skipn (S (S i)) l
@@ -894,6 +953,13 @@ Definition pad f l :=
   evaluate f (l ++ repeat 0%Z (arity f - length l)).
 
 
+Lemma perm1 : ∀ n x l, (n < length l)%nat → «\[1+n;0]%nat\» (x::l) =
+  l^[n] ++ x :: l^[0,n] ++ l^[1+n,∞].
+Proof.
+  intros. unfold perm. simpl prepare. simpl rev.
+  replace (n+0)%nat with n. remember (S n) as m. simpl call_list.
+  segment. rewrite id_def. rewrite call_def. subst. all: liast.
+Qed.
 
 
 

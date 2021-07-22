@@ -80,6 +80,12 @@ Proof.
     reflexivity. assumption. assumption.
 Qed.
 
+Lemma splice_app_skipn' : ∀ X a b c (l : list X), a ≤ b → b = c →
+  splice l a b ++ skipn c l = skipn a l.
+Proof.
+  intros. subst. apply splice_app_skipn. easy.
+Qed.
+
 Lemma splice_comp : ∀ X a b c d (l : list X),
   splice (splice l a b) c d = splice l (a+c) (min (a+d) b).
 Proof.
@@ -101,6 +107,14 @@ Proof.
   intros. unfold splice.
   rewrite firstn_skipn_comm. rewrite skipn_skipn.
   f_equal. lia.
+Qed.
+
+Lemma splice_length : ∀ X a b (l : list X),
+  length (splice l a b) = min b (length l) - a.
+Proof.
+  intros. unfold splice.
+  rewrite skipn_length. rewrite firstn_length.
+  reflexivity.
 Qed.
 
 Lemma nth_skipn : ∀ X a (l : list X) d,
@@ -130,6 +144,18 @@ Proof.
       reflexivity. lia.
 Qed.
 
+Lemma splice_nth : ∀ X a (l : list X) d, a < length l →
+  splice l a (1+a) = [nth a l d].
+Proof.
+  intros. rewrite nth_splice. destruct (splice l a (1 + a)) eqn:eqn.
+  - assert(length (splice l a (1+a)) = 0). rewrite eqn. reflexivity.
+    rewrite splice_length in H0. lia.
+  - destruct l0.
+    + reflexivity.
+    + assert(2 ≤ length (splice l a (1+a))). rewrite eqn. simpl. lia.
+      rewrite splice_length in H0. lia.
+Qed.
+
 Lemma splice_nil : ∀ X a b,
   @splice X [] a b = [].
 Proof.
@@ -149,14 +175,6 @@ Lemma splice_all2 : ∀ X a b (l : list X), length l ≤ a →
 Proof.
   intros. unfold splice. apply skipn_all2.
   rewrite firstn_length. lia.
-Qed.
-
-Lemma splice_length : ∀ X a b (l : list X),
-  length (splice l a b) = min b (length l) - a.
-Proof.
-  intros. unfold splice.
-  rewrite skipn_length. rewrite firstn_length.
-  reflexivity.
 Qed.
 
 Lemma splice_app : ∀ X a b (l l' : list X),
