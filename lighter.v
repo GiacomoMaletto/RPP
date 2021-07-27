@@ -768,58 +768,32 @@ Lemma inv_perm_n_0 : ∀ n l, (n < length l)%nat →
   «inv (\[n;0]%nat\)» l = l^[1,1+n] ++ l^[0] ++ l^[1+n,∞].
 Proof.
   intros. rewrite <- proposition_1. rewrite perm_n_0.
-
   rewrite !splice_app. rewrite !skipn_app.
-    rewrite !splice_comp. rewrite !splice_comp_skipn.
-    rewrite !skipn_comp_splice. rewrite !skipn_skipn.
-    rewrite <- !app_assoc. rewrite !splice_length.
-    repeat (try (rewrite min_l; [| lia]);
-            try (rewrite min_r; [| lia])).
-
-    autorewrite with arith_base.
-    rewrite !splice_same. rewrite !app_nil_l.
-    rewrite !app_assoc. rewrite !app_splice'.
-    rewrite splice_app_skipn'.
-    replace (n-(1+n-1))%nat with O. reflexivity. all: try lia.
-
+  rewrite !splice_comp. rewrite !splice_comp_skipn.
+  rewrite !skipn_comp_splice. rewrite !skipn_skipn.
+  rewrite <- !app_assoc. rewrite !splice_length.
+  repeat (try (rewrite min_l; [| lia]);
+          try (rewrite min_r; [| lia])).
+  autorewrite with arith_base.
+  repeat (try (rewrite splice_app_skipn'; [| lia | lia]);
+          try (rewrite splice_gt''; [| lia])).
+  replace (n-(1+n-1))%nat with O. reflexivity.
+  all: try lia. liast.
 Qed.
 
 Lemma cons_app : ∀ X (x : X) l, x::l = [x]++l.
 Proof. reflexivity. Qed.
 
-Lemma map_firstn : ∀ X Y (f : X → Y) n l,
-  firstn n (map f l) = map f (firstn n l).
-Proof.
-  intros. gen n. induction l.
-  - intros. rewrite !firstn_nil. reflexivity.
-  - intros. destruct n.
-    + reflexivity.
-    + simpl. rewrite IHl. reflexivity.
-Qed.
-
-Lemma map_skipn : ∀ X Y (f : X → Y) n l,
-  skipn n (map f l) = map f (skipn n l).
-Proof.
-  intros. gen n. induction l.
-  - intros. rewrite !skipn_nil. reflexivity.
-  - intros. destruct n.
-    + reflexivity.
-    + simpl. rewrite IHl. reflexivity.
-Qed.
-
-Lemma map_splice : ∀ X Y (f : X → Y) l a b,
-  (map f l)^[a,b] = map f (l^[a,b]).
-Proof.
-  intros. unfold splice.
-  rewrite map_firstn. rewrite map_skipn.
-  reflexivity.
-Qed.
-
 Lemma conv_su_def : ∀ i n l x, length l = n → (i < n)%nat →
   «conv_su i n» (x::↑↑l) = x + ↑ S (nth i l O) :: ↑↑l.
 Proof.
   intros. unfold conv_su. segment.
-  rewrite id_def. rewrite su_def. rewrite perm1.
+  rewrite id_def. rewrite su_def.
+  asserts_rewrite (
+    «\[S i; 0%nat]\» (x+1 :: ↑↑l) =
+    (↑↑l)^[i] ++ x+1 :: (↑↑l)^[0,i] ++ (↑↑l)^[1+i,∞]).
+  { rewrite perm_n_0. simpl_splice. reflexivity.
+    simpl. rewrite map_length. lia. }
   rewrite !map_splice. rewrite map_skipn.
   rewrite (splice_nth l O).
   asserts_rewrite (
@@ -830,7 +804,34 @@ Proof.
     «inc» (↑nth i l 0%nat :: x+1 :: ↑↑l^[0,i] ++ ↑↑l^[1+i,∞]) =
     ↑nth i l 0%nat :: x+1+↑nth i l 0%nat :: ↑↑l^[0,i] ++ ↑↑l^[1+i,∞]).
   { partial. rewrite inc_def. reflexivity. lia. }
-  
+  asserts_rewrite (
+    ↑nth i l O :: x+1+↑nth i l O :: ↑↑l ^[0,i] ++ ↑↑l^[1+i,∞] =
+    [↑nth i l O]++[x+1+↑nth i l O]++↑↑l ^[0,i] ++ ↑↑l^[1+i,∞]).
+  { reflexivity. }
+  rewrite inv_perm_n_0. rewrite <- map_splice. rewrite <- map_skipn.
+
+    rewrite !splice_app. rewrite !skipn_app.
+    rewrite <- !app_assoc. simpl length.
+    rewrite !skipn_skipn.
+    rewrite splice_length.
+  repeat (try (rewrite min_l; [| rewrite map_length; lia]);
+          try (rewrite min_r; [| rewrite map_length; lia])).
+  autorewrite with arith_base.
+    repeat (try (rewrite splice_app_skipn'; [| lia | lia]);
+          try (rewrite splice_gt''; [| lia])).
+  simpl. rewrite firstn_nil. rewrite skipn_nil. liast.
+  f_equal. lia. destruct l. liast. liast.
+  rewrite splice_comp. simpl.
+
+  rewrite cons_app.
+  replace (↑nth i l 0%nat :: ↑↑ l ^[ 0, i])
+  with([↑nth i l 0%nat] ++ ↑↑ l ^[ 0, i]).
+  liast. rewrite map_length. liast.
+  lia.
+
+
+ simpl. rewrite cons_app. f_equal. lia.
+     simpl_splice. reflexivity.
   \S i; 1\ (x+1 :: l) =
   nth (S i) l :: x+1 :: part 1 (S i) l ++ skipn (S (S i)) l
 

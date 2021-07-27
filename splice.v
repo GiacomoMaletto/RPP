@@ -213,6 +213,45 @@ Proof.
   reflexivity. rewrite firstn_length. lia.
 Qed.
 
+Lemma splice_gt' : ∀ X a b (l l' : list X), b ≤ a → l ++ splice l' a b = l.
+Proof.
+  intros. rewrite splice_gt. rewrite app_nil_r. reflexivity. easy.
+Qed.
+
+Lemma splice_gt'' : ∀ X a b c (l l' : list X), b ≤ a →
+  splice l a b ++ skipn c l' = skipn c l'.
+Proof.
+  intros. rewrite splice_gt. reflexivity. easy.
+Qed.
+
+Lemma map_firstn : ∀ X Y (f : X → Y) n l,
+  firstn n (map f l) = map f (firstn n l).
+Proof.
+  intros. gen n. induction l.
+  - intros. rewrite !firstn_nil. reflexivity.
+  - intros. destruct n.
+    + reflexivity.
+    + simpl. rewrite IHl. reflexivity.
+Qed.
+
+Lemma map_skipn : ∀ X Y (f : X → Y) n l,
+  skipn n (map f l) = map f (skipn n l).
+Proof.
+  intros. gen n. induction l.
+  - intros. rewrite !skipn_nil. reflexivity.
+  - intros. destruct n.
+    + reflexivity.
+    + simpl. rewrite IHl. reflexivity.
+Qed.
+
+Lemma map_splice : ∀ X Y (f : X → Y) l a b,
+  splice (map f l) a b = map f (splice l a b).
+Proof.
+  intros. unfold splice.
+  rewrite map_firstn. rewrite map_skipn.
+  reflexivity.
+Qed.
+
 Notation "l ^[ n , m ]" := (splice l n m) (at level 10).
 Notation "l ^[ n , ∞ ]" := (skipn n l) (at level 10).
 Notation "l ^[ n ]" := (splice l n (1+n)) (at level 10).
