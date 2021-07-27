@@ -240,3 +240,28 @@ Compute nth (S 4) l 0 :: 0 :: part 1 (S 4) l ++ skipn (S (S 4)) l.
 
 
 
+Open Scope nat.
+Lemma firstn_Sn : ∀ X n (l : list X) d, n < length l →
+  firstn (1+n) l = firstn n l ++ [nth n l d].
+Proof.
+  intros. lets (l0 & l1 & H0 & H1) : nth_split d H.
+  rewrite H0. rewrite !firstn_app.
+  rewrite firstn_all2.
+  replace (1 + n - length l0) with (S (n - length l0)).
+  rewrite firstn_cons.
+  replace (n - length l0) with 0. simpl.
+  rewrite <- H1. rewrite nth_middle. rewrite firstn_all2.
+  f_equal. rewrite app_nil_r. reflexivity. all:lia.
+Qed.
+
+Open Scope nat.
+Lemma nth_sum : ∀ X n m (l : list X) d,
+  nth (n+m) l d = nth n (skipn m l) d.
+Proof.
+  intros. gen l. induction m.
+  - intros. simpl. f_equal. auto.
+  - intros. replace (n + S m) with (S (n + m)).
+    rewrite nth_Sn. rewrite IHm.
+    destruct l. simpl. rewrite skipn_nil.
+    destruct n; auto. reflexivity. lia.
+Qed.

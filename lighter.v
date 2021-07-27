@@ -679,12 +679,24 @@ Fixpoint EVALUATE F (l : list nat) : nat :=
       (EVALUATE F l', 0, l')))
     end
   end.
+(* H = RE F G
+  H (O::l) = F l
+  H (S n::l) = G (H (n::l)) n l *)
+Definition ADD := RE (PR 0 1) (SU 0 3).
+Definition PRE := RE (ZE 0) (PR 1 2).
+Definition SUB := RE (PR 0 1) (CO PRE [PR 0 3]).
+Definition MUL := RE (ZE 1) (CO ADD [PR 0 3;PR 2 3]).
+Compute EVALUATE ADD [10;100].
+Compute EVALUATE PRE [100].
+Compute EVALUATE SUB [3;7].
+Compute EVALUATE MUL [5;10].
 
-Definition ADD := RE (PR 0 1) (CO (SU 0 1) [PR 0 3]).
-Compute EVALUATE ADD [3;4].
 
 Definition conv_su i n :=
   Id n ;; Su ;; \[S i; 0]\ ;; inc ;; inv(\[S i; 0]\).
+
+Definition conv_pr i n :=
+  Id n ;; \[S i; 0]\ ;; inc ;; inv(\[S i; 0]\).
 
 Notation "↑↑ l" := (map Z.of_nat l) (at level 20).
 
@@ -817,60 +829,94 @@ Proof.
   repeat (try (rewrite min_l; [| rewrite map_length; lia]);
           try (rewrite min_r; [| rewrite map_length; lia])).
   autorewrite with arith_base.
-    repeat (try (rewrite splice_app_skipn'; [| lia | lia]);
+  rewrite splice_all2. rewrite app_nil_l.
+  symmetry. rewrite cons_app. f_equal.
+  rewrite splice_all. f_equal. lia. simpl. lia.
+  replace (↑ nth i l 0%nat) with (nth i (↑↑l) 0).
+  rewrite <- splice_nth.
+  rewrite !splice_comp. rewrite !splice_comp_skipn.
+  rewrite !skipn_comp_splice.
+  repeat (try (rewrite min_l; [| lia]);
+          try (rewrite min_r; [| lia])).
+  autorewrite with arith_base.
+  replace ([x + 1 + nth i (↑↑ l) 0] ^[ 0 - 1, 0]) with ([]:list Z).
+  replace ([x + 1 + nth i (↑↑ l) 0] ^[ 1 + S i - 1, ∞ ]) with ([]:list Z).
+  rewrite !app_nil_l.
+  repeat (try (rewrite splice_app_skipn'; [| lia | lia]);
           try (rewrite splice_gt''; [| lia])).
-  simpl. rewrite firstn_nil. rewrite skipn_nil. liast.
-  f_equal. lia. destruct l. liast. liast.
-  rewrite splice_comp. simpl.
-
+  reflexivity.
+  liast. rewrite skipn_nil. reflexivity.
+  liast. rewrite map_length. lia.
+  replace 0 with (↑O). rewrite map_nth. reflexivity. lia.
+  liast.
   rewrite cons_app.
   replace (↑nth i l 0%nat :: ↑↑ l ^[ 0, i])
   with([↑nth i l 0%nat] ++ ↑↑ l ^[ 0, i]).
-  liast. rewrite map_length. liast.
+  liast. autorewrite with arith_base. rewrite map_length. liast.
+  reflexivity.
   lia.
-
-
- simpl. rewrite cons_app. f_equal. lia.
-     simpl_splice. reflexivity.
-  \S i; 1\ (x+1 :: l) =
-  nth (S i) l :: x+1 :: part 1 (S i) l ++ skipn (S (S i)) l
-
-
-Lemma nth_Sn : ∀ X n (l : list X) d,
-  nth (S n) l d = nth n (tail l) d.
-Proof.
-  intros. destruct l.
-  - simpl. destruct n; reflexivity.
-  - reflexivity.
 Qed.
 
-
-Open Scope nat.
-Lemma firstn_Sn : ∀ X n (l : list X) d, n < length l →
-  firstn (1+n) l = firstn n l ++ [nth n l d].
+Lemma conv_pr_def : ∀ i n l x, length l = n → (i < n)%nat →
+  «conv_pr i n» (x::↑↑l) = x + ↑ (nth i l O) :: ↑↑l.
 Proof.
-  intros. lets (l0 & l1 & H0 & H1) : nth_split d H.
-  rewrite H0. rewrite !firstn_app.
-  rewrite firstn_all2.
-  replace (1 + n - length l0) with (S (n - length l0)).
-  rewrite firstn_cons.
-  replace (n - length l0) with 0. simpl.
-  rewrite <- H1. rewrite nth_middle. rewrite firstn_all2.
-  f_equal. rewrite app_nil_r. reflexivity. all:lia.
-Qed.
+  intros. unfold conv_pr. segment.
+  rewrite id_def.
+  asserts_rewrite (
+    «\[S i; 0%nat]\» (x :: ↑↑l) =
+    (↑↑l)^[i] ++ x :: (↑↑l)^[0,i] ++ (↑↑l)^[1+i,∞]).
+  { rewrite perm_n_0. simpl_splice. reflexivity.
+    simpl. rewrite map_length. lia. }
+  rewrite !map_splice. rewrite map_skipn.
+  rewrite (splice_nth l O).
+  asserts_rewrite (
+    ↑↑ [nth i l 0%nat] ++ x :: ↑↑ l ^[0,i] ++ ↑↑l^[1+i,∞] =
+    ↑(nth i l O) :: x :: ↑↑l^[0,i] ++ ↑↑l^[1+i,∞]).
+  { reflexivity. }
+  asserts_rewrite (
+    «inc» (↑nth i l 0%nat :: x :: ↑↑l^[0,i] ++ ↑↑l^[1+i,∞]) =
+    ↑nth i l 0%nat :: x+↑nth i l 0%nat :: ↑↑l^[0,i] ++ ↑↑l^[1+i,∞]).
+  { partial. rewrite inc_def. reflexivity. lia. }
+  asserts_rewrite (
+    ↑nth i l O :: x+↑nth i l O :: ↑↑l ^[0,i] ++ ↑↑l^[1+i,∞] =
+    [↑nth i l O]++[x+↑nth i l O]++↑↑l ^[0,i] ++ ↑↑l^[1+i,∞]).
+  { reflexivity. }
+  rewrite inv_perm_n_0. rewrite <- map_splice. rewrite <- map_skipn.
 
-Open Scope nat.
-Lemma nth_sum : ∀ X n m (l : list X) d,
-  nth (n+m) l d = nth n (skipn m l) d.
-Proof.
-  intros. gen l. induction m.
-  - intros. simpl. f_equal. auto.
-  - intros. replace (n + S m) with (S (n + m)).
-    rewrite nth_Sn. rewrite IHm.
-    destruct l. simpl. rewrite skipn_nil.
-    destruct n; auto. reflexivity. lia.
+    rewrite !splice_app. rewrite !skipn_app.
+    rewrite <- !app_assoc. simpl length.
+    rewrite !skipn_skipn.
+    rewrite splice_length.
+  repeat (try (rewrite min_l; [| rewrite map_length; lia]);
+          try (rewrite min_r; [| rewrite map_length; lia])).
+  autorewrite with arith_base.
+  rewrite splice_all2. rewrite app_nil_l.
+  symmetry. rewrite cons_app. f_equal.
+  rewrite splice_all. f_equal. simpl. lia.
+  replace (↑ nth i l 0%nat) with (nth i (↑↑l) 0).
+  rewrite <- splice_nth.
+  rewrite !splice_comp. rewrite !splice_comp_skipn.
+  rewrite !skipn_comp_splice.
+  repeat (try (rewrite min_l; [| lia]);
+          try (rewrite min_r; [| lia])).
+  autorewrite with arith_base.
+  replace ([x + nth i (↑↑ l) 0] ^[ 0 - 1, 0]) with ([]:list Z).
+  replace ([x + nth i (↑↑ l) 0] ^[ 1 + S i - 1, ∞ ]) with ([]:list Z).
+  rewrite !app_nil_l.
+  repeat (try (rewrite splice_app_skipn'; [| lia | lia]);
+          try (rewrite splice_gt''; [| lia])).
+  reflexivity.
+  liast. rewrite skipn_nil. reflexivity.
+  liast. rewrite map_length. lia.
+  replace 0 with (↑O). rewrite map_nth. reflexivity. lia.
+  liast.
+  rewrite cons_app.
+  replace (↑nth i l 0%nat :: ↑↑ l ^[ 0, i])
+  with([↑nth i l 0%nat] ++ ↑↑ l ^[ 0, i]).
+  liast. autorewrite with arith_base. rewrite map_length. liast.
+  reflexivity.
+  lia.
 Qed.
-
 
 Fixpoint co_loading n m gs :=
   match gs with
@@ -878,17 +924,18 @@ Fixpoint co_loading n m gs :=
   | g::gs' => Id n ‖ (\[m]\ ;; g) ;; co_loading (S n) m gs'
   end.
 
-
-
-
-
-
+Open Scope nat.
+Definition re_forward n f g :=
+    id ‖ \seq n 6\ ;;
+    Id 6 ‖ f ;;
+    Id 5 ‖ Sw ;;
+    It (Id 3 ‖ (g ;; Sw) ;; \[1;4]\ ;; push ;; Id 5 ‖ Su).
 
 Fixpoint convert (F : PRF) : RPP :=
   match F with
   | ZE n => Id n
-  | SU i n => su i n
-  | PR i n => \[1+i;1]\ ;; inc ;; inv(\[1+i;1]\) ‖ Id (n - i)
+  | SU i n => conv_su i n
+  | PR i n => conv_pr i n
   | CO F Gs => let (n, m) := (ARITY (CO F Gs), length Gs) in
 
     co_loading 1 (1+n) (map convert Gs) ;;
@@ -901,28 +948,33 @@ Fixpoint convert (F : PRF) : RPP :=
 
   | RE F G => let n := ARITY (RE F G) in
 
-    Id 2 ‖ \seq n 6\ ;;
-    Id 7 ‖ convert F ;;
-    Id 6 ‖ Sw ;;
-    Id 1 ‖ It (Id 3 ‖ (convert G ;; Sw) ;; \[1;4]\ ;; push ;; Id 5 ‖ Su) ;;
-    \[7;1]\ ;;
-
-    inc ;;
-
-    inv (Id 2 ‖ \seq n 6\ ;;
-    Id 7 ‖ convert F ;;
-    Id 6 ‖ Sw ;;
-    Id 1 ‖ It (Id 3 ‖ (convert G ;; Sw) ;; \[1;4]\ ;; push ;; Id 5 ‖ Su) ;;
-    \[7;1]\)
+    id ‖ re_forward n (convert F) (convert G) ;;
+    \[7;1]\ ;; inc ;; inv (\[7;1]\) ;;
+    id ‖ inv (re_forward n (convert F) (convert G))
   end.
-
-
 
 Definition anc F := pred (arity (convert F) - ARITY F).
 
 Definition zeros n := repeat 0%Z n.
 
+Definition ADD := RE (PR 1 1) (CO (SU 1 1) [PR 1 3]).
+
+Compute «convert ADD» (0 :: ↑↑[3;4]%nat ++ zeros (anc ADD)).
+Compute 0 + ↑(EVALUATE ADD [3;4]%nat) :: ↑↑[3;4]%nat ++ zeros (anc ADD).
+Compute arity (convert ADD).
+Compute (1 + 2 + anc ADD)%nat.
+
+
 Open Scope Z.
+
+Fixpoint proper F l :=
+  match F with
+  | ZE n => True
+  | SU i n => True
+  | PR i n => True
+  | CO F Gs => True
+  | RE F G => 
+  end.
 
 Definition thesis F l x := ARITY F = length l →
   «convert F» (x :: ↑↑l ++ zeros (anc F)) =
