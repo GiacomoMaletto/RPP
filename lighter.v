@@ -918,15 +918,15 @@ Proof.
   lia.
 Qed.
 
-Fixpoint co_loading n m gs :=
+Fixpoint co_loading n gs :=
   match gs with
   | [] => Id 0
-  | g::gs' => Id n ‖ (\[m]\ ;; g) ;; co_loading (S n) m gs'
+  | g::gs' => \[n]\ ;; g ;; id ‖ co_loading n gs'
   end.
 
 Open Scope nat.
 Definition re_forward n f g :=
-    id ‖ \seq n 6\ ;;
+    \seq n 6\ ;;
     Id 6 ‖ f ;;
     Id 5 ‖ Sw ;;
     It (Id 3 ‖ (g ;; Sw) ;; \[1;4]\ ;; push ;; Id 5 ‖ Su).
@@ -938,13 +938,9 @@ Fixpoint convert (F : PRF) : RPP :=
   | PR i n => conv_pr i n
   | CO F Gs => let (n, m) := (ARITY (CO F Gs), length Gs) in
 
-    co_loading 1 (1+n) (map convert Gs) ;;
-    \seq (2+m) n\ ;;
-
+    id ‖ co_loading n (map convert Gs) ;; \seq (1+m) n\ ;;
     Id n ‖ (convert F) ;;
-
-    inv (co_loading 1 (1+n) (map convert Gs) ;;
-    \seq (2+m) n\)
+    inv (id ‖ co_loading n (map convert Gs) ;; \seq (1+m) n\)
 
   | RE F G => let n := ARITY (RE F G) in
 
