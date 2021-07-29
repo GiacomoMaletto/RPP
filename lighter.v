@@ -230,7 +230,7 @@ Qed.
 Open Scope nat.
 Fixpoint call i :=
   match i with
-  | O => Id O
+  | O => Id 1
   | S j => Id j ‖ Sw ;; call j
   end.
 Fixpoint call_list l :=
@@ -679,6 +679,7 @@ Fixpoint EVALUATE F (l : list nat) : nat :=
       (EVALUATE F l', 0, l')))
     end
   end.
+
 (* H = RE F G
   H (O::l) = F l
   H (S n::l) = G (H (n::l)) n l *)
@@ -690,7 +691,6 @@ Compute EVALUATE ADD [10;100].
 Compute EVALUATE PRE [100].
 Compute EVALUATE SUB [3;7].
 Compute EVALUATE MUL [5;10].
-
 
 Definition conv_su i n :=
   Id n ;; Su ;; \[S i; 0]\ ;; inc ;; inv(\[S i; 0]\).
@@ -926,10 +926,10 @@ Fixpoint co_loading n gs :=
 
 Open Scope nat.
 Definition re_forward n f g :=
-    \seq n 6\ ;;
+    id ‖ \seq n 6\ ;;
     Id 6 ‖ f ;;
     Id 5 ‖ Sw ;;
-    It (Id 3 ‖ (g ;; Sw) ;; \[1;4]\ ;; push ;; Id 5 ‖ Su).
+    It (Id 3 ‖ (g ;; Sw) ;; \[0;3]\ ;; push ;; Id 5 ‖ Su).
 
 Fixpoint convert (F : PRF) : RPP :=
   match F with
@@ -942,56 +942,92 @@ Fixpoint convert (F : PRF) : RPP :=
     Id n ‖ (convert F) ;;
     inv (id ‖ co_loading n (map convert Gs) ;; \seq (1+m) n\)
 
-  | RE F G => let n := ARITY (RE F G) in
+  | RE F G => let n := ARITY F in
 
     id ‖ re_forward n (convert F) (convert G) ;;
-    \[7;1]\ ;; inc ;; inv (\[7;1]\) ;;
+    \[6;0]\ ;; inc ;; inv (\[6;0]\) ;;
     id ‖ inv (re_forward n (convert F) (convert G))
   end.
 
 Definition anc F := pred (arity (convert F) - ARITY F).
 
-Definition zeros n := repeat 0%Z n.
+Inductive strict : PRF → Prop :=
+  | strZE n :
+      strict (ZE n)
+  | strSU i n :
+      i < n →
+      strict (SU i n)
+  | strPR i n :
+      i < n →
+      strict (PR i n)
+  | strCO F Gs :
+      strict F →
+      Forall (λ G, strict G) Gs →
+      ARITY F = length Gs →
+      Forall (λ G, ARITY G = ARITY (CO F Gs)) Gs →
+      strict (CO F Gs)
+  | strRE F G :
+      strict F →
+      strict G →
+      ARITY G = 2 + ARITY F →
+      strict (RE F G).
 
-Definition ADD := RE (PR 1 1) (CO (SU 1 1) [PR 1 3]).
-
-Compute «convert ADD» (0 :: ↑↑[3;4]%nat ++ zeros (anc ADD)).
-Compute 0 + ↑(EVALUATE ADD [3;4]%nat) :: ↑↑[3;4]%nat ++ zeros (anc ADD).
-Compute arity (convert ADD).
-Compute (1 + 2 + anc ADD)%nat.
-
-
-Open Scope Z.
-
-Fixpoint proper F l :=
+Open Scope bool.
+Fixpoint strictb (F : PRF) : bool :=
   match F with
-  | ZE n => True
-  | SU i n => True
-  | PR i n => True
-  | CO F Gs => True
-  | RE F G => 
+  | ZE n => true
+  | SU i n => i <? n
+  | PR i n => i <? n
+  | CO F Gs => strictb F && forallb (λ G, strictb G) Gs &&
+    (ARITY F =? length Gs) && forallb (λ G, ARITY G =? ARITY (CO F Gs)) Gs
+  | RE F G => strictb F && strictb G && (ARITY G =? 2+ARITY F)
   end.
 
-Definition thesis F l x := ARITY F = length l →
-  «convert F» (x :: ↑↑l ++ zeros (anc F)) =
-  x + ↑(EVALUATE F l) :: ↑↑l ++ zeros (anc F).
+Open Scope Z.
+Definition thesis F l x := strict F → ARITY F = length l →
+  «convert F» (x :: ↑↑l ++ repeat 0 (anc F)) =
+  x + ↑(EVALUATE F l) :: ↑↑l ++ repeat 0 (anc F).
 
 Goal ∀ n l x, thesis (ZE n) l x.
 Proof.
   unfold thesis. simpl. intros. equal_list.
 Qed.
 
+Open Scope nat.
+Lemma arity_call : ∀ n, arity (call n) = 1+n.
+Proof.
+  intros. induction n.
+  - reflexivity.
+  - simpl. rewrite IHn. lia.
+Qed.
+
+Lemma arity_conv_su : ∀ i n, n ≤ arity (conv_su i n).
+Proof.
+  intros. unfold conv_su. simpl.
+  rewrite arity_inv. rewrite arity_call.
+  lia.
+Qed.
+
+Compute arity (conv_su 0 0).
+
+
+
 Goal ∀ i n l x, thesis (SU i n) l x.
 Proof.
-  unfold thesis. intros. unfold convert. simpl. f_equal.
+  unfold thesis. intros. unfold convert.
+  replace (anc (SU i n)) with O.
+  simpl repeat. rewrite app_nil_r.
+  rewrite conv_su_def. reflexivity.
+  simpl in H0. easy.
+  inverts H. easy.
+  unfold anc. unfold convert.
+  assert (arity (conv_su i n) ≤ ARITY (SU i n)).
+  { simpl ARITY: rewrite arity_conv_su. simpl. rewrite arity_inv.
+  
 Qed.
 
 Theorem theorem_5 : ∀ F l x, thesis F l x.
 Admitted.
-
-
-
-Definition ADD := RE (PR 1 1) (CO (SU 1 1) [PR 1 3]).
 
 Compute «convert ADD» (0 :: ↑↑[3;4]%nat ++ zeros (anc ADD)).
 Compute 0 + ↑(EVALUATE ADD [3;4]%nat) :: ↑↑[3;4]%nat ++ zeros (anc ADD).
@@ -1011,6 +1047,14 @@ Proof.
 Qed.
 
 
+Open Scope Z.
+Compute «convert ADD» (0 :: ↑↑[3;4]%nat ++ zeros (anc ADD)).
+Compute «convert MUL» (0 :: ↑↑[2;3]%nat ++ zeros (anc MUL)).
+Compute (convert MUL).
+Compute arity (convert MUL).
+Compute 0 + ↑(EVALUATE ADD [3;4]%nat) :: ↑↑[3;4]%nat ++ zeros (anc ADD).
+Compute arity (convert ADD).
+Compute (1 + 2 + anc ADD)%nat.
 
 
 

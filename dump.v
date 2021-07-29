@@ -265,3 +265,13 @@ Proof.
     destruct l. simpl. rewrite skipn_nil.
     destruct n; auto. reflexivity. lia.
 Qed.
+
+Fixpoint strict (F : PRF) : Prop :=
+  match F with
+  | ZE n => True
+  | SU i n => True
+  | PR i n => True
+  | CO F Gs => strict F ∧ Forall (λ G, strict G) Gs ∧
+    ARITY F = length Gs ∧ Forall (λ G, ARITY G = list_max (map ARITY Gs) ) Gs
+  | RE F G => strict F ∧ strict G ∧ ARITY G = 2+ARITY F
+  end.
