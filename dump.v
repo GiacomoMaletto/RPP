@@ -275,3 +275,62 @@ Fixpoint strict (F : PRF) : Prop :=
     ARITY F = length Gs ∧ Forall (λ G, ARITY G = list_max (map ARITY Gs) ) Gs
   | RE F G => strict F ∧ strict G ∧ ARITY G = 2+ARITY F
   end.
+
+Lemma le_ind : ∀ n (P : nat → Prop),
+  (∀ n, (∀ m, m < n → P m) -> (∀ m, m ≤ n → P m)) -> P n.
+Proof.
+  intros. induction n as [n IHn] using lt_wf_ind.
+  apply H with (n:=n); easy.
+Qed.
+
+Lemma PRF_ind2 :
+  ∀ P : PRF → Prop,
+  (∀ n, P (ZE n)) →
+  (∀ i n, P (SU i n)) →
+  (∀ i n, P (PR i n)) →
+  (∀ F, P F → ∀ Gs, (∀ G, In G Gs → P G) → P (CO F Gs)) →
+  (∀ F, P F → ∀ G : PRF, P G → P (RE F G)) →
+  ∀ p : PRF, P p.
+Proof.
+  intros. induction p; auto.  
+  induction Gs.
+  - intros. apply H2; easy.
+  - intros. apply H2. easy.
+    simpl. intros G [].
+    + rewrite <- H4.
+    intros. simpl in H4.
+
+Theorem theorem_5 : ∀ F l x, thesis F l x.
+Proof.
+  intros. induction F.
+  - apply thesis_ze.
+  - apply thesis_su.
+  - apply thesis_pr.
+  - admit.
+  - 
+Admitted.
+
+Compute «convert ADD» (0 :: ↑↑[3;4]%nat ++ zeros (anc ADD)).
+Compute 0 + ↑(EVALUATE ADD [3;4]%nat) :: ↑↑[3;4]%nat ++ zeros (anc ADD).
+Compute arity (convert ADD).
+Compute (1 + 2 + anc ADD)%nat.
+
+Lemma perm1 : ∀ n x l, (n < length l)%nat → «\[1+n;0]%nat\» (x::l) =
+  l^[n] ++ x :: l^[0,n] ++ l^[1+n,∞].
+Proof.
+  intros. unfold perm. simpl prepare. simpl rev.
+  replace (n+0)%nat with n. remember (S n) as m. simpl call_list.
+  segment. rewrite id_def. rewrite call_def. subst. all: liast.
+Qed.
+
+Definition pad f l :=
+  evaluate f (l ++ repeat 0%Z (arity f - length l)).
+
+Open Scope Z.
+Compute «convert ADD» (0 :: ↑↑[3;4]%nat ++ zeros (anc ADD)).
+Compute «convert MUL» (0 :: ↑↑[2;3]%nat ++ zeros (anc MUL)).
+Compute (convert MUL).
+Compute arity (convert MUL).
+Compute 0 + ↑(EVALUATE ADD [3;4]%nat) :: ↑↑[3;4]%nat ++ zeros (anc ADD).
+Compute arity (convert ADD).
+Compute (1 + 2 + anc ADD)%nat.

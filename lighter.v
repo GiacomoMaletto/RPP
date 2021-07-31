@@ -693,10 +693,10 @@ Compute EVALUATE SUB [3;7].
 Compute EVALUATE MUL [5;10].
 
 Definition conv_su i n :=
-  Id n ;; Su ;; \[S i; 0]\ ;; inc ;; inv(\[S i; 0]\).
+  Id (1+n) ;; Su ;; \[S i; 0]\ ;; inc ;; inv(\[S i; 0]\).
 
 Definition conv_pr i n :=
-  Id n ;; \[S i; 0]\ ;; inc ;; inv(\[S i; 0]\).
+  Id (1+n) ;; \[S i; 0]\ ;; inc ;; inv(\[S i; 0]\).
 
 Notation "↑↑ l" := (map Z.of_nat l) (at level 20).
 
@@ -984,11 +984,13 @@ Fixpoint strictb (F : PRF) : bool :=
   end.
 
 Open Scope Z.
-Definition thesis F l x := strict F → ARITY F = length l →
+Definition thesis F l x :=
+  strict F →
+  ARITY F = length l →
   «convert F» (x :: ↑↑l ++ repeat 0 (anc F)) =
   x + ↑(EVALUATE F l) :: ↑↑l ++ repeat 0 (anc F).
 
-Goal ∀ n l x, thesis (ZE n) l x.
+Lemma thesis_ze : ∀ n l x, thesis (ZE n) l x.
 Proof.
   unfold thesis. simpl. intros. equal_list.
 Qed.
@@ -1001,18 +1003,17 @@ Proof.
   - simpl. rewrite IHn. lia.
 Qed.
 
-Lemma arity_conv_su : ∀ i n, n ≤ arity (conv_su i n).
+Lemma arity_conv_su : ∀ i n, i < n → arity (conv_su i n) = 1+n.
 Proof.
-  intros. unfold conv_su. simpl.
+  intros. unfold conv_su. simpl arity.
   rewrite arity_inv. rewrite arity_call.
-  lia.
+  autorewrite with arith_base.
+  replace (max (i+2) (1+i)) with (i+2).
+  replace (max (1+i) (i+2)) with (i+2).
+  replace (i+2) with (2+i). simpl. all: lia.
 Qed.
 
-Compute arity (conv_su 0 0).
-
-
-
-Goal ∀ i n l x, thesis (SU i n) l x.
+Lemma thesis_su : ∀ i n l x, thesis (SU i n) l x.
 Proof.
   unfold thesis. intros. unfold convert.
   replace (anc (SU i n)) with O.
@@ -1021,40 +1022,90 @@ Proof.
   simpl in H0. easy.
   inverts H. easy.
   unfold anc. unfold convert.
-  assert (arity (conv_su i n) ≤ ARITY (SU i n)).
-  { simpl ARITY: rewrite arity_conv_su. simpl. rewrite arity_inv.
-  
+  assert (arity (conv_su i n) ≤ 1+ARITY (SU i n)).
+  { simpl ARITY. rewrite arity_conv_su. easy.
+    inverts H. easy. }
+  lia.
 Qed.
 
-Theorem theorem_5 : ∀ F l x, thesis F l x.
+Lemma arity_conv_pr : ∀ i n, i < n → arity (conv_pr i n) = 1+n.
+Proof.
+  intros. unfold conv_pr. simpl arity.
+  rewrite arity_inv. rewrite arity_call.
+  autorewrite with arith_base.
+  replace (max (i+2) (1+i)) with (i+2).
+  replace (max (1+i) (i+2)) with (i+2).
+  replace (i+2) with (2+i). simpl. all: lia.
+Qed.
+
+Lemma thesis_pr : ∀ i n l x, thesis (PR i n) l x.
+Proof.
+  unfold thesis. intros. unfold convert.
+  replace (anc (PR i n)) with O.
+  simpl repeat. rewrite app_nil_r.
+  rewrite conv_pr_def. reflexivity.
+  simpl in H0. easy.
+  inverts H. easy.
+  unfold anc. unfold convert.
+  assert (arity (conv_pr i n) ≤ 1+ARITY (PR i n)).
+  { simpl ARITY. rewrite arity_conv_pr. easy.
+    inverts H. easy. }
+  lia.
+Qed.
+
+Fixpoint depth (F : PRF) : nat :=
+  match F with
+  | ZE n => O
+  | SU i n => O
+  | PR i n => O
+  | CO F Gs => 1 + list_max (map depth Gs)
+  | RE F G => max (depth F) (depth G)
+  end.
+
+Lemma thesis_re : ∀ F G l x,
+  thesis F l x → thesis G l x → thesis (RE F G) l x.
 Admitted.
 
-Compute «convert ADD» (0 :: ↑↑[3;4]%nat ++ zeros (anc ADD)).
-Compute 0 + ↑(EVALUATE ADD [3;4]%nat) :: ↑↑[3;4]%nat ++ zeros (anc ADD).
-Compute arity (convert ADD).
-Compute (1 + 2 + anc ADD)%nat.
-
-Definition pad f l :=
-  evaluate f (l ++ repeat 0%Z (arity f - length l)).
-
-
-Lemma perm1 : ∀ n x l, (n < length l)%nat → «\[1+n;0]%nat\» (x::l) =
-  l^[n] ++ x :: l^[0,n] ++ l^[1+n,∞].
+Lemma theorem_5_le : ∀ F l x d, depth F ≤ d → thesis F l x.
 Proof.
-  intros. unfold perm. simpl prepare. simpl rev.
-  replace (n+0)%nat with n. remember (S n) as m. simpl call_list.
-  segment. rewrite id_def. rewrite call_def. subst. all: liast.
+  intros. gen F. induction d.
+  - intros. induction F.
+    + apply thesis_ze.
+    + apply thesis_su.
+    + apply thesis_pr.
+    + simpl in H. lia.
+    + simpl in H.
+      assert (thesis F1 l x). apply IHF1. lia.
+      assert (thesis F2 l x). apply IHF2. lia.
+      apply thesis_re; easy.
+  - intros. induction F.
+    + apply thesis_ze.
+    + apply thesis_su.
+    + apply thesis_pr.
+    + assert (∀ G, In G Gs → thesis G l x) as HGs.
+      { intros. apply IHd.
+        simpl in H. apply le_S_n in H.
+        rewrite list_max_le in H.
+        rewrite Forall_forall in H.
+        apply H. apply in_map. assumption. }
+      admit.
+    + simpl in H.
+      assert (thesis F1 l x). apply IHF1. lia.
+      assert (thesis F2 l x). apply IHF2. lia.
+      apply thesis_re; easy.
+Admitted.
+
+Theorem theorem_5 : ∀ F l x, thesis F l x.
+Proof.
+  intros. apply theorem_5_le with (d:=depth F). reflexivity.
 Qed.
 
 
-Open Scope Z.
-Compute «convert ADD» (0 :: ↑↑[3;4]%nat ++ zeros (anc ADD)).
-Compute «convert MUL» (0 :: ↑↑[2;3]%nat ++ zeros (anc MUL)).
-Compute (convert MUL).
-Compute arity (convert MUL).
-Compute 0 + ↑(EVALUATE ADD [3;4]%nat) :: ↑↑[3;4]%nat ++ zeros (anc ADD).
-Compute arity (convert ADD).
-Compute (1 + 2 + anc ADD)%nat.
+
+
+
+
+
 
 
 
