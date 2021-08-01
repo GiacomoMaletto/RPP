@@ -252,6 +252,57 @@ Proof.
   reflexivity.
 Qed.
 
+Lemma in_firstn : ∀ X (x : X) n l, In x (firstn n l) → In x l.
+Proof.
+  intros. gen n. induction l.
+  - intros. rewrite firstn_nil in H. simpl in H. false.
+  - intros. simpl. destruct n. simpl in H. false.
+    simpl in H. destruct H.
+    + left. easy.
+    + right. apply IHl with (n:=n). easy.
+Qed.
+
+Lemma in_skipn : ∀ X (x : X) n l, In x (skipn n l) → In x l.
+Proof.
+  intros. gen n. induction l.
+  - intros. rewrite skipn_nil in H. simpl in H. false.
+  - intros. simpl. destruct n. simpl in H. easy.
+    simpl in H. right. apply IHl with (n:=n). easy.
+Qed.
+
+Lemma repeat_firstn : ∀ X (x : X) n a,
+  firstn a (repeat x n) = repeat x (min n a).
+Proof.
+  intros.
+  asserts_rewrite (min n a = length (firstn a (repeat x n))).
+  { rewrite firstn_length. rewrite repeat_length. lia. }
+  rewrite Forall_eq_repeat with (l:=firstn a (repeat x n))(x:=x).
+  f_equal. rewrite firstn_length. rewrite !repeat_length. easy.
+  rewrite Forall_forall. intros.
+  rewrite repeat_spec with (n:=n) (x:=x). easy.
+  apply in_firstn with (n:=a). easy.
+Qed.
+
+Lemma repeat_skipn : ∀ X (x : X) n a,
+  skipn a (repeat x n) = repeat x (n - a).
+Proof.
+  intros.
+  asserts_rewrite (n - a = length (skipn a (repeat x n))).
+  { rewrite skipn_length. rewrite repeat_length. easy. }
+  rewrite Forall_eq_repeat with (l:=skipn a (repeat x n))(x:=x).
+  f_equal. rewrite skipn_length. rewrite !repeat_length. easy.
+  rewrite Forall_forall. intros.
+  rewrite repeat_spec with (n:=n) (x:=x). easy.
+  apply in_skipn with (n:=a). easy.
+Qed.
+
+Lemma repeat_splice : ∀ X (x : X) n a b,
+  splice (repeat x n) a b = repeat x (min n b - a).
+Proof.
+  intros. unfold splice.
+  rewrite repeat_firstn. rewrite repeat_skipn. easy.
+Qed.
+
 Notation "l ^[ n , m ]" := (splice l n m) (at level 10).
 Notation "l ^[ n , ∞ ]" := (skipn n l) (at level 10).
 Notation "l ^[ n ]" := (splice l n (1+n)) (at level 10).

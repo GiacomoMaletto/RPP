@@ -933,7 +933,7 @@ Definition re_forward n f g :=
 
 Fixpoint convert (F : PRF) : RPP :=
   match F with
-  | ZE n => Id n
+  | ZE n => Id (1+n)
   | SU i n => conv_su i n
   | PR i n => conv_pr i n
   | CO F Gs => let (n, m) := (ARITY (CO F Gs), length Gs) in
@@ -942,11 +942,10 @@ Fixpoint convert (F : PRF) : RPP :=
     Id n ‖ (convert F) ;;
     inv (id ‖ co_loading n (map convert Gs) ;; \seq (1+m) n\)
 
-  | RE F G => let n := ARITY F in
-
-    id ‖ re_forward n (convert F) (convert G) ;;
+  | RE F G =>
+    id ‖ re_forward (ARITY F) (convert F) (convert G) ;;
     \[6;0]\ ;; inc ;; inv (\[6;0]\) ;;
-    id ‖ inv (re_forward n (convert F) (convert G))
+    id ‖ inv (re_forward (ARITY F) (convert F) (convert G))
   end.
 
 Definition anc F := pred (arity (convert F) - ARITY F).
@@ -1062,13 +1061,106 @@ Fixpoint depth (F : PRF) : nat :=
   | RE F G => max (depth F) (depth G)
   end.
 
+Lemma convert_re_def : ∀ F G, convert (RE F G) =
+  id ‖ re_forward (ARITY F) (convert F) (convert G) ;;
+  \[6;0]\ ;; inc ;; inv (\[6;0]\) ;;
+  id ‖ inv (re_forward (ARITY F) (convert F) (convert G)).
+Proof. reflexivity. Qed.
+
+Lemma convert_co_def : ∀ F Gs, convert (CO F Gs) =
+  let (n, m) := (ARITY (CO F Gs), length Gs) in
+  id ‖ co_loading n (map convert Gs) ;; \seq (1+m) n\ ;;
+  Id n ‖ (convert F) ;;
+  inv (id ‖ co_loading n (map convert Gs) ;; \seq (1+m) n\).
+Proof. reflexivity. Qed.
+
+Lemma arity_co_def : ∀ f g, arity (f ;; g) = max (arity f) (arity g).
+Proof. reflexivity. Qed.
+
+Lemma arity_pa_def : ∀ f g, arity (f ‖ g) = arity f + arity g.
+Proof. reflexivity. Qed.
+
+Lemma arity_convert_re : ∀ F G,
+  S (ARITY (RE F G)) ≤ arity (convert (RE F G)).
+Proof.
+  intros. simpl ARITY. rewrite convert_re_def.
+  rewrite arity_co_def. rewrite Nat.max_le_iff. left.
+  rewrite arity_co_def. rewrite Nat.max_le_iff. left.
+  rewrite arity_co_def. rewrite Nat.max_le_iff. left.
+  rewrite arity_co_def. rewrite Nat.max_le_iff. left.
+  rewrite arity_pa_def. simpl (arity id).
+  apply le_n_S. unfold re_forward.
+  rewrite arity_co_def. rewrite Nat.max_le_iff. left.
+  rewrite arity_co_def. rewrite Nat.max_le_iff. left.
+  rewrite arity_co_def. rewrite Nat.max_le_iff. left.
+  rewrite arity_pa_def. simpl arity. lia.
+Qed.
+
+Lemma ARITY_le_arity :
+  ∀ F d, depth F ≤ d → strict F → S (ARITY F) ≤ arity (convert F).
+Proof.
+  intros. gen F. induction d.
+  - intros. induction F.
+    + simpl. easy.
+    + unfold convert. rewrite arity_conv_su.
+      simpl. easy. inverts H0. easy.
+    + unfold convert. rewrite arity_conv_pr.
+      simpl. easy. inverts H0. easy.
+    + simpl in H. lia.
+    + apply arity_convert_re. 
+  - intros. induction F.
+    + simpl. easy.
+    + unfold convert. rewrite arity_conv_su.
+      simpl. easy. inverts H0. easy.
+    + unfold convert. rewrite arity_conv_pr.
+      simpl. easy. inverts H0. easy.
+    + destruct Gs.
+      * simpl. lia.
+      * inverts H0.
+        asserts_rewrite (ARITY (CO F (p :: Gs)) = ARITY p).
+        { apply Forall_inv in H6. easy. }
+        rewrite convert_co_def.
+        rewrite arity_co_def. rewrite Nat.max_le_iff. left.
+        rewrite arity_co_def. rewrite Nat.max_le_iff. left.
+        rewrite arity_co_def. rewrite Nat.max_le_iff. left.
+        rewrite arity_pa_def. simpl (arity id). apply le_n_S.
+        simpl co_loading. rewrite max_l.
+        rewrite arity_co_def. rewrite Nat.max_le_iff. left.
+        rewrite arity_co_def. rewrite Nat.max_le_iff. left.
+        unfold perm. simpl. rewrite arity_call. lia.
+        apply Forall_inv in H6. simpl in H6. lia.
+    + apply arity_convert_re.
+Qed.
+
+Open Scope Z.
+Goal ∀ F l x n, thesis F l x → anc F ≤ n →
+  strict F →
+  ARITY F = length l →
+  «convert F» (x :: ↑↑l ++ repeat 0 n) =
+  x + ↑(EVALUATE F l) :: ↑↑l ++ repeat 0 n.
+Proof.
+  intros. unfold thesis in H.
+  rewrite longer.
+  asserts_rewrite (
+    (x :: ↑↑ l ++ repeat 0 n) ^[ 0, arity (convert F)] =
+    (x :: ↑↑ l ++ repeat 0 (anc F)) ).
+  { rewrite !app_comm_cons. rewrite splice_app.
+    rewrite splice_all. f_equal. rewrite repeat_splice.
+    unfold anc in *. f_equal. simpl.
+    rewrite map_length. lia. simpl. rewrite map_length.
+    rewrite <- H2. lia. }
+
 Goal ∀ F Gs l,
-  strict (CO F Gs) →
-  ARITY (CO F Gs) = length l →
+  Forall (λ G, strict G) Gs →
   Forall (λ G, thesis G l 0) Gs →
+  ARITY (CO F Gs) = length l →
   «co_loading (ARITY (CO F Gs)) (map convert Gs)»
     (↑↑l ++ repeat 0%Z (anc (CO F Gs))) =
   ↑↑map (λ G, EVALUATE G l) Gs ++ ↑↑l ++ repeat 0%Z (anc (CO F Gs) - length Gs).
+Proof.
+  intros. induction Gs.
+  - simpl. autorewrite with arith_base. reflexivity.
+  - simpl co_loading.
 
   x + ↑(EVALUATE F l) :: ↑↑l ++ repeat 0 (anc F).
 
