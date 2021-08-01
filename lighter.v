@@ -1062,6 +1062,16 @@ Fixpoint depth (F : PRF) : nat :=
   | RE F G => max (depth F) (depth G)
   end.
 
+Goal ∀ F Gs l,
+  strict (CO F Gs) →
+  ARITY (CO F Gs) = length l →
+  Forall (λ G, thesis G l 0) Gs →
+  «co_loading (ARITY (CO F Gs)) (map convert Gs)»
+    (↑↑l ++ repeat 0%Z (anc (CO F Gs))) =
+  ↑↑map (λ G, EVALUATE G l) Gs ++ ↑↑l ++ repeat 0%Z (anc (CO F Gs) - length Gs).
+
+  x + ↑(EVALUATE F l) :: ↑↑l ++ repeat 0 (anc F).
+
 Lemma thesis_re : ∀ F G l x,
   thesis F l x → thesis G l x → thesis (RE F G) l x.
 Admitted.
