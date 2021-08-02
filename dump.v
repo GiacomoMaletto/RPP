@@ -334,3 +334,45 @@ Compute arity (convert MUL).
 Compute 0 + ↑(EVALUATE ADD [3;4]%nat) :: ↑↑[3;4]%nat ++ zeros (anc ADD).
 Compute arity (convert ADD).
 Compute (1 + 2 + anc ADD)%nat.
+
+
+Open Scope bool.
+Fixpoint strictb (F : PRF) : bool :=
+  match F with
+  | ZE n => true
+  | SU i n => i <? n
+  | PR i n => i <? n
+  | CO F Gs => strictb F && forallb (λ G, strictb G) Gs &&
+    (ARITY F =? length Gs) && forallb (λ G, ARITY G =? ARITY (CO F Gs)) Gs
+  | RE F G => strictb F && strictb G && (ARITY G =? 2+ARITY F)
+  end.
+
+Lemma arity_conv_co_nil : ∀ F, strict F →
+  arity (convert (CO F [])) = arity (convert F).
+Proof.
+  intros. simpl.
+  assert (H0 := ARITY_le_arity H). remember (arity (convert F)).
+  destruct n. lia. lia.
+Qed.
+
+Lemma arity_conv_co_cons : ∀ F G, strict F →
+  ARITY G + arity (convert F) ≤ arity (convert (CO F [G])).
+Admitted.
+
+  intros. destruct Gs.
+  - unfold anc. inverts H. rewrite arity_conv_co_nil.
+    assert (H0 := arity_conv_co_cons G H2). simpl ARITY.
+    rewrite max_l. rewrite <- Nat.pred_lt_mono. lia.
+    simpl convert. rewrite max_l.
+    rewrite arity_co_def. rewrite Nat.max_le_iff. left.
+    simpl. autorewrite with arith_base. segment. simpl. inverts H.
+    apply Forall_inv in H3. apply Forall_inv in H5. simpl in *. 
+  unfold anc.
+  assert (arity (convert (CO F Gs)) < arity (convert (CO F (G :: Gs)))).
+  { admit. }
+  assert (ARITY (CO F Gs) = ARITY (CO F (G::Gs))).
+  { 
+  rewrite H1.
+  assert (ARITY (CO F Gs) < arity (convert (CO F Gs))).
+  { apply ARITY_le_arity. apply strict_cons with (G:=G). easy. }
+  lia.
