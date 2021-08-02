@@ -987,7 +987,7 @@ Inductive strict : PRF → Prop :=
   | strCO F Gs :
       strict F →
       Forall (λ G, strict G) Gs →
-      length Gs ≤ ARITY F →
+      length Gs = ARITY F →
       Forall (λ G, ARITY G = ARITY (CO F Gs)) Gs →
       strict (CO F Gs)
   | strRE F G :
@@ -1071,7 +1071,7 @@ Fixpoint depth (F : PRF) : nat :=
   | ZE n => O
   | SU i n => O
   | PR i n => O
-  | CO F Gs => 1 + list_max (map depth Gs)
+  | CO F Gs => max (1+depth F) (1+list_max (map depth Gs))
   | RE F G => max (depth F) (depth G)
   end.
 
@@ -1360,6 +1360,87 @@ Proof.
   rewrite <- proposition_1. apply H4.
 Qed.
 
+Lemma thesis_co : ∀ F Gs l x,
+  (∀ x l, thesis F l x) → (Forall (λ G, ∀ x l, thesis G l x) Gs) →
+  thesis (CO F Gs) l x.
+Proof.
+  intros. unfold thesis. intros.
+  simpl convert. segment.
+  asserts_rewrite (
+    « id ‖ co_loading (list_max (map ARITY Gs)) (map convert Gs)»
+      (x :: ↑↑ l ++ repeat 0 (anc (CO F Gs))) =
+    x :: «co_loading (list_max (map ARITY Gs)) (map convert Gs)»
+      (↑↑ l ++ repeat 0 (anc (CO F Gs))) ).
+  { reflexivity. }
+  assert (
+    « co_loading (list_max (map ARITY Gs)) (map convert Gs) »
+      (↑↑ l ++ repeat 0 (anc (CO F Gs))) =
+    ↑↑map (λ G, EVALUATE G l) Gs ++ ↑↑l ++
+      repeat 0%Z (anc (CO F Gs) - length Gs) ).
+  { admit. }
+  rewrite H3.
+  asserts_rewrite (
+    « \ seq (S(length Gs)) (list_max (map ARITY Gs)) \ »
+      (x:: ↑↑ map (λ G : PRF, EVALUATE G l) Gs ++
+      ↑↑ l ++ repeat 0 (anc (CO F Gs) - length Gs)) =
+    ↑↑l ++ x::↑↑map (λ G, EVALUATE G l) Gs ++
+    repeat 0 (anc (CO F Gs) - length Gs) ).
+  { admit. }
+  asserts_rewrite (
+    « Id (list_max (map ARITY Gs)) ‖ convert F »
+        (↑↑l++x::↑↑map (λ G : PRF, EVALUATE G l) Gs ++
+        repeat 0 (anc (CO F Gs) - length Gs)) =
+    ↑↑l ++ «convert F» (x::↑↑map (λ G : PRF, EVALUATE G l) Gs ++
+        repeat 0 (anc (CO F Gs) - length Gs)) ).
+  { simpl in H2. rewrite pa_def. rewrite firstn_app_l.
+    rewrite id_def. f_equal. rewrite skipn_app_l.
+    reflexivity. rewrite map_length. easy.
+    rewrite map_length. easy. }
+  asserts_rewrite (
+    « convert F » (x:: ↑↑ map (λ G : PRF, EVALUATE G l) Gs ++
+      repeat 0 (anc (CO F Gs) - length Gs)) =
+    x+↑EVALUATE F (map (λ G : PRF, EVALUATE G l) Gs) ::
+      ↑↑ map (λ G : PRF, EVALUATE G l) Gs ++
+      repeat 0 (anc (CO F Gs) - length Gs) ).
+  { inverts H1. apply thesis_le. easy. admit. easy.
+    rewrite map_length. easy. }
+  asserts_rewrite (
+    « inv (\ seq (S (length Gs)) (list_max (map ARITY Gs)) \) »
+      (↑↑ l ++ x + ↑ EVALUATE F (map (λ G : PRF, EVALUATE G l) Gs)::
+      ↑↑ map (λ G : PRF, EVALUATE G l) Gs ++
+      repeat 0 (anc (CO F Gs) - length Gs)) =
+    x + ↑ EVALUATE F (map (λ G : PRF, EVALUATE G l) Gs) ::
+      ↑↑ map (λ G : PRF, EVALUATE G l) Gs ++ ↑↑ l ++
+      repeat 0 (anc (CO F Gs) - length Gs) ).
+  { rewrite <- proposition_1. admit. }
+  asserts_rewrite (
+    «Id 1 ‖ inv (co_loading (list_max (map ARITY Gs)) (map convert Gs)) »
+      (x + ↑ EVALUATE F (map (λ G : PRF, EVALUATE G l) Gs)::
+      ↑↑ map (λ G : PRF, EVALUATE G l) Gs ++ ↑↑l ++
+      repeat 0 (anc (CO F Gs) - length Gs)) =
+    x + ↑ EVALUATE F (map (λ G : PRF, EVALUATE G l) Gs) ::
+      «inv (co_loading (list_max (map ARITY Gs)) (map convert Gs))»
+      (↑↑ map (λ G : PRF, EVALUATE G l) Gs ++ ↑↑ l ++
+      repeat 0 (anc (CO F Gs) - length Gs)) ).
+  { reflexivity. }
+  asserts_rewrite (
+    « inv (co_loading (list_max (map ARITY Gs)) (map convert Gs)) »
+      (↑↑ map (λ G : PRF, EVALUATE G l) Gs ++ ↑↑ l ++
+      repeat 0 (anc (CO F Gs) - length Gs)) =
+    ↑↑ l ++ repeat 0 (anc (CO F Gs)) ).
+  { rewrite <- proposition_1. apply H3. }
+  reflexivity.
+Admitted.
+
+Lemma list_max_ge : ∀ l n, In n l → n ≤ list_max l.
+Proof.
+  intros. induction l.
+  - false.
+  - simpl in *. destruct H.
+    + subst. lia.
+    + apply Nat.max_le_iff. right. apply IHl. easy.
+Qed.
+
 Lemma theorem_5_le : ∀ F l x d, depth F ≤ d → thesis F l x.
 Proof.
   intros. gen F x l. induction d.
@@ -1375,17 +1456,16 @@ Proof.
     + apply thesis_ze.
     + apply thesis_su.
     + apply thesis_pr.
-    + assert (∀ G, In G Gs → thesis G l x) as HGs.
-      { intros. apply IHd.
-        simpl in H. apply le_S_n in H.
-        rewrite list_max_le in H.
-        rewrite Forall_forall in H.
-        apply H. apply in_map. assumption. }
-      admit.
+    + simpl in H. apply thesis_co.
+      apply IHd. simpl in H. lia.
+      rewrite Forall_forall. intros. apply IHd.
+      assert (depth x0 ≤ list_max (map depth Gs)).
+      { apply list_max_ge. apply in_map. easy. }
+      lia.
     + simpl in H.
       apply thesis_re.
       apply IHF1. lia. apply IHF2. lia.
-Admitted.
+Qed.
 
 Theorem theorem_5 : ∀ F l x, thesis F l x.
 Proof.
@@ -1393,142 +1473,6 @@ Proof.
 Qed.
 
 
-Lemma list_max_ge : ∀ l n, In n l → n ≤ list_max l.
-Proof.
-  intros. induction l.
-  - false.
-  - simpl in *. destruct H.
-    + subst. lia.
-    + apply Nat.max_le_iff. right. apply IHl. easy.
-Qed.
-
-Open Scope nat.
-
-Lemma strict_cons : ∀ F G Gs, strict (CO F (G :: Gs)) → strict (CO F Gs).
-Proof.
-  intros. inverts H.
-  apply strCO.
-  - easy.
-  - apply Forall_inv_tail in H3. easy.
-  - simpl in H4. lia.
-  - apply Forall_inv_tail in H5.
-    destruct Gs.
-    + simpl. easy.
-    + assert (ARITY (CO F (G :: p :: Gs)) = ARITY (CO F (p :: Gs))).
-      { simpl. assert (H6 := H5).
-        apply Forall_inv in H5. apply Forall_inv_tail in H6.
-        simpl in *. lia. }
-      rewrite H in H5. easy.
-Qed.
-
-Lemma arity_co_cons : ∀ F G Gs, Gs ≠ [] → strict (CO F (G::Gs)) →
-  ARITY (CO F Gs) = ARITY (CO F (G::Gs)).
-Proof.
-  intros. assert (H1 := strict_cons H0). inverts H0. inverts H1.
-  destruct Gs. false.
-  apply Forall_inv_tail in H7. apply Forall_inv in H7.
-  apply Forall_inv in H10. lia.
-Qed.
-
-Lemma anc_co_lt1 : ∀ F G Gs, strict (CO F (G :: Gs)) →
-  anc (CO F Gs) < anc (CO F (G :: Gs)).
-Admitted.
-
-Lemma anc_co_lt2 : ∀ F G Gs, strict (CO F (G :: Gs)) →
-  anc G < anc (CO F (G :: Gs)).
-Admitted.
-
-Open Scope Z.
-Goal ∀ F Gs l n,
-  Forall (λ G, strict G) Gs →
-  Forall (λ G, ARITY G = ARITY (CO F Gs)) Gs →
-  Forall (λ G, thesis G l 0) Gs →
-  ARITY (CO F Gs) = length l →
-  anc (CO F Gs) ≤ n →
-  «co_loading (ARITY (CO F Gs)) (map convert Gs)»
-    (↑↑l ++ repeat 0%Z n) =
-  ↑↑map (λ G, EVALUATE G l) Gs ++ ↑↑l ++ repeat 0%Z (n - length Gs).
-Proof.
-  intros. gen l n. induction Gs.
-  - intros. simpl. autorewrite with arith_base. reflexivity.
-  - intros. simpl co_loading. segment.
-    assert (list_max (map ARITY Gs) ≤ ARITY a).
-    { apply Forall_inv in H0.
-      rewrite H0. simpl. lia. }
-    simpl in H2. rewrite max_l in *.
-    pose (anc_co_lt1 F a Gs). pose (anc_co_lt2 F a Gs).
-    asserts_rewrite (
-      « \ [ARITY a] \ » (↑↑ l ++ repeat 0 n) =
-      0 :: ↑↑l ++ repeat 0 (n-1) ).
-    { unfold perm. simpl call_list. rewrite Nat.add_0_r.
-      rewrite call_def.
-      replace ((↑↑ l ++ repeat 0 n) ^[ ARITY a])
-      with [0].
-      replace ((↑↑ l ++ repeat 0 n) ^[ 0, ARITY a])
-      with (↑↑l).
-      replace ((↑↑l ++ repeat 0 n) ^[ 1 + ARITY a, ∞ ])
-      with (repeat 0 (n-1)).
-      reflexivity.
-      rewrite skipn_app. rewrite skipn_all2. rewrite app_nil_l.
-      rewrite repeat_skipn. f_equal. f_equal. rewrite map_length.
-      lia. rewrite map_length. lia.
-      rewrite splice_app. rewrite splice_all. rewrite splice_gt.
-      rewrite app_nil_r. reflexivity.
-      rewrite map_length. lia. rewrite map_length. lia.
-      rewrite splice_app. rewrite splice_all2. rewrite app_nil_l.
-      rewrite map_length.
-      replace (1 + ARITY a - length l)%nat with (1+(ARITY a - length l))%nat.
-      replace (ARITY a - length l)%nat with O.
-      rewrite splice_nth with (d:=0). f_equal.
-      generalize (anc (CO F (a :: Gs))). intros.
-      destruct n. reflexivity. reflexivity.
-      rewrite repeat_length.
-      lia. lia. lia. rewrite map_length. lia.
-      rewrite app_length. rewrite map_length.
-      rewrite repeat_length. lia. }
-    rewrite thesis_le.
-    rewrite pa_def. simpl. f_equal.
-    destruct Gs. reflexivity.
-    assert (ARITY a = ARITY p).
-    { pose (Forall_inv H0) as H5. simpl in H5.
-      pose (Forall_inv_tail H0) as H6.
-      apply Forall_inv in H6. simpl in H6.
-      lia. }
-    assert (ARITY (CO F (p::Gs)) = ARITY a).
-    { rewrite H5. apply Forall_inv_tail in H0.
-      apply Forall_inv in H0. rewrite H0. simpl. lia. }
-    remember (p::Gs) as Gs'.
-    rewrite <- H6.
-    replace (n - S (length Gs'))%nat with ((n - 1) - length Gs')%nat.
-    apply IHGs.
-    apply Forall_inv_tail in H. easy.
-    apply Forall_inv_tail in H0.
-    assert (ARITY (CO F Gs') = ARITY (CO F (a::Gs'))).
-    { simpl in *. lia. } rewrite H7. apply H0.
-    apply Forall_inv_tail in H1. easy.
-    lia. lia. lia.
-    apply Forall_inv in H1. easy.
-    lia.
-    apply Forall_inv in H. easy.
-    easy. easy. easy.
-Qed.
-
-
-apply Forall_inv_tail in H8.
-        apply Forall_inv in H8. rewrite H8. simpl. lia.
-
-
-      rewrite repeat_spec with (n:=anc (CO F (a :: Gs)))(x:=0).
-      reflexivity. apply nth_in_or_default.
-      generalize (repeat 0 (anc (CO F (a :: Gs)))). intros.
-      destruct l0. reflexivity. simpl.
-
-rewrite max_l.
-
-  x + ↑(EVALUATE F l) :: ↑↑l ++ repeat 0 (anc F).
-
-
-Admitted.
 
 
 

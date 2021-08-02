@@ -303,6 +303,22 @@ Proof.
   rewrite repeat_firstn. rewrite repeat_skipn. easy.
 Qed.
 
+Lemma firstn_app_l : ∀ X a (l l' : list X), length l = a →
+  splice (l ++ l') 0 a = l.
+Proof.
+  intros. rewrite splice_app.
+  rewrite splice_all. rewrite splice_gt.
+  simpl_list. reflexivity. lia. lia.
+Qed.
+
+Lemma skipn_app_l : ∀ X a (l l' : list X), length l = a →
+  skipn a (l ++ l') = l'.
+Proof.
+  intros. rewrite skipn_app.
+  rewrite skipn_all2.
+  replace (a - length l) with 0. reflexivity. lia. lia.
+Qed.
+
 Notation "l ^[ n , m ]" := (splice l n m) (at level 10).
 Notation "l ^[ n , ∞ ]" := (skipn n l) (at level 10).
 Notation "l ^[ n ]" := (splice l n (1+n)) (at level 10).
