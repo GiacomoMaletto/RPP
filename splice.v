@@ -319,6 +319,14 @@ Proof.
   replace (a - length l) with 0. reflexivity. lia. lia.
 Qed.
 
+Lemma splice_app_l : ∀ X a b (l l' : list X), length l = a →
+  splice (l ++ l') a b = splice l' 0 (b-a).
+Proof.
+  intros. unfold splice.
+  rewrite skipn_firstn_comm.
+  rewrite skipn_app_l. reflexivity. easy.
+Qed.
+
 Notation "l ^[ n , m ]" := (splice l n m) (at level 10).
 Notation "l ^[ n , ∞ ]" := (skipn n l) (at level 10).
 Notation "l ^[ n ]" := (splice l n (1+n)) (at level 10).
