@@ -1,0 +1,313 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Maggi Memoir Thesis (WriteLaTeX Version - Compiles with pdflatex)
+% XeLaTeX Template
+% Version 1.0 (22/12/13)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original authors:
+% Federico Maggi (fede@maggi.cc) with extensive modifications by:
+% Vel (vel@latextemplates.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+% Important note:
+% Most of the document content and packages are specified within structure.tex
+% so if you need to make modifications to the template have a look there first!
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[10pt,a4paper,twoside]{memoir} % Change font size here (allowable values are 9pt-12pt), change the paper size, specify one or two sided printing and specify whether to show trimming lines
+
+\input{structure.tex} % Include the file containing the code defining the structure and style of the document
+
+%------------------------------------------------
+% Thesis Information
+
+\title{TITOLO} % Thesis title
+
+\author{Nome Cognome} % Author name
+
+\date{Maggio 2021} % The date
+
+\newcommand{\institution}{Politecnico di torino\xspace} % University/institution name
+
+\newcommand{\department}{Dipartimento di \ldots (\textsf{DIMEA})\xspace} % Department name
+
+%------------------------------------------------
+% Fonts
+
+\renewcommand*{\acffont}[1]{{\normalsize\itshape #1}} % Font style for the acronym text (e.g. Do It Yourself)
+\renewcommand*{\acfsfont}[1]{{\normalsize\upshape #1}} % Font style for the acronym in bracket (e.g. (DIY))
+
+%------------------------------------------------
+% Hyphenations
+
+\hyphenation{a-no-ma-lous a-no-ma-ly amounts breaches} % Specify custom hyphenation points in words with dashes where you would like hyphenation to occur, or alternatively, don't put any dashes in a word to stop hyphenation altogether
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\renewcommand{\maketitlehooka}{
+\centering
+%%%%%% QUI C'È IL LOGO
+\includegraphics[width=2.5cm]{Figures/polimi-logo}\\[.5cm] % Institution logo
+\institution\\ % Print institution name
+\emph{\department}\\[.2cm] % Print department name
+CORSO DI LAUREA IN INGEGNERIA AEROSPAZIALE
+%DOTTORATO DI RICERCA IN INGEGNERIA DELL'INFORMAZIONE % Degree or other information
+\par
+\hrulefill
+\vfill}
+\renewcommand{\maketitlehookb}{\vfill}
+\renewcommand{\maketitlehookc}{
+\vfill
+\begin{flushleft}
+Advisor:\\
+\textbf{Prof. ????}\\[.3cm] % Advisor's/supervisor's name
+Tutor:\\
+\textbf{Prof. ????}\\[.3cm] % Tutor's name
+Supervisor of the Doctoral Program:\\
+\textbf{Prof. ???} % Doctoral program supervisor's name
+\end{flushleft}
+\vfill}
+\preauthor{\begin{flushright}Relazione tecnica:\\\bfseries} % Text prior \preauthor{\begin{flushright}Doctoral Dissertation of:\\\bfseries} % Text prior to the author name - right aligned and bold
+\postauthor{\end{flushright}} % After the author name, stop right alignment
+
+%----------------------------------------------------------------------------------------
+
+\makeindex % Write an index file
+
+\begin{document}
+
+\begin{titlingpage}
+\maketitle % Print the title page
+\end{titlingpage}
+
+\frontmatter % Use roman page numbering style (i, ii, iii, iv...) for the pre-content pages
+
+%----------------------------------------------------------------------------------------
+%	PREFACE
+%----------------------------------------------------------------------------------------
+%\include{preface}
+
+%----------------------------------------------------------------------------------------
+%	ABSTRACT
+%----------------------------------------------------------------------------------------
+\include{abstract}
+
+%----------------------------------------------------------------------------------------
+%	TABLE OF CONTENTS
+%----------------------------------------------------------------------------------------
+
+\include{table-contents}
+
+%----------------------------------------------------------------------------------------
+%	LIST OF FIGURES
+%----------------------------------------------------------------------------------------
+%\include{list-figures}
+
+%----------------------------------------------------------------------------------------
+%	LIST OF TABLES
+%----------------------------------------------------------------------------------------
+
+%\include{list-tables}
+
+%----------------------------------------------------------------------------------------
+%	ACRONYMS
+%----------------------------------------------------------------------------------------
+
+%\include{acronyms} % Include a List of Acronyms section using acronyms.tex where they are defined
+
+%----------------------------------------------------------------------------------------
+%	COLOPHON
+%----------------------------------------------------------------------------------------
+
+%\include{colophon}
+
+%----------------------------------------------------------------------------------------
+%	CONTENT CHAPTERS
+%----------------------------------------------------------------------------------------
+
+\mainmatter % Begin numeric (1,2,3...) page numbering
+
+\chapterstyle{thesis} % Change the style of the Chapter header to that defined in structure.tex
+
+\pagestyle{Ruled} % Include the chapter/section in the header along with a horizontal rule underneath
+
+
+%--------
+\chapter{Introduzione}
+Le citazioni come \cite{10.1109/SP.2008.11} sono nel database bibtex che  si trova nel file di nome \texttt{bibliography.bib}.
+
+
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+
+
+%%--------
+\section{I \textit{work package}}
+\label{subesection:I work package}
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+
+%%--------
+\section{Struttura della relazione}
+\label{subesection:Struttura della relazione}
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+
+%--------
+\chapter{Gli strumenti}
+\label{section:Gli strumenti} % serve per riferisi s questa sezione con \ref{section:Introduzione}
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+
+%--------
+\chapter{Sviluppo del \textit{work package}}
+\label{section:Sviluppo del work package}
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+
+%%--------
+\section{Valutazione aerodinamica della soluzione ``\textit{pod}''}
+\label{subsection:Valutazione aerodinamica della soluzione pod}
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+
+%%--------
+\section{Valutazione aerodinamica della soluzione ``fusoliera''}
+\label{subsection:Valutazione aerodinamica della soluzione fusoliera}
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+
+%%--------
+\section{Risultati}
+\label{subsection:Risultati}
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+
+%--------
+\chapter{Conclusione}
+\label{section:Conclusione}
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+Scrivi quello che vuoi e quanto vuoi. Scrivi quello che vuoi e quanto vuoi.
+
+%--------
+\include{esempi} % qui ci sono esempi di codice per tabelle, figure, etc.
+
+%\include{Chapters/introduction} % Include the introduction chapter
+%\include{Chapters/chapter1} % Include the first content chapter
+%\include{Chapters/chapter2} % Include the second content chapter
+%\include{Chapters/chapter3} % Include the third content chapter
+
+\backmatter
+
+\chapterstyle{default} % Reset the chapter style back to the default used for non-content chapters
+
+%----------------------------------------------------------------------------------------
+%	BIBLIOGRAPHY
+%----------------------------------------------------------------------------------------
+
+\bibliographystyle{plainnat} % Use the plainnat bibliography style
+
+\bibliography{bibliography} % Use the bibliography.bib file as the source of references
+
+%----------------------------------------------------------------------------------------
+%	INDEX
+%----------------------------------------------------------------------------------------
+
+\printindex % Print the index
+
+%----------------------------------------------------------------------------------------
+
+\end{document}

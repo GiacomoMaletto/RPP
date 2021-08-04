@@ -1,0 +1,204 @@
+\begin{center}
+$\vspace{1cm}$\\
+\rule{0.5\textwidth}{.4pt}\\
+{\Huge *** FILE pLuca ***}
+\end{center}
+
+\section{Commenti}
+
+\LP{}{Commenti Tecnici per LucaR} 
+
+\begin{enumerate}
+\item \LR{ Vogliamo chiamare le nuove funzioni \textbf{Reversible Primitive Permutations}? Reversible gia sott'intende calcolabili!
+MACRO-PROBLEMA: servono 2 diverse macro: una per le nuove-RPRF, una per le vecchie-RPRF. }{Fatto. C'\`e
+RPP per le nuove e RPRF per le vecchie.}
+
+\item 
+\LR{Bisogner\`a togliere il pacchetto geometry, se non vogliamo  falsificare lo stile ``elsarticle''.}{Tolto}
+
+\item Se non ricordo male, se tu che hai il brutto vizio di  cambiare nome alle label: per favore non farlo, \LR{}{OK. Per\`o: di quali label parli?}
+oppure modificalo consistentemente dappertutto (io uso fgrep sul vecchio nome-label).
+
+\item \LR{Perche vuoi forzare uno stile non-Elsevier nei titoli dei teoremi? A me sembra di navigare controcorrente inutilmente e probabilmente in maniera controproducente ...}{In effetti non volevo. Ora uso
+le varie macro \texttt{\\newtheorem}, etc. del pacchetto, come indicato nella guida }
+\item 
+Cambiamo la notazione delle finite-permutations? \LR{}{S\`i.} Io trovo la mia proposta la piu naturale: 
+\`e una abbreviazione della array-notation. \LR{}{Anche io userei quella: si rischiano meno errori di adattamento, rispetto a quello che c'\`e gi\`a scritto, e rimane molto leggibile. Non abbiamo bisogno di 
+tutta la compressione notazionale della cyclic notation. Per\`o ora non la faccio.}
+
+\item \LR{Al posto di $f^*$ mettiamo $f^{-1}$ che viene normalmente usato per invertire le permutazioni? (In quantum c'e qualche alternativa ... ). }{Fatto.}
+\end{enumerate}
+
+
+\LP{}{Commenti per LucaP} 
+
+\LR{}{Ho messo i commenti che (secondo te) erano pr te, nella Section~\ref{section:Some recursion theoretic side effects of RPP}}
+
+
+\section{Proposte di Aggiunta}
+
+\LR{Propongo di aggiungere la Proposition seguente dopo la Proposition \ref{proposition:Relating rprSComName and rprPComName}}
+{Fatto. Ho tolto il testo da qui sotto e l'ho messo dove scritto.}
+
+\LR{I seguenti teoremi potrebbero andare nell'introduzione. }{Fatto. Ho messo il testo che seguiva nella intro.}
+
+\section{Expresiveness of *SLR}
+
+
+We show how to simulate  \rprIfName in the programming language $\ESRL$.
+%The \rprIfName of one among $ f, g $ and $ h $ is $ \rprIf{}{}{f}{g}{h} $, it belongs to $\RPRF^{k+1}$ and is such that:
+%$\mathtt{INC}$ $$\mathtt{FOR}\ r_i\ \mathtt{\{} P \mathtt{ \} }$$
+
+
+In the following, we will use some special registers that are safely hidden w.r.t. the program input/output. More precisely, we consider registers that are used by the programmer as temporary stores: we assume that these registers are suitably initialized by the programmer, not by the program user.
+We do not want undefined programs, thus we assume a programmer duty to restore the input in each hidden register before the computation ends (thus, hidden registers are still hidden registers when a computation is reverted). If a program contain an hidden variable and does not respect the above assumption then the variable is not an hidden one. While register are ranged over $r$ with or without index and/or apex, for sake of simplicity we denote hidden registers by special letters. A list of useful hidden register is the following.
+\begin{description}
+\item[Zero registers] are registers initialized to zero (at the beginning of the computation and restored to zero before the program ends). 
+We range over them by $z$ with or without index and/or apex.
+\item[Logical Pairs] are pairs of registers initialized to $0,1$ respectively at the beginning of the computation.
+We range over them by a pair of indexed letters $b_0,b_1$ with or without the same apex, e.g. $b'_0,b'_1$ and $b^3_0,b^3_1$ are two different logical register pairs.
+\end{description}
+
+
+\subsection*{Selection emulation}
+Our aim is to define a program driven by the register $r_0$ that must operate a selection between three programs $P1, P2$ and $ P3$ (that cannot modify $r_0$).  W.l.o.g. we assume that $\mathtt{P1}, \mathtt{P2}$ and $ \mathtt{P3}$ do not affect our hidden registers.
+We describe our solution by incrementally providing  and discussing pieces of code.
+
+We start by checking if $r_0$ is a positive or not. 
+If $r_0$ is a positive odd number then the goal is reached by the instruction in line 1 of the next code.  
+If $r_0$ is a positive even number then, the instruction in line 1, became as the identity.
+We circumvent the even case, by verifying the if the successor of  $r_0$  is a positive odd number.\\
+ 
+
+\newcounter{rowcount}
+\setcounter{rowcount}{0}
+  \begin{tabular}{@{\stepcounter{rowcount}{\tiny\therowcount}\hspace*{3mm}}l}
+    $\mathtt{FOR}\,r_0\{ \mathtt{SWAP} (b_0,b_1);   \mathtt{FOR}\,b_0\{ \mathtt{INC}\, z^{+}_0 \}; \mathtt{FOR}\,b_1\{ \mathtt{DEC}\, z^{+}_0 \}  \}$\\
+\loopComment{ if $r_0$ is even then the above instructions leave all registers unchanged;
+ if $r_0$ is odd then the logical pair $b_0,b_1$ is inverted and $z^{+}_0$ is modified:
+ (i) if $r_0 \geq 0$ then $z^{+}_0$ became $+1$, (ii) if $r_0 < 0$ then $z^{+}_0$ became $-1$.  }\\
+$\mathtt{FOR}\,b_1\{ $  \qquad \loopComment{ This code is executed only if $r_0$ is even} \\
+ $\hspace{11mm}\mathtt{INC}\, r_0;$ \qquad\loopComment{ we consider the (odd) successor of $r_0$} \\
+ $\hspace{11mm} \mathtt{FOR}\,r_0\{ \mathtt{SWAP} (b'_0,b'_1);   \mathtt{FOR}\,b'_0\{ \mathtt{INC}\, z^{+}_0 \}; \mathtt{FOR}\,b'_1\{ \mathtt{DEC}\, z^{+}_0 \}  \};$\\
+$\hspace{11mm}$\loopComment{ If $r_0+1 \geq 0$ then $z^{+}_0$ became $+1$, otherwise became $-1$.  }\\
+$\hspace{11mm} \mathtt{DEC}\, r_0 \}$\\
+\loopComment{  Indipendently from the parity of $r_0$, if $r_0 \geq 0$ then $z^{+}_0=+1$ otherwise  $z^{+}_0=-1$; moreover, one of the two used logical pairs is inverted. }\\
+$\mathtt{FOR}\,b_1\{  $  \qquad \loopComment{ This code is executed only if $r_0$ is even} \\
+$\hspace{11mm} \mathtt{SWAP} (b'_0,b'_1);\}$ \loopComment{ restore the logical pair to its starting value}\\[5mm]
+\end{tabular}
+
+At the end of the above pieces of code we reach the following situation: (i) $r_0$ is unchanged; (ii)  if $r_0$ is even then the pair $b_0,b_1$ is unchanged, otherwise is inverted;
+(iii) the pair $b'_0,b'_1$ is unchaged;  (iv) if $r_0\geq 0$ then $z^{+}_0$ contains $+1$, otherwise $z^{+}_0$ contains $-1$.
+
+Next steps is the dual, in some sense: if $r_0\leq 0$ we aim to put $+1$ in a hidden variable $z^{-}_0$, otherwise $-1$. Sometimes we re-use available information.\\
+
+\begin{tabular}{@{\stepcounter{rowcount}{\tiny\therowcount}\hspace*{3mm}}l}
+$\mathtt{FOR}\,b_0\{ $  \qquad \loopComment{This code is executed only if $r_0$ is odd} \\
+ $\hspace{11mm}\mathtt{FOR}\,r_0\{\mathtt{SWAP} (b'_0,b'_1);\mathtt{FOR}\,b'_0\{\mathtt{DEC}\, z^{-}_0 \};\mathtt{FOR}\,b'_1\{\mathtt{INC}\, z^{-}_0 \}\}$\\
+$\hspace{11mm}$\loopComment{ If $r_0 \leq 0$ then $z^{-}_0$ became $+1$, otherwise became $-1$.  }\\
+$\hspace{11mm}\}$\\
+$\mathtt{FOR}\,b_1\{ $  \qquad \loopComment{This code is executed only if $r_0$ is even} \\
+ $\hspace{11mm}\mathtt{DEC}\, r_0;$\\
+$\hspace{11mm} \mathtt{FOR}\,r_0\{  \mathtt{SWAP} (b'_0,b'_1); \mathtt{FOR}\,b'_0\{ \mathtt{DEC}\, z^{-}_0 \}; \mathtt{FOR}\,b'_1\{ \mathtt{INC}\, z^{-}_0 \} \};$\\
+$\hspace{11mm} \mathtt{INC}\, r_0;$\\
+$\hspace{11mm}$\loopComment{ If $r_0 \leq 0$ then $z^{-}_0$ became $+1$, otherwise became $-1$.  }\\
+$\hspace{11mm}\}$\\
+$\mathtt{SWAP} (b'_0,b'_1);$ \qquad\loopComment{ Restore the logical pair to $0,1$ }\\[5mm] 
+  \end{tabular}
+
+At the end of the above pieces of code we reach the following situation: (i) $r_0$ is unchanged; (ii)  if $r_0$ is even then the pair $b_0,b_1$ is unchanged, otherwise is inverted;
+(iii) the pair $b'_0,b'_1$ is unchanged;  (iv) if $r_0\geq 0$ then $z^{+}_0$ contains $+1$, otherwise contains $-1$, (v) if $r_0\leq 0$ then $z^{-}_0$ contains $+1$, otherwise contains $-1$.
+
+\medskip
+
+We are ready to realize a selection agreeing with that of Definition \ref{RevPrimPermutations} by combining  information in $z^{+}_0$ and $z^{-}_0$, 
+summarized in the next table
+$$\begin{array}{r||c|c|c|}
+  r & \leq 0 & = 0 & \geq 0 \\
+\hline
+z^{+}_0 & +1 & +1 & -1 \\
+z^{-}_0 & -1 & +1 & +1 \\
+\hline\hline
+ z^{+}_0 + z^{-}_0 & 0 & +2 & 0\\
+ z^{+}_0 - z^{-}_0 +1 & +3 & 1 & -1\\
+z^{-}_0 - z^{+}_0 +1 & -1 & 1 & +3\\
+\end{array}$$
+
+
+The case ``$r_0$ is zero'' is based on the fact that $z^{+}_0+z^{-}_0=0$ whenever $r_0\neq 0$, otherwise is $z^{+}_0+z^{-}_0=2$.
+%To record this sum we use an extra zero-variable $z^*_0$.
+The integer-division allow us two executes $\mathtt{P1}$ when and only when $r_0= 0$.\\
+
+
+\begin{tabular}{@{\stepcounter{rowcount}{\tiny\therowcount}\hspace*{3mm}}l}  
+$\mathtt{FOR}\,z^{-}_0 \{\mathtt{INC}\, z^+_0 \};$\qquad \loopComment{Put in $z^{+}_0$ the sum of $z^{+}_0$ and $z^{-}_0$} \\
+$\mathtt{FOR}\,z^{+}_0\{\mathtt{SWAP}(b'_0,b'_1);\mathtt{FOR}\,b'_0\{ \mathtt{P1} \} \};$ \qquad\loopComment{ $\mathtt{P1}$ is executed once iff $r_0=0$}\\
+$\mathtt{FOR}\,z^{-}_0 \{\mathtt{DEC}\, z^+_0 \};$\qquad \loopComment{Restore $z^{+}_0$ to its previous value} \\[5mm]
+\end{tabular}
+
+At the end of the above pieces of code the content of our control-register (i.e. $r_0$, $b_0,b_1$, $b'_0,b'_1$, $z^{+}_0$ and $z^{-}_0$) is not chaged w.r.t. the starting situation. If $\mathtt{P1}$ has been executed then, it could affect without restriction all other  registers available to our program.
+
+In order to implement the selection of $\mathtt{P2}$ when and only when $r_0\geq 0$, 
+we use $ z^{+}_0 - z^{-}_0 +1$ and a trick on a logical pair. We observe the second component of the pair after one and three swapping.
+If swap of a logical pair (initialized to $0,1$) is executed one time then the second component become (definitively) $0$. 
+If swap of a logical pair (initialized to $0,1$) is executed three times, then the second component become $1$ only after the second swap.\\
+
+\begin{tabular}{@{\stepcounter{rowcount}{\tiny\therowcount}\hspace*{3mm}}l}  
+$\mathtt{FOR}\,z^{-}_0 \{\mathtt{DEC}\, z^+_0 \}; \mathtt{INC}\, z^+_0;$\qquad \loopComment{$ z^{+}_0 - z^{-}_0 +1$ is stored in $z^{+}_0$} \\
+$\mathtt{FOR}\,z^{+}_0\{\mathtt{SWAP}(b'_0,b'_1);$\qquad\loopComment{This swap is executed 1 or 3 times}\\ 
+$\hspace{11mm}\mathtt{FOR}\,b'_1\{ \mathtt{P1} \};$ \qquad\loopComment{ the test of $b'_1$ came across $1$ only if the swap is executed $3$ times}\\
+$\hspace{11mm} \};$ \qquad\loopComment{ $\mathtt{P2}$ is executed once iff $r_0\geq 0$}\\
+$\mathtt{SWAP}(b'_0,b'_1);$\qquad \loopComment{Restore  the pair $(b'_0,b'_1)$ to $0,1$ } \\
+$\mathtt{DEC}\, z^+_0; \mathtt{FOR}\,z^{-}_0 \{\mathtt{INC}\, z^+_0 \}; $\qquad \loopComment{Restore $z^{+}_0$ to its previous value} \\[5mm]
+\end{tabular}
+
+At the end of the above pieces of code, the situation of our control-register is not changed (it has been carefully restored).  
+If $\mathtt{P2}$ has been executed then it could affect without restriction all other  registers available to our program.
+In order to implement the selection of $\mathtt{P3}$ when and only when $r_0\leq 0$, we adapt the same trick.\\
+
+\begin{tabular}{@{\stepcounter{rowcount}{\tiny\therowcount}\hspace*{3mm}}l}  
+$\mathtt{FOR}\,z^{+}_0 \{\mathtt{DEC}\, z^-_0 \}; \mathtt{INC}\, z^-_0;$\qquad \loopComment{$ z^{-}_0 - z^{+}_0 +1$ is stored in $z^{-}_0$} \\
+$\mathtt{FOR}\,z^{-}_0\{\mathtt{SWAP}(b'_0,b'_1);\mathtt{FOR}\,b'_1\{ \mathtt{P3} \} \};$ \qquad\loopComment{ $\mathtt{P3}$ is executed once iff $r_0\leq 0$}\\
+$\mathtt{SWAP}(b'_0,b'_1);$\qquad \loopComment{Restore  the pair $(b'_0,b'_1)$ to $0,1$ } \\
+$\mathtt{DEC}\, z^-_0; \mathtt{FOR}\,z^{+}_0 \{\mathtt{INC}\, z^-_0 \}; $\qquad \loopComment{Restore $z^{-}_0$ to its previous value} \\[5mm]
+\end{tabular}
+
+At the end of the above pieces of code, the situation of our control-register is not changed (it has been carefully restored). 
+Patently, if $\mathtt{P2}$ has been executed then it could affect without restriction all other  registers available to our program.
+We remind the following situation: (i) $r_0$ is unchanged; (ii)  if $r_0$ is even then the pair $b_0,b_1$ is unchanged, otherwise is inverted;
+(iii) the pair $b'_0,b'_1$ is unchanged;  (iv) if $r_0\geq 0$ then $z^{+}_0$ contains $+1$, otherwise contains $-1$, (v) if $r_0\leq 0$ then $z^{-}_0$ contains $+1$, otherwise contains $-1$.
+
+In order to conclude our program, we must correctly restore all our hidden variables. We start by restoring $z^{+}_0,z^{-}_0$ by using the parity information (about $r_0$) stored in the logical pair $b_0,b_1$. First, we consider the case $r_0$ is odd.\\
+
+\begin{tabular}{@{\stepcounter{rowcount}{\tiny\therowcount}\hspace*{3mm}}l}
+$\mathtt{FOR}\,b_0\{ $  \qquad \loopComment{This code is executed only if $r_0$ is odd} \\
+ $\hspace{11mm}\mathtt{FOR}\,r_0\{\mathtt{SWAP} (b'_0,b'_1);\mathtt{FOR}\,b'_0\{\mathtt{DEC}\, z^{+}_0 \};\mathtt{FOR}\,b_1\{\mathtt{INC}\, z^{+}_0\}  \};$\\
+$\hspace{11mm}\mathtt{SWAP} (b'_0,b'_1);$\qquad\loopComment{ Restore the logical pair to $0,1$ }\\
+ $\hspace{11mm}\mathtt{FOR}\,r_0\{\mathtt{SWAP} (b'_0,b'_1);\mathtt{FOR}\,b'_0\{\mathtt{INC}\, z^{-}_0 \};\mathtt{FOR}\,b'_1\{\mathtt{DEC}\, z^{-}_0 \}\};$\\
+$\hspace{11mm}\mathtt{SWAP} (b'_0,b'_1);$\qquad\loopComment{ Restore the logical pair to $0,1$ }\\
+$\hspace{11mm}\}$\\[5mm]
+ \end{tabular}
+
+If $r_0$ is odd then all register contents, but the logical pair $b_0,b_1$, have been re-establish to the program-starting situation.
+We consider the case $r_0$ is even.\\
+
+\begin{tabular}{@{\stepcounter{rowcount}{\tiny\therowcount}\hspace*{3mm}}l}
+$\mathtt{FOR}\,b_1\{ $  \qquad \loopComment{This code is executed only if $r_0$ is even} \\
+$\hspace{11mm}\mathtt{INC}\, r_0;$\qquad \loopComment{we are driven by the successor of $r_0$}\\
+ $\hspace{11mm}\mathtt{FOR}\,r_0\{  \mathtt{SWAP} (b'_0,b'_1); \mathtt{FOR}\,b'_0\{ \mathtt{DEC}\, z^{+}_0 \}; \mathtt{FOR}\,b'_1\{ \mathtt{INC}\, z^{+}_0 \} \};$\\
+$\hspace{11mm}\mathtt{SWAP} (b'_0,b'_1);$\qquad\loopComment{ Restore the logical pair to $0,1$ }\\
+$\hspace{11mm}\mathtt{DEC}\, r_0 ; \mathtt{DEC}\, r_0;$ \qquad \loopComment{ we are driven by the predecessor of $r_0$ }\\
+ $\hspace{11mm} \mathtt{FOR}\,r_0\{  \mathtt{SWAP} (b'_0,b'_1); \mathtt{FOR}\,b'_0\{ \mathtt{INC}\, z^{-}_0 \}; \mathtt{FOR}\,b'_1\{ \mathtt{DEC}\, z^{-}_0 \} \};$\\
+$\hspace{11mm}\mathtt{SWAP} (b'_0,b'_1);$\qquad\loopComment{ Restore the logical pair to $0,1$ }\\
+$\hspace{11mm}\mathtt{INC}\, r_0;$\\
+$\hspace{11mm}\}$\qquad \loopComment{ we restore $r_0$ }\\[5mm] 
+  \end{tabular}
+
+The control register situation is the following: (i) $r_0$ is unchanged; (ii)  if $r_0$ is even then the pair $b_0,b_1$ is unchanged, otherwise is inverted;
+(iii) the pair $b'_0,b'_1$ is unchanged;  (iv) $z^{+}_0$ contains $0$; (v)  $z^{-}_0$ contains $0$.
+
+Finally, we restore the logical $b_0,b_1$ to $0,1$. The trick is that the double of each number is even, so swapping $r_0$ times more the logical pair we can restore its original value.\\
+
+\begin{tabular}{@{\stepcounter{rowcount}{\tiny\therowcount}\hspace*{3mm}}l}
+$\mathtt{FOR}\,r_0\{ \mathtt{SWAP} (b'_0,b'_1) \}$\\[5mm] 
+ \end{tabular}

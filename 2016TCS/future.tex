@@ -1,0 +1,103 @@
+\section{Future work}
+\label{section:Related and future work}
+We briefly discuss some of the possible directions we can follow to develop this work.
+
+The formalization of $ \RPP $ adhere to a standard recursion theory approach to identify computational classes.
+We see $ \RPP $ as a formalism which lies at the same level of abstraction as the imperative programming languages
+$ \mathsf{SRL}$, and similar, that Matos introduces for dealing with reversible computations \cite{matos03tcs,matos2016notes}.
+So, we are focused on aspects more closely related to the design of paradigmatic programming languages. 
+For example, an open question is whether $ \RPP $ and $ \mathsf{SRL} $ are equivalent.
+Answering it amounts to show that the selection --- a built-in axiom of $ \RPP $ --- can be simulated in $ \mathsf{SRL} $.
+
+Despite $ \RPP $ is not a real programming language it can be a good place to start from for conceiving one. 
+Even though the design of $ \RPP $ does not start with the aim of computing with isomorphisms among types,
+like the point-free languages of \cite{James2014TheseusAH,10.1007/978-3-540-27764-4_16}, most of the programming examples 
+we give with it are point-free, especially when we iterate or select functions. 
+Moreover, multiple input and output arity can be at the base of the representation and manipulation of immutable data structures 
+like arrays. In the lines of \cite{thomsen2015lncs}, no obstacle seems to exist against the introduction of primitives that 
+hide ancillae with the aim of simplifying programming.
+Finally, $ \RPP $ looks flexible enough to incorporate specific bijections with different input and output arity
+like in \cite{DBLP:conf/rc/YokoyamaAG11}. This would extend $ \RPP $ to a class of functions which are not necessarily 
+permutations.
+
+%Thirdly, of course, we are working on a natural extension of $ \RPP $ which is complete
+%with respect to Kleene partial recursive functions.
+
+On the model theoretic point of view, it is obvious that $ \RPP $ and \LP{of}{} Lafont's circuit classes in \cite{Lafont2003257} 
+share the same construction principles. Besides basic functions and two composition schemes, $ \RPP $ has iteration 
+and selection schemes by means of which, for example, we can give compressed descriptions of Lafont's circuits.
+%It follows that models of $ \RPP $ are instances of monoidal categories with 
+%natural numbers as objects, and whose maps compose by means of series and parallel compositions. 
+%\todo{Questions 2 and 3. \#Editor (spostato qui come da ipotesi iniziale.)}
+Since $ \RPP $ is $ \PRF $-complete a relation with Burroni's category of primitive recursive functions 
+in \cite{burroni1986} has to exist. Formalizing it will require to investigate \LP{on}{} the link between the formalizations of 
+the natural numbers that the two approaches pursue. The categorical approach in \cite{burroni1986} relies on a
+Peano-Lawvere axiom \cite{Lawvere1506}. Instead, $ \RPP $ see numbers in a Peano style,
+even though $ \RPP $ does not contain any function which is constantly equal to 0.
+
+Of course, the categorical structure in \cite{burroni1986} is not the only one we can focus on
+to say what a model of $ \RPP $ is. Models of $ \RPP $ might well be instances of reversible $ \mathsf{PRO} $ already used
+to study feedback-free reversible circuits \cite{burroni1986,burroni1993tcs,lafont1995rta,Lafont2003257,lafont2013sc}.
+Also, we would not be surprised we could use the category $ \mathsf{PInj} $ of sets and functional injective relations as model
+of $ \RPP $, already used in \cite{paolini2017lipics} as a model of $ \mathsf{Janus} $, a reversible imperative programming language 
+\cite{Lutz86,Yokoyama:2007:RPL:1244381.1244404}.
+
+Finally there is a quite close resemblance between the stack mechanism we implement to show that $ \RPP $ is $ \PRF $-complete
+and the pebble game used to assess how efficient the simulation of a reversible computation by means of an irreversible one is
+\cite{li1996royal,bennett1989siamjc}. Given that $ \RPP $ suggests a programming style where a computation can be undone as 
+soon as the result it produces is at hand, and observing that information is piled up by coding it numerically, 
+we plan to study if this features keep the overhead of the $ \PRF $ simulation by means of $ \RPP $ within an
+interesting range of space complexity.
+
+%[Vitani] We conjectured that all reversible simulations of
+%an irreversible computation can essentially be represented as the pebble game
+%de ned below, and that consequently the lower bound of Corollary 2 applies
+%to all reversible simulations of irreversible computations.
+	
+%	\item [\textbf{Lafont}] %%% From Lafont
+%	Boolean circuits are used to represent programs on nite data. Reversible Boolean circuits and
+%	quantum Boolean circuits have been introduced to modelize some physical aspects of compu-
+%	tation. Those notions are essential in complexity theory, but we claim that a deep mathematical
+%	theory is needed to make progress in this area. For that purpose, the recent developments of
+%	knot theory is a major source of inspiration.
+%	Following the ideas of Burroni, we consider logical gates as generators for some algebraic
+%	structure with two compositions, and we are interested in the relations satis3ed by those gen-
+%	erators. For that purpose, we introduce canonical forms and rewriting systems. Up to now, we
+%	have mainly studied the basic case and the linear case, but we hope that our methods can be
+%	used to get presentations by generators and relations for the (reversible) classical case and for
+%	the (unitary) quantum case.
+%	
+	
+	
+%	%%% Yokoyama
+%	\item [\textbf{Yokoyama}]
+%	\cite{DBLP:conf/rc/YokoyamaAG11}
+%	For exploring the theoretical foundations of reversible computing, we focus on
+%	a purely-reversible and side-effect free first-order functional language. There exist
+%	several imperative and pseudo-functional reversible languages. As far as we know,
+%	Janus [12,20] is the first reversible language, and is imperative. We regard Gries'
+%	invertible language [11], R and PISA [8] as also belonging to this category. Baker
+%	proposed Ψ-Lisp [4], reversible linear Lisp; due to the use of a state and a hidden
+%	history stack, it is neither purely reversible nor purely functional. Mu, Hu, and
+%	Takeichi proposed INV [16], a point-free functional language with relational se-
+%	mantics, which essentially includes both forward and backward nondeterminism.
+%	Bowman, James, and Sabry have proposed Π [6], another point-free reversible
+%	functional language. Because of the nature of point-free languages, these do not
+%	have powerful pattern matching, so e.g. overlapping branch patterns in loops is
+%	prohibited. While the above examples all have reversible language features, a
+%	main contribution here is to separate reversibility in functional languages from
+%	other features.
+	
+
+%\todo{Citare pebble games, semantica dei giochi, geometria dell'interazione altre parrocchie.
+%	Referenze pebble games \cite{li1996royal} and among others  \cite{buhrman2001JPh,li1998pdnp}.
+%	Dobbiamo ricollegarci al nostro precedente lavoro \cite{paolini2017lipics} sulla semantica categoriale.
+%}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%% servono ad emacs
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main.tex"
+%%% ispell-local-dictionary: "american"
+%%% End:

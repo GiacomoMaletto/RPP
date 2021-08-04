@@ -1,0 +1,148 @@
+% Template article for preprint document class `elsarticle'
+% SP 2006/04/26
+
+\documentclass{elsarticle}
+%\documentclass[doublespacing]{elsart1p}
+
+% Use the option doublespacing or reviewcopy to obtain double line spacing
+% \documentclass[doublespacing]{elsarticle}
+
+% if you use PostScript figures in your article
+% use the graphics package for simple commands
+% \usepackage{graphics}
+% or use the graphicx package for more complicated commands
+% \usepackage{graphicx}
+% or use the epsfig package if you prefer to use the old commands
+% \usepackage{epsfig}
+
+% The amssymb package provides various useful mathematical symbols
+%\usepackage{amssymb}
+\input{preambolo-class}
+\input{macro}
+
+% The lineno packages adds line numbers. Start line numbering with
+% \begin{linenumbers}, end it with \end{linenumbers}. Or switch it on
+% for the whole article with \linenumbers.
+% \usepackage{lineno}
+%\usepackage{lineno,hyperref}
+% \linenumbers
+\begin{document}
+
+\begin{frontmatter}
+
+% Title, authors and addresses
+
+% use the thanksref command within \title, \author or \address for footnotes;
+% use the corauthref command within \author for corresponding author footnotes;
+% use the ead command for the email address,
+% and the form \ead[url] for the home page:
+% \title{Title\thanksref{label1}}
+% \thanks[label1]{}
+% \author{Name\corauthref{cor1}\thanksref{label2}}
+% \ead{email address}
+% \ead[url]{home page}
+% \thanks[label2]{}
+% \corauth[cor1]{}
+% \address{Address\thanksref{label3}}
+% \thanks[label3]{}
+
+\title{A class of Recursive Permutations
+\\ which is Primitive Recursive complete}
+%%%A class of Reversible Primitive Permutations \\ which is Primitive Recursive complete (and sound)}
+
+\author[unito]{Luca~Paolini}
+\ead{paolini@di.unito.it, luca.paolini@unito.it}
+\ead[urlpa]{http://www.di.unito.it/~paolini}
+\author[unito]{Mauro~Piccolo}
+\ead{piccolo@di.unito.it, mauro.piccolo@unito.it}
+\ead[urlpi]{http://www.di.unito.it/~piccolo}
+\author[unito]{Luca~Roversi}
+\ead{roversi@di.unito.it, luca.roversi@unito.it}
+\ead[urlr]{http://www.di.unito.it/~rover}
+
+\address[unito]{Dipartimento di Informatica -- Universit\`a di Torino}
+
+\begin{abstract}
+
+We focus on total functions in the theory of reversible computational models.
+We define a class of recursive permutations, dubbed
+Reversible Primitive Permutations ($ \RPP $) which are
+computable invertible total endo-functions on integers, 
+so a subset of total reversible computations.
+$ \RPP $ is generated from five basic functions (identity, 
+sign-change, successor, predecessor, swap),
+two notions of composition (sequential and parallel), one functional iteration 
+and one functional selection.
+$ \RPP $ is closed by inversion and it is expressive enough to encode Cantor pairing and the whole 
+class of Primitive Recursive Functions.
+\end{abstract}
+
+\begin{keyword}
+Reversible Computation \sep  Unconventional Computing Models \sep Computable Permutations 
+\sep Primitive Recursive Functions \sep Recursion Theory.
+%\PACS code \sep code \PACS 
+\end{keyword}
+\end{frontmatter}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{introduction}
+\input{rppDefinition}
+\input{rppGeneralization}
+\input{rppLibrary}
+\input{rppPairing}
+\input{rppExpressiveness}
+\input{rppReflections}
+\input{future.tex}
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+\bibliographystyle{abbrv}
+%\bibliographystyle{myrefs}
+%\bibliographystyle{alphaurl}
+%\bibliographystyle{rsl}
+\section*{\refname}
+\bibliography{bibliography}
+
+
+%\begin{thebibliography}{00}
+
+% \bibitem{label}
+% Text of bibliographic item
+
+% notes:
+% \bibitem{label} \note
+
+% subbibitems:
+% \begin{subbibitems}{label}
+% \bibitem{label1}
+% \bibitem{label2}
+% If there is a note, it should come last:
+% \bibitem{label3} \note
+% \end{subbibitems}
+
+%\bibitem{}
+
+%\end{thebibliography}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% The Appendices part is started with the command \appendix;
+% appendix sections are then done as normal sections
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%\input{appendix}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+%\input{pluca.tex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+
+\end{document}

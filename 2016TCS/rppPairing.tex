@@ -1,0 +1,265 @@
+\section{Cantor pairing functions}
+\label{section:Cantor pairing}
+Pairing functions provide a mechanism to uniquely encode two natural numbers into a 
+single natural number \cite{rosenberg2009book}. 
+We show how to represent Cantor pairing functions as functions of $\RPP$ 
+restricted on natural numbers,
+albeit it is possible to re-formulate the pairing function on integers (see \cite{PaoliniPiccoloRoversiICTCS2015}.)
+
+\begin{definition}\label{grishpan}
+Cantor pairing is a pair of isomorphisms $ \CP: \Nat^2 \longrightarrow \Nat $ and 
+$ \CU: \Nat \longrightarrow \Nat^2 $ which embed $ \Nat^2 $ into $ \Nat$:
+\begin{align}
+\label{align: CP definition}
+\CP(x,y) = \, & x + \sum_{i=0}^{x+y} i\\
+\nonumber
+\CU(z) =\, &  \left\langle z - \sum_{i=0}^{k - 1} i\;\pmb,\;(k - 1) 
+                          - (z - \sum_{i=0}^{k - 1} i)
+                          \right\rangle 
+         % \text{ such that }
+         %  \left\{ \begin{array}{l}
+         %    x = z - (\sum_{i=0}^{k - 1} i),\\
+         % y = (k - 1) - x
+         %  \end{array} \right.
+\ \  \begin{minipage}{.4\linewidth}
+ where $k$  is the least value s.t. 
+$k \leq z$ and  $z < \sum_{i=0}^{k} i$.
+  \end{minipage}
+\end{align}
+%\todo{\texttt{http://www.math.drexel.edu/~tolya/cantorpairing.pdf}}
+\end{definition}
+
+The pairing functions in the above Equation~\eqref{align: CP definition} rely on the notion of triangular number $T_n= \sum_{i=0}^{n} i$, for any $ n\in\Nat $.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{lemma}
+\label{lemma:triangular number}
+For every $ x_1, x_2 $ and $ x_3 \in\mathbb{N}$, the two following functions exist:
+$$\arraycolsep=1.4pt
+\begin{array}{rcl}
+\left. {\scriptsize \begin{array}{r} x_1\\ x_2 \end{array}} \right[
+& \operatorname{T2} &
+\left] {\scriptsize \begin{array}{l} x_1 + 1\\ x_2+x_1+1 \end{array} } \right.
+\end{array}\qquad
+\arraycolsep=1.4pt
+\begin{array}{rcl}
+\left. {\scriptsize \begin{array}{r} x_1\\ x_2\\ x_3 \end{array}} \right[
+& \operatorname{T3} &
+\left] {\scriptsize \begin{array}{l} x_1\\ x_2 + x_1\\ x_3 + x_2 x_1 + \sum^{x_1}_{i=0} i \end{array} } \right. 
+\enspace .
+\end{array}$$
+and belong to $ \RPP^2 $ and $ \RPP^3 $, respectively.
+\end{lemma}
+\begin{proof}
+Let $\operatorname{T2} $ be $\rprSCom{\rprSucc^2_1} {\rprInc^2_{1;2}}$
+and let $\operatorname{T3}\in\RPP^3 $ be $\rprIt{3}{1,\langle 2,3\rangle}{\operatorname{T2}}$.
+The result is immediate because we are interested in the behaviour of the operator only on positive numbers,
+viz.  $ x_1, x_2 , x_3 \in\mathbb{N}$.
+\end{proof}
+
+We shall systematically neglect to specify the relational behavior of
+the coming definitions of functions on negative input values.
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%++++++++++++++++++++++++
+\begin{theorem}%[$ \CP: \Nat^2 \longrightarrow \Nat $ and Triangular numbers in $ \RPP $]
+\label{theorem:CP in RPP}
+For every $x\in\mathbb{N}$, the following function is in $\RPP^4$:
+\begin{align*}
+%\arraycolsep=1.4pt
+%\begin{array}{rcl}
+% \left. {\scriptsize \begin{array}{r} x\\ 0\\[0.75mm] 0 \end{array}} \right[
+% & \operatorname{Tn} &
+% \left] {\scriptsize \begin{array}{l}
+%                       x\\ 0\\[0.75mm] (\sum^{x}_{i=0} i) \\
+%                     \end{array} } \right.
+%\end{array}
+%&\textrm{ and }&
+\arraycolsep=1.4pt
+\begin{array}{rcl}
+ \left. {\scriptsize \begin{array}{r} x\\ y\\[1mm] 0\\[1mm] 0  \end{array}} \right[
+ & \CP &
+ \left] {\scriptsize \begin{array}{l}
+                       x\\ y\\[1mm]  (\sum^{x+y}_{i=0} i ) + x\\[0.75mm] 0
+                     \end{array} } \right.
+\end{array}
+\enspace .
+\end{align*}
+\end{theorem}
+\begin{prf}
+Let $\CP$ be 
+$\rprInc^{4}_{1;2} \rprSeq\rprInc^{4}_{1;4} \rprSeq \rprSwap{4}{1,2,3,4}{2,3,1,4} 
+  \rprSeq (\rprPCom{\operatorname{T3}}{\rprId}) \rprSeq \rprDec^4_{1;2} \rprSeq 
+  \rprSwap{4}{1,2,3,4}{4,1,3,2} \rprSeq \rprDec^4_{1;2}$.
+\qed
+\end{prf}
+
+We now turn to representing $ \CU $. The computation of the difference between a given $ z $ and the triangular number
+	$ \sum_{i=0}^{k} i $, limited by $ z $, is at the core of $ \CU $.
+
+%%%% %% % \href{http://www.math.drexel.edu/~tolya/cantorpairing.pdf}{http://www.math.drexel.edu/~tolya/cantorpairing.pdf} 
+
+\begin{lemma}[Subtracting a triangular number]
+\label{lemma:The kernel kCU  to define CU}
+    For every $ x_3 $ and $ x_4 \in\mathbb{N}$, the following function exists:
+    \begin{align*}
+    \arraycolsep=1.4pt
+    \begin{array}{rcl}
+    \left. {\scriptsize 
+    	\begin{array}{r} 
+    	0\\ 0\\ x_3\\ x_4\\ 
+    	\end{array}} 
+    \right[
+    & H_{3;4} &
+    \left] {\scriptsize 
+    	\begin{array}{l}
+    	0\\ 0\\ x_3\\ x_4 - \sum_{i=0}^{x_3} i
+    	\end{array} } \right.
+    \end{array}
+    \end{align*}
+	and belongs to $ \RPP^4 $.
+\end{lemma}
+\begin{prf}
+Let $ H_{3;4} $ be:
+	\begin{align*}
+	& \left (\rprSwap{4}{1,2,3,4}{3,2,1,4} 
+	\rprSeq (\rprPCom{\operatorname{T3}}{\rprId})\right )
+	\rprSeq \rprDec^{4}_{3;4}
+	\rprSeq \rprInv{\left (\rprSwap{4}{1,2,3,4}{3,2,1,4}
+		    \rprSeq (\rprPCom{\operatorname{T3}}{\rprId})\right )}
+	\enspace .
+	\end{align*}
+By Lemma~\ref{lemma:triangular number} the proof is done.\qed
+\end{prf}
+
+We can supply $ H_{3;4} $ to the minimization $ \lpMUNoArgs $ in order for it to yield a series of ``attempts'' 
+whose goal is to find when $ H_{3;4} $ becomes negative in its 4th output:
+\begin{center}\vspace{-5mm}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{ccccc}
+1-st attempt & 2-nd attempt &  & $ j $-th attempt & \\
+$\arraycolsep=1.4pt
+\begin{array}{rcl}
+\left. {\scriptsize 
+	\begin{array}{r} 
+	0\\ 0\\ 0\\ z\\ 
+	\end{array}} 
+\right[
+& H_{3;4} &
+\left] {\scriptsize 
+	\begin{array}{l}
+	0\\ 0\\ 0\\ z - \sum_{i=0}^{0} i
+	\end{array} } \right.
+\end{array}$
+&
+$\arraycolsep=1.4pt
+\begin{array}{rcl}
+\left. {\scriptsize 
+	\begin{array}{r} 
+	0\\ 0\\ 1\\ z\\ 
+	\end{array}} 
+\right[
+& H_{3;4} &
+\left] {\scriptsize 
+	\begin{array}{l}
+	0\\ 0\\ 1\\ z - \sum_{i=0}^{1} i
+	\end{array} } \right.
+\end{array}$
+&
+$ \cdots $
+&
+$\arraycolsep=1.4pt
+\begin{array}{rcl}
+\left. {\scriptsize 
+	\begin{array}{r} 
+	0\\ 0\\ j\\ z\\ 
+	\end{array}} 
+\right[
+& H_{3;4} &
+\left] {\scriptsize 
+	\begin{array}{l}
+	0\\ 0\\ j\\ z - \sum_{i=0}^{j} i
+	\end{array} } \right.
+\end{array}$
+&
+$ \cdots $
+\end{tabular}
+} % resizebox
+\end{center}
+
+\noindent
+The representation of $ \CU $ relies on the search here above.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%++++++++++++++++++++++++++++++++++++++++++++++++++
+\begin{theorem}[Representing $ \CU: \Nat^2 \longrightarrow \Nat $ in $ \RPP $]
+\label{lemma:Representing CU in RPP}
+A function $ \CU\in\RPP^{8}$ exists such that, for every $ z \in\mathbb{N}$:
+\begin{align*}
+\arraycolsep=1.4pt
+\begin{array}{rcl}
+ \left. {\scriptsize \begin{array}{r} 
+                       z\\[0.5mm] 0\\[0.5mm] 0\\[0.5mm] 
+                        0^{5
+                       	}
+                     \end{array}} \right[
+ & \CU &
+ \left] {\scriptsize \begin{array}{l}
+                       z\\ z-(\sum^{v-1}_{i=0} i ) \\ (v-1)-(z-(\sum^{v-1}_{i=0} i)) \\[0.5mm]
+                       0^{5
+                         }
+                     \enspace ,
+                     \end{array} } \right.
+\end{array}
+\end{align*}
+where $ v $ is the least value such that $ v \leq z $ and $ z-(\sum^{v}_{i=0} i ) < 0$. 
+So $ z-(\sum^{v-1}_{i=0} i ) $ is the first component of the pair that $ z $ represents under Cantor pairing
+and $ (v-1)-(z-(\sum^{v-1}_{i=0} i)) $ is the second one.
+\end{theorem}
+\begin{prf}
+Let $ \CU $  be:
+$$
+\begin{array}{l}
+\rprSwap{8}
+{1, 2, 3, 4 ,5 ,6 ,7 ,8}
+{4, 2, 3, 1 ,5 ,6 ,7 ,8}
+\,\rprSeq \, \rprInc^{8}_{4;8}  \,\rprSeq \lpMU{H_{3;4}} \\
+\qquad \qquad 
+\,\rprSeq \rprPred^{8}_{5}\,\rprSeq
+\rprSwap{8}
+{1, 2, 3, 4 ,5 ,6 ,7 ,8}
+{1, 2, 5, 4 ,3 ,6 ,7 ,8}
+\rprSeq \,( H_{3;4} \rVert \rprId^4) \,\rprSeq \, \rprDec^{8}_{4;3}
+\,\rprSeq
+\rprSwap{8}
+{1, 2, 3, 4 ,5 ,6 ,7 ,8}
+{8, 4, 3, 2 ,5 ,6 ,7 ,1}
+\end{array}
+$$
+The \rprSComName $ \rprSwap{8}
+{1, 2, 3, 4 ,5 ,6 ,7 ,8}
+{4, 2, 3, 1 ,5 ,6 ,7 ,8}
+\,\rprSeq \, \rprInc^{8}_{4;8} $ sets the input for $\lpMU{H_{3;4}}$ which receives the tuple
+$\langle 0,0,0,z,0,0,0,z \rangle$ and yields $\langle 0,0,0,z,k,0,0,z \rangle$
+where $k$ is the least value such that $k \leq z$ and  $z < \sum_{i=0}^{k} i$.
+The predecessor $ \rprPred^{8}_{5}$ sets its 5th argument to the value $k-1$ which is required
+to correctly apply $ \CU $ (see Definition \ref{grishpan}).
+The next rewiring sets the tuple $\langle 0,0,k-1,z,0,0,0,z \rangle$, argument of $ H_{3;4} \rVert \rprId^4 $
+which produces $\langle 0,0,k-1,z-\sum_{i=0}^{k - 1} i,0,0,0,z \rangle$.
+The value $z-\sum_{i=0}^{k - 1} i$ is the first component of the pair of numbers we want to extract from 
+the first argument of the whole $ \CU $.
+The second component is $k-1-(z-\sum_{i=0}^{k - 1} i)$ we obtain
+by applying $\rprDec^{8}_{4;3}$. The last rewiring rearranges the values as required.
+\qed
+\end{prf}
+
+As a remark,
+Theorem~\ref{theorem:CP in RPP},
+Lemma~\ref{lemma:The kernel kCU  to define CU} and
+Theorem~\ref{lemma:Representing CU in RPP} can be extended to functions that operate on 
+$ \Int $, not only on $ \Nat $, suitably managing signs \cite{PaoliniPiccoloRoversiICTCS2015}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main.tex"
+%%% ispell-local-dictionary: "american"
+%%% End:

@@ -1,0 +1,46 @@
+\lstdefinelanguage{Coq}{
+    morekeywords = [1]{Inductive, Fixpoint, Theorem, Lemma, Example},
+    morekeywords = [2]{match, with, end},
+    morekeywords = [3]{Require, Import, Set, Implicit, Arguments, Qed, Proof},
+    morekeywords = [4]{},
+    morekeywords = [5]{ },
+    keywordstyle = [1]\color{dred},
+    keywordstyle = [2]\color{dgreen},
+    keywordstyle = [3]\color{codepurple},
+    keywordstyle = [4]\color{orange},
+    keywordstyle = [5]\color{lblue},
+    sensitive = true,
+    morecomment = [l]{//},
+    morecomment = [s]{(*}{*)},
+    morecomment = [s]{(**}{*)},
+    commentstyle={\color{dgreen}},
+    morestring = [b]",
+    morestring = [b]',
+    basicstyle={\small\ttfamily\bfseries},
+    stringstyle={\ttfamily\small\color{orange}},
+    numbers=left,
+    numberstyle=\tiny\color{mygray},
+    xrightmargin=0em,
+    xleftmargin=3em,
+    stepnumber=1,
+    numbersep=1em,
+    lineskip=-0.5ex,
+    mathescape=true,
+    showstringspaces=false,
+    %    frame={tb},
+    frame=none,
+    breaklines=true,
+    columns=[l]{fullflexible},
+    keepspaces=true,
+    literate=
+        {á}{{\'a}}1
+        {à}{{\`a}}1
+        {é}{{\'e}}1
+        {è}{{\`e}}1
+        {ì}{{\`i}}1
+        {ò}{{\`o}}1
+        {ù}{{\`u}}1
+        {∀}{{forall}}1
+}
+
+\lstnewenvironment{Coq}{\lstset{language={Coq},}}{}

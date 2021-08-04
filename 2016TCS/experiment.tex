@@ -1,0 +1,29 @@
+\documentclass{article}
+\usepackage{calc}
+\newlength\foo
+\begin{document}
+\settototalheight\foo{  
+$ \begin{array}{r}
+  x_1\\
+  x_2\\
+  x_3
+  \end{array} $
+}
+\the\foo
+
+
+\section{Esperimento notazionale}
+$$
+\arraycolsep=1.4pt
+%\def\arraystretch{2.2}
+\begin{array}{rcl}
+ \left. {\small \begin{array}{r} x_1\\ x_2\\ x_3 \end{array}} \right[
+ &
+ \chi
+ &
+ \left] {\small \begin{array}{l} y_1\\ \vec{a}_i + \lfloor \sqrt{\vec{a}_j}\rfloor \\ y_3 \end{array} } \right.
+\end{array}
+$$
+
+
+\end{document} 

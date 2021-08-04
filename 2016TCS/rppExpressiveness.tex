@@ -1,0 +1,736 @@
+\section{Expressiveness of $ \RPP $}
+\label{section:Completeness of RPP}
+
+We start to show how to represent stacks as natural numbers in $ \RPP $.
+\Ie, given $ x_1, x_2, \ldots, x_n  \in \Nat$
+we can encode them into $ \la   x_n, \ldots, \la x_2, x_1 \ra \ldots \ra \in \Nat$
+by means of a sequence of $ \rprPush$ on a suitable ancillae, while a corresponding
+sequence of $ \rprPop $ can decompose it as expected.
+
+%%%%%%%%%%%%%%%
+\begin{proposition}[Representing stacks in $ \RPP $]
+\label{proposition:Representing stacks in RPP}
+Functions $ \rprPush, \rprPop\in\RPP^{10}$ exist such that:
+\begin{align*}
+\arraycolsep=1.4pt
+\begin{array}{rcl}
+ \left. {\scriptsize \begin{array}{r} 
+                       s\\ x\\ 0^{8}
+                     \end{array}} \right[
+ & \rprPush &
+ \left] {\scriptsize \begin{array}{l}
+                       \CP(s,x)\\ 0\\ 0^{8}
+                     \end{array} } \right.
+\end{array}
+&&
+\arraycolsep=1.4pt
+\begin{array}{rcl}
+ \left. {\scriptsize \begin{array}{r} 
+                       \CP(s,x)\\ 0\\ 0^{8}
+                     \end{array}} \right[
+ & \rprPop &
+ \left] {\scriptsize \begin{array}{l}
+                       s\\ x\\ 0^{8}
+                     \end{array} } \right.
+\end{array}
+\enspace ,
+\end{align*}
+for every value $ s \in\mathbb{N}$ (the ``stack'') and $ x \in\mathbb{N}$ (the element 
+one has to push on or pop out the stack.)
+\end{proposition}
+\begin{prf}
+The function 
+$\operatorname{zClean}:= 
+(\rprPCom{\rprId^2}{\CU})\, 
+ \rprSeq \rprDec^{10}_{4;1}\, 
+ \rprSeq \rprDec^{10}_{5;2}\, 
+ \rprSeq \rprInv{(\rprPCom{\rprId^2}{\CU})} 
+$ 
+is such that:
+$$\begin{array}{rcl}
+ \left. {\scriptsize \begin{array}{r} 
+                       s\\ x\\ \CP(s,x)\\ \\[-1mm] 0^{7}
+                     \end{array}} \right[
+ & \operatorname{zClean} &
+ \left] {\scriptsize \begin{array}{l}
+                       0\\ 0\\ \CP(s,x)\\  \\[-1mm] 0^{7}
+                     \end{array} } \right.
+\end{array}$$
+so,
+$\rprPush : =
+(\rprPCom{\CP} {\rprId^{6}})\, 
+          \rprSeq \operatorname{zClean}
+       \rprSeq (\rprPCom{\rprSwap{3}{1,2,3}{3,2,1}}{\rprId^{6}})$ 
+and 
+$\rprPop  := \rprInv{\rprPush}$.
+\qed
+\end{prf}
+
+
+
+\subsection{$ \RPP $ is $ \PRF $-complete} $ \RPP $ is expressive enough to represent 
+the class $ \PRF $ of Primitive Recursive Functions \cite{cutland1980book,odifreddi1989book}, which we recall for easy 
+of reference. $ \PRF $ is the smallest class of functions on natural numbers that:
+\begin{itemize}
+\item 
+ contains the functions $\prZero^n(x_1,\ldots,x_n):=0$, the successors 
+$\prSucc^n_i(x_1,\ldots,x_n) := x_i + 1$  and  the projections 
+$ \prProj{n}{i}(x_1,\ldots,x_n) := x_i $ for all $1\leq i\leq n$;
+
+\item 
+ is closed under composition, viz. $ \PRF $  includes the function $f(\myVec{x}) := h(g_1(\myVec{x}), \ldots , g_m(\myVec{x}))$)
+whenever there are  $g_1, \ldots, g_m, h\in\PRF$ of suitable arity; and,
+
+\item 
+ is closed under primitive recursion, viz. $ \PRF $ includes the function $f$ defined   by means of the schema $f(\myVec{x},0):= g(\myVec{x})$ and 
+$f(\myVec{x},y+1):= h(f(\myVec{x},y),\myVec{x},y)$ whenever there are  $g,h\in\PRF$  of suitable arity.
+\end{itemize}
+
+
+In the following, $\PRF^n$ denotes the class of functions $f\in \PRF$ with arity $n$.
+
+%%%%%%%%%%%%%
+\begin{definition}[$ \RPP $-definability of any $ f\in\PRF $]
+\label{definition:RPP-definability of any f in PRF}
+Let $n, a\in\mathbb N$ and $ f\in\PRF^n $. We say that $ f $ is $ \RPP^{n+a+1} $-definable  whenever
+there is a function  $ d_f\in\RPP^{n+a+1} $  such that, for every $x, x_1, \ldots, x_n\in\Nat$:
+\begin{align*}
+\arraycolsep=1.4pt
+\begin{array}{rcl}
+ \left. {\scriptsize 
+            \begin{array}{r}
+             x \\ x_1 \\ \cdots \\ x_n
+             \\[1mm]
+              0^a
+            \end{array} 
+         } \right[
+ & d_f &
+ \left] {\scriptsize 
+            \begin{array}{l}
+             x + f (x_1, \ldots, x_n) \\ x_1 \\ \cdots \\ x_n
+             \\[1mm]
+              0^a
+            \enspace .
+            \end{array} 
+        } \right.
+\end{array}
+\end{align*}
+\end{definition}
+
+Three observations are worth doing.
+Definition~\ref{definition:RPP-definability of any f in PRF} relies on $a+1$ arguments used as ancillae.
+If $ f\in\PRF^n $ is $ \RPP^{n+a+1} $-definable, then $f$ is also
+$ \RPP^{n+k} $-definable for any $k\geq a+1$ by using \rprWeaName (cf. Section \ref{section:Generalizations inside RPP}).
+Definition \ref{definition:RPP-definability of any f in PRF} improves 
+the namesake one in \cite[Def.3.1, p.236]{PaoliniPiccoloRoversiICTCS2015} because it gets rid of an output
+line:  this line was a ``waste bin'' containing part of the computation trace that, eventually, was useless. 
+The encoding proposed in this paper does not need the ``waste bin'' anymore.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%   VECCHIA COMPLETEZZA INIZIO
+%%%%%%%%%%%%%\begin{definition}[Embedding $ \prrpr{(\cdot)} $ of $ \PR $ into $ \RPP $]
+%%%%%%%%%%%%%The function $\prrpr{(\cdot)}: \PR \longrightarrow \RPP $ is inductively defined
+%%%%%%%%%%%%%on the structure of its argument. 
+%%%%%%%%%%%%%\begin{itemize}
+%%%%%%%%%%%%%\item 
+%%%%%%%%%%%%%The basic cases are as follows:  
+%%%%%%%%%%%%%\begin{align*}
+%%%%%%%%%%%%%%%%%%%% 
+%%%%%%%%%%%%%\prrpr{\prZero^n}
+%%%%%%%%%%%%%& = \rprId^2
+%%%%%%%%%%%%%\\
+%%%%%%%%%%%%%%%%%%%% 
+%%%%%%%%%%%%%\prrpr{\prSucc}
+%%%%%%%%%%%%%& = (\rprPCom{\rprId^1}
+%%%%%%%%%%%%%            {\rprSucc}) \rprSeq \rprInc^2_{2;1} \rprSeq \rprInv{(\rprPCom{\rprId^1}
+%%%%%%%%%%%%%                                                                     {\rprSucc})}
+%%%%%%%%%%%%%\\
+%%%%%%%%%%%%%\prrpr{(\prProj{k}{i})}
+%%%%%%%%%%%%%& = \rprInc^{k+1}_{i;1} 
+%%%%%%%%%%%%%\enspace
+%%%%%%%%%%%%%\end{align*}
+%%%%%%%%%%%%%where $ \prrpr{\prZero}, \prrpr{\prSucc} \in\RPP^{2} $
+%%%%%%%%%%%%%and $ \prrpr{(\prProj{k}{i})} \in\RPP^{k+1} $.
+%%%%%%%%%%%%%
+%%%%%%%%%%%%%\item 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% composition
+%%%%%%%%%%%%%Let $ g_1,\ldots,g_k\in\PR^{n} $ and $ h\in\PR^{k} $ in $ \prCom{h,g_1,\ldots,g_k}\in\PR^{n}$.
+%%%%%%%%%%%%%By inductive hypothesis and weakening
+%%%%%%%%%%%%%we can assume that $ \prrpr{g_1},\ldots,\prrpr{g_k}\in\PR^{n+p} $ and 
+%%%%%%%%%%%%%$ \prrpr{h}\in\PR^{k+q} $ exist, for some $ p $ and $ q $ big enough.
+%%%%%%%%%%%%%Then $ \prrpr{\prCom{h,g_1,\ldots,g_k}}\in\RPP^{1+n+m} $ is:
+%%%%%%%%%%%%%\begin{align*}
+%%%%%%%%%%%%%\prrpr{\prCom{h,g_1,\ldots,g_k}}
+%%%%%%%%%%%%%& =
+%%%%%%%%%%%%%{H}
+%%%%%%%%%%%%%\rprSeq
+%%%%%%%%%%%%%(\rprPCom{\rprId}{\rprPCom{\prrpr{h}}{\rprId^{(n+p)k}}}) \rprSeq
+%%%%%%%%%%%%%(\rprPCom{\rprInc^2_{2;1}}{\rprId^{k+q+(n+p)k}}) \rprSeq
+%%%%%%%%%%%%%\rprInv{H}
+%%%%%%%%%%%%%\enspace ,        
+%%%%%%%%%%%%%\end{align*}
+%%%%%%%%%%%%%where:
+%%%%%%%%%%%%%\begin{align*}
+%%%%%%%%%%%%%H
+%%%%%%%%%%%%%& =
+%%%%%%%%%%%%%(\rprPCom{\rprId}{\rprPCom{\rprGSwap{nk}_1}{\rprPCom{\rprId^{(p+1)k}}{\rprId^{1+q}}}})\rprSeq
+%%%%%%%%%%%%%(\rprPCom{\rprId}
+%%%%%%%%%%%%%         {\rprPCom{\overbrace{\rprPCom{\rprNabla^{k-1}}{\rprPCom{\cdots}{\rprNabla^{k-1}}}}^{n}}
+%%%%%%%%%%%%%                  {\rprPCom{\rprId^{(p+1)k}}
+%%%%%%%%%%%%%                           {\rprId^{1+q}}}})\rprSeq
+%%%%%%%%%%%%%\\ & \phantom{= }\ \
+%%%%%%%%%%%%%(\rprPCom{\rprId}{\rprPCom{\rprGSwap{(n+p+1)k}_2}{\rprId^{1+q}}})\rprSeq
+%%%%%%%%%%%%%(\rprPCom{\rprId}
+%%%%%%%%%%%%%         {\rprPCom{\rprPCom{\prrpr{g_1}}{\rprPCom{\cdots}{\prrpr{g_k}}}}
+%%%%%%%%%%%%%                  {\rprId^{1+q}}})\rprSeq
+%%%%%%%%%%%%%\\ & \phantom{= }\ \
+%%%%%%%%%%%%%(\rprPCom{\rprId}{\rprGSwap{(n+p+1)k+1+q}_3})\rprSeq
+%%%%%%%%%%%%%(\rprPCom{\rprId}{\rprPCom{\prrpr{h}}{\rprId^{(n+p)k}}})
+%%%%%%%%%%%%%\\
+%%%%%%%%%%%%%\rprGSwap{}_1
+%%%%%%%%%%%%%& =
+%%%%%%%%%%%%%\rprSwap
+%%%%%%%%%%%%%{nk}
+%%%%%%%%%%%%%{1,2 ,\ldots,n ,n+1,\ldots,n+k-1,\ldots,n+(n-1)(k-1)+1,\ldots,nk}
+%%%%%%%%%%%%%{k,2k,\ldots,nk,1  ,\ldots,k-1  ,\ldots,(n-1)k+1      ,\ldots,nk-1}
+%%%%%%%%%%%%%%\\
+%%%%%%%%%%%%%%\rprGSwap{}_2
+%%%%%%%%%%%%%%& =
+%%%%%%%%%%%%%%\rprSwap
+%%%%%%%%%%%%%%{(n+1+p)k}
+%%%%%%%%%%%%%%{1,\ldots,k,\ldots,(n-1)k+1,\ldots,nk,
+%%%%%%%%%%%%%%  nk+1,\ldots,(n+1)k,
+%%%%%%%%%%%%%%   (n+1)k+1,\ldots,(n+1)k+p,\ldots,(n+1)k+(k-1)p,\ldots,(n+1)k+kp
+%%%%%%%%%%%%%%}
+%%%%%%%%%%%%%%{2,\ldots,(k-1)(n+1+p)+2,\ldots,n+1,\ldots,(k-1)(n+1+p)+(n+1),
+%%%%%%%%%%%%%%  1,\ldots,(k-1)(n+1+p)+1,
+%%%%%%%%%%%%%%   n+1+1,\ldots,n+1+p,\ldots,
+%%%%%%%%%%%%%%    (k-1)(n+1+p)+(n+1)+1,\ldots,(k-1)(n+1+p)+(n+1)+p
+%%%%%%%%%%%%%%}
+%%%%%%%%%%%%%%\\
+%%%%%%%%%%%%%%\rprGSwap{}_3
+%%%%%%%%%%%%%%& =
+%%%%%%%%%%%%%%\rprSwap
+%%%%%%%%%%%%%%{(n+p+1)k+1+q}
+%%%%%%%%%%%%%%{1,2      ,\ldots,1+n    ,2+n    ,\ldots,1+n+p,
+%%%%%%%%%%%%%%  \ldots,
+%%%%%%%%%%%%%%   (k-1)(1+n+p)+1,\ldots,k(1+n)+(k-1)p,
+%%%%%%%%%%%%%%    k(1+n)+(k-1)p+1      ,\ldots,k(1+n+p),
+%%%%%%%%%%%%%%     k(1+n+p)+1,k(1+n+p)+2,\ldots,k(1+n+p)+1+q
+%%%%%%%%%%%%%%}
+%%%%%%%%%%%%%%{2,1+k+q+1,\ldots,1+k+q+n,2+k+q+n,\ldots,1+k+q+n+p,
+%%%%%%%%%%%%%%  \ldots,
+%%%%%%%%%%%%%%   1+k           ,\ldots,1+k+q+(k-1)(n+p)+n),
+%%%%%%%%%%%%%%    1+k+q+(k-1)(n+p)+n+1),\ldots,1+k+q+(k-1)(n+p)+n+p),
+%%%%%%%%%%%%%%     1         ,k+2       ,\ldots,1+k+q
+%%%%%%%%%%%%%%}
+%%%%%%%%%%%%%\end{align*}
+%%%%%%%%%%%%%
+%%%%%%%%%%%%%%\begin{align*}
+%%%%%%%%%%%%%%\arraycolsep=1.4pt
+%%%%%%%%%%%%%%\begin{array}{rcl}
+%%%%%%%%%%%%%% \left. {\scriptsize 
+%%%%%%%%%%%%%%         \begin{array}{r} 
+%%%%%%%%%%%%%%           x_{1}\\ x_{2} \\ \ldots\\ x_{n}\\x_{n+1}\\\ldots\\x_{n+k-1}\\
+%%%%%%%%%%%%%%             \ldots\\ \ldots\\ x_{n+(n-1)(k-1)+1} \\ \ldots\\ x_{n+(n-1)(k-1)+(k-1)}
+%%%%%%%%%%%%%%         \end{array}} 
+%%%%%%%%%%%%%%\right[
+%%%%%%%%%%%%%% & \rprGSwap{nk}_1 &
+%%%%%%%%%%%%%% \left] {\scriptsize 
+%%%%%%%%%%%%%%         \begin{array}{l}
+%%%%%%%%%%%%%%           x_{k}\\ x_{2k} \\ \ldots\\ x_{nk}\\x_{1}\\\ldots\\x_{k-1}\\
+%%%%%%%%%%%%%%             \ldots\\ \ldots\\ x_{(n-1)k+1} \\ \ldots\\ x_{(n-1)k+(k-1)}
+%%%%%%%%%%%%%%         \end{array} } \right.
+%%%%%%%%%%%%%%\end{array}
+%%%%%%%%%%%%%%\end{align*}
+%%%%%%%%%%%%%\begin{align*}
+%%%%%%%%%%%%%\arraycolsep=1.4pt
+%%%%%%%%%%%%%\begin{array}{rcl}
+%%%%%%%%%%%%% \left. {\scriptsize 
+%%%%%%%%%%%%%         \begin{array}{r} 
+%%%%%%%%%%%%%           x_{1}\\ \ldots\\ x_{k} \\\ldots\ldots\\x_{(n-1)k+1}\\\ldots\\x_{nk}\\
+%%%%%%%%%%%%%             x_{nk+1} \\ \ldots\\ x_{(n+1)k}\\ 
+%%%%%%%%%%%%%              x_{(n+1)k+1}\\ \ldots\\ x_{(n+1)k+p}\\\ldots\ldots\\
+%%%%%%%%%%%%%               x_{(n+1)k+(k-1)p}\\ \ldots\\ x_{(n+1)k+kp}
+%%%%%%%%%%%%%         \end{array}} 
+%%%%%%%%%%%%%\right[
+%%%%%%%%%%%%% & \rprGSwap{(n+1+p)k}_2 &
+%%%%%%%%%%%%% \left] {\scriptsize 
+%%%%%%%%%%%%%         \begin{array}{l}
+%%%%%%%%%%%%%           x_{2} \\ \ldots\\ x_{(k-1)(n+1+p)+2}\\\ldots\ldots\\ x_{n+1}\\\ldots\\ x_{(k-1)(n+1+p)+(n+1)}\\
+%%%%%%%%%%%%%             x_{1}\\ \ldots\\ x_{(k-1)(n+1+p)+1}\\ 
+%%%%%%%%%%%%%              x_{n+1+1}\\ \ldots\\ x_{n+1+p}\\\ldots\ldots\\
+%%%%%%%%%%%%%                x_{(k-1)(n+1+p)+(n+1)+1}\\ \ldots\\ x_{(k-1)(n+1+p)+(n+1)+p}
+%%%%%%%%%%%%%         \end{array} } \right.
+%%%%%%%%%%%%%\end{array}
+%%%%%%%%%%%%%\end{align*}
+%%%%%%%%%%%%%\begin{align*}
+%%%%%%%%%%%%%\arraycolsep=1.4pt
+%%%%%%%%%%%%%\begin{array}{rcl}
+%%%%%%%%%%%%% \left. {\scriptsize 
+%%%%%%%%%%%%%         \begin{array}{r} 
+%%%%%%%%%%%%%           x_{1}\\ x_{2}       \\ \ldots \\x_{1+n}  \\x_{1+n+1}    \\\ldots\\x_{1+n+p}
+%%%%%%%%%%%%%             \\ \ldots\\ \ldots\\ 
+%%%%%%%%%%%%%           x_{(k-1)(1+n+p)+1}\\ x_{(k-1)(1+n+p)+1+1} \\ \ldots \\ x_{k(1+n)+(k-1)p}\\
+%%%%%%%%%%%%%           x_{k(1+n)+(k-1)p+1} \\\ldots\\x_{k(1+n+p)}\\
+%%%%%%%%%%%%%           x_{k(1+n+p)+1}\\x_{k(1+n+p)+1+1}\\\ldots\\x_{k(1+n+p)+1+q}
+%%%%%%%%%%%%%         \end{array}} 
+%%%%%%%%%%%%%\right[
+%%%%%%%%%%%%% & \rprGSwap{(n+p+1)k+1+q}_3 &
+%%%%%%%%%%%%% \left] {\scriptsize 
+%%%%%%%%%%%%%         \begin{array}{l}
+%%%%%%%%%%%%%           x_{2}\\ x_{1+k+q+1} \\ \ldots \\x_{1+k+q+n}\\x_{1+k+q+n+1}\\\ldots\\x_{1+k+q+n+p}
+%%%%%%%%%%%%%             \\ \ldots\\ \ldots\\ 
+%%%%%%%%%%%%%           x_{1+k}          \\ x_{1+k+q+(k-1)(n+p)+1)} \\ \ldots \\ x_{1+k+q+(k-1)(n+p)+n)}\\
+%%%%%%%%%%%%%                          x_{1+k+q+(k-1)(n+p)+n+1)}\\\ldots\\x_{1+k+q+(k-1)(n+p)+n+p)}\\
+%%%%%%%%%%%%%           x_{1} \\ x_{1+k+1}\\\ldots\\x_{1+k+q}
+%%%%%%%%%%%%%         \end{array} } \right.
+%%%%%%%%%%%%%\end{array}
+%%%%%%%%%%%%%\end{align*}
+%%%%%%%%%%%%%\begin{remark}
+%%%%%%%%%%%%%Some of the expressions that identify the index of an input or of an output in $ \rprGSwap{(n+1+p)k}_2$
+%%%%%%%%%%%%%or $ \rprGSwap{(n+p+1)k+1+q}_3 $ can be simplified. We leave them
+%%%%%%%%%%%%%in an explicit form to easy the reconstruction of the pattern for their generation.
+%%%%%%%%%%%%%
+%%%%%%%%%%%%%The intuition behind the structure of $ \prrpr{\prCom{h,g_1,\ldots,g_k}} $ is the one
+%%%%%%%%%%%%%we may expect, up to the required number of \temporarychannels. 
+%%%%%%%%%%%%%The point is to supply enough arguments to $ \prrpr{h} $ which are the
+%%%%%%%%%%%%%results we get from $ \prrpr{g_1}, \ldots, \prrpr{g_k} $. Every $ \prrpr{g_i} $ needs its 
+%%%%%%%%%%%%%own copy of the initial arguments $ x_1,\ldots,x_n $ which we produce by means of
+%%%%%%%%%%%%%$ n $ instances of $ \rprNabla^{k-1} $. Every among 
+%%%%%%%%%%%%%$ \rprGSwap{nk}_1, \rprGSwap{(n+1+p)k}_2$ and
+%%%%%%%%%%%%%$ \rprGSwap{(n+p+1)k+1+q}_3 $ rearranges the inputs as required by the inductive
+%%%%%%%%%%%%%hypothesis on the structure of $ \prrpr{g_1}, \ldots, \prrpr{g_k} $ and $ \prrpr{h} $.
+%%%%%%%%%%%%%\end{remark}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%
+%%%%%%%%%%%%%\item 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% iteration
+%%%%%%%%%%%%%Let $ g\in\PR^{k} $ and $ h\in\PR^{k+2} $ in $ \prRec{g}{h}\in\PR^{k+1}$.
+%%%%%%%%%%%%%By inductive hypothesis and weakening
+%%%%%%%%%%%%%we can assume that $ \prrpr{g}\in\PR^{1+k+m} $ and $ \prrpr{h}\in\PR^{1+(k+2)+m} $,
+%%%%%%%%%%%%%for some $ m \geq 14 $, exist. 
+%%%%%%%%%%%%%Then $ \prrpr{\prRec{h}{g}} \in \RPP^{k+m+5} $ is:
+%%%%%%%%%%%%%\begin{align*}
+%%%%%%%%%%%%%\prrpr{\prRec{h}{g}}
+%%%%%%%%%%%%%& =
+%%%%%%%%%%%%% \rprGSwap{} \rprSeq
+%%%%%%%%%%%%% (\rprPCom{\rprId^4}{G}) \rprSeq
+%%%%%%%%%%%%% (\rprPCom{\rprId^2}{\rprIt{4+k+m}{1}{H,Z,\rprId}})\, \rprSeq
+%%%%%%%%%%%%%\\ & \phantom{= }\
+%%%%%%%%%%%%% \rprInc^{5+k+m}_{5+k;1}\,\rprSeq
+%%%%%%%%%%%%%\\ & \phantom{= }\
+%%%%%%%%%%%%%  \rprInv{\left(
+%%%%%%%%%%%%%           \rprGSwap{} \rprSeq
+%%%%%%%%%%%%%           (\rprPCom{\rprId^4}{G}) \rprSeq
+%%%%%%%%%%%%%           (\rprPCom{\rprId^2}{\rprIt{4+k+m}{1}{H,Z,\rprId}})
+%%%%%%%%%%%%%          \right)}
+%%%%%%%%%%%%%\end{align*}
+%%%%%%%%%%%%%where:
+%%%%%%%%%%%%%\begin{align*}
+%%%%%%%%%%%%%\rprGSwap{}
+%%%%%%%%%%%%%& =
+%%%%%%%%%%%%%\rprSwap{5+k+m}
+%%%%%%%%%%%%%        {1,2,3,\ldots,3+k-1,3+k,4+k,5+k,6+k,\ldots,5+k+m}
+%%%%%%%%%%%%%        {1,2,6,\ldots,6+k-1,4  ,5  ,3  ,6+k,\ldots,5+k+m}
+%%%%%%%%%%%%%\\
+%%%%%%%%%%%%%G
+%%%%%%%%%%%%%& =
+%%%%%%%%%%%%%\rprPCom{\rprId^4}
+%%%%%%%%%%%%%        {\prrpr{g}}
+%%%%%%%%%%%%%\\
+%%%%%%%%%%%%%Z
+%%%%%%%%%%%%%& = 
+%%%%%%%%%%%%%\rprPCom{\rprId^2}
+%%%%%%%%%%%%%        {\rprSwap{3+k+m}
+%%%%%%%%%%%%%                 {1,2,3  ,4,\ldots,4+k,5+k,\ldots,3+k+m}
+%%%%%%%%%%%%%                 {1,2,3+k,2,\ldots,2+k,5+k,\ldots,3+k+m}}
+%%%%%%%%%%%%%\\
+%%%%%%%%%%%%%H
+%%%%%%%%%%%%%& =
+%%%%%%%%%%%%%\left(
+%%%%%%%%%%%%%\rprPCom{\rprId^1}
+%%%%%%%%%%%%%        {\rprPCom{\rprSucc}
+%%%%%%%%%%%%%                 {\rprPCom{\rprSwap{k+1}
+%%%%%%%%%%%%%                                   {1  ,2,\ldots,k+1}
+%%%%%%%%%%%%%                                   {k+1,1,\ldots,k  }}
+%%%%%%%%%%%%%                          {\rprId^{m}}}}\right) 
+%%%%%%%%%%%%%\rprSeq 
+%%%%%%%%%%%%%\\&\phantom{= } \ \
+%%%%%%%%%%%%%\prrpr{h} \rprSeq (\rprPCom{\rprId^{k+2}}{\rprPush})\, \rprSeq 
+%%%%%%%%%%%%%\\&\phantom{= } \ \
+%%%%%%%%%%%%%\rprSwap{3+k+m}
+%%%%%%%%%%%%%        {1  ,2,\ldots,2+k,2+k+1,2+k+2,5+k,\ldots,3+k+m}
+%%%%%%%%%%%%%        {3+k,2,\ldots,2+k,2+k+2,1    ,5+k,\ldots,3+k+m}
+%%%%%%%%%%%%%\enspace .
+%%%%%%%%%%%%%\end{align*}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%
+%%%%%%%%%%%%%\begin{remark}
+%%%%%%%%%%%%%Using $ \rprPush $ and $ \rprPop $ inside $ \prrpr{\prRec{h}{g}} $ requires that we can supply
+%%%%%%%%%%%%%at least 14 inputs set to the value $ 0 $ in accordance with 
+%%%%%%%%%%%%%Proposition~\ref{proposition:Representing stacks in RPP}. This is why we require $ m\geq 14 $
+%%%%%%%%%%%%%which is a condition we can satisfy by using the possibility of \rprWeaName functions inside 
+%%%%%%%%%%%%%$ \RPP $.
+%%%%%%%%%%%%%
+%%%%%%%%%%%%%The intuition behind the structure of $ \prrpr{\prRec{h}{g}} $ is that we use 
+%%%%%%%%%%%%%the \emph{second} argument to drive a \rprSComName of the translation of $ h\in\PRF $ which must be preceded 
+%%%%%%%%%%%%%by a call to the translation of $ g\in\PRF $. The function $ Z $ serves to correctly re-organize the
+%%%%%%%%%%%%%outputs of $ \prrpr{g} $ whenever the \rprSComName is $ 0 $-steps long.
+%%%%%%%%%%%%%
+%%%%%%%%%%%%%The use of $ \rprPush $ is crucial to pile up in the right order the intermediate values that
+%%%%%%%%%%%%%$ \prrpr{h} $ produces and which depend on the length of the \rprSComName. Once got and stored 
+%%%%%%%%%%%%%the result, $ \rprPop $ extracts every intermediate value to revert every step of the \rprSComName.
+%%%%%%%%%%%%%\qed
+%%%%%%%%%%%%%\end{remark}
+%%%%%%%%%%%%%\end{itemize}
+%%%%%%%%%%%%%\end{definition}
+%%%%%%%%%%%%%
+%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%\begin{theorem}[$\RPP $ is $ \PRF $-complete]
+%%%%%%%%%%%%%\label{theorem:RPP is PRF-complete}
+%%%%%%%%%%%%%If $ f\in\PR $, then $ \prrpr{f}$ is $ \RPP $-definable.
+%%%%%%%%%%%%%\end{theorem}
+%%%%%%%%%%%%%\begin{prf}
+%%%%%%%%%%%%%It is enough to check that $ \prrpr{f} $ satisfies the constraints
+%%%%%%%%%%%%%of Definition~\ref{definition:RPP-definability of any f in PRF}, proceeding
+%%%%%%%%%%%%%by structural induction on $ f $. In particular,
+%%%%%%%%%%%%%if $ f $ is $ \prCom{h,g_1,\ldots,g_k} $:
+%%%%%%%%%%%%%\begin{align*}
+%%%%%%%%%%%%%\arraycolsep=1.4pt
+%%%%%%%%%%%%%\begin{array}{rcl}
+%%%%%%%%%%%%% \left. {\scriptsize 
+%%%%%%%%%%%%%            \begin{array}{r}
+%%%%%%%%%%%%%             x \\[0.5mm] \myVec{x}
+%%%%%%%%%%%%%             \\[0.5mm] 0^{n} 
+%%%%%%%%%%%%%             \\ n
+%%%%%%%%%%%%%           \left \{
+%%%%%%%%%%%%%           \begin{array}{l}
+%%%%%%%%%%%%%             0^{k-1}\\ \cdots \\[0.5mm] 0^{k-1} 
+%%%%%%%%%%%%%           \end{array} 
+%%%%%%%%%%%%%           \right .
+%%%%%%%%%%%%%           \\ 
+%%%%%%%%%%%%%           n \left \{
+%%%%%%%%%%%%%           \begin{array}{l}
+%%%%%%%%%%%%%             0^{j}\\ \cdots \\[0.5mm] 0^{j} 
+%%%%%%%%%%%%%           \end{array} 
+%%%%%%%%%%%%%           \right .
+%%%%%%%%%%%%%            \end{array} 
+%%%%%%%%%%%%%         } \right[
+%%%%%%%%%%%%% & \prrpr{\prCom{h,g_1,\ldots,g_k}} &
+%%%%%%%%%%%%% \left] {\scriptsize 
+%%%%%%%%%%%%%            \begin{array}{l}
+%%%%%%%%%%%%%             x+f(g_1(\myVec{x}),\ldots,g_n(\myVec{x})) \\[0.5mm] \myVec{x}
+%%%%%%%%%%%%%             \\[0.5mm] 0^{n} 
+%%%%%%%%%%%%%             \\ \!\!
+%%%%%%%%%%%%%           \left .
+%%%%%%%%%%%%%           \begin{array}{l}
+%%%%%%%%%%%%%             0^{k-1}\\ \cdots \\[0.5mm] 0^{k-1} 
+%%%%%%%%%%%%%           \end{array} 
+%%%%%%%%%%%%%           \right \} n
+%%%%%%%%%%%%%             \\ \!\!
+%%%%%%%%%%%%%           \left .
+%%%%%%%%%%%%%           \begin{array}{l}
+%%%%%%%%%%%%%             0^{j}\\ \cdots \\[0.5mm] 0^{j} 
+%%%%%%%%%%%%%           \end{array} 
+%%%%%%%%%%%%%           \right \} n
+%%%%%%%%%%%%%            \end{array} 
+%%%%%%%%%%%%%        } \right.
+%%%%%%%%%%%%%\end{array}
+%%%%%%%%%%%%%\end{align*}
+%%%%%%%%%%%%%and if $ f $ is $ \prRec{g}{h} $, then:
+%%%%%%%%%%%%%\begin{align*}
+%%%%%%%%%%%%%\arraycolsep=1.4pt
+%%%%%%%%%%%%%\begin{array}{rcl}
+%%%%%%%%%%%%% \left. {\scriptsize 
+%%%%%%%%%%%%%            \begin{array}{r}
+%%%%%%%%%%%%%             x \\ y \\ \myVec{x}
+%%%%%%%%%%%%%             \\[0.5mm] 0^{3+m} 
+%%%%%%%%%%%%%            \end{array} 
+%%%%%%%%%%%%%         } \right[
+%%%%%%%%%%%%% & \prrpr{\prRec{g}{h}} &
+%%%%%%%%%%%%% \left] {\scriptsize 
+%%%%%%%%%%%%%            \begin{array}{l}
+%%%%%%%%%%%%%             x+
+%%%%%%%%%%%%%             h(\myVec{x},y-1,
+%%%%%%%%%%%%%                h(\myVec{x},y-2,\ldots
+%%%%%%%%%%%%%                  h(\myVec{x},1,g(\myVec{x}))\ldots)) 
+%%%%%%%%%%%%%             \\ y \\ \myVec{x}
+%%%%%%%%%%%%%             \\[0.5mm] 0^{3+m} 
+%%%%%%%%%%%%%            \end{array} 
+%%%%%%%%%%%%%        } \right.
+%%%%%%%%%%%%%\end{array}
+%%%%%%%%%%%%%\enspace ,
+%%%%%%%%%%%%%\end{align*}
+%%%%%%%%%%%%%where $ \myVec{x} $ stands for $x_1, \ldots, x_k$. 
+%%%%%%%%%%%%%\qed
+%%%%%%%%%%%%%\end{prf}
+%%%%%%%%%%%%%}{
+%%%%%%%%%%%%%   VECCHIA COMPLETEZZA FINE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{theorem}[$\RPP $ is $ \PRF $-complete]
+\label{theorem:RPP is PRF-complete}
+If $ f\in\PRF^n $ then $ \prrpr{f}$ is $ \RPP^{n+a+1} $-definable, for some $a\in\mathbb{N}$.
+\end{theorem}
+\begin{prf}
+\begin{table}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\hrule   
+$$\begin{array}{c}
+\arraycolsep=1.4pt
+\begin{array}{rcl}
+ \left. {\scriptsize 
+            \begin{array}{r}
+             x \\ x_1 \\ \cdots \\ x_n
+             \\[1mm]
+              0^m\\
+           k\left\{
+              \begin{array}{r}
+             r_1 \\ \cdots\\ r_{i-1}\\[1.5mm] 0\\[.5mm] r_{i+1}\\\cdots \\ r_k
+              \end{array}
+              \right.
+            \end{array} 
+         } \right[
+ & g_i^{*} &
+ \left] {\scriptsize 
+            \begin{array}{l}
+             x  \\ x_1 \\ \cdots \\ x_n
+             \\[1mm]
+             0^m\\
+            r_1\\ \cdots \\ r_{i-1} \\[1mm]
+          g_i(x_1,\ldots,x_n) \\ 
+          r_{i+1}  \\\cdots\\ r_k 
+            \end{array} 
+        } \right.
+\end{array}
+\hspace{1cm} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{array}{rcl}
+ \left. {\scriptsize 
+            \begin{array}{r}
+             x \\ x_1 \\ \cdots \\ x_n
+             \\[1mm]
+              0^m\\[1mm]
+           k\left\{
+              \begin{array}{c}
+             0 \\[1mm] \cdots \\[1mm] 0
+              \end{array}
+              \right.\!\!\!\!\!
+            \end{array} 
+         } \right[
+ & h^* &
+ \left] {\scriptsize 
+            \begin{array}{l}
+             x  +\prCom{h,g_1,\ldots,g_k}(x_1,\ldots,x_n)\\ x_1 \\ \cdots \\ x_n
+             \\[1mm]
+          0^m\\
+          g_1(x_1,\ldots,x_n) \\[1mm] \cdots\\[1mm] g_k(x_1,\ldots,x_n)
+            \end{array} 
+        } \right.
+\end{array}
+\\\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%***************************************
+\begin{array}{rcl}
+ \left. {\scriptsize 
+            \begin{array}{r}
+             x \\ x_1 \\ \cdots \\ x_n
+             \\[1mm]
+              0^m\\[1mm]
+           k\left\{
+              \begin{array}{r}
+             0 \\[1mm] \cdots \\[1mm] 0
+              \end{array}
+              \right.
+            \end{array} 
+         } \right[
+ & \!\!\!G\!\!\! &
+ \left] {\scriptsize 
+            \begin{array}{l}
+             x  \\ x_1 \\ \cdots \\ x_n
+             \\[1mm]
+             0^m\\
+          g_1(x_1,\ldots,x_n) \\[1mm] \cdots\\[1mm] g_k(x_1,\ldots,x_n)
+            \end{array} 
+        } \right.
+\end{array}
+\hspace{-3mm}
+\begin{array}{rcl}
+ \left. {\scriptsize 
+            \begin{array}{r}
+              x \\ x_1 \\ \cdots \\ x_n
+             \\[1mm]
+             0^m\\
+             0^k
+            \end{array} 
+         } \right[
+ & \!\!\!H\!\!\! &
+ \left] {\scriptsize 
+            \begin{array}{l}
+             x  +\prCom{h,g_1,\ldots,g_k}(x_1,\ldots,x_n)\\ x_1 \\ \cdots \\ x_n
+             \\[1mm]
+          0^m\\
+          0^k
+            \end{array} 
+        } \right.
+\end{array}
+\end{array}$$
+\hrule
+\caption{Composition component relations}\label{compositionComponentRelations}
+\end{table}
+
+The proof is given by induction on the definition of the primitive recursive function $f$. 
+%For sake of simplicity, we present some of its cases in an exemplified form.
+\begin{itemize}[leftmargin=5mm]
+\item  
+If $f$ is $\prZero^n$ then let $\prrpr{\prZero^n}:= \rprId^{n+1}$, where $a=0$.
+\item 
+If $f$ is $\prSucc^n_i$ then let $\prrpr{\prSucc^n_i}:= \rprInc^{n+1}_{i+1;1} \rprSeq (\rprPCom{\rprSucc}{\rprId^n}) $, where $a=0$.
+\item 
+If $f$ is $ \prProj{n}{i} $ ($1\leq i\leq n$) then, let  $\prrpr{ \prProj{n}{i} }:= \rprInc^{n+1}_{i+1;1}$, where $a=0$.
+\item 
+
+Let $f=\prCom{h,g_1,\ldots,g_k}$ where $ g_1,\ldots,g_k\in\PRF^{n} $ and $ h\in\PRF^{k} $, for some $k\geq 1$.
+ %Let $ g_1,\ldots,g_k\in\PRF^{n} $ and $ h\in\PRF^{k} $ in $ \prCom{h,g_1,\ldots,g_k}\in\PRF^{n}$.
+Therefore, by inductive hypothesis,  there are $ \prrpr{g_1} \in \RPP^{n+a_1+1}$, $\ldots$, $\prrpr{g_k}\in\RPP^{n+a_k+1} $ and 
+$ \prrpr{h}\in\RPP^{k+a_0+1} $ for $ a_0,\ldots,a_k\in\mathbb{N}$.
+
+ Let $m=\max\{ a_0,\ldots,a_k\}$.
+By using $\prrpr{g_i}$, it is easy to build $g_i^{*}\in \PRF^{n+m+k+1}$ computing 
+the reversible permutation described in the top-left of Table \ref{compositionComponentRelations}.
+The sequential composition can be used to compute  the permutation $G$ described in the bottom-left of Table \ref{compositionComponentRelations}.
+By using $G$ and $h$, it is easy to compute $h^*$ in the top-right of Table \ref{compositionComponentRelations}.
+Last, $H\in\RPP^{n+(m+k)+1}$ in the bottom-right of Table \ref{compositionComponentRelations} is 
+ $\prrpr{\prCom{h,g_1,\ldots,g_k}}$ and we define it as $h^* \rprSeq \rprInv{G}$.
+
+$H$ improves the representation of composition sketched  in \cite{PaoliniPiccoloRoversiICTCS2015} because
+it reduces the number of ancillae by re-using them to compute one after the other $ g_1,\ldots,g_k\in\PRF^{n} $ and $ h\in\PRF^{k} $.
+
+\item 
+Let $f\in\PRF^{n}$ where $n\geq 1$ be defined by means of the primitive recursion on $ g\in\PRF^{n-1} $ and $ h\in\PRF^{n+1} $.
+By inductive hypothesis there are $ \prrpr{g} \in \RPP^{(n-1)+a_g+1}$ and $ \prrpr{h}\in\RPP^{(n+1)+a_h+1} $ for 
+$ a_g,a_h\in\mathbb{N}$.
+
+The definition of $\prrpr{f}$ requires:
+(i) a temporary argument to store the result of the previous recursive call;
+(ii) a temporary argument  to stack  intermediate results;
+(iii) a temporary argument  to index the current iteration step;
+(iv) a temporary argument to contain the final result which is not modified when the computation is undone for cleaning temporary values; and
+(v) in different times, as many temporary arguments as $a_g$ to compute $\prrpr{g}$, 
+                        as many temporary arguments as $a_h$ to compute $\prrpr{h}$ and
+                        $ 10 $ 
+                        ancillae to $\rprPush$ and $\rprPop$ elements in the course of the computation
+                        (see Proposition \ref{proposition:Representing stacks in RPP}.)
+
+
+\begin{table}\hrule\centering
+ $$\hspace{-3mm}
+\begin{array}{c}
+\arraycolsep=1.4pt
+\begin{array}{rcl}
+      \left. {\scriptsize 
+          \begin{array}{r}
+            x \\ x_1 \\ \cdots \\ x_n
+            \\[1.2mm]
+              0 \\ \cdots \\ 0\\[1mm]
+              0^4
+          \end{array}
+        } \right[
+      & \prrpr{f} &
+      \left] {\scriptsize 
+          \begin{array}{l}
+            f(x_1,\ldots,x_n)\\[1pt] x_1 \\ \cdots \\ x_n
+            \\[2pt]
+             \!\!\left. 
+              \begin{array}{l}
+                0\\ \cdots\\ 0
+              \end{array}\right\}\max\{a_g,a_h,10\}\\
+             0^4
+          \end{array} 
+        } \right.
+    \end{array}\hspace{8mm}
+\begin{array}{rcl}
+      \left. {\scriptsize 
+          \begin{array}{r}
+           0\\ r \\ x_1 \\ \cdots \\ x_{n-1}\\ i
+            \\[1.2mm]
+            0^{a-4}
+            \\[1mm]
+            \mathcal{S}
+          \end{array}
+        } \right[
+      &  h_\text{step} &
+      \left] {\scriptsize 
+          \begin{array}{l}
+           0\\ \prrpr{h}(r,x_1,\ldots,x_{n-1},i)
+            \\ x_1 \\ \cdots \\ x_{n-1}\\ i+1
+            \\[1mm]
+            0^{a-4}
+            \\[1mm]
+             \langle r, \mathcal{S} \rangle
+          \end{array} 
+        } \right.
+    \end{array}\\
+%$\;$\\   
+  \end{array}$$
+\hrule
+  \caption{Primitive Recursion Components}\label{fig:pimRecComponents}
+\end{table}
+
+Let $a:=4+max\{a_g,a_h, 10\}$. Our goal is to define $\prrpr{f}\in\RPP^{n+a+1}$ which 
+behaves as described in the left of Table~\ref{fig:pimRecComponents}:
+\begin{enumerate}[leftmargin=5mm]
+%\setlength{\itemindent}{-.5in}
+\item 
+A first block of operations which we call $F_1$ reorganizes the inputs of $\prrpr{f}$ in Table~\ref{fig:pimRecComponents}
+to obtain $0, 0, x_1,\ldots, x_{n-1}, \overbrace{0,\ldots,  0}^{a-2}, x_n,x$.
+
+\item
+The result of the previous step becomes the input of $\rprPCom{\rprId^1}{\rprPCom{\prrpr{g}}{\rprId^{a-a_g}}}$ 
+which yields $0,g(x_1,\ldots, x_{n-1}), x_1,\ldots, x_{n-1}, \overbrace{0,\ldots, 0}^{a-2}, x_n,x$.  
+We notice that $x_n$ is the argument that drives the iteration.
+
+\item 
+The previous point supplies the arguments to the $x_n$-times applications of the recursive step:
+$$h_\text{step} := (\rprPCom{\prrpr{h}}{\rprId^{a-(a_h+2)}})\rprSeq \rprSucc^{n+a-1}_{n+2}
+   \rprSeq \rprPush^{n+a-1}_{2;n+a-1} \rprSeq (\rprPCom{\rprBSwap}{\rprId^{n+a-3}})$$
+by means of $\rprPCom{\rprIt{}{}{h_{\text{step}}}}{\rprId^1}$.
+The relation that $h_\text{step}$ implements is depicted in Table~\ref{fig:pimRecComponents}.
+Thus, $h_\text{step}$ takes $n+a-1$ input arguments only among the $ n+a+1 $ available
+because the first one serves to the identity and the other one drives the iteration.
+The function of $ h_\text{step} $ first applies $\prrpr{h}$ and then re-organizes arguments for the next iteration. Specifically, 
+(i) it increments the step-index in the argument of position $(n+2)$,
+(ii) it pushes the result of the previous step, which is in position $2$, 
+on top of the stack , which is in its last ancilla,
+(iii) it exchanges the first two arguments, the first one containing the result of the last 
+iterative step and the second one containing a fresh zero produced by $\rprPush$.
+\item 
+We get $0, f(x_1,\ldots, x_{n}), x_1,\ldots, x_{n-1}, x_n, \overbrace{0,\ldots,  0}^{a-2}, x_n,x$
+from the previous point. We add the result to the last line by means of 
+$\rprInc_{2;n+a+1}$ by yielding 
+$0, f(x_1,\ldots, x_{n}), x_1,\ldots, x_{n-1}, x_n, \overbrace{0,\ldots,  0}^{a-2}, x_n,x+f(x_1,\ldots, x_{n})$.
+
+\item 
+We then conclude by unwinding the first three steps.
+\end{enumerate}
+\end{itemize}
+\par\noindent
+Summing up, $\prrpr{h}$ is:
+$$ F_1 \rprSeq \left(\rprPCom{\rprId^1}{\rprPCom{\prrpr{g}}{\rprId^{a-a_g}}}\right) \rprSeq \left(\rprPCom{\rprIt{}{}{h_{\text{step}}}}{\rprId^1}\right)
+\rprSeq \rprInc_{2;n+a+1} \rprSeq \rprInv{\left(\rprPCom{\rprIt{}{}{h_{\text{step}}}}{\rprId^1}\right)} \rprSeq 
+   \rprInv{\left(\rprPCom{\rprId^1}{\rprPCom{\prrpr{g}}{\rprId^{a-a_g}}}\right)}  \rprSeq \rprInv{F_1} 
+\enspace . $$
+\qed
+\end{prf}
+
+\subsection{$ \RPP $ is $ \PRF $-sound}
+The mere intuition should support the evidence that every $ f\in\RPP $ has a representative inside $ \PRF $ we
+can obtain via the bijection which exists between $ \Int $ and $ \Nat $. 
+More precisely, every $ \RPP $-permutation can be represented  as a $ \PRF $-endofunction on tuples of natural 
+numbers which encode integers. Details on how formalizing the embedding of $ \RPP $ into $ \PRF $ are in \cite{PaoliniPiccoloRoversiICTCS2015}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%% servono ad emacs
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main.tex"
+%%% ispell-local-dictionary: "american"
+%%% End:

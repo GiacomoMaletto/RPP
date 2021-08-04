@@ -1,0 +1,504 @@
+\section{The class $ \RPP $ of Reversible Primitive Permutations}
+\label{section:The class RPP of Reversible Primitive Permutations}
+
+The identification of $ \RPP $ merges ideas and observations on Primitive Recursive Functions 
+($ \PRF $) \cite{peter1967book,malcev70book,matos03tcs,odifreddi1989book}, 
+Toffoli's class of boolean circuits \cite{toffoli80lncs} and Lafont's 
+algebraic theory on circuits \cite{Lafont2003257}. 
+We quickly recall the crucial ideas we borrowed from the above papers in order to formalize the Definition \ref{RevPrimPermutations}.
+
+Toffoli's  boolean circuits are invertible because they avoid erasing 
+information. This is why the boolean circuits in \cite{toffoli80lncs} have
+identical arity and co-arity. $\RPP$ adopts this policy for the same reasons.
+
+In analogy with $ \PRF $, the class $ \RPP $ is defined by composing 
+numerical basic functions by means of suitable composition schemes. 
+The will to manipulate numbers suggests that the \rprSuccName $ \rprSucc $ must be in $ \RPP $. 
+So $\rprInv{\rprSucc}$ --- \ie the \rprPredName $ \rprPred $ --- must be in $ \RPP $ as well because 
+we want $ f^{-1} $ to be effective. This requires that the application of $ \rprPred$ to $ 0 $ remains
+meaningful. Satisfying this requirement and keeping the definition of $ \RPP $ as much natural as possible 
+suggests to extend both the domain and co-domain of every function in $ \RPP$ to $ \Int $ so that 
+$ \rprPred $ applied to $ 0 $ can yield $ -1 $. 
+In fact, working with $ \Int $ as atomic data
+it is like working on $ \Nat $ up to some existing isomorphism between $ \Int $ and $ \Nat $.
+
+The core of the composition schemes of $ \RPP $ comes from \cite{Lafont2003257}.
+The series composition of functions is ubiquitous in functional computational model so $ \RPP $ uses one. 
+The parallel composition of functions is natural in presence of co-arity greater than $ 1 $ so
+$ \RPP $ relies on such a scheme.
+
+\subsection{Preliminaries}\label{subSect:Preliminaries}
+Let $ \Int $ be the set of integers and let $ \Int^{n}  $ be its Cartesian product whose elements 
+are $ n $-tuples, for any $ n \in \Nat $. The $ 0 $-tuple is $ \la\,\ra $. The $ 1 $-tuple
+is $ \la x\ra $ or simply $ x $. In general, we name tuples with $ n $ 
+elements as $ \vec{a}^n, \vec{b}^n, \ldots $ 
+or simply as $ \vec{a}, \vec{b}, \ldots $ if knowing the number of their components is not 
+crucial.
+By definition, the concatenation $ \cat: \Int^i \times \Int^j \longrightarrow \Int^{i+j} $ 
+is such that $ \la x_1,\ldots,x_j\ra \cat \la y_1,\ldots,y_k\ra = \la x_1,\ldots,x_j,y_1,\ldots,y_k\ra$.
+Whenever $ j = 1  $ we prefer to write $ x_1 \cat \la y_1,\ldots,y_k\ra $ in place of 
+$ \la x_1\ra \cat \la y_1,\ldots,y_k\ra $. Analogously, $ \la x_1,\ldots,x_j\ra \cat y_1$ will 
+generally stand for $ \la x_1,\ldots,x_j\ra \cat \la y_1\ra$. The empty tuple is the neutral element so
+$ \vec{x} \cat \la\ra = \la\ra \cat \vec{x} = \vec{x} $.
+In fact, we shall generally drop the explicit use of the concatenation operator `$ \cat $'. 
+For example, this means that we will often replace 
+$ \vec{a} \cat x \cat \vec{b} \cat \vec{c}^n \cat \vec{d} $ by
+$ \vec{a}\, x\, \vec{b}\, \vec{c}^n\, \vec{d} $. 
+%Finally, given $ \vec{a}^n $, we denote 
+%$ \vec{a}_{\,i} $ the $ i $-th element $ x_i $ in $ \vec{a}^n $, for any $ i \leq n $.
+ 
+\begin{definition}[Reversible Primitive Permutations]
+\label{RevPrimPermutations}
+Reversible Primitive Permutations (abbreviated as $ \RPP $) is a sub-class
+of Reversible Permutations\footnote{For sake of precision,
+we focus on Total Reversible Recursive 
+Endo-Functions on $\Int^n$ for some $n\in\mathbb N$.}. 
+By definition,  $ \RPP  = \bigcup_{k\in\Nat} \RPP^{k}$  where, for every $k\in\Nat$, the set
+$ \RPP^{k}$ contains functions with identical \emph{\arityI} and \emph{\arityO} 
+$ k$. The classes $ \RPP^{0}, \RPP^{1}, \ldots $ are defined by mutual induction.
+\begin{itemize}
+\item
+The \rprIdName $ \rprId $,
+the \rprNegName $  \rprNeg$,
+the \rprSuccName $  \rprSucc$ and 
+the \rprPredName $  \rprPred$ 
+belong to $ \RPP^{1}$. We formalize their semantics, which is the one we may expect,
+by means of two equivalent notations. 
+The first is a standard functional notation that applies the function to the input and
+produces an output:
+\begin{align*}
+\rprId   \la x\ra & := \la     x \ra \;,&&& \rprNeg  \la x\ra & := \la    -x \ra\;,
+&&& \rprSucc \la x\ra & := \la x + 1 \ra \;,& \rprPred \la x\ra & := \la x - 1 \ra
+\enspace .
+\end{align*}
+
+The second notation is relational. We write the function name between square brackets;
+the input is on the left hand side and the output in on the right hand side:
+\begin{align*}
+\arraycolsep=1.4pt
+\begin{array}{rcl}
+ \left. {\scriptsize \begin{array}{r} 
+                       x
+                     \end{array}} \right[
+ & \rprId &
+ \left] {\scriptsize \begin{array}{l}
+                       x
+                     \end{array} } \right. \;,
+\end{array}
+&&&
+\arraycolsep=1.4pt
+\begin{array}{rcl}
+ \left. {\scriptsize \begin{array}{r} 
+                       x
+                     \end{array}} \right[
+ & \rprNeg &
+ \left] {\scriptsize \begin{array}{l}
+                       -x
+                     \end{array} } \right. \;,
+\end{array}
+&&&
+\arraycolsep=1.4pt
+\begin{array}{rcl}
+ \left. {\scriptsize \begin{array}{r} 
+                       x
+                     \end{array}} \right[
+ & \rprSucc &
+ \left] {\scriptsize \begin{array}{l}
+                       x+1
+                     \end{array} } \right. \;,
+\end{array}
+&&&
+\arraycolsep=1.4pt
+\begin{array}{rcl}
+ \left. {\scriptsize \begin{array}{r} 
+                       x
+                     \end{array}} \right[
+ & \rprPred &
+ \left] {\scriptsize \begin{array}{l}
+                       x-1
+                     \end{array} } \right.
+\end{array}
+\enspace .
+\end{align*}
+
+\item 
+The \rprSwapName $ \rprBSwap $ belongs to $ \RPP^{2}$.
+The functional notation is the expected one:
+\begin{align*}
+\rprBSwap \la x,y\ra := \la y,x\ra
+% \begin{array}{rcl}
+%  \left. {\scriptsize \begin{array}{r} 
+%                        x\\ y
+%                      \end{array}} \right[
+%  & \rprSwap{2}
+%            {1,2}
+%            {2,1} &
+%  \left] {\scriptsize \begin{array}{l}
+%                        y\\[0.35mm] x
+%                      \end{array} } \right.
+% \end{array}
+\enspace .
+\end{align*}
+We use two interchangeable relational notations:
+\begin{align*}
+\arraycolsep=1.4pt
+\begin{array}{rcl}
+\left. {\scriptsize \begin{array}{r} 
+	x\\ y
+	\end{array}} \right[  &
+\rprBSwap 
+& \left] {\scriptsize \begin{array}{l}
+	y\\[0.35mm] x
+	\end{array} } \right.
+\end{array}
+  \textrm{ and  }
+  \textcolor{red}{ \rprSwap{2} {1,2} {2,1} } %LP non funzionava: colorato a MANO !!!
+  \begin{array}{rcl}
+\left. {\scriptsize \begin{array}{r} 
+	x\\ y
+                    \end{array}} \right[  &\rprSwap{2} {1,2} {2,1}
+  & \left] {\scriptsize \begin{array}{l}
+	y\\[0.35mm] x
+	\end{array} } \right.
+  \end{array}
+\enspace .
+\end{align*}
+The second one explicitly represents
+ (i) the arity,
+(ii) the input sequence of the arguments which is the upper sequence of numbers; 
+and (iii) the output sequence of arguments in the lower sequence of numbers.
+\item 
+Let $ f, g\in\RPP^{j}$, for some $ j $.
+The \rprSComName $ (\rprSCom{f}{g})$ belongs to $ \RPP^{j} $ and is such that:
+\begin{align*}
+(\rprSCom{f}{g}) \, \langle x_1,\ldots,x_j\rangle 
+  & =  (g\circ f) \langle x_1,\ldots,x_j\rangle
+\textrm{ or }
+\end{align*}
+\begin{align*}
+\arraycolsep=1.4pt
+\begin{array}{rcl}
+ \left. {\scriptsize \begin{array}{r} 
+                       x_1\\ \cdots\\ x_j
+                     \end{array}} \right[
+ & \rprSCom{f}{g} &
+ \left] {\scriptsize \begin{array}{l}
+                       y_1\\ \cdots\\ y_j
+                     \end{array} } \right.
+\end{array}
+& =
+\arraycolsep=1.4pt
+\begin{array}{rcl}
+ \left. {\scriptsize \begin{array}{r} 
+                       x_1\\ \cdots\\ x_j
+                     \end{array}} \right[
+ & f &
+ \left] {\hspace{-1.6em}
+         \phantom{\scriptsize \begin{array}{r} 
+                        x_1\\ \cdots\\ x_j
+                      \end{array}
+                 }
+        } \right.
+\end{array}
+\arraycolsep=1.4pt
+\begin{array}{rcl}
+ \left. {\hspace{-1.6em}
+          \phantom{\scriptsize \begin{array}{r} 
+                         x_1\\ \cdots\\ x_j
+                       \end{array}
+                  }
+         } \right[
+ & g &
+ \left] {\scriptsize \begin{array}{l}
+                       y_1\\ \cdots\\ y_j
+                     \end{array} } \right.
+\end{array}
+\enspace .
+\end{align*}
+We remark  the use of the programming composition that applies functions rightward, in opposition to the standard 
+functional  composition (denoted by $\circ$). 
+\item 
+Let $ f\in\RPP^{j}$ and $ g\in\RPP^{k}$,
+for some $ j $ and $ k $.
+The \rprPComName 
+$ (\rprPCom{f}{g})$ belongs to $ \RPP^{j+k} $ and is such that:
+\begin{align*}
+(\rprPCom{f}{g}) \, 
+\langle x_1, \ldots, x_j\rangle
+\langle y_1, \ldots, y_k\rangle & =  
+(f\langle x_1, \ldots, x_j\rangle)\cdot (g\,\langle y_1, \ldots, y_k\rangle)
+\textrm{ or }
+\end{align*}
+\begin{align*}
+\arraycolsep=1.4pt
+\begin{array}{rcl}
+ \left. {\scriptsize \begin{array}{r} 
+                       x_1\\ \cdots\\ x_j\\y_1\\ \cdots\\ y_k
+                     \end{array}} \right[
+ & \rprPCom{f}{g} &
+ \left] {\scriptsize \begin{array}{l}
+                       w_1\\ \cdots\\ w_j\\z_1\\ \cdots\\ z_k
+                     \end{array} } \right.
+\end{array}
+& =
+\arraycolsep=1.4pt
+\begin{array}{c}
+ \begin{array}{rcl}
+  \left. {\scriptsize \begin{array}{r} 
+                        x_1\\ \cdots\\ x_j
+                      \end{array}} \right[
+  & f &
+  \left] {\scriptsize \begin{array}{r} 
+                        w_1\\ \cdots\\ w_j
+                       \end{array}
+         } \right.
+ \end{array}
+ \vspace{.25em}
+ \\
+ \vspace{.25em}
+ \arraycolsep=1.4pt
+ \begin{array}{rcl}
+  \left. {\scriptsize \begin{array}{r} 
+                          y_1\\ \cdots\\ y_k
+                        \end{array}
+          } \right[
+  & g &
+  \left] {\scriptsize \begin{array}{l}
+                        z_1\\ \cdots\\ z_k
+                      \end{array} } \right.
+ \end{array}
+\end{array}
+\enspace ,
+\end{align*}
+where $\cdot$ is the composition of sequences (cf. Section \ref{subSect:Preliminaries}).
+%%%%%%%%%%%%%%%% Finite iteration
+\item 
+Let $ f\in\RPP^{k}$. 
+The \rprItName $ \rprIt{}{}{f} $ belongs to $\RPP^{k+1}$ and is such that:
+\begin{align*}
+\rprIt{}{}{f}\, (\langle x_1,\ldots, x_k \rangle \cdot x) & =  
+   (\rprPCom{(\overbrace{\rprSCom{f}{\rprSCom{\ldots}{f}}}^{|x|})}
+            {\rprId})\,
+             (  \langle x_1,\ldots, x_k \rangle \cdot x)
+\textrm{ or }
+\end{align*}
+\begin{align*}
+\arraycolsep=1.4pt
+\begin{array}{rcl}
+ \left. {\scriptsize 
+           \begin{array}{r}
+             x_1\\ \cdots\\ x_k\\[1.5mm]
+             x
+           \end{array} 
+         } \right[
+ & \rprIt{}{}{f} &
+ \left] {\scriptsize 
+          \begin{array}{l}
+           % x\\[-1.5mm]
+           \!\!
+           \left .
+           \begin{array}{l}
+            y_1\\ \cdots\\ y_k
+           \end{array} 
+           \right \} = 
+              (\underbrace{\rprSCom{f}{\rprSCom{\ldots}{f}}}_{|x|})
+              \, \langle x_1, \ldots, x_k \ra\\
+          x
+          \end{array} 
+        } \right.
+\end{array}
+\enspace .
+\end{align*}
+We remark the \emph{linearity constraint} on the \rprItName.
+The argument~$x$ which drives the iteration unfolding cannot be among the arguments
+of the iterated function $ f $.
+Moreover, $ x $ is the last argument of $ \rprIt{}{}{f} $ in order to apply $ f $ to the first $ n $ arguments
+of $ \rprIt{}{}{f} $ itself.
+
+%%%%%%%%%%%%%%%% Selection
+\item 
+Let $ f, g, h\in\RPP^{k}$. 
+The \rprIfName
+ $ \rprIf{}{}{f}{g}{h} $ belongs to $\RPP^{k+1}$ and is such that:
+\begin{align*}
+\rprIf{}{}{f}{g}{h} \,  ( \langle x_1, \ldots, x_k \rangle \cdot x) & =  
+\begin{cases}
+(\rprPCom{f}{\rprId})\, ( \langle x_1, \ldots, x_k \rangle \cdot x) & \textrm{ if } x > 0\\
+(\rprPCom{g}{\rprId})\, ( \langle x_1, \ldots, x_k \rangle \cdot x) & \textrm{ if } x = 0\\
+(\rprPCom{h}{\rprId})\, ( \langle x_1, \ldots, x_k \rangle \cdot x) & \textrm{ if } x < 0
+\end{cases}
+\quad \textrm{ or  }
+\end{align*}
+\begin{align*}
+\arraycolsep=1.4pt
+\begin{array}{rcl}
+ \left. {\scriptsize 
+           \begin{array}{r}
+             x_1\\ \cdots\\ x_k\\[1.5mm] x
+           \end{array} 
+         } \right[
+ & \rprIf{}{}{f}{g}{h} &
+ \left] {\scriptsize 
+          \begin{array}{l}
+           % x \\[-1.5mm]
+           \!\!
+           \left .
+           \begin{array}{l}
+            y_1\\ \cdots\\ y_k
+           \end{array} 
+           \right \} = 
+              \begin{cases}
+               f\,\langle x_1, \ldots, x_k \rangle & \textrm{ if } x > 0\\
+               g\,\langle x_1, \ldots, x_k \rangle & \textrm{ if } x = 0\\
+               h\,\langle x_1, \ldots, x_k \rangle & \textrm{ if } x < 0
+              \end{cases}\\
+              x
+          \end{array} 
+        } \right.
+\end{array}
+\enspace .
+\end{align*}
+We remark the \emph{linearity constraint} imposed on the definition of \rprIfName.
+The argument~$x$ which determines which among $ f, g $ and $ h $ must be used
+cannot be among the arguments of $ f, g $ and $ h $.
+Moreover, we choose to use $ x $ as the last argument of $ \rprIf{}{}{f}{g}{h} $ to avoid any 
+re-indexing of the arguments of $ f, g $ and $ h $, once we choose one of them.
+\qed
+\end{itemize}
+\end{definition}
+
+%%%%%%%%%%%%%%%%
+\begin{notation}
+If the same value occurs in consecutive inputs or outputs, like, for example, in:
+\begin{align*}
+f\langle x_1, \ldots, x_m, \underbrace{0, \ldots, 0}_{r\in\Nat}, y_1,\ldots, y_n \rangle
+ & = \langle w_1, \ldots, w_p, \underbrace{0, \ldots, 0}_{s\in\Nat}, z_1,\ldots, z_q \rangle
+\enspace ,
+\end{align*}
+with $ m+r+n = p+s+q $, we will often abbreviate it as:
+\begin{align*}
+f\langle x_1, \ldots, x_m, 0^r, y_1,\ldots, y_n \rangle
+ & = \langle w_1, \ldots, w_p, 0^s, z_1,\ldots, z_q \rangle
+\textrm{ or  }
+\arraycolsep=1.4pt
+\begin{array}{rcl}
+ \left. {\scriptsize 
+            \begin{array}{r}
+             x_1 \\ \cdots \\ x_m \\[1mm] 0^r \\ y_1 \\ \cdots \\ y_n
+            \end{array} 
+         } \right[
+ & f &
+ \left] {\scriptsize 
+            \begin{array}{r}
+             w_1 \\ \cdots \\ w_p \\[1mm] 0^s \\ z_1 \\ \cdots \\ z_q
+            \end{array} 
+        } \right.
+\end{array}
+\enspace .
+\end{align*}
+In particular, $ 0^0 $ means that no occurrences of $ 0 $ exist. 
+\qed
+\end{notation}
+
+The following proposition certifies that identifying the inverse of a term inside $ \RPP $ 
+is a simple task. I.e., given the representation of a
+function $ f $ in $ \RPP $,  generating $ f^{-1} $ is \emph{effective} and 
+such that $(y,x)\in f^{-1}$ if and only if $(x,y)\in f$.
+
+%%%%%%%%%%%%%%%%
+\begin{proposition}[The (syntactical) inverse $ \rprInv{f} $ of any $ f $]
+\label{proposition:The function rprInv}
+Let $ f\in\RPP^{j}$, for any $ j\in\Nat $. The \rprInvName of $ f$ is
+$ \rprInv{f}$, belongs to $ \RPP^{j} $ and, by definition, is:
+$$ 
+\begin{array}{l}
+\rprInv{\rprId} := \rprId   \;,\; \rprInv{\rprNeg}    := \rprNeg  
+                            \;,\;  \rprInv{\rprSucc}  := \rprPred  
+                            \;,\;   \rprInv{\rprPred} := \rprSucc    
+                            \;,\;  \rprInv{\rprBSwap} := \rprBSwap   \;,\;  \\[1mm]
+                            \rprInv{(\rprSCom{g}{f})} := \rprSCom{\rprInv{f}}{\rprInv{g}} 
+                             \;,\;   \rprInv{(\rprPCom{f}{g})} := \rprPCom{\rprInv{f}}{\rprInv{g}}  \;,\;  \\[1mm]
+                              \rprInv{(\rprIt{}{}{f})}       := \rprIt{}{}{\rprInv{f}}  
+                            \;,\; \rprInv{(\rprIf{}{}{f}{g}{h})}  := \rprIf{}{}{\rprInv{f}}{\rprInv{g}}{\rprInv{h}}
+  \enspace .
+\end{array}
+$$
+Then $ \rprSCom{f}{\rprInv{f}} = \rprId $ and $\rprSCom{\rprInv{f}}{f} = \rprId $.
+\end{proposition}
+\begin{prf}
+By induction on the definition of $ f $.
+\qed
+\end{prf}
+\noindent
+Proposition~\ref{proposition:The function rprInv} shows that $ \RPP $ allows for a very smooth, syntactically driven, 
+definition of the operation that makes the inverse of a given $ f $ effectively available. Other methods can exist. For example, 
+\cite{McC56,robinson1950pams} pursue a sort of ``brute force'' method which is not at all syntax directed.
+
+% We emphasize that, in the course of the design of $ \RPP $, 
+% we aimed at sticking as much as we could to the traditional 
+% $\PRF $ formalism, in order to keep a reasonable balance between 
+% conciseness and easiness of usage.
+%\todo{Question 2, Reviewer 1}
+	Of course, $\RPP$ is syntactically redundant.
+	For example, 
+	both the parallel composition of two occurrences of the unary identity and
+	the series-composition of two swaps yield the identity with arity 2.
+	Moreover, the selection needs not be defined on three (higher-order) arguments as we do.
+	Superfluous ingredients help to make the programming with $ \RPP $ a \LP{}{bit more} reasonably easy task.
+%	\LPx{Establishing which one is better among $ \RPP $ and the languages for reversible computations in 
+%	\cite{matos03tcs,PaoliniPiccoloRoversiICTCS2015}, for example, requires a lot of programming exercise
+%	to see how the primitives orient the design of algorithms.}{ \todo{Non ha senso confrontare linguaggi senza stabilire 
+%quale qualita si vuole misurare e quale metro si vuole usare tra i possibili: ANVUR docet!}}
+
+
+%%%%%%%%%%%%%%%%
+\begin{proposition}[Relating \rprSComName and \rprPComName]
+\label{proposition:Relating rprSComName and rprPComName}
+Let $ f, g\in\RPP^{j}$ and $ f', g'\in\RPP^{k}$ with $ j, k\in\Nat $. Then:
+\begin{align*}
+\rprSCom{(\rprPCom{f}{f'})}{(\rprPCom{g}{g'})}
+=
+\rprPCom{(\rprSCom{f}{g})}{(\rprSCom{f'}{g'})}
+\enspace .
+\end{align*}
+\end{proposition}
+\begin{prf}
+By definition:
+\begin{align*}
+\rprSCom{(\rprPCom{f}{f'})}{(\rprPCom{g}{g'})}\, \vec{a}\,\vec{b} & = 
+  (\rprPCom{g}{g'}) (\rprPCom{f}{f'})\, \vec{a}\,\vec{b}\\
+  & = (\rprPCom{g}{g'})\, (f\vec{a}) \, (f'\vec{b})\\
+  & = (g f\vec{a})  (g'f'\vec{b})\\
+  & = ((\rprSCom{f}{g})\,\vec{a}) ((\rprSCom{f'}{g'})\,\vec{b})\\
+  & = (\rprPCom{(\rprSCom{f}{g})}{(\rprSCom{f'}{g'})})\,\vec{a} \,\vec{b}
+  \enspace .\qed
+\end{align*}
+\end{prf}
+
+%\todo{Questions 3 and 5, Reviewer 1.}
+	We conclude with some comments on
+	the relevance of having functions with identical input and output arity in $ \RPP $.
+	Toffoli's works on reversible boolean circuits influenced our choice. 
+	However, in \cite{paolini2017ngc} we extend a reversible language  with a bijective built-in map from 
+	$ \Int\times\Int $ to $\Int $ such that $ \langle 0,0\rangle \mapsto 0 $.
+	Clearly, the input/output symmetry breaks up and we move from permutations to isomorphisms.
+	The built-in bijection  allows to generate as many ancillary arguments as needed
+	for fully developing reversible computations. 
+    Once finished, ancillae will be repackaged into a single argument.
+
+%\LP{}{\todo{Questions 3 and 5, Reviewer 1}
+%In this papers we focused on permutations corresponding to $\PRF$, mainly, for sake of simplicity.
+%However, this restriction is essentially a contingent choice:
+%indeed, in \cite{paolini2017ngc} we  developed a proposal overcoming it by involving recursive bijections not arity-respecting
+%(namely, being not permutations).
+%In particular, we consider Cantor-pairing like functions in $\Int\rightarrow \Int\times\Int$ that should make us able to 
+%generate how many ancillary arguments we need.
+%}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%% servono ad emacs
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main.tex"
+%%% ispell-local-dictionary: "american"
+%%% End:

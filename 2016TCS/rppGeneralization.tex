@@ -1,0 +1,170 @@
+\section{Generalizations inside $ \RPP $}
+\label{section:Generalizations inside RPP}
+
+We introduce formal generalizations of elements in $\RPP$. This helps simplifying the 
+use of $ \RPP $ as a programming notation.
+
+\paragraph{Weakening inside $ \RPP $}
+For any given $ f\in\RPP^m $ an infinite set 
+$ \Set{\rprWea^n(f) \mid n\geq 1 \text{ and } \rprWea^n(f) \in \RPP^{m+n}}$ 
+exists such that:
+\begin{align*}
+\arraycolsep=1.4pt
+\begin{array}{rcl}
+ \left. {\scriptsize 
+           \begin{array}{r}
+            \\[-2mm]
+             x_1\\ \cdots\\ x_m
+            \\
+             x_{m+1}\\ \cdots\\ x_{m+n}
+           \end{array} 
+         } \right[
+ & \rprWea^n(f) &
+ \left] {\scriptsize 
+          \begin{array}{l}
+           \!\!
+           \left .
+           \begin{array}{l}
+            y_1\\ \cdots\\ y_m
+           \end{array} 
+           \right \} = 
+               f\,\la x_1, \ldots, x_m \ra
+             \\
+             x_{m+1}\\ \cdots\\ x_{m+n}
+          \end{array} 
+        } \right.
+\end{array}
+\enspace ,
+\end{align*}
+for every $ \rprWea^n(f)$. We call $ \rprWea^n(f) $ \rprWeaName of $ f $ which we can obviously obtain by \rprPComName
+of $ f $ with $ n $ occurrences of $ \rprId $. In general, if we need some \rprWeaName of a given 
+$ f $, then we shall not write $ \rprWea^n(f) $ explicitly. We shall instead use $ f $ and say that
+it is the \rprWeaName of $ f $ itself.
+
+
+%%%%%%%%%%%%%%%
+\paragraph{Generalized \rprIdName, \rprNegName, \rprSuccName and \rprPredName}
+For every $ i\leq n $, the following functions in $ \RPP^n $ exist:
+\begin{align*}
+ \rprId^n\, \la x_1, \ldots, x_{i-1}, x_i, x_{i+1}, \ldots, x_n \ra
+ & = \la x_1, \ldots, x_{i-1}, x_i, x_{i+1}, \ldots,  x_n\ra
+\\
+ \rprNeg^n_i \, \la x_1, \ldots, x_{i-1}, x_i, x_{i+1}, \ldots, x_n \ra
+ & = \la x_1, \ldots, x_{i-1}, -x_i, x_{i+1}, \ldots,  x_n\ra
+\\
+ \rprSucc^n_i \, \la x_1, \ldots, x_{i-1}, x_i, x_{i+1}, \ldots, x_n \ra
+  & = \la x_1, \ldots, x_{i-1}, x_i + 1, x_{i+1}, \ldots,  x_n\ra
+\\
+ \rprPred^n_i \, \la x_1, \ldots, x_{i-1}, x_i, x_{i+1}, \ldots, x_n \ra
+  & = \la x_1, \ldots, x_{i-1}, x_i - 1, x_{i+1}, \ldots,  x_n\ra
+\enspace .
+\end{align*}
+They are the weakening of
+$ \rprId, \rprNeg, \rprSucc, \rprPred\in\RPP^1 $. When the arity $ n $ is clear from the 
+context, we allow to use $ \rprId, \rprNeg_i, \rprSucc_i $ and $ \rprPred_i $
+in place of $ \rprId^n, \rprNeg^n_i, \rprSucc^n_i $ and $ \rprPred^n_i $.
+
+%%%%%%%%%%%%%%%
+\paragraph{Generalized rewiring permutations}
+
+%\todo{Question 1. \# Editor. }
+	The literature offers terminology and notation related to the reversible computing which is far from being uniform.
+	Just as an example, the class \LP{od}{of} \emph{invertible functions} of \cite[p.2]{cutland1980book} differs
+	from the namesake class that \cite{lane1999algebra} defines.
+	From \cite{lane1999algebra} we take that a permutation on a set $S$ is a bijection on $S$, i.e. an endo-bijection
+	on $ S $. Very often, the intended meaning of ``permutation'' is ``finite permutation on a given (finite) set $ S $.''
+	Generally speaking, this is not our case at least because, as we will see in Section~\ref{section:Cantor pairing}, 
+	we deal with pairing inside $ \RPP $. When dealing with permutations of $ \RPP $ whose only
+	goal is to re-arrange the finite set $\{1, \ldots, k\}$ of indexes of their arguments, we talk about
+	\emph{rewiring permutations}.
+
+\begin{proposition}[Rewiring Permutations in $ \RPP $.]
+	\label{finitePermutationGeneration}
+	Each rewiring permutation with arity and co-arity equal to $k$ belongs to $\RPP^{k}$.
+\end{proposition}
+\begin{prf}
+Fixed a rewiring permutation to represent, it is enough to 
+    suitably compose \rprIdName, \rprBSwapName, \rprSComName, \rprPComName and \rprWeaName.
+	\qed
+\end{prf}
+Let $\Set{i_1,\ldots,i_n} = \Set{1,\ldots,n}$ and $ \rho:\Nat^n\longrightarrow\Nat^n $
+The notation for a rewiring permutation in $\RPP^n $, sending the $ i_1 $-th input to the $ \rho(i_1) $-th output, 
+the $ i_2 $-th input to the $ \rho(i_2) $-th output \etc is:
+\begin{align}
+\label{align:generalized permutation}
+\AUTOrprSwap{n}{i_1,\ldots,i_m}{\rho(i_1),\ldots,\rho(i_m)}
+\enspace .
+\end{align}
+
+%%%%%%%%%%%%%%%
+\paragraph{Generalized \rprItName}
+Let $ f\in\RPP^n$ and $ m \geq n + 1$. 
+Let $ \langle i\rangle$, $L=\langle i_1, \ldots, i_n \rangle$ and 
+$ \langle j_1, \ldots, j_{m-n-1} \rangle$ be a partition of natural numbers in the interval   $\langle 1,\ldots,m \rangle$.
+We are going to define $ \rprIt{m}{i,L}{f} $ such that 
+its argument of position $ i $ drives an iteration of $ f $ from $ L $. \Ie, 
+$ \rprIt{m}{i,L}{f}\, \langle x_{1}, \ldots, x_{m} \rangle = \langle y_{1}, \ldots, y_{m} \rangle $, where: 
+\begin{align*}
+y_i & = x_i \\
+\la y_{j_1},\ldots, y_{j_{m-n-1}} \ra  & =
+ \la x_{j_1},\ldots, x_{j_{m-n-1}} \ra \\
+\la y_{i_1},\ldots, y_{i_n} \ra  & =
+ (\underbrace{\rprSCom{f}{\rprSCom{\ldots}{f}}}_{|x_i|})\, L 
+ \enspace .
+\end{align*}
+We observe that $ \rprIt{m}{i,L}{f}$ is the identity on $ \langle x_{j_1}, \ldots, x_{j_{m-n-1}}\rangle $. 
+By definition:
+\scalebox{.93}{$\rprIt{m}{i,L}{f} 
+ := 
+   \AUTOrprSwap{m}{1,\ldots, n  ,n+1,n+2,\ldots,m  } {   i_1,\ldots, i_n,i,j_1,\ldots,j_{m-n-1}   } 
+   \rprSeq (\rprPCom{\rprIt{}{}{f}} {\rprId^{m-n-1}}) 
+   \rprSeq
+   \rprInv{\left(\AUTOrprSwap{m}{1,\ldots\, n  ,n+1, n+2,\ldots,m }{i_1,\ldots\, i_n,i,j_1,\ldots,j_{m-n-1} } \right) }
+   \! .  $}
+\\[3mm]
+The condition on $ i $ preserves the linearity constraint of $ \rprIt{}{}{f} $. 
+%The definition of $ \rprIt{m}{i,L}{f} $ holds for any $ m $. We shall drop it when clear from the context.
+
+%%%%%%%%%%%%%%%%%
+\paragraph{Generalizing the \rprIfName} 
+Let $ f,g,h\in\RPP^n$ and $ m \geq n + 1$.  
+Let $ \langle i\rangle$, $L=\langle i_1, \ldots, i_n \rangle$ and 
+$ \langle j_1, \ldots, j_{m-n-1} \rangle$ be a partition of natural numbers in the interval   $\langle 1,\ldots,m \rangle$.
+We are going to define $ \rprIf{m}{i,L}{f}{g}{h} $ such that its argument of position $ i $ determines
+which among $ f, g $ and $ h $ must be applied to $ L $. \Ie, 
+$ \rprIf{m}{i,L}{f}{g}{h} \, \la x_1, \ldots, x_m \ra = \la y_1, \ldots, y_m \ra $ where:
+\begin{align*}
+y_i & = x_i \\
+\la y_{j_1},\ldots, y_{j_{m-n-1}} \ra  & =
+ \la x_{j_1},\ldots, x_{j_{m-n-1}} \ra \\
+\la y_{i_1},\ldots, y_{i_n} \ra & = 
+\begin{cases}
+  f\, \la x_{i_1},\ldots, x_{i_n} \ra  & \textrm{ if } x_i > 0\\
+  g\, \la x_{i_1},\ldots, x_{i_n} \ra  & \textrm{ if } x_i = 0\\
+  h\, \la x_{i_1},\ldots, x_{i_n} \ra  & \textrm{ if } x_i < 0
+    \enspace .
+\end{cases}
+\end{align*}
+We observe that $ \rprIf{m}{i,L}{f}{g}{h}$  is the identity on $ \la x_{j_1},\ldots, x_{j_{m-n-1}} \ra $. 
+By definition:
+\begin{align*}
+\rprIf{m}{i,L}{f}{g}{h}
+  := 
+  & \AUTOrprSwap{m}{1 \ldots  n ,n+1,n+2, \ldots ,m } {i_1 \ldots i_n,i,j_1, \ldots, j_{m-n-1}}  \\
+  & \rprSeq 
+    (\rprPCom{\rprIf{}{}{f}{g}{h}}  {\rprId^{m-n-1}}) \\
+  & \rprSeq 
+    \rprInv{\left(\AUTOrprSwap{m} {1, \ldots , n ,n+1,n+2 ,\ldots ,m }{i_1, \ldots, i_n,i,j_1 ,\ldots, j_{m-n-1}} \right) }
+   \enspace .
+\end{align*}
+The condition on $ i $ preserves the linearity constraint 
+of $ \rprIf{m}{i}{f}{g}{h} $. 
+%The definition of $ \rprIf{}{i,L}{f}{g}{h} $ holds for any $ m $. 
+%We shall drop it when clear from the context.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main.tex"
+%%% ispell-local-dictionary: "american"
+%%% End:

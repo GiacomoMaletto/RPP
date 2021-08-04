@@ -1,0 +1,153 @@
+\todo[inline]{Credo proprio che questa appendice rimarr\`a nascosta.}
+
+
+\appendix
+
+\section{Some further functions in $ \RPP $}
+\label{Some further functions in RPP}
+
+%%%%%%%%%%%%%%%
+\paragraph{Halving a number}
+Our goal is to define a function $ \rprDivTwo $ that takes an integer $ n $ and yields 
+$ \lfloor \frac{n}{2} \rfloor $, \ie the best approximation from below of $ \frac{n}{2} $.
+
+\ldots
+
+We shall define a class of functions where the algorithm just described
+exists in the form of a reversible function
+
+Let $n, j, i, p, q\in\Nat$ such that $ j < i < p < q \leq n$.
+We define:
+\begin{align*}
+\rprDivTwo^{n}_{j,p,q;i} =
+ \rprIt{n}{j}{\rprSucc_p \circ \rprSwap{}{p}{q}}\circ
+ \rprInc_{p;i} \circ
+ \rprInv{\left(\rprIt{n}{j}{\rprSucc_p \circ \rprSwap{}{p}{q}}\right)} \circ
+ \rprIf{n}{j}{\rprId}{\rprId}{\rprNeg_i} 
+\end{align*}
+Given $ \vec{a}^{n} $, we have 
+$ \rprDivTwo^n_{j,p,q;i}\, \vec{a}^n = \vec{b}^n$ such that:
+\begin{align*}
+\la \vec{b}_1,\ldots,\vec{b}_{\,i-1},\vec{b}_{\,i+1},\ldots,\vec{b}_{\,n}\ra
+ & = \la \vec{a}_1,\ldots,\vec{a}_{\,i-1},\vec{a}_{\,i+1},\ldots,\vec{a}_{\,n}\ra
+\enspace ,
+\\
+\vec{b}_i & = 
+\begin{cases}
+\vec{a}_i + \vec{a}_p 
+   + \underbrace{1 + \ldots + 1}_{\left| \lfloor\vec{a}_j/2 \rfloor\right|}
+   & \textrm{ if } \vec{a}_j \textrm{ even } \\
+\vec{a}_i + \vec{a}_q 
+   + \overbrace{1 + \ldots + 1}^{}
+   & \textrm{ if } \vec{a}_j \textrm{ odd }
+   \enspace .
+\end{cases}
+\end{align*}
+So, if $ \vec{a}_p, \vec{a}_p$ and $ \vec{a}_q $ are initially set to $ 0 $, then 
+$ \rprDivTwo^n_{j,p,q;i} $ eventually sets $ \vec{a}_i $ to the value $ \left\lfloor\vec{a}_j/2 \right\rfloor $.
+We get the result by first alternatively adding $ 1 $ as many times as to $ \vec{a}_p $ and $\vec{a}_q $. The global number
+of $ 1 $s we add amounts to the absolute value of $ \vec{a}_j $. Finally, if $ \vec{a}_j $ is negative, then $ \vec{a}_i $
+must be negative as well.
+
+%%%%%%%%%%%%%%%
+\paragraph{Squaring an integer}
+Let $n, k, j, i\in\Nat$ such that $ k < j < i \leq n$.
+We define:
+\begin{align*}
+\rprSq^n_{k,j;i} & = 
+\rprInc_{j;k} \circ 
+\rprIf{n}{j}{\rprId}{\rprId}{\rprNeg} \circ 
+\rprMult^{n}_{k,j;i} \circ 
+\rprInv{(\rprIf{n}{j}{\rprId}{\rprId}{\rprNeg})}\circ
+\rprInv{(\rprInc_{j;k})}
+\enspace .
+\end{align*}
+Given $ \vec{a}^{n} $, we have 
+$ \rprSq^n_{k,j;i}\, \vec{a}^n = \vec{b}^n$ such that:
+\begin{align*}
+\la \vec{b}_1,\ldots,\vec{b}_{\,i-1},\vec{b}_{\,i+1},\ldots,\vec{b}_{\,n}\ra
+ & = \la \vec{a}_1,\ldots,\vec{a}_{\,i-1},\vec{a}_{\,i+1},\ldots,\vec{a}_{\,n}\ra
+\enspace ,
+\\
+\vec{b}_i & = \vec{a}_i + \underbrace{\vec{a}_j + \ldots + \vec{a}_j}_{\mid \vec{a}_k +\vec{a}_j \mid}
+\enspace .
+\end{align*}
+So, if $ \vec{a}_k $ and $ \vec{a}_i $ are initially set to $ 0 $, then 
+$ \rprSq^n_{k,j;i} $ eventually sets $ \vec{a}_i $ to the value $ (\vec{a}_j)^2 $.
+We get the result by first adding the absolute value of $ \vec{a}_j $ to the initial value of 
+$ \vec{a}_k $. If needed, we let $ \vec{a}_j $ positive. After the multiplication, of
+$ \vec{a}_j $ by itself, we undo everything while keeping the result in $ \vec{a}_i $.
+
+
+%%%%%%%%%%%%%%%
+\paragraph{An integer square root of a positive integer}
+Let $n, j, i, p, q, r\in\Nat$ such that $ j < i < p < q < r \leq n$. We define:
+\begin{align*}
+\rprSqRoot^n_{j,p,q,r;i} & =
+\rprBMu{p<j}{i}
+       { (\rprSq^n_{r,p;q}\circ
+          \rprDec_{j;q}
+         )
+       }
+       {p}{q}
+\circ 
+\rprPred_i
+\enspace .
+\end{align*}
+Given $ \vec{a}^{n}$, we have 
+$ \rprSqRoot^n_{j;i}\, \vec{a}^n = \vec{b}^n$ such that:
+\begin{align*}
+\la \vec{b}_1,\ldots,\vec{b}_{\,i-1},\vec{b}_{\,i+1},\ldots,\vec{b}_{\,n}\ra
+ & = \la \vec{a}_1,\ldots,\vec{a}_{\,i-1},\vec{a}_{\,i+1},\ldots,\vec{a}_{\,n}\ra
+\enspace ,
+\\
+\vec{b}_i & = 
+\vec{a}_i + \lfloor \sqrt{\vec{a}_j}\rfloor 
+\enspace .
+\end{align*}
+So, if $ \vec{a}_i, \vec{a}_p, \vec{a}_q$ and $ \vec{a}_r$ are initially set to $ 0 $, then 
+$ \rprSqRoot^n_{j,p,q,r;i}\, \vec{a}^n $ eventually sets $ \vec{a}_i $ to  $ \lfloor \sqrt{x_j}\rfloor $.
+We get the result by first looking for the least integer not greater than $ \vec{a}_j $ that we generate in 
+$ \vec{a}_p $ and such that $ \vec{a}_p^2 > \vec{a}_j  $. Once found it, the best approximation of $ \sqrt{\vec{a}_j} $ 
+from below is $ \vec{a}_p - 1$.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{$ \RPP $ is $ \ESRL $-complete}
+\label{section:RPP is ESRL-complete}
+
+\todo[inline]{Lo mettermo in un altro lavoro, penso.}
+
+Let $ P $ be a program of $ \ESRL $ \cite{matos03tcs} defined on a finite set $ \mathcal{R} $ of registers $ r_1, r_2, \dots $.
+We can map $ P $ into a function $ \llbracket  P \rrbracket \in\RPP$ which we define recursively on the structure of $ P $:
+\begin{align*}
+\llbracket \mathtt{INC}\ r_i\rrbracket & = \rprSucc^{|\mathcal{R}|}_{r_i}
+\\
+\llbracket \mathtt{DEC}\ r_i\rrbracket & = \rprPred^{|\mathcal{R}|}_{r_i}
+\\
+\llbracket -r_i\rrbracket & = \rprNeg^{|\mathcal{R}|}_{r_i}
+\\
+\llbracket P_1; P_2\rrbracket & = \rprSCom{\llbracket P_1\rrbracket}
+                                          {\llbracket P_2\rrbracket}
+\\
+\llbracket \mathtt{FOR}\ r_i\ \mathtt{\{} P \mathtt{ \} }\rrbracket & = 
+\rprIf{|\mathcal{R}|}
+      {r_i}
+      {\llbracket  P \rrbracket}
+      {\rprId^{|\mathcal{R}|}}
+      {\rprInv{\llbracket  P \rrbracket}}
+\enspace .
+\end{align*}
+
+\begin{lemma}[$ \RPP $ is $ \ESRL $-complete]
+\label{lemma:RPP is ESRL-complete}
+Let $ P $ any program of $ \ESRL $ on a set of registers $ \mathcal{R} $. 
+Let $\mathcal{R}' $ denote the final values of the register after a run of $ P $.
+If $ \vec{a}^{|\mathcal{R}|} $ is the initial tuple of values in $ \mathcal{R} $ and
+$ \vec{b}^{|\mathcal{R}|} $ is the final tuple of values in $ \mathcal{R} $ after a run of $ P $,
+Then $ \llbracket  P \rrbracket\, \vec{a}^{|\mathcal{R}|} = \vec{b}^{|\mathcal{R}|}$.
+\end{lemma}
+
+
+
+ 

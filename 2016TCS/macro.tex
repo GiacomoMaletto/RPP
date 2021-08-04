@@ -1,0 +1,323 @@
+%\usepackage{marginnote}
+%\usepackage[normalem]{ulem}
+ %\drawLineToRightMargin
+ %\marginpar{right}
+\setlength{\marginparwidth}{3.8cm}
+\usepackage{todonotes}
+\presetkeys{todonotes}{size=\tiny,linecolor=blue,bordercolor=red,backgroundcolor=yellow!10}{}
+\newcommand{\LR}[2]{\color{gray}\sout{#1}\color{blue}\  #2 \color{black}\marginpar{\qquad$\star$}}
+\newcommand{\LRx}[2]{\color{gray}\ #1\ \color{blue}\  #2 \color{black}\marginpar{\qquad$\star$}}
+\newcommand{\LRnm}[2]{\color{gray}\sout{#1}\color{blue}\  #2 \color{black}}
+\newcommand{\LP}[2]{\color{gray}\sout{#1}\color{red}\  #2 \color{black}\marginpar{\qquad$\star$}}
+\newcommand{\LPx}[2]{\color{gray}\ #1\ \color{red}\  #2 \color{black}\marginpar{\qquad$\star$}}
+\newcommand{\LPnm}[2]{\color{gray}\sout{#1}\color{red}\  #2 \color{black}}
+
+\newcommand{\myVec}[1]{\overrightarrow{{\!\!#1}}}
+\newcommand{\evidenzia}[1]{\colorbox{cyan!10}{#1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage{array}%\def\myColumn#1{\newcolumntype{L}{#1}}
+\makeatletter
+\renewenvironment{smallmatrix}[1][0em]{\null\,\vcenter\bgroup
+  \Let@\restore@math@cr\default@tag
+  \baselineskip6\ex@ \lineskip1.5\ex@ \lineskiplimit\lineskip
+  \ialign\bgroup\hfil$\m@th\scriptstyle##$\hfil&&\kern#1\hfil
+  $\m@th\scriptstyle##$\hfil\crcr
+}{%
+  \crcr\egroup\egroup\,%
+}
+\makeatother
+\newcommand{\production}[1]{#1 &, &}
+\newcommand{\commut}[2]{\production{#1}{#2}}
+\makeatletter
+\def\qcommut#1{\xcommut#1,\relax,}
+\def\xcommut#1,{\xxcommut{#1}}
+\def\xxcommut#1#2,{%
+\ifx\relax#2%
+#1%
+\expandafter\@gobbletwo
+\fi
+\xxcommut{\commut{#1}{#2}}}
+\makeatother
+% \def\myColumn{clclclclcl}
+% \newcommand{\myControl}[1]%
+% {   \foreach \x in {1,2,...,#1}
+%     {   \renewcommand{\myColumn}{cl\myColumn}
+%     }
+% }
+\newcommand{\AUTOrprSwap}[3]{
+%\myControl{#1}
+\!\left\rmoustache\!\!%\arraycolsep=0pt
+\scriptsize
+\begin{smallmatrix}[0pt]%\expandafter\array\expandafter{\myColumn}%\begin{array}{#4}
+\qcommut{#2}\\
+\qcommut{#3}
+\end{smallmatrix}%\endarray%\end{array}
+\!\!\right\rmoustache^{\!\!#1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage{etoolbox}
+%\patchcmd{\subequations}{\def\theequation{\theparentequation\alph{equation}}}%
+%{\def\theequation{\theparentequation.\arabic{equation}}}{}{}
+\def\fcmp{\mathbin{\raise 0.6ex\hbox{\oalign{\hfil$\scriptscriptstyle \mathrm{o}$\hfil\cr\hfil$\scriptscriptstyle\mathrm{9}$\hfil}}}}
+
+
+
+\newcommand{\loopComment}[1]{\parbox{13.8cm}{\scriptsize \slash*#1*\slash}}
+
+\newcommand{\yBox}[1]{
+\medskip\framebox{\colorbox{yellow!19}{\begin{minipage}{.89\linewidth}
+#1 \end{minipage}}}\medskip
+}
+
+\newcommand{\la}{\langle}
+\newcommand{\ra}{\rangle}
+\renewcommand{\vec}[1]{\ensuremath{\underline{#1}}}
+%\newcommand*\rectangled[1]{\tikz[baseline=(char.base)]{ \node[shape=rectangle,draw,inner sep=2pt, rounded corners=4pt, thick] (char) {\sffamily#1};}}
+%\newcommand{\prrpr}[1]{\overline{#1}}
+%\newcommand{\prrpr}[1]{\overbracket[.1pt][1pt]{#1}^{\scalebox{.21}{PRF}}}
+%\newcommand{\prrpr}[1]{\overbracket[.1pt][1pt]{#1}^{\tikz[baseline=0em]{ \node[scale=.21]{PRF}; }  }}
+%\newcommand*{\prrpr}[1]{\mathop{\!\tikz[baseline=(charluca.base)]{ \node[label={[scale=.3,label distance=-3.9mm]north:PRF}] (charluca) {$\overbracket[.1pt][1pt]{#1}$};}\!} }
+
+\newcommand{\prrpr}[1]{\overbracket[.1pt][1pt]{\underbracket[.1pt][1pt]{#1}}}
+
+\newcommand{\rprpr}[1]{\underline{#1}}
+\newcommand{\rprm}[1]{\llparenthesis #1\rrparenthesis}
+\newcommand{\eqdef}{\overset{{\tiny def}}{=}}
+
+\newcommand{\prZero}{\mathtt{0}}
+\newcommand{\prSucc}{\mathtt{S}}
+\newcommand{\prPred}{\mathtt{P}}
+\newcommand{\prProj}[2]{\mathtt{P}^{#1}_{#2}} % P^n_i
+\newcommand{\prCom}[1]{\circ{[#1]}} % composition
+\newcommand{\prRec}[2]{\mathtt{R}_{#1,#2}} % recursion
+
+\newcommand{\rprPerm}[2]{
+\left(
+\!\!\!\begin{array}{c}
+#1\\
+#2
+\end{array}\!\!\!\right)}
+\newcommand{\arityI}{arity\xspace}
+\newcommand{\arityO}{co-arity\xspace}
+
+%%%%%%%%%%%%%% Terms
+\newcommand{\temporarychannel} {\textit{temporary argument}\xspace}
+\newcommand{\temporarychannels}{\textit{temporary arguments}\xspace}
+\newcommand{\rprWea}{\mathsf{w}}
+\newcommand{\rprWeaName}{\textit{weakening}\xspace}
+\newcommand{\rprNeg}{\mathsf{N}}
+\newcommand{\rprNegName}{\textit{sign-change}\xspace}
+\newcommand{\rprId}{\mathsf{I}}
+\newcommand{\rprIdz}{\rprId}
+\newcommand{\rprIdName}{\textit{identity}\xspace}
+\newcommand{\rprZero}{\mathsf{0}}
+\newcommand{\rprZeroName}{\textit{rZero}\xspace}
+\newcommand{\rprSucc}{\mathsf{S}}
+\newcommand{\rprSuccName}{\textit{successor}\xspace}
+\newcommand{\rprPred}{\mathsf{P}}
+\newcommand{\rprPredName}{\textit{predecessor}\xspace}
+\newcommand{\rprSCom}[2]{#1\fatsemi #2} % serial composition
+\newcommand{\rprSComName}{\textit{series composition}\xspace}
+\newcommand{\rprSeq}{\fatsemi}
+\newcommand{\rprPCom}[2]{ #1 \rVert #2} % parallel composition
+\newcommand{\rprPComSX}[2]{\left. #1 \right\rVert #2}
+\newcommand{\rprPComName}{\textit{parallel composition}\xspace}
+%%\newcommand{\rprIf}[5]{\mathsf{If}^{#1}_{#2}\mathsf{[}#3,#4,#5\mathsf{]}} % original
+\newcommand{\rprIf}[5]{\mathsf{If}^{#1}_{#2}\left[#3,#4,#5\right]} 
+\newcommand{\rprIfName}{\textit{selection}\xspace}
+%\newcommand{\rprIt}[3]{\mathsf{It}^{#1}_{#2}\mathsf{[}#3\mathsf{]}} %% original
+\newcommand{\rprIt}[3]{{\mathsf{It}^{#1}_{#2}\left[ #3 \right]}}
+\newcommand{\rprItName}{\textit{finite iteration}\xspace}
+
+\newcommand{\rprSrc}[1]{\mathsf{Src[#1]}} % source constant
+\newcommand{\rprSrcName}{\textit{source constant}\xspace}
+\newcommand{\rprSrcNamePlur}{\textit{source constants}\xspace}
+\newcommand{\rprSnk}[1]{\mathsf{Snk[#1]}} % sink constant
+\newcommand{\rprSnkName}{\textit{sink constant}\xspace}
+\newcommand{\rprSnkNamePlur}{\textit{sink constants}\xspace}
+\newcommand{\rprGSwap}[1]{\rprBSwap^{#1}} % swap^k generic
+%\newcommand{\rprSwap}[3]{\rprBSwap^{#1}_{#2\leftrightarrow #3}} % swap^k_i,j
+\newcommand{\rprSwap}[3]{\left\rmoustache\!\!
+\arraycolsep=1.4pt
+\scriptsize
+\begin{array}{l}
+#2 \\
+#3
+\end{array}\!\!\right\rmoustache^{\!\!#1} } % swap^k_i,j
+\newcommand{\rprSwapName}{\textit{binary rewiring permutation}\xspace}
+\newcommand{\rprBSwap}{\chi} % swap^2 1 and 2
+\newcommand{\rprBSwapName}{\textit{binary rewiring permutation}\xspace}
+
+\newcommand{\rprMin}[1]{\mu #1} % minimalization
+\newcommand{\rprMinName}{\textit{minimalization scheme}\xspace}
+\newcommand{\rprSumSet}{\mathcal{T}_{\rprSum}}
+\newcommand{\rprAbs}{\mathsf{A}}
+\newcommand{\rprInc}{\mathsf{inc}}
+
+\newcommand{\rprPush}{\mathsf{push}}
+\newcommand{\rprPop}{\mathsf{pop}}
+\newcommand{\rprSum}{\mathsf{sum}}
+\newcommand{\rprSub}{\mathsf{sub}}
+\newcommand{\rprDup}{\nabla}
+\newcommand{\rprCopy}{\mathsf{copy}}
+\newcommand{\rprDec}{\mathsf{dec}}
+\newcommand{\rprMult}{\mathsf{mult}}
+\newcommand{\rprDivTwo}{\mathsf{div2}}
+\newcommand{\rprBitPN}{\mathsf{bitpn}} % bit positive/negative
+\newcommand{\rprLess}{\mathsf{less}} % 
+\newcommand{\rprSq}{\mathsf{sq}}
+\newcommand{\rprSqRoot}{\mathsf{sqroot}}
+\newcommand{\rprBMu}[5]{ %
+% #1 indice della variabile che contiene il minimo cercato
+% #2 indice della variabile che contiene il bound
+% #3 funzione in RPRF che dipende (almeno) da #1 e scrive il risultato in #4
+% #4 indice della variabile col risultato di #4
+\mathsf{min}_{#1;#2} ({#3}_{#4;#5})}
+\newcommand{\lpMU}[1]{ %
+% #1 indice della variabile che contiene il minimo cercato
+% #2 indice della variabile che contiene il bound
+\lpMUNoArgs ({#1})}
+\newcommand{\lpMUNoArgs}{\mathsf{min}}
+
+
+
+\newcommand{\rprrs}[1]{\mathsf{rs}_{#1}} % recursive step
+\newcommand{\rprrb}[1]{\mathsf{rb}_{#1}} % recursive base
+\newcommand{\rprStep}[2]{\mathsf{S}_{#1,#2}} % recursive step of translation
+\newcommand{\rprBase}[1]{\mathsf{B}_{#1}} % base step of translation
+\newcommand{\rprRec}[3]{\mathsf{Rec[}#1,#2,#3\mathsf{]}} % recursive scheme
+\newcommand{\rprREC}[4]{{\mathsf{Rec}^{#1}[}#2,#3,#4]} % recursive scheme
+
+\newcommand{\rprInv}[1]{{#1}^{-1}} % inverse
+\newcommand{\rprInvName}{\textit{inverse}\xspace}
+\newcommand{\rprrvr}{\Downarrow} % rewriting relation
+\newcommand{\rprEq}{\simeq} % equivalence relation on RPRT
+\newcommand{\rprQuasiEq}{\equiv} % quasi equivalence relation on RPRT
+\newcommand{\rprMea}{\mathfrak{m}} % measure function of a vector
+\newcommand{\rprMeaName}{\textit{measure function}\xspace} % name of the measure funciton of a vector
+\newcommand{\rprSquare}[1]{\mathsf{sq}^{#1}}
+\newcommand{\revCompile}{\circledR}%{\mathsf{RV}}
+\newcommand{\rprNabla}{\nabla} 
+\newcommand{\rprDelta}{\Delta}
+
+%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+\newcommand{\dotminus}{\mathbin{\text{\@dotminus}}}
+\newcommand{\@dotminus}{%
+  \ooalign{\hidewidth\raise1ex\hbox{.}\hidewidth\cr$\m@th-$\cr}%
+}
+\makeatother
+%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\etc}{etc.\xspace}
+\newcommand{\ie}{i.e.\xspace}
+\newcommand{\Ie}{I.e.\xspace}
+\newcommand{\KR}{\mathsf{KR}}
+\newcommand{\GR}{\mathsf{GR}}
+%\newcommand{\PR}{\mathsf{PR}}
+\newcommand{\Acker}{\operatorname{\mathsf{ Ack}}}
+\newcommand{\AckerInv}{\mathsf{Ack}^{-1}}
+\newcommand{\RF}{\mathsf{RF}} % recursive functions
+\newcommand{\PRF}{\mathsf{P}\RF} % primitive recursive functions
+\newcommand{\RPRF}{\mathsf{R}\PRF} % reversible primitive recursive functions
+\newcommand{\RPP}{\mathsf{RPP}} % reversible primitive permutations
+\newcommand{\ESRL}{\mathsf{ESRL}} % extended simple reversible language
+\newcommand{\JMF}{\mathcal{RI}} % Jacopini Mentrasti
+\newcommand{\JPRF}{\mathsf{J}\PRF}
+\newcommand{\BJPRF}{\mathsf{B}\PRF}
+\newcommand{\rprF}{\mathsf{F}}
+
+\newcommand{\ZtoN}{\Psi}% morphism
+\newcommand{\NtoZ}{\Phi}% morphism
+\newcommand{\CP}{\operatorname{Cp}}% morphism
+\newcommand{\CU}{\operatorname{Cu}}% morphism
+\newcommand{\TN}{\operatorname{Tn}}% 
+
+\newcommand{\Set}[1]{\{#1\}}
+\newcommand{\Nat}{\mathbb{N}}
+\newcommand{\Int}{\mathbb{Z}}
+\newcommand{\cat}{\cdot}
+
+\newcommand\tikzmark[1]{\tikz[overlay,remember picture,baseline] \coordinate (#1);}
+
+\def\vspnodeEmpty(#1)#2#3{% vertex series parallel graph node one input
+  \begin{scope}[shift={(#1)}]
+    \draw (0,0) ;
+    \node[circle, fill=none, minimum size=20pt,inner sep=0pt] at (.5,.7) {#3};
+  \end{scope}
+}
+
+\tikzstyle{vertex}=[circle,fill=black!25,minimum size=20pt,inner sep=0pt]
+%%%%%%%%%%%%%%%%%%%%%
+\def\vspnodeOneInOneOut(#1)#2#3{% vertex series parallel graph node one input
+  \begin{scope}[shift={(#1)}]
+    \draw (0,0) ;
+    \node[vertex] at (.5,.5) {#3};
+%%%IN
+    \draw (0,0.5) coordinate (#2 In1);
+%%%OUT
+    \draw (1,0.5) coordinate (#2 Out1);
+  \end{scope}
+}
+
+%%%%%%%%%%%%%%%%%%%%%
+\def\fPR(#1)#2#3{%
+  \begin{scope}[shift={(#1)}]
+    \draw (0,0) rectangle (1,1);
+    \node at (.5,.5) {#3};
+%%%IN
+    \draw ( 0,0.8) node[right] {} -- +(-.5,0) coordinate (#2 X1);
+    \draw (-.5,0.6) node[right] {$ \vdots $};
+    \draw ( 0,0.2) node[right] {} -- +(-.5,0) coordinate (#2 Xk);
+%%%OUT
+    \draw (1,0.5) -- +(.5,0) coordinate (#2 Out);
+  \end{scope}
+}
+
+%%%%%%%%%%%%%%%%%%%%%
+\def\fRPR(#1)#2#3{%
+  \begin{scope}[shift={(#1)}]
+    \draw (0,0) rectangle (2,2.2);
+%    \draw (0.5,1) -- (0.5,0);
+%    \draw (0.5,0.5) -- (1,0.5);
+    \node at (1,1) {#3};
+%    \node at (0.75,0.25) {$\bar{Q}$};
+%%%IN
+    \draw ( 0,2.0) node[right] {} -- +(-.5,0) coordinate (#2 X1);
+    \draw (-.5,1.8) node[right] {$ \vdots $};
+    \draw ( 0,1.4) node[right] {} -- +(-.5,0) coordinate (#2 Xk);
+    \draw ( 0,1.1) node[right] {} -- +(-.5,0) coordinate (#2 Zero);
+    \draw ( 0,0.8) node[right] {} -- +(-.5,0) coordinate (#2 Zero1);
+    \draw (-.5,0.6) node[right] {$ \vdots $};
+    \draw ( 0,0.2) node[right] {} -- +(-.5,0) coordinate (#2 Zerom);
+%%%OUT
+    \draw (2,2.0) -- +(.5,0) coordinate (#2 Out);
+    \draw (2,1.6) node[right] {} -- +(.5,0) coordinate (#2 OutX1);
+    \draw (2,1.45) node[right] {$ \vdots $};
+    \draw (2,1.1) node[right] {} -- +(.5,0) coordinate (#2 OutXk);
+    \draw (2,0.8) node[right] {} -- +(.5,0) coordinate (#2 OutZero1);
+    \draw (2,0.6) node[right] {$ \vdots $};
+    \draw (2,0.2) node[right] {} -- +(.5,0) coordinate (#2 OutZerom);
+  \end{scope}
+}
+
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\newproof{prf}{Proof} % <---- !!
+
+\newdefinition{fact}{Fact}
+\newdefinition{definition}{Definition}
+\newdefinition{remark}{Remark}
+\newdefinition{example}{Example}
+\newdefinition{notation}{Notation}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%% servono ad emacs NON CANCELLARE x piacere
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main.tex"
+%%% ispell-local-dictionary: "american"
+%%% End:

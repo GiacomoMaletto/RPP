@@ -1,0 +1,198 @@
+\section{Introduction}\label{section:Introduction}
+
+Mainstream models of computations focus on one of the two possible directions of computation. 
+We typically think how to model 
+the way the computation evolves from inputs to outputs while 
+we (reasonably) overlook the behavior in the opposite direction, from outputs to inputs. 
+Generally speaking, models of computations are neither backward deterministic nor reversible.
+
+For a very rough intuition about what reversible computation deals with, we start by an example.
+Let us think about our favorite programming language and think of implementing the
+addition between two natural numbers
+$ m $ and $ n $. Very likely --- of course without absolute certainty --- we 
+shall end up with some procedure \texttt{sum} which takes two arguments and which yields their sum. 
+For example, \texttt{sum}($ 3 $,$ 2 $) would yield $ 5 $.
+What if we think of asking for the values $ m $ and $ n $ such that \texttt{sum}($ m $,$ n $) = $ 5 $?
+If we had implemented \texttt{sum} in a prolog-like language, then we could exploit its 
+non deterministic evaluation mechanism to list all the pairs $ (0,5), (1,4), (2,3), (3,2), (4,1) $ and
+$ (5,0) $ every of which would well be a correct instance of ($ m, n $). 
+In a reversible setting we would obtain
+exactly the pair we started from. \Ie, the computation would be backward deterministic.
+The interest for the backward determinism arose in the sixties of the last century, 
+studying the thermodynamics of computation and the connections between information theory, computability and entropy. 
+Since then, the interest for the reversible computing has slowly but incessantly grown.
+
+A forcefully non-exhaustive list of references follows.
+Reversible Turing machines are defined in \cite{axelsen11lncs,bennett73ibm,jacopini90siam,lecerf63} while
+\cite{axelsen11lncs,axelsen16acta,jacopini89tcs,li1996royal} 
+study some of their computational theoretic properties.
+Many research efforts have been focused on  boolean functions and cellular 
+automata as models of the reversible
+computation \cite{Morita2008101,toffoli80lncs}.
+Moreover, some research focused on reversible programming languages \cite{DBLP:conf/popl/JamesS12,yokoyama08acm}.
+Of course, the interest to build a comprehensive knowledge about reversible computation is wider than 
+the mere interest for its computational theoretic aspects. 
+The book \cite{perumalla2013chc} is a comprehensive 
+introduction to the subject. It spans from low-power-consumption reversible hardware to emerging alternative computational
+models like quantum  \cite{guerriniMM15,zorzi14mscs} or bio-inspired \cite{giannini2015tcs} of which reversibility is one the unavoidable building blocks.
+
+\paragraph{Goal} 
+The focus of this work is on a \emph{functional model} of reversible computation. 
+Specifically, we look for a  sufficiently expressive  class of recursive permutations able to represent all
+ Primitive Recursive Functions ($ \PRF $) \cite{rogers1967theory,soare1987book}
+whose relevance is sometimes traced to the slogan
+``programs which terminate but do not belong to $ \PRF $ are rarely of practical interest.''
+
+
+We aim at formalizing a language that we identify as Reversible Primitive Permutations ($ \RPP $) and which 
+retains the more interesting aspects of $\PRF$.
+In analogy to $ \PRF $, our goal is to get a functional characterization of computability
+-- but in a reversible setting, of course --- because functions are handier in order to compose 
+algorithms. Other models, like, for example, Turing machines-oriented ones are
+more convincing from an implementation view-point.
+The ability to represent Cantor pairing \cite{rosenberg2009book} is one of the main properties that 
+the functional characterization we are looking for must satisfy.
+With Cantor pairing available it is possible to express all interesting total properties about the 
+traces\footnote{Kleene's $T_n$ predicate, Kleene's normal form theorem and technical tools related to them \cite{cutland1980book,odifreddi1989book,soare1987book}.}
+of Turing machines, reversible or not.
+The other must-have property of our functional characterization is closure under inversion, which is something
+very natural to ask for in a class of permutations and of reversible computing models.
+
+Our quest is challenging because various negative results could have played  against it.
+First of all, we remark that the class of all (total) recursive permutations 
+cannot be effectively enumerated (see \cite[Exercise 4-6, p.55]{rogers1967theory}). 
+In \cite{koz1972ail} a constructive generation of all the recursive permutations is given starting
+from primitive recursive permutations. Since no enumeration exists for the latter, none can exist for the former.
+Worst, the class of primitive recursive permutations is not closed under inversion \cite{kuznecov50sssr,PaoliniPiccoloRoversiICTCS2015,soare1987book}.
+Since the above negative results hold also for the class of elementary permutations 
+\cite{cannonito1969jsl,kalimullin03permutations,koz1974ail}, there is no
+hope to find any effective description neither of the class of recursive 
+permutations nor of the classes of primitive recursive permutations and of elementary permutations.
+
+
+\paragraph{Comparison with the known literature}
+Our quest to identify the reversible  analogous of $ \PRF $  must be throughly related to the following works.
+\begin{itemize}
+\item 
+The programming language $ \mathsf{SRL} $  restricts $ \mathsf{LOOP} $, a language 
+for programming $\PRF$ functions \cite{meyer1967acm}. 
+Matos introduces $ \mathsf{SRL} $ and some of its variants in \cite{matos03tcs}.
+He is the first using $ \Int $ --- the natural numbers with sign --- as the ground type for 
+classes of reversible functions.
+We share the choice with him.
+The work \cite{matos03tcs} focuses on the algebraic aspects of his languages and its relations with 
+matrix groups. 
+
+%\todo{Questions 1 and 2, Reviewer 1}
+The study of the classes of functions that $ \mathsf{SRL} $ variants can identify
+  is part of Matos' work.
+Variants of $\mathsf{SRL}$ are complete with respect to reversible boolean circuits \cite{matos2016notes}.
+Proving that some given variant of $\mathsf{SRL}$ is $ \mathsf{PRF} $-complete,
+i.e. that it represents all the functions in $ \mathsf{PRF} $, naturally ends up with the quest 
+to encode the ``test for 0'' like in the proof that $ \mathsf{LOOP} $ and $ \mathsf{PRF} $ are equivalent \cite{meyer1967acm}. 
+We \emph{conjecture} that no variant of Matos' languages exists able to simulate a conditional 
+control on the flow of execution that, instead, $ \RPP $ contains by definition.
+Of course, proving the conjecture false, would promote $\mathsf{SRL}$ to be (in a reasonable sense) the minimal reversible and 
+$ \mathsf{PRF} $-complete language.
+
+\item The precursor of this work is \cite{PaoliniPiccoloRoversiICTCS2015}. It introduces the class of functions $ \RPRF $ which is closed by inversion and is $\PRF$-complete. 
+The completeness of $ \RPRF $ relies on \emph{built-in} Cantor pairings.
+In this paper we show that we can get rid of \emph{built-in} Cantor pairings inside $ \RPP $.
+With no \emph{built-in} pairing operators at hand the design of $ \RPP $ relies on operators which are more fine-grained as compared
+to the ones used for the definition of $ \RPRF $.
+This orients the programming style to enjoy a couple of interesting features.
+Inside $ \RPP $ it is natural avoiding to save the entire history of a calculation within a single argument, i.e. into a single ancilla.
+This allows to clean the garbage at the end of the simulation of any $ f\in\PRF $, something which is reminiscent of the simulation 
+of Turing machines devised in \cite{bennett1989siamjc}.
+
+\item 
+Finally we discuss \cite{jacopini89tcs}. 
+It introduces the class of reversible functions $ \JMF $ which is as expressive as Kleene's
+partial recursive functions \cite{cutland1980book,odifreddi1989book}. 
+Therefore, the focus of \cite{jacopini89tcs} is on partial reversible functions while ours  is on total ones. 
+The expressiveness of $ \JMF $ is clearly stronger than the one of  $ \RPP $. 
+However, we see $ \JMF $ as less abstract than $ \RPP $ for two reasons.
+On one side, the primitive functions of $ \JMF $ relies on a given specific binary representation of natural numbers.
+On the other, it is not evident that $ \JMF $ is the extension of a total sub-class
+analogous to $ \RPP $ which should ideally correspond to $ \PRF $, but in a reversible setting.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\paragraph{Contents}
+We propose a formalism that identifies a class of functions which we call Reversible Primitive Permutations
+($ \RPP $) and which is strictly included in the set of permutations.
+Section~\ref{section:The class RPP of Reversible Primitive Permutations} defines $ \RPP $ in analogy
+with the definition of $ \PRF $, \ie $ \RPP $ is the closure of composition schemes on basic functions.
+
+The functions of $ \RPP $ have identical arity and co-arity and take 
+$ \Int $ --- and not only $ \Nat $ --- as their 
+domain because $ \Nat $ is not a group. So, $ \RPP $ is sufficiently abstract 
+to avoid any reference to any specific 
+encoding of numbers and strongly connects our work to Matos' one \cite{matos03tcs}.
+
+For example, in $ \RPP $ we can define a \texttt{sum} that given the two integers $ m $ and $ n $
+yields $ m+n $ and $ n $. Let us represent \texttt{sum} as:
+\begin{align}
+\label{align:sum example}
+\arraycolsep=1.4pt
+\begin{array}{rcl}
+ \left. {\scriptsize \begin{array}{r} m    \\ n \end{array}} \right[
+ & \texttt{sum} &
+ \left] {\scriptsize \begin{array}{l} m + n\\ n \end{array} } \right.
+\end{array}
+\enspace .
+\end{align}
+The implementation of \texttt{sum} inside $ \RPP $ exploits an iteration scheme that iterates $ n $
+times the successor, starting on the initial value $ m $ of the first input.
+$ \RPP $ implies the existence of a (meta and) \emph{effective} procedure which produces 
+the inverse $ \rprInv{f}\in\RPP $ of every given $ f\in\RPP $. 
+\Ie, :
+\begin{align}
+\label{align:diff example}
+\arraycolsep=1.4pt
+\begin{array}{rcl}
+ \left. {\scriptsize \begin{array}{r} p    \\ n \end{array}} \right[
+ & \rprInv{\texttt{sum}} &
+ \left] {\scriptsize \begin{array}{l} p - n\\ n \end{array} } \right.
+\end{array}
+\end{align}
+belongs to $ \RPP $ and it ``undoes'' \texttt{sum} by iterating $ n $ times
+the predecessor on $ p $. So if $ p = m + n $, then $ p - n = m + n - n = m$.
+We remark we could have internalized the operation that yields the inverse of a 
+function inside $\RPP$ like in \cite{matos03tcs}. We do not internalize it
+to avoid mutually recursive definitions in $ \RPP $.
+
+Concerning the \emph{expressiveness}, $ \RPP $ is closed under inversion and it is both $ \PRF $-complete and $ \PRF $-sound.
+Completeness is the really relevant property between the two because this means that 
+$ \RPP $ subsumes the class $ \PRF $.
+This result is in  Section~\ref{section:Completeness of RPP}. It requires quite a lot 
+of preliminary work that one can find in Sections~\ref{section:Generalizations inside RPP}, 
+\ref{section:A library of functions in TRRF} and~\ref{section:Cantor pairing} 
+and whose goal is to encode a bounded minimalization and Cantor pairing. 
+The embedding relies on various key aspects of reversible computing. The principal
+ones are:  (i) the use of ancillary variables to clone information
+and (ii) the compositional programming under the pattern that Bennett's trick dictates
+(cf. Section~\ref{section:Some recursion theoretic side effects of RPP}.)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\paragraph{Contributions}
+ $\RPP$ is a total class of reversible functions closed under inversion, which is $ \PRF $-complete 
+and sound. We think that it can play a key role in the setting of reversible computations analogous to that played by $\PRF$ in classical recursion theory.
+In particular, it can be used to devise the analogous of Kleene's normal form theorem and Kleene's predicates in the reversible setting;
+it can be also used to formalize a reversible arithmetic as the primitive recursive one (a.k.a. Skolem arithmetic).
+
+%As a last remark, we underline that the speculations leading us to the identification
+%of $ \RPP $ could slightly widen our foundational perspective on the ``realm'' 
+%of (classic and reversible) recursive computations and on their mathematical formalizations. 
+%We present our reflections in Section~\ref{section:Some recursion theoretic side effects of RPP} 
+%together with (some) possible future work.
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%% servono ad emacs
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main.tex"
+%%% ispell-local-dictionary: "american"
+%%% End:

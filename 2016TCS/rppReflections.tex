@@ -1,0 +1,168 @@
+\section{Conclusions}
+\label{section:Some recursion theoretic side effects of RPP}
+
+% \todo{Question 3, Reviewer 1}
+In this paper we introduce the class $\RPP$ of functions which
+(i) is closed under inversion,
+(ii) is both $ \PRF $-complete and $ \PRF $-sound,
+(iii) provides a reasonable balance between conciseness and easiness of usage, suitable for recursion theoretical analysis,
+(vi) is a good candidate for extensions able to encompass recursive bijections  which are not strictly total endo-functions 
+--- and recursive partial functions	and 
+(v) which is a good starting point to formalize classical results about the recursion theory in reversible settings.
+
+%\medskip
+
+We add some final comments on intensional aspects of $ \RPP $.
+
+\subsection{$ \RPP $ and Ackermann}
+Let $ A $ be the Ackermann function, example of total computable function with two arguments 
+that cannot belong to $ \PRF $ because its growth rate is too high. 
+ Kuznecov shows that a primitive recursive  function $ F $ exists with input arity $ 1 $ such that $ \rprInv{F}(x) = A(x,x) $.
+  %{A reasonably detailed and accessible version of Kuznecov's proof is \cite{Simpson2009}.}
+It is worth to remark that the inverse of $F$ is not primitive recursive, because $A$ is not.
+References are not immediate, because the original result \cite{kuznecov50sssr} is in Russian:
+some details about Kuznecov's proof are in \LPx{\cite{PaoliniPiccoloRoversiICTCS2015,Simpson2009}}{\cite{paolini2017ngc,Simpson2009}}.
+Moreover in \cite[Exercise 5.7, p.25]{soare1987book} Kuznecov's result is slightly reformulated
+by the statement saying that 
+``primitive recursive functions do not form a group under composition.''
+
+By Theorem~\ref{theorem:RPP is PRF-complete}, the function:
+\begin{align*}
+%\label{align:00}
+\arraycolsep=1.4pt
+\begin{array}{rcl}
+ \left. {\scriptsize 
+         \begin{array}{r} 
+           w  \\ z  \\[1mm] 0^{k}
+         \end{array}} \right[
+ & \prrpr{F} &
+ \left] {\scriptsize 
+         \begin{array}{l} 
+           w + F(z)\\ z \\[1mm] 0^{k}
+         \end{array}} \right.
+\end{array}
+\end{align*}
+exists and belongs to $\RPP $, for some $ k $. 
+Proposition~\ref{proposition:The function rprInv} implies that $ \rprInv{\prrpr{F}} $ is in 
+$ \RPP $, is computable and is such that:
+\begin{align*}
+%\label{align:01}
+\arraycolsep=1.4pt
+\begin{array}{rcl}
+ \left. {\scriptsize 
+         \begin{array}{r} 
+           w  \\ z  \\[1mm] 0^{k}
+         \end{array}} \right[
+ & \prrpr{F} &
+ \left] {\scriptsize 
+         \begin{array}{c} 
+           w + F(z)\\ z \\[1mm] 0^{k}
+         \end{array}} 
+ \right.
+\end{array}
+\arraycolsep=1.4pt
+\hspace{-0.6cm}
+\begin{array}{rcl}
+ \left. {\phantom{
+         \scriptsize 
+         \begin{array}{r} 
+           w  \\ z  \\[1mm] 0^{k}
+         \end{array}
+         }} \right[
+ & \rprInv{\prrpr{F}} &
+ \left] {\scriptsize 
+         \begin{array}{l} 
+           w \\ z \\[1mm] 0^{k}
+         \end{array}} 
+ \right.
+\end{array}
+\enspace .
+\end{align*}
+This highlights the strongly intensional nature of the reversible functions inside $ \RPP $.
+The inversion of a permutation $p$ undoes what $ p $ executes, so
+$ \rprInv{\prrpr{F}} $ algorithmically searches the value $ x $ such that $ A(x,x) = z $,  
+for any given argument $ z $ we can pass to $ F $, by using $F(z)$ as bound for the iteration.
+
+\subsection{$ \RPP$ and no-cloning}
+A form of no-cloning theorem holds in the setting of reversible computing in analogy with the no-colning theorem for the quantum computing.
+
+\begin{theorem}[No-cloning theorem \cite{matos2016notes}]
+\label{theorem:No cloning theorem ESRL}
+Let $\Int^{k+2}\rightarrow \Int^{k+2}$ represent the class of permutations with arity $ k+2 $, for any fixed 
+$k\in \mathbb N$. 
+Let $i \neq j$ belong to the initial segment $[1,k+2]$ of $ \mathbb N $ such that
+$ i $ and $ j $ identify two arguments of the permutations in $\Int^{k+2}\rightarrow \Int^{k+2}$.
+No permutation can always return the same value on the arguments of position $i$ and $j$,  
+independently of their values.
+\end{theorem}
+\begin{proof}
+Permutations are bijections. So they are surjections which necessarily range over the whole co-domain.
+\end{proof}
+\noindent
+Quoting from \cite[p.530]{nielsen2011book}:
+``\ldots the no-cloning theorem states that quantum mechanics does not allow unknown quantum states to be copied exactly, and places severe
+limitations on our ability to make approximate copies \dots [\textit{however}] the no-cloning
+theorem does not prevent all quantum states from being copied, it simply says that non-orthogonal quantum states cannot be copied.''
+
+The moral is that cloning is not available if we deal with quantum computations in general.
+However, in some cases programming strategies exist to circumvent Theorem~\ref{theorem:No cloning theorem ESRL}
+and we can use them for cloning when we move inside reversible computing.
+Cloning strategies boil down to using ancillary variables constrained to assume specific values.
+As a simple instance, the general increment $ \rprInc_{j;i} $ of Section \ref{section:A library of functions in TRRF}
+clones --- builds an exact a copy of --- the $ j $-th argument in its $ i $-th argument exactly when 
+this latter initially assumes value 0.
+
+\subsection{Ancillae in $ \RPP $} 
+%\todo{Question 4, Reviever 1} 
+In the previous subsection we refer to ancillae as tools to circumvent no-cloning.
+For remarking once more that ancillae are harmless as far as reversible computing is concerned 
+we focus on reversible computation as formalized by means of reversible Turing-machines ($\mathsf{RTM}$)
+\cite{axelsen11lncs,axelsen16acta,bennett73ibm,jacopini90siam}. 
+This is like saying that a function is reversible when, and only when, some $\mathsf{RTM}$ exists that computes it.
+Any $\mathsf{RTM}$ crucially relies on an infinite tape that  contains infinite blank cells:  
+%This seemingly unavoidable tape 
+they supply an unbounded amount of ancillae that the computations can use at will.
+%The ancillary tape 
+An $\mathsf{RTM}$ allows to duplicate data at the cost of using states to recall where and how many copies are generated,
+in order to revert the computation. This does not break the property of being in front of reversible computations.
+%\LR{Interestingly, \ldots discuss how to taking advantage from limited irreversible erasures in the reversible simulation of irreversible computations.}
+By the way, interesting discussions exist on how taking advantage from limited irreversible erasures on the ancillary tape 
+when simulating irreversible computations inside reversible ones \cite{bennett1989siamjc,buhrman2001lncs,li1996royal}.
+
+Turning our focus back on $\RPP$ we emphasize that our assumptions are analogous to those ones just recalled when working with $ \mathsf{RTM} $
+for simulating standard Turing-machines.
+We recall that $ \RPP $ contains permutations only (Definition \ref{RevPrimPermutations}) and  
+that no zero-constant function exist in it.
+%So, the simulation of $\PRF$ via $\RPP$ necessarily relies on permutations which a Turing-machine as well as
+%a $\mathsf{RTM}$ can compute.
+The formalization of how the simulation works follows a path which is standard when comparing computational models 
+\cite{cutland1980book,malcev70book,odifreddi1989book}.
+For example, representing a function by a Turing-machine requires to fix how supplying data on the initial tape 
+and where initially positioning its head.
+Concerning $ \RPP $, its simulation of $ \PRF $ exploits permutations purposefully devised to behave as required when we supply the value
+0 to some specific arguments, the ancillae. 
+Summarizing, we define restriction-less permutations which behave as required as soon as the simulation conventions are satisfied.
+
+%In analogy with the reversible boolean circuits we have ancillary wires which assure that circuits are reversible.
+%Setting an ancillary wire with a specific value, the circuit behaves as required.
+
+%nevertheless, we have to formalize the encoding (a conventional agreement) that the simulation has to respect (cf. Definition \ref{definition:RPP-definability of any f in PRF}).
+%This is the standard approach taken comparing computational models \cite{cutland1980book,malcev70book,odifreddi1989book},
+%e.g. to represent a function in Turing-machine we have to establish how data are supplied on the initial tape and where the head is positioned.
+%To be more explicit, we paraphrase the  Definition \ref{definition:RPP-definability of any f in PRF}: 
+%the permutations devised for the encoding of $\PRF$ are purposeful for the simulation only when used with zeroes supplied to some specific arguments, 
+%while different use of devised permutations are not pertinent (to our simulation). 
+%Therefore, we do not define permutations working only when suitable zeroes are provided, but we are defining permutations without restrictions;
+%nevertheless, the behaviour of $\PRF$-encoding permutations is relevant only when the simulation conventions are satisfied.
+% Concluding, we recall that ancillae are typically used in the reversible circuit model.
+%The reversible circuit model shares many aspects with $\RPP$, and in particular the use of ancillary wires do not break the reversibility,
+%at least, until we do not assume the availability of ancillary bits (zero or one) for them.
+%More explicitly, the circuit (with ancillary wires but without ancillary bits) can be reversed by obtaining a reversible circuit,
+%the inversion issues arises in presence of ancillary bits. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%% servono ad emacs
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main.tex"
+%%% ispell-local-dictionary: "american"
+%%% End:

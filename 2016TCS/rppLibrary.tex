@@ -1,0 +1,639 @@
+\section{A library of functions in $ \RPP $}
+\label{section:A library of functions in TRRF}
+
+% We introduce functions to  further simplify the constructions inside $\RPP$.
+% Quite often, the functions we are going to introduce rely on auxiliary arguments 
+% we dub as \emph{ancillary arguments\LP{/variables}{ *** se fai una ricerca in questo file NON TROVI mai la parola ``variable'', al piu trovi ``position'' che considero un eufimesmo comodo quanto rozzo, secondo me parlare di variabili alimenterebbe confusione *** }} or \emph{ancillae} in analogy to 
+% \cite{thomsen2015lncs}, for instance. 
+% Ancillae have two main purposes. Either they temporarily record  copies of values for later use and are set back 
+% to their initial value at the end of a computation 
+% or
+% they eventually hold the result of a computation, if properly initialized.
+% \LP{}{Adapting the nomenclature introduced in \cite{toffoli80lncs}, 
+% we say that an ancilla is a \temporarychannel whenever its initial and final value are the same.}%%%
+% \LR{}{*** Secondo me il commento in rosso contraddice quel che abbiamo detto giusto prima a proposito
+% del fatto che le ancille servono per memorizzare il risultato di una computazione. *** }\LP{ ***
+% Le ancillae sono argomenti ausiliari utili alla computazione, che hanno due usi:
+% ancille-risultato e ancille-temporanee! Dato che secondo, ***}
+
+We introduce functions to  further simplify programming inside $\RPP$ by relying on \temporarychannels,
+ \emph{ancillary arguments} or \emph{ancillae}.
+They are additional arguments that can:
+(i) hold the result of the computation;
+(ii) temporarily record copies of values for later use;
+(iii) temporarily store intermediate results.
+Without loss of generality, we use ancillae in a very disciplined way in order to simplify their understanding.
+Tipically, ancillae are initialized to zero. We cannot forget (reversibly) the content of ancillae, 
+so they have to be carefully considered in compositions albeit sometimes we neglect their contents
+(tipically, just forwarding them). 
+Notions that recall the meaning of ancillae are common to the studies on reversible and quantum computation. They are
+``temporary'' lines, storages, channels, bits and variables \cite{toffoli80lncs}.
+%Moreover, following the quantum literature sometimes the ``ancillary'' replaces the adjective ``temporary''  (e.g. see \cite{thomsen2015lncs}).
+% (Some references are \cite{abdessaied16book,DeVos2010book,DeVos12rc,toffoli80lncs,thomsen2015lncs}).
+%%%%%%%%%%%%%%%
+\paragraph{General increment and decrement} 
+Let $ i, j $ and $ m\in \Nat $ be distinct.
+Two functions $ \rprInc_{j;i}, \rprDec_{j;i}\in \RPP^m $ exist such that:
+\begin{align*}
+\arraycolsep=1.4pt
+\begin{array}{rcl}
+ \left. {\scriptsize \begin{array}{r} x_1\\ \cdots \\ x_j\\ \cdots \\ x_i       \\ \cdots \\x_m\end{array}} \right[
+ & \rprInc_{j;i} &
+ \left] {\scriptsize \begin{array}{l} x_1\\ \cdots \\ x_j\\ \cdots \\ x_i + |x_j|\\ \cdots \\x_m \end{array} } \right.
+\end{array}
+&\qquad\textrm{and}&
+\arraycolsep=1.4pt
+\begin{array}{rcl}
+ \left. {\scriptsize \begin{array}{r} x_1\\ \cdots \\ x_j\\ \cdots \\ x_i      \\ \cdots \\x_m\end{array}} \right[
+ & \rprDec_{j;i} &
+ \left] {\scriptsize \begin{array}{l} x_1\\ \cdots \\ x_j\\ \cdots \\ x_i - |x_j|\\ \cdots \\x_m \end{array} } \right.
+\end{array}
+\enspace.
+\end{align*}
+We define them as:
+\begin{align*}
+\rprInc_{j;i}  & := \rprIt{m}{j,\langle i\rangle }{\rprSucc} 
+&&&
+\rprDec_{j;i}  & := \rprIt{m}{j,\langle i\rangle}{\rprPred}
+\enspace .
+\end{align*}
+
+%%%%%%%%%%%%%%%
+\paragraph{A function that compares two integers}
+Let $k,j,i, p,q$ be pairwise distinct such that $k,j,i, p,q \leq n$, for a given arity $ n\in\Nat $.
+A function $ \rprLess_{i,j,p,q;k}\in\RPP^n $ exists that implements the following relation:
+\begin{align*}
+\arraycolsep=1.4pt
+\begin{array}{rcl}
+  \left. {\scriptsize 
+          \begin{array}{r} 
+             x_1\\ \cdots 
+             \\[1.10mm]
+             x_k
+             \\[1.25mm] 
+             \cdots \\
+             x_n
+          \end{array}} 
+  \right[
+ & \rprLess_{i,j,p,q;k} &
+   \left] {\scriptsize 
+          \begin{array}{l}
+             x_1\\ \cdots 
+           \\[-1mm]
+            x_k
+            + \begin{cases}
+                1 & \textrm{ if } x_i <    x_j\\
+                0 & \textrm{ if }      x_i \geq x_j
+                \enspace .
+            \end{cases}
+           \\[-1.10mm]
+           \cdots \\ x_n
+          \end{array} 
+           } 
+   \right.
+\end{array}
+\end{align*}
+
+The function $\rprLess_{i,j,p,q;k}$ is expected to behave in accordance with the intended meaning whenever the 
+arguments $ x_p, x_q $ are initially contains $0$, viz. they are ancillae.
+Tipically, $x_k$ will be used as ancilla initialized to zero and it is not a temporary argument.
+If the value of $x_k$ is initially $ 0 $, then $\rprLess_{i,j,p,q;k}$ returns  $ 0 $ or $ 1 $ in $ x_k $ 
+depending on the result of comparing the values $ x_i $ and $ x_j $.  
+Both $x_p$ and $x_q$ serve to duplicate the values of $x_i$ and $x_j$, respectively.
+The copies allow to circumvent the linearity constraints in presence of nested selections.
+
+Let  $ \Set{j_1,\ldots, j_{n-5}} = \Set{1,\ldots, n}\setminus \Set{k,j,i, p,q} $. We define
+% \begin{subequations}
+%   \begin{align}
+%     \rprLess_{i,j,p,q;k} := &\ \AUTOrprSwap{n}{k,p,q,i,j,j_1,\ldots,j_{n-5}}
+%                                             {1,2,3,4,5,6  ,\ldots,n } \rprSeq\
+%     \rprInc_{5;3} \ \rprSeq\  \rprInc_{4;2}    \      \rprSeq
+%     \label{less:subeq1}  \\
+%     &   (\mathsf{F} \  \rVert \ \rprId^{n-5})  \ \rprSeq 
+%       \label{less:subeq2}\\
+%     &
+%     \rprInv{\big(\rprInc_{5;3} \ \rprSeq\  \rprInc_{4;2} \big) }
+%     \rprSeq\ \rprInv{\left( \AUTOrprSwap{n}{k,p,q,i,j,j_1,\ldots,j_{n-5}}
+%                                             {1,2,3,4,5,6  ,\ldots,n } \right)} 
+%     \label{less:subeq3}
+%     \\
+%    \nonumber      \mbox{where}\qquad\quad\\  
+%    \nonumber
+%     \mathsf{F}     := &\
+%     \mathsf{If}^{5}_{5,\langle1,2,3,4\rangle}   [
+%           \mathsf{If}^{4}_{4,\langle1,2,3\rangle}  [\mathsf{SameSign}, \rprSucc^3_1,  \rprSucc^3_1 ]  \\
+%     \nonumber   & \phantom{\mathsf{If}^{5}_{5,\langle1,2,3,4\rangle}\ }
+%     ,\mathsf{If}^{4}_{4,\langle1,2,3\rangle}   [ \rprId^3 , \rprId^3 ,    \rprSucc^3_1   ]  \\
+%     \nonumber   &\phantom{\mathsf{If}^{5}_{5,\langle1,2,3,4\rangle}\ }
+%     ,\mathsf{If}^{4}_{4,\langle1,2,3\rangle} [\rprId^3 ,   \rprId^3  ,\mathsf{SameSign}]] \\[5mm]
+%     \nonumber%\mathsf{BothPos}
+%     \mathsf{SameSign} := &\ \rprDec_{2;3}
+%                            \rprSeq \mathsf{If}^{3}_{3,\langle1,2\rangle}[\rprSucc^2_1,\rprId^2,\rprId^2]
+%                            \rprSeq  \rprInv{(\rprDec_{2;3})}
+%     % \nonumber
+%     % \mathsf{BothNeg} := &\ %\rprInc_{2;3} 
+%     %                        \rprDec_{2;3}
+%     %                        \rprSeq \mathsf{If}^{3}_{3,\langle1,2\rangle}[\rprSucc^2_1, \rprId^2, \rprId^2 ] 
+%     %                        \rprSeq \rprInv{ (\rprDec_{2;3}) }
+%     \enspace .
+%   \end{align}
+% \end{subequations}
+
+  \begin{align}
+    \rprLess_{i,j,p,q;k} := &\ \AUTOrprSwap{n}{k,p,q,i,j,j_1,\ldots,j_{n-5}}
+                                            {1,2,3,4,5,6  ,\ldots,n } \rprSeq\
+    \rprInc_{5;3} \ \rprSeq\  \rprInc_{4;2}    \      \rprSeq
+    \label{less:subeq1}  \\
+    &   (\mathsf{F} \  \rVert \ \rprId^{n-5})  \ \rprSeq 
+      \label{less:subeq2}\\
+    &
+    \rprInv{\big(\rprInc_{5;3} \ \rprSeq\  \rprInc_{4;2} \big) }
+    \rprSeq\ \rprInv{\left( \AUTOrprSwap{n}{k,p,q,i,j,j_1,\ldots,j_{n-5}}
+                                            {1,2,3,4,5,6  ,\ldots,n } \right)} 
+    \label{less:subeq3}
+      \end{align}
+ where $\mathsf{F} $ is
+$$\mathsf{If}^{5}_{5,\langle1,2,3,4\rangle}   \big[
+          \mathsf{If}^{4}_{4,\langle1,2,3\rangle}  [\mathsf{SameSign}, \rprSucc^3_1,  \rprSucc^3_1 ]
+            \pmb,\mathsf{If}^{4}_{4,\langle1,2,3\rangle}   [ \rprId^3 , \rprId^3 ,    \rprSucc^3_1   ] 
+            \pmb,\mathsf{If}^{4}_{4,\langle1,2,3\rangle} [\rprId^3 ,   \rprId^3  ,\mathsf{SameSign}]\big]$$
+and $\quad \mathsf{SameSign} := \ \rprDec_{2;3}
+                           \rprSeq \mathsf{If}^{3}_{3,\langle1,2\rangle}[\rprSucc^2_1,\rprId^2,\rprId^2]
+                           \rprSeq  \rprInv{(\rprDec_{2;3})}\quad$.
+% \begin{align}
+%     \mathsf{F}     := &\
+%     \mathsf{If}^{5}_{5,\langle1,2,3,4\rangle}   [
+%           \mathsf{If}^{4}_{4,\langle1,2,3\rangle}  [\mathsf{SameSign}, \rprSucc^3_1,  \rprSucc^3_1 ]  \\
+%     \nonumber   & \phantom{\mathsf{If}^{5}_{5,\langle1,2,3,4\rangle}\ }
+%     ,\mathsf{If}^{4}_{4,\langle1,2,3\rangle}   [ \rprId^3 , \rprId^3 ,    \rprSucc^3_1   ]  \\
+%     \nonumber   &\phantom{\mathsf{If}^{5}_{5,\langle1,2,3,4\rangle}\ }
+%     ,\mathsf{If}^{4}_{4,\langle1,2,3\rangle} [\rprId^3 ,   \rprId^3  ,\mathsf{SameSign}]] \\[5mm]
+%     \nonumber%\mathsf{BothPos}
+%     \mathsf{SameSign} := &\ \rprDec_{2;3}
+%                            \rprSeq \mathsf{If}^{3}_{3,\langle1,2\rangle}[\rprSucc^2_1,\rprId^2,\rprId^2]
+%                            \rprSeq  \rprInv{(\rprDec_{2;3})}
+%     % \nonumber
+%     % \mathsf{BothNeg} := &\ %\rprInc_{2;3} 
+%     %                        \rprDec_{2;3}
+%     %                        \rprSeq \mathsf{If}^{3}_{3,\langle1,2\rangle}[\rprSucc^2_1, \rprId^2, \rprId^2 ] 
+%     %                        \rprSeq \rprInv{ (\rprDec_{2;3}) }
+%     \enspace .
+%   \end{align}
+
+\noindent
+The \rprSComName at the lines \eqref{less:subeq1} and \eqref{less:subeq3} are one the inverse of the other.
+The leftmost function at line \eqref{less:subeq1} moves the five relevant 
+arguments in the first five positions\footnote{
+The order of the first five elements has been carefully devised in order to avoid index changes of 
+arguments due to the removal of intermediate arguments to satisfy the  linearity constraint of 
+the $\mathsf{If}$.}.
+The rightmost function at line \eqref{less:subeq1} duplicates $x_i$ and $x_j$ into the ancillae
+$x_p$ and $x_q$, respectively. The functions at line \eqref{less:subeq3} undo what 
+those ones at line \eqref{less:subeq1} have done. In between them,
+at line \eqref{less:subeq2} 
+the function $ \mathsf{F} \  \rVert \ \rprId^{n-5} $ receives a given 
+$\langle x_k,x_p+|x_i|,x_q+|x_j|,x_i,x_j,x_{j_1},\ldots,x_{j_{n-5}}\rangle$ 
+as argument and operates on its first five elements.
+We explain $ \mathsf{F}\in\RPP^5$ by the following case analysis scheme:
+\begin{align*}
+\begin{array}{rrcccl||l}
+                 &                 & x_i > 0         & x_i = 0     & x_i < 0       &       \\
+                 \hline\hline  % &                 &                 &             &                &  &         \\
+\mathsf{If}^{5\phantom{|}}_{5,\langle1,2,3,4\rangle} 
+      [&\mathsf{If}^{4}_{4,\langle1,2,3\rangle} [&\mathsf{SameSign},&  \rprSucc^3_1,   &   \rprSucc^3_1    &] & x_j > 0 \\
+      ,&\mathsf{If}^{4}_{4,\langle1,2,3\rangle} [& \rprId^3,    &  \rprId^3,    &  \rprSucc^3_1   &] & x_j = 0 \\
+      ,&\mathsf{If}^{4}_{4,\langle1,2,3\rangle} [&   \rprId^3,  &  \rprId^3,     &\mathsf{SameSign}&]]& x_j < 0 
+\end{array}
+\enspace .
+\end{align*}
+For example, 
+let us assume $x_j <0$ and $x_j < 0$. The nested selections of $ \mathsf{F} $ eventually apply
+$ \mathsf{SameSign} $ to a tuple of three elements $ \langle x_k, x_p+|x_j|, x_q+|x_i|\rangle $.
+The effect of  $\rprDec_{2;3} $ is to update the third element of the 
+tuple yielding $ \langle x_k, x_p+|x_j|, x_q+|x_i|-x_p-|x_j|\rangle $. So, whenever the initial
+value of the temporary arguments $ x_p $ and $ x_q $ is $0$, we can deduce which among
+$ x_i $ and $ x_j $ is greater than the other. The value of $ x_k $ is incremented only when
+the difference is positive. $ \mathsf{SameSign} $ concludes by unfolding its local subtraction.
+
+
+%%%%%%%%%%%%%%%
+\paragraph{A function that multiplies two integers}
+Let $k,j,i$ be pairwise distinct such that $k,j,i\leq n$, for any $ n\in\Nat $.
+A function $ \rprMult_{k,j;i}\in\RPP^n  $ exists such that:
+%\begin{align*}
+%\arraycolsep=1.4pt
+%\begin{array}{rcl}
+%  \left. {\scriptsize 
+%          \begin{array}{r} 
+%             x_1\\ \cdots 
+%             \\[1.10mm]
+%             x_i
+%             \\[1.25mm] 
+%             \cdots \\
+%             x_n
+%          \end{array}} 
+%  \right[
+% & \rprMult_{k,j;i} &
+%   \left] {\scriptsize 
+%          \begin{array}{l}
+%             x_1\\ \cdots 
+%           \\[-3mm]
+%            x_i +
+%             \begin{cases}
+%               \underbrace{(\phantom{-} x_j + \ldots + x_j)}_{\mid x_k\mid }
+%                      & \textrm{ if } x_k, x_j \textrm{ have same sign}\\
+%               \overbrace{(-x_j - \ldots - x_j)}
+%                      & \textrm{ if } x_k, x_j \textrm{ have different sign}
+%             \end{cases}
+%           \\[-3mm]
+%           \cdots \\ x_n
+%          \end{array} 
+%           } 
+%   \right.
+%\enspace.
+%\end{array}
+%\end{align*}
+\begin{align*}
+\arraycolsep=1.4pt
+\begin{array}{rcl}
+\left. {\scriptsize 
+	\begin{array}{r} 
+	x_1\\ \cdots 
+	\\[1.10mm]
+	x_i
+	\\[1.25mm] 
+	\cdots \\
+	x_n
+	\end{array}} 
+\right[
+& \rprMult_{k,j;i} &
+\left] {\scriptsize 
+	\begin{array}{l}
+	x_1\\ \cdots 
+	\\[-1mm]
+	  (x_i + |x_k| \times |x_j| ) \times
+	  \begin{cases}
+	  \phantom{-}1  & \textrm{ if } x_k, x_j \textrm{ have same sign}\\
+	  -1  &\textrm{ if } x_k, x_j \textrm{ have different sign}
+	  \end{cases}
+	\\[-1mm]
+	\cdots \\ x_n
+	\end{array} 
+} 
+\right.
+\enspace.
+\end{array}
+\end{align*}
+The function $ \rprMult_{k,j;i} $ behaves in accordance with the intended meaning whenever 
+the ancilla $ x_i$ is initially set to $0$. In that case
+$ \rprMult_{k,j;i} $ yields $ |x_j|\times |x_k| $ in position $ i $ which is multiplied by $ -1 $
+if, and only if, $ x_j $ and $ x_k $ have different sign. We define:
+\begin{align*}
+\rprMult_{k,j;i} 
+& = 
+\rprIt{n}{k,\langle i,j\rangle}{ % \rprInc_{1;2}
+	                            \rprInc_{2;1}
+                               }
+\rprSeq
+\rprIf{n}{k,\langle i,j\rangle}
+      {\rprIf{2}{1,\langle 2\rangle}
+             {\rprId}{\rprId}{\rprNeg}}
+      {\rprIf{2}{1,\langle 2\rangle}
+             {\rprId}{\rprId}{\rprId}}
+      {\rprIf{2}{1,\langle 2\rangle}
+             {\rprNeg}{\rprId}{\rprId}} 
+\end{align*}
+which gives the result by first nesting the iterations of $ \rprInc_{2;1} $ inside an explicit iteration 
+(acting on 3 arguments) and then setting the correct sign.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\paragraph{A function that encodes a bounded minimization}
+Let $\mathsf{F}_{i;j} \in \RPP^n$ with $ i \neq j $ and $ i, j\leq n $. 
+For any $\langle x_1,\ldots,x_i,\ldots, x_n\rangle$ and
+any $y\in\Nat$, which we call \emph{range}, we look for the minimum integer 
+$v$ such that, both $ v\geq 0$  and
+$\mathsf{F}_{i;j}\langle x_1,\ldots, x_{i-1}, x_i + v, x_{i+1}, \ldots, x_n\rangle$ 
+returns a negative value in position $j$, when a such $ v $ exists.
+If $ v $ does not exist we  simply return $ |y| $.          
+Summarizing, $ \lpMU{\mathsf{F}_{i;j}}\in\RPP^{n+4} $ is:
+\par
+{\hspace{-.05\textwidth}
+\scalebox{.95}{\parbox{\linewidth}{%
+\begin{align*}
+    \arraycolsep=1.4pt
+    \begin{array}{rcl}
+      \left. {\scriptsize 
+              \begin{array}{r} 
+                 x_1\\ \cdots  \\ x_{n}
+                 \\
+                 x_{n+1}
+                 \\
+                 0 \\  0 \\  x_{n+4} 
+              \end{array}} 
+      \right[
+     & \rotatebox{90}{$\hspace{-5mm}\lpMU{\mathsf{F}_{i;j}}$} &
+       \left] {\scriptsize 
+              \begin{array}{l}
+                 x_1\\ \cdots  \\ x_{n}
+               \\[-9mm]
+                x_{n+1}
+                + 
+         \begin{cases}
+           v
+           & \textrm{whenever } 0\leq v\! <\!|x_{n+4}| \textrm{ is such that }\\
+           &  \mathsf{F}_{i;j}\langle \ldots,x_{i-1},x_i + v,x_{i+1},\ldots \rangle 
+                              = \langle \ldots,y_{j-1},z' ,y_{j+1},\ldots \rangle  \textrm{ and } z' < 0 \\
+           & \textrm{and, for all } u \textrm{ such that } 0 \!\leq \! u\! < \! v ,\\
+           &  \hfill \mathsf{F}_{i;j} \langle \ldots,x_{i-1},x_i +u,x_{i+1},\ldots \rangle
+                              = \langle \ldots,y_{j-1},z,y_{j+1},\ldots \rangle \textrm{ and } z \geq 0; \\[3mm]
+           | x_{n+4} |
+           & \textrm{otherwise.}\\
+         \end{cases}
+               \\[-9mm]
+                  0 \\  0 \\  x_{n+4} 
+              \end{array}
+               } 
+       \right.
+    \end{array}
+    \end{align*}}}}
+\par\noindent
+The function $ \lpMU{\mathsf{F}_{i;j}} $ behaves in accordance with the here above specification when:
+(i) the arguments $x_{n+1},x_{n+2}$ and $ x_{n+3} $, that we use as temporary arguments, are set to $ 0 $, and
+(ii) $x_{n+4}$ is set to contain the range $ y $.
+We plan to use the ancilla $x_{n+3}$ as flag,  the ancilla $x_{n+2}$ as a counter from $0$ to $x_{n+4}$ and,
+the ancilla $x_{n+1}$ as store for $v$ (or $0$).
+We define: % $\lpMU{\mathsf{F}_{i;j}}$ as follows:
+     $$\begin{array}{l}
+    \lpMU{\mathsf{F}_{i;j}} :=\\[3mm]
+    \qquad
+     \rprIt{}
+           {}
+           {  (\rprPCom{\mathsf{F}_{i;j}}{ \rprId^{3}}) \rprSeq
+             \mathsf{If}^{n+3}
+                   _{j\!,\scalebox{.59}{$\langle n\!+\!1\!,\!n\!+\!2\!,n\!+\!3\rangle$}\!}
+              \big[{\rprId^3\!},
+                   {\rprId^3\!},
+                   {(\rprIf{}
+                          {}
+                          {\rprId^2\!}
+                          {\rprInc_{2;1}}
+                          {\rprId^2\!}
+                    \rprSeq
+                    \rprSucc_3^{3})
+                   }\big] \rprSeq
+             \rprInv{(\rprPCom{\mathsf{F}_{i;j}}{ \rprId^{3}})} \rprSeq
+             (\rprSucc_i^{n} \rVert % \rprSucc_{n+2}
+                                   \rprSucc^{3}_{2}
+             )
+             }
+   \rprSeq  \\[3mm]
+    \qquad
+%     &
+     \rprIf{n+4}
+           {n+3,\langle n+1,n+4\rangle}
+           {\rprId}
+           {\rprInc_{2;1}\,}
+           {\rprId}
+  \rprSeq    \\[3mm]
+%     & \ 
+    \qquad
+\rprInv{\left(
+   \rprIt{}
+           {}
+           {  (\rprPCom{\mathsf{F}_{i;j}}{ \rprId^{3}}) \rprSeq
+             \mathsf{If}^{n+3}
+                   _{j\!,\scalebox{.59}{$\langle n\!+\!1\!,\!n\!+\!2\!,n\!+\!3\rangle$}\!}
+              \big[{\rprId^3\!},
+                   {\rprId^3\!},
+                   { \rprSucc_3^{3})
+                   }\big] \rprSeq
+             \rprInv{(\rprPCom{\mathsf{F}_{i;j}}{ \rprId^{3}})} \rprSeq
+             (\rprSucc_i^{n} \rVert \rprSucc^{3}_{2}
+             
+             )
+             }
+  \right)
+}
+    \enspace .
+    %\end{aligned}
+    \end{array}$$
+ %  \end{minipage}
+ % } % scalebox
+ % \end{center}
+
+
+\noindent The first line of the here above definition iterates its whole argument as many times as specified by 
+the value of the range in $ x_{n+4} $:
+\par
+\resizebox{.98\textwidth}{!}{
+\hspace*{-5mm}\begin{minipage}{\textwidth}
+\begin{align*}
+&
+(\rprPCom{\mathsf{F}_{i;j}}{ \rprId^{3}}) \rprSeq
+\mathsf{If}^{n+3}
+_{j\!,\scalebox{.59}{$\langle n\!+\!1\!,\!n\!+\!2\!,n\!+\!3\rangle$}\!}
+\big[{\rprId^3\!},
+{\rprId^3\!},
+{(\rprIf{}
+	{}
+	{\rprId^2\!}
+	{\rprInc_{2;1}}
+	{\rprId^2\!}
+	\rprSeq
+	\rprSucc_3^{3})
+}\big] \rprSeq
+\rprInv{(\rprPCom{\mathsf{F}_{i;j}}{ \rprId^{3}})} \rprSeq
+(\rprSucc_i^{n} \rVert % \rprSucc_{n+2}
+\rprSucc^{3}_{2}
+) & 1\textrm{-st step,} \\
+& \vdots \\
+&
+\rprSeq(\rprPCom{\mathsf{F}_{i;j}}{ \rprId^{3}}) \rprSeq
+\mathsf{If}^{n+3}
+_{j\!,\scalebox{.59}{$\langle n\!+\!1\!,\!n\!+\!2\!,n\!+\!3\rangle$}\!}
+\big[{\rprId^3\!},
+{\rprId^3\!},
+{(\rprIf{}
+	{}
+	{\rprId^2\!}
+	{\rprInc_{2;1}}
+	{\rprId^2\!}
+	\rprSeq
+	\rprSucc_3^{3})
+}\big] \rprSeq
+\rprInv{(\rprPCom{\mathsf{F}_{i;j}}{ \rprId^{3}})} \rprSeq
+(\rprSucc_i^{n} \rVert % \rprSucc_{n+2}
+\rprSucc^{3}_{2}
+)  & k\textrm{-th step,} \\
+& \vdots \\
+&
+\rprSeq(\rprPCom{\mathsf{F}_{i;j}}{ \rprId^{3}}) \rprSeq
+\mathsf{If}^{n+3}
+_{j\!,\scalebox{.59}{$\langle n\!+\!1\!,\!n\!+\!2\!,n\!+\!3\rangle$}\!}
+\big[{\rprId^3\!},
+{\rprId^3\!},
+{(\rprIf{}
+	{}
+	{\rprId^2\!}
+	{\rprInc_{2;1}}
+	{\rprId^2\!}
+	\rprSeq
+	\rprSucc_3^{3})
+}\big] \rprSeq
+\rprInv{(\rprPCom{\mathsf{F}_{i;j}}{ \rprId^{3}})} \rprSeq
+(\rprSucc_i^{n} \rVert % \rprSucc_{n+2}
+\rprSucc^{3}_{2}
+)  & x_{n+4}\textrm{-th step;} \\
+\end{align*}
+\end{minipage}
+} %resizebox
+\par\noindent
+let us assume that the $ x_j $ is negative at step $ k$.
+We have two cases. 
+\begin{itemize}
+	\item 
+The first case is with $ x_{n+3} $ equal to 0.
+By design, this means that $ x_j $ has never become negative before. 
+So, $ x_i $ contains the value $ v $ we are looking for. The firs step of:
+\begin{align}
+\label{align:min inner if}
+\rprIf{}{}{\rprId^2\!}{\rprInc_{2;1}}{\rprId^2\!}\rprSeq\rprSucc_3^{3}
+\end{align}
+is to store $ x_{n+2} $ into $ x_{n+1} $. 
+The reason is that, by design, the increments applied to  $ x_{n+2} $  and  $ x_i $ are   always stepwise aligned.
+The second step of~\eqref{align:min inner if} is to increment $ x_{n+3} $, preventing
+any further change of the value of $ x_{n+1} $ by the subsequent steps of the iteration.
+	\item 
+The second case is with $ x_{n+3} $ different from 0.
+By design, this means that $ x_j $ has become negative in some step before the current $ k $-th one.
+So, \eqref{align:min inner if} skips $ 	\rprInc_{2;1} $. The increment $ \rprSucc^{3}_{2} $
+that operates on $ x_{n+3} $ is harmless because it just reinforces the idea that the value
+$ v $ we were looking for is ``frozen'' in $ x_{n+1} $.
+\end{itemize}
+After any occurrence of~\eqref{align:min inner if} it is necessary to unfold the last application of 
+$\mathsf{F}_{i;j}$ by means of $ \rprInv{\mathsf{F}_{i;j}} $.
+Then, increasing $ x_i $ and $ x_{n+2} $ supplies a new value to $\mathsf{F}_{i;j}$ 
+and keeps $ x_{n+2} $ aligned with $ x_i $.
+
+\bigskip
+
+After the first iteration completes, the evaluation follows with the second line
+$\quad %\begin{align*}
+\rprIf{n+4}
+{n+3,\langle n+1,n+4\rangle}
+{\rprId}
+{\rprInc_{2;1}\,}
+{\rprId}
+\rprSeq
+\quad$ %\end{align*}
+in the definition of $ \lpMU{\mathsf{F}_{i;j}} $. It takes care of two cases.
+\begin{itemize}
+	\item 
+	The value of $ x_{n+3} $ is not zero: somewhere in the course of the iteration
+    $\mathsf{F}_{i;j}$ became negative. We have set $ x_{n+1} $ in accordance with that.	
+	\item 
+	The value of $ x_{n+3} $ is zero: $\mathsf{F}_{i;j}$  became negative in the course of the iteration.
+	By definition, $ \rprInc_{2;1} $ sets $ x_{n+1} $ to the value of the range in $ x_{n+4} $.
+\end{itemize}
+The last line of $ \lpMU{\mathsf{F}_{i;j}} $ undoes what the first line did,
+without altering the values of $ x_{n+1} $. This is why 
+$ \rprIf{}{}{\rprId^2\!}{\rprInc_{2;1}}{\rprId^2\!} $ is missing.
+In fact, the last line of $ \lpMU{\mathsf{F}_{i;j}} $
+is an application of Bennett's trick \cite{bennett73ibm} in our functional programming setting.
+ % \LR
+
+%%%\par
+%%%We conclude by formalizing a notation for a simple generalization of $ \lpMU{\mathsf{F}_{i;j}} $. 
+%%%Let $ k,r \leq m \in\Nat $, with $ m \geq n+4 $ and $ r\neq k $.
+%%%By definition $ \rprBMu{r}{k}{\mathsf{F}}{i}{j}\in\RPP^{m}$ is:
+%%%    \begin{align*}
+%%%    \arraycolsep=1.4pt
+%%%    \begin{array}{rcl}
+%%%      \left. {\scriptsize 
+%%%              \begin{array}{r} 
+%%%                 x_1\\ \cdots \\[6.5mm] x_{k} \\[7.5mm] \cdots  \\ x_{m}
+%%%              \end{array}} 
+%%%      \right[
+%%%     & \rotatebox{90}{$\hspace{-5mm}\rprBMu{r}{k}{\mathsf{F}}{i}{j}$} &
+%%%       \left] {\scriptsize 
+%%%              \begin{array}{l}
+%%%                 x_1\\ \cdots
+%%%                    \\[-5mm] x_{k}
+%%%                + 
+%%%                \begin{cases}
+%%%                  v
+%%%                  & \textrm{whenever } 0\leq v\! <\!|x_{r}| \textrm{ is such that}\\
+%%%                  &  \mathsf{F}_{i;j}\langle \ldots,x_{i-1},x_i + v,x_{i+1},\ldots \rangle 
+%%%                                     = \langle \ldots,y_{j-1},z' ,y_{j+1},\ldots \rangle 
+%%%                  \textrm{ and } z' < 0  \\
+%%%                  & \textrm{and, for all } u \textrm{ such that } 0 \!\leq \! u\! < \! v ,\\
+%%%                  &   \mathsf{F}_{i;j} \langle \ldots,x_{i-1},x_i + u,x_{i+1},\ldots \rangle
+%%%                                     = \langle \ldots,y_{j-1},z,y_{j+1},\ldots \rangle
+%%%                                     \textrm{ and } z \geq 0; \\\\\\
+%%%                  | x_{r} |
+%%%                  & \textrm{otherwise \enspace .}
+%%%                \end{cases}
+%%%               \\[-2mm] \cdots \\
+%%%               x_{m}
+%%%              \end{array}
+%%%               } 
+%%%       \right.
+%%%    \end{array}
+%%%    \end{align*}
+%%%In it, the value $ v $ needs not to be stored in the argument just after the $ n $ arguments of $ \mathsf{F}_{i;j} $.
+%%%Any $ x_k $ can contain it. Moreover, the argument that contains the range is not necessary the last one, as in the definition
+%%%of $ \mathsf{F}_{i;j} $.
+
+%%%%%%%%\paragraph{Replication trees in $ \RPP $}
+%%%%%%%%For every $ n\geq 1 $ and $ x $, a function $ \rprNabla^n\in\RPP^{n+1}$ exists such that:
+%%%%%%%%\begin{align*}
+%%%%%%%%\arraycolsep=1.4pt
+%%%%%%%%\begin{array}{rcl}
+%%%%%%%% \left. {\scriptsize \begin{array}{r} 
+%%%%%%%%                       x_1 \\ \ldots \\ x_n  \\ x
+%%%%%%%%                     \end{array}} \right[
+%%%%%%%% & \rprNabla^n &
+%%%%%%%% \left] {\scriptsize \begin{array}{l}
+%%%%%%%%                       x_1 + x\\ \ldots \\ x_n + x \\ x
+%%%%%%%%                     \end{array} } \right.
+%%%%%%%% \enspace .
+%%%%%%%%\end{array}
+%%%%%%%%\end{align*}
+%%%%%%%%With $ x_1,\ldots,x_n $ set to $ 0 $, then $ \rprNabla^n \la x_1,\ldots,x_n\ra $ yields
+%%%%%%%%$ n $ replicas of the value $ x $. By definition:
+%%%%%%%%\begin{align*}
+%%%%%%%%\rprNabla^n & =
+%%%%%%%%\begin{cases}
+%%%%%%%%\rprInc^{2}_{2;1}
+%%%%%%%%& \text{if } n = 1
+%%%%%%%%\\\\
+%%%%%%%%(\rprPCom{\rprInc^{2}_{2;1}}
+%%%%%%%%         {\rprId^{n-1}}
+%%%%%%%%) \rprSeq \cdots
+%%%%%%%%\\
+%%%%%%%%\cdots \rprSeq
+%%%%%%%%(\rprPCom{\rprId^{i}}
+%%%%%%%%         {\rprPCom{\rprInc^{2}_{2;1}}
+%%%%%%%%                  {\rprId^{n-i}}}
+%%%%%%%%) \rprSeq \cdots 
+%%%%%%%%\\
+%%%%%%%%\qquad \qquad 
+%%%%%%%%\cdots \rprSeq
+%%%%%%%%(\rprPCom{\rprId^{n-1}}
+%%%%%%%%         {\rprInc^{2}_{2;1}}
+%%%%%%%%) 
+%%%%%%%%& \text{if } n \geq 2, \text{for every } 1 \leq i < n
+%%%%%%%%\enspace .
+%%%%%%%%\end{cases}
+%%%%%%%%\end{align*}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%% LucaP:emacs-configuration
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main.tex"
+%%% ispell-local-dictionary: "american"
+%%% End:
+%%%%%%%%%%%%%%%%%%%%%%%%% LucaP:emacs-configuration
