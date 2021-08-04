@@ -513,3 +513,7 @@ rewrite max_l.
 
 
 Admitted.
+
+
+Definition pad f l :=
+  evaluate f (l ++ repeat 0%Z (arity f - length l)).

@@ -54,8 +54,16 @@ Fixpoint arity f :=
   | If f g h => S (max (arity f) (max (arity g) (arity h)))
   end.
 
+(* si può usare come esempio nella presentazione *)
+
 Lemma arity_inv : ∀  f, arity (inv f) = arity f.
-Proof. induction f; auto; simpl; lia. Qed.
+Proof.
+  induction f.
+  simpl. reflexivity.
+  all: try (simpl; reflexivity).
+  simpl. rewrite IHf1. rewrite IHf2. lia.
+  all: try (simpl; lia).
+Qed.
 
 Fixpoint iter X (f : X → X) (n : nat) x :=
   match n with
@@ -68,6 +76,8 @@ Open Scope Z_scope.
 (* C'è una differenza con la definizione di RPP originale: It e If non controllano l'ultimo elemento ma il primo. Questo rende i calcoli e le dimostrazioni più semplici *)
 
 (* Quando si applica ad esempio una RPP di arità 5 ad una lista, non è mai richiesto che tale lista abbia lunghezza 5: se ha lunghezza maggiore semplicemente verranno usati solo i primi 5 elementi e gli altri resteranno invariati, se la lunghezza è minore di 5 succederanno cose strane. Comunque nessun teorema che segue ha bisogno dell'ipotesi che la lista della lunghezza sia uguale all'arità. *)
+
+(* tramite questo It si possono definire gli altri 2 *)
 
 Fixpoint evaluate f (l : list Z) : list Z :=
   match f with
@@ -244,6 +254,10 @@ Proof.
   - intros. subst. apply proposition_1_l.
   - intros. subst. apply proposition_1_r.
 Qed.
+
+(* partono dallo 0 *)
+(* per queste permutazioni sfrutto reversibilità,
+  faccio cose e poi quando ho finito faccio l'inversa *)
 
 Open Scope nat.
 Fixpoint call i :=
@@ -843,6 +857,8 @@ Proof.
   { reflexivity. }
   rewrite inv_perm_n_0. rewrite <- map_splice. rewrite <- map_skipn.
 
+  (* sarebbe carino avere tattiche per questi tipi di goal *)
+
     rewrite !splice_app. rewrite !skipn_app.
     rewrite <- !app_assoc. simpl length.
     rewrite !skipn_skipn.
@@ -969,10 +985,9 @@ Fixpoint convert (F : PRF) : RPP :=
     id ‖ inv (re_forward (ARITY F) (convert F) (convert G))
   end.
 
-Definition anc F := arity (convert F) - (1+ARITY F).
+(* forse il numero di ancille è ottimale *)
 
-Definition pad f l :=
-  evaluate f (l ++ repeat 0%Z (arity f - length l)).
+Definition anc F := arity (convert F) - (1+ARITY F).
 
 Inductive strict : PRF → Prop :=
   | strZE n :
