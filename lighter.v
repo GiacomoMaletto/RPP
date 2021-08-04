@@ -1220,7 +1220,7 @@ Proof.
 Qed.
 
 Open Scope nat.
-Lemma perm_seq : ∀ l m a, a < length m →
+Lemma perm_seq : ∀ l m a, a ≤ length m →
   «\seq (length l) a\» (l++m) = m^[0,a] ++ l ++ m^[a,∞].
 Proof.
   intros. gen l m. induction a; intros.
@@ -1253,7 +1253,7 @@ Proof.
     unfold perm in IHa. rewrite IHa.
     destruct m. simpl in H. lia. simpl_splice.
     rewrite <- app_assoc. rewrite <- !app_comm_cons. simpl.
-    rewrite app_assoc. simpl in H. apply lt_S_n in H.
+    rewrite app_assoc. simpl in H. apply le_S_n in H.
     rewrite call_def.
     rewrite splice_app_l. autorewrite with arith_base.
     change ((z :: m ^[ a, ∞ ]) ^[ 0, 1]) with [z].
@@ -1279,6 +1279,63 @@ Proof.
   intros. injection H. easy.
 Qed.
 
+Lemma anc_re_l : ∀ F G, strict (RE F G) → 6 + anc G ≤ anc (RE F G).
+Proof.
+  intros. unfold anc. inverts H. simpl ARITY.
+  asserts_rewrite (
+    6 + (arity (convert G) - (1 + ARITY G)) =
+    5 + arity (convert G) - ARITY G ).
+  { assert (H := ARITY_le_arity H3). lia. }
+  asserts_rewrite (
+    arity (convert (RE F G)) - (1 + S (ARITY F)) =
+    arity (convert (RE F G)) - ARITY G ).
+  { lia. }
+  apply Nat.sub_le_mono_r.
+  rewrite convert_re_def.
+  rewrite arity_co_def. rewrite Nat.max_le_iff. left.
+  rewrite arity_co_def. rewrite Nat.max_le_iff. left.
+  rewrite arity_co_def. rewrite Nat.max_le_iff. left.
+  rewrite arity_co_def. rewrite Nat.max_le_iff. left.
+  rewrite arity_pa_def. simpl (arity id).
+  change 5 with (1+4). apply plus_le_compat_l with (p:=1).
+  change (S (S (S (S (arity (convert G)))))) with (4+arity (convert G)).
+  unfold re_forward.
+  rewrite arity_co_def. rewrite Nat.max_le_iff. right.
+  simpl arity. lia.
+Qed.
+
+Lemma anc_re_r : ∀ F G, strict (RE F G) → 6 + anc F ≤ anc (RE F G).
+Proof.
+  intros. unfold anc. inverts H. simpl ARITY.
+  asserts_rewrite (
+    6 + (arity (convert F) - (1 + ARITY F)) =
+    7 + arity (convert F) - (2 + ARITY F) ).
+  { assert (H := ARITY_le_arity H2). lia. }
+  asserts_rewrite (
+    arity (convert (RE F G)) - (1 + S (ARITY F)) =
+    arity (convert (RE F G)) - (2 + ARITY F) ).
+  { lia. }
+  apply Nat.sub_le_mono_r.
+  rewrite convert_re_def.
+  rewrite arity_co_def. rewrite Nat.max_le_iff. left.
+  rewrite arity_co_def. rewrite Nat.max_le_iff. left.
+  rewrite arity_co_def. rewrite Nat.max_le_iff. left.
+  rewrite arity_co_def. rewrite Nat.max_le_iff. left.
+  rewrite arity_pa_def. simpl (arity id).
+  change 7 with (1+6). apply plus_le_compat_l with (p:=1).
+  change (S(S(S(S(S(S(arity (convert F)))))))) with (6+arity (convert F)).
+  unfold re_forward.
+  rewrite arity_co_def. rewrite Nat.max_le_iff. left.
+  rewrite arity_co_def. rewrite Nat.max_le_iff. left.
+  rewrite arity_co_def. rewrite Nat.max_le_iff. right.
+  reflexivity.
+Qed.
+
+Lemma anc_re_6 : ∀ F G, strict (RE F G) → 6 ≤ anc (RE F G).
+Proof.
+  intros. assert (H0:=anc_re_l H). lia.
+Qed.
+
 Open Scope Z.
 Lemma re_forward_def : ∀ F G y ys,
   strict (RE F G) → ARITY F = length ys →
@@ -1299,8 +1356,8 @@ Proof.
   { rewrite H0. rewrite <- (map_length Z.of_nat).
     rewrite perm_seq.
     rewrite repeat_splice. rewrite repeat_skipn.
-    rewrite min_r. reflexivity. admit.
-    rewrite repeat_length. admit. }
+    rewrite min_r. reflexivity. now apply anc_re_6.
+    rewrite repeat_length. now apply anc_re_6. }
   asserts_rewrite (
     « Id 6 ‖ convert F »
      (↑y::0::0::0::0::0::0::↑↑ys++repeat 0 (anc (RE F G)-6)) =
@@ -1309,7 +1366,9 @@ Proof.
   asserts_rewrite (
     « convert F » (0 :: ↑↑ ys ++ repeat 0 (anc (RE F G) - 6)) =
     ↑EVALUATE F ys :: ↑↑ys ++ repeat 0 (anc (RE F G)-6) ).
-  { apply thesis_le. apply H1. admit. inverts H. easy. easy. }
+  { apply thesis_le. apply H1.
+    assert (H3:=anc_re_r H). lia.
+    inverts H. easy. easy. }
   asserts_rewrite (
     «Id 5‖Sw» (↑y::0::0::0::0::0::↑EVALUATE F ys::↑↑ys++
                repeat 0 (anc (RE F G)-6)) =
@@ -1340,7 +1399,8 @@ Proof.
          repeat 0 (anc (RE F G) - 6))
       with (↑↑(EVALUATE (RE F G) (y::ys)::y::ys) ++
          repeat 0 (anc (RE F G) - 6)).
-      apply thesis_le. easy. admit.
+      apply thesis_le. easy.
+      assert (h4:=anc_re_l H). lia.
       inverts H. easy.
       simpl. rewrite <- H0. inverts H. easy.
       easy. }
@@ -1383,7 +1443,7 @@ Proof.
     + clear H3. induction y.
       * reflexivity.
       * simpl. rewrite <- IHy. reflexivity.
-Admitted.
+Qed.
 
 Lemma thesis_re : ∀ F G l x,
   (∀ x l, thesis F l x) → (∀ x l, thesis G l x) →
@@ -1450,6 +1510,85 @@ Proof.
   rewrite <- proposition_1. apply H4.
 Qed.
 
+Open Scope nat.
+Lemma anc_length_le_anc_co : ∀ F Gs, strict (CO F Gs) →
+  anc F + length Gs ≤ anc (CO F Gs).
+Proof.
+  intros. unfold anc.
+  assert (H':=H). inverts H'.
+  simpl ARITY. apply Nat.le_add_le_sub_r.
+  asserts_rewrite (
+    arity (convert F) - (1 + ARITY F) + length Gs +
+      (1 + list_max (map ARITY Gs)) =
+    arity (convert F) + list_max (map ARITY Gs) ).
+  { assert (H1:=ARITY_le_arity H2). lia. }
+  rewrite convert_co_def. simpl ARITY.
+  rewrite arity_co_def. rewrite Nat.max_le_iff. left.
+  rewrite arity_co_def. rewrite Nat.max_le_iff. right.
+  rewrite arity_pa_def. simpl. lia.
+Qed.
+
+Lemma co_load_le_anc_co : ∀ F Gs, strict (CO F Gs) →
+  arity (co_loading (list_max (map ARITY Gs)) (map convert Gs)) -
+    list_max (map ARITY Gs) ≤ anc (CO F Gs).
+Proof.
+  intros. unfold anc.
+  assert (H':=H). inverts H'. simpl ARITY.
+  asserts_rewrite (
+    arity (convert (CO F Gs)) - (1 + list_max (map ARITY Gs)) =
+    arity (convert (CO F Gs)) - 1 - list_max (map ARITY Gs) ).
+  { lia. }
+  apply Nat.sub_le_mono_r.
+  apply Nat.le_add_le_sub_r.
+  rewrite convert_co_def. simpl ARITY.
+  rewrite arity_co_def. rewrite Nat.max_le_iff. left.
+  rewrite arity_co_def. rewrite Nat.max_le_iff. left.
+  rewrite arity_co_def. rewrite Nat.max_le_iff. left.
+  simpl. lia.
+Qed.
+
+Lemma anc_lt_co_load : ∀ A Gs, strict A →
+  ARITY A = list_max (map ARITY (A :: Gs))→
+  anc A <
+  arity (co_loading (list_max (map ARITY (A::Gs))) (map convert (A::Gs))) -
+    list_max (map ARITY (A::Gs)).
+Proof.
+  intros. unfold anc. apply Nat.lt_add_lt_sub_r.
+  asserts_rewrite (
+    arity (convert A) - (1 + ARITY A) + list_max (map ARITY (A :: Gs)) =
+    arity (convert A) - 1 ).
+  { rewrite <- H0. assert(H6:=ARITY_le_arity H). lia. }
+  simpl co_loading.
+  rewrite arity_co_def. rewrite Nat.max_lt_iff. left.
+  rewrite arity_co_def. rewrite Nat.max_lt_iff. right.
+  assert(H':=ARITY_le_arity H). lia.
+Qed.
+
+Lemma arity_co_load_lt_arity_co_load : ∀ A Gs,
+  Forall (λ G : PRF, ARITY G = list_max (map ARITY (A :: Gs))) (A :: Gs) →
+  arity (co_loading (list_max (map ARITY Gs)) (map convert Gs)) -
+    list_max (map ARITY Gs) <
+  arity (co_loading (list_max (map ARITY (A::Gs))) (map convert (A::Gs))) -
+    list_max (map ARITY (A::Gs)).
+Proof.
+  intros. destruct Gs.
+  - simpl. rewrite arity_call. lia.
+  - assert (H':=H).
+    apply Forall_inv in H.
+    apply Forall_inv_tail in H'. apply Forall_inv in H'.
+    assert (ARITY A = list_max (map ARITY (p::Gs))).
+    { simpl in *. lia. }
+    remember (p::Gs) as Gs'.
+    apply Nat.le_add_le_sub_l.
+    simpl co_loading.
+    rewrite arity_co_def. rewrite Nat.max_le_iff. right.
+    simpl arity. rewrite <- H0.
+    assert (ARITY A ≤ arity (co_loading (ARITY A) (map convert Gs'))).
+    { subst. simpl. rewrite arity_call. lia. }
+    simpl in *. rewrite Nat.max_id. rewrite max_l. lia. rewrite H. lia.
+Qed.
+
+Open Scope Z.
 Lemma co_load_def : ∀ Gs n l,
   Forall (λ G : PRF, ∀ (x : Z) (l : list nat), thesis G l x) Gs →
   Forall (λ G : PRF, strict G) Gs →
@@ -1496,9 +1635,12 @@ Proof.
       rewrite splice_nth with (d:=0). f_equal.
       destruct n. reflexivity. reflexivity.
       rewrite repeat_length.
-      admit. lia. lia. rewrite map_length. lia.
+      apply Forall_inv in H0. assert(H':= anc_lt_co_load _ H0 H1). lia.
+      lia. lia.
+      rewrite map_length. lia.
       rewrite app_length. rewrite map_length.
-      rewrite repeat_length. admit. }
+      rewrite repeat_length.
+      apply Forall_inv in H0. assert(H':= anc_lt_co_load _ H0 H1). lia. }
     rewrite thesis_le.
     rewrite pa_def. simpl. f_equal.
     destruct Gs. reflexivity.
@@ -1520,12 +1662,14 @@ Proof.
       list_max (map ARITY Gs') = list_max (map ARITY (a :: Gs')) ).
     { simpl in *. lia. }
     apply Forall_inv_tail in H1. rewrite H8. easy.
-    admit. simpl in *. lia. lia.
+    assert(H':=arity_co_load_lt_arity_co_load H1). simpl in *. lia.
+    lia. lia.
     apply Forall_inv in H. easy.
-    admit.
+    apply Forall_inv in H0. apply Forall_inv in H1.
+    assert(H':= anc_lt_co_load _ H0 H1). lia.
     apply Forall_inv in H0. easy.
     apply Forall_inv in H1. lia.
-Admitted.
+Qed.
 
 Lemma thesis_co : ∀ F Gs l x,
   (∀ x l, thesis F l x) → (Forall (λ G, ∀ x l, thesis G l x) Gs) →
@@ -1544,8 +1688,8 @@ Proof.
       (↑↑ l ++ repeat 0 (anc (CO F Gs))) =
     ↑↑map (λ G, EVALUATE G l) Gs ++ ↑↑l ++
       repeat 0%Z (anc (CO F Gs) - length Gs) ).
-  { inverts H1. apply co_load_def.
-    easy. easy. easy. easy. admit. }
+  { assert(H':= co_load_le_anc_co H1). inverts H1. apply co_load_def.
+    easy. easy. easy. easy. lia. }
   rewrite H3.
   asserts_rewrite (
     « \ seq (S(length Gs)) (list_max (map ARITY Gs)) \ »
@@ -1567,8 +1711,8 @@ Proof.
     rewrite repeat_length.
     replace (list_max (map ARITY Gs)) with (ARITY (CO F Gs)).
     2: reflexivity.
-    rewrite H2. apply Nat.lt_add_pos_r.
-    admit. }
+    rewrite H2.
+    assert (H':=anc_length_le_anc_co H1). lia. }
   asserts_rewrite (
     « Id (list_max (map ARITY Gs)) ‖ convert F »
         (↑↑l++x::↑↑map (λ G : PRF, EVALUATE G l) Gs ++
@@ -1585,8 +1729,9 @@ Proof.
     x+↑EVALUATE F (map (λ G : PRF, EVALUATE G l) Gs) ::
       ↑↑ map (λ G : PRF, EVALUATE G l) Gs ++
       repeat 0 (anc (CO F Gs) - length Gs) ).
-  { inverts H1. apply thesis_le. easy. admit. easy.
-    rewrite map_length. easy. }
+  { assert (H':=anc_length_le_anc_co H1).
+    inverts H1. apply thesis_le. easy.
+    lia. easy. rewrite map_length. easy. }
   asserts_rewrite (
     « inv (\ seq (S (length Gs)) (list_max (map ARITY Gs)) \) »
       (↑↑ l ++ x + ↑ EVALUATE F (map (λ G : PRF, EVALUATE G l) Gs)::
@@ -1611,8 +1756,8 @@ Proof.
     rewrite repeat_length.
     replace (list_max (map ARITY Gs)) with (ARITY (CO F Gs)).
     2: reflexivity.
-    rewrite H2. apply Nat.lt_add_pos_r.
-    admit. }
+    rewrite H2.
+    assert (H':=anc_length_le_anc_co H1). lia. }
   asserts_rewrite (
     «Id 1 ‖ inv (co_loading (list_max (map ARITY Gs)) (map convert Gs)) »
       (x + ↑ EVALUATE F (map (λ G : PRF, EVALUATE G l) Gs)::
@@ -1630,7 +1775,7 @@ Proof.
     ↑↑ l ++ repeat 0 (anc (CO F Gs)) ).
   { rewrite <- proposition_1. apply H3. }
   reflexivity.
-Admitted.
+Qed.
 
 Lemma list_max_ge : ∀ l n, In n l → n ≤ list_max l.
 Proof.
@@ -1671,18 +1816,3 @@ Theorem theorem_5 : ∀ F l x, thesis F l x.
 Proof.
   intros. apply theorem_5_le with (d:=depth F). reflexivity.
 Qed.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
