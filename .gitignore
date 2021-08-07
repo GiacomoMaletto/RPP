@@ -18,3 +18,4 @@ dump.v
 *.bbl
 *.blg
 *.ind
+.nia.cache
