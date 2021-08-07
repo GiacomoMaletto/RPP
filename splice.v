@@ -3,6 +3,8 @@ Import ListNotations.
 Require Import LibTactics.
 Set Implicit Arguments.
 
+(* Nota: l'idea dietro la definizione di splice era astrarre l'applicazione composta di firstn e skipn, per rendere più agevole la notazione e in vista di una possibile tattica che risolva automaticamente goal in cui appaiono solo composizioni di splice, skipn e ++. Non sono riuscito a sviluppare tale tattica al momento. *)
+
 Definition splice X (l : list X) n m := skipn n (firstn m l).
 
 Lemma firstn_splice : ∀ X a b c (l : list X), b ≤ c →

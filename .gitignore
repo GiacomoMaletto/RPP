@@ -7,3 +7,11 @@
 .lia.cache
 *.v#
 dump.v
+*.fdb_latexmk
+*.fls
+*.idx
+*.ilg
+*.log
+*.out
+*.gz
+*.toc
