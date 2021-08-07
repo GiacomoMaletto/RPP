@@ -15,3 +15,6 @@ dump.v
 *.out
 *.gz
 *.toc
+*.bbl
+*.blg
+*.ind
