@@ -4,34 +4,41 @@
 \usepackage[T1]{fontenc}
 
 \usepackage{amsmath}
-\usepackage{multirow}
+\usepackage{mathtools}
 
-\usepackage[table]{xcolor}
-\setlength{\tabcolsep}{2mm}
-\arrayrulecolor{white}
-\setlength{\arrayrulewidth}{1mm}
-\definecolor{gr}{rgb}{.93, .96, .99}
+\usepackage{mathdots}
+\usepackage{nicematrix}
+\definecolor{lblue}{rgb}{.93, .96, .99}
 
 % font usato
 \usepackage{mathpazo}
 \usepackage{eulervm}
 
+\newcommand{\svdots}{\scriptscriptstyle \boldsymbol \vdots}
+\newcommand{\perm}[1]{\scriptstyle \left\rmoustache #1 \right\rmoustache}
+\newcommand{\bloch}[2]{\Block[draw=white,fill=lblue,line-width=.5mm,rounded-corners]{#1}{#2}}
+\newcommand{\conv}[1]{\overbracket[.5pt][1pt]{\underbracket[.5pt][1pt]{#1}}}
+
 \begin{document}
 
-\begin{table}[h!]
-  \begin{tabular}{c|c|c|c|c|c|c|c|c}
-    $0$ &                           & $0$   & \cellcolor{gr}                                       & $0$   & \cellcolor{gr}                                 & $x+2$ & \cellcolor{gr}\texttt{Pr} & $x+1$ \\
-    $x$ & \cellcolor{gr}\texttt{Su} & $x+1$ & \multirow{-2}{*}{\cellcolor{gr}\texttt{If id Su id}} & $x+2$ & \cellcolor{gr}                                 & $0$   &                           & $0$   \\
-    $0$ &                           & $0$   &                                                      & $0$   & \multirow{-3}{*}{\cellcolor{gr}\texttt{ifzsw}} & $0$   &                           & $0$   \\
-  \end{tabular}
-\end{table}
+\begin{NiceTabular}{ccccccc}
+  $y_0$                  &                                         & $y_0$     &                                 & $y_0$     &                         & $y_0$     \\
+  $y_1$                  & \bloch{12-1}{$\perm{n,n+1,\cdots,n+5}$} & $0$       &                                 & $0$       &                         & $0$       \\
+  $\svdots$              &                                         & $0$       &                                 & $0$       &                         & $0$       \\
+  $y_n$                  &                                         & $0$       &                                 & $0$       &                         & $0$       \\
+  $0$                    &                                         & $0$       &                                 & $0$       &                         & $0$       \\
+  \Block{7-1}{$\svdots$} &                                         & $0$       &                                 & $0$       & \bloch{2-1}{\texttt Sw} & $b_0$     \\
+                         &                                         & $0$       & \bloch{7-1}{$\conv{\texttt F}$} & $b_0$     &                         & $0$       \\
+                         &                                         & $y_1$     &                                 & $y_1$     &                         & $y_1$     \\
+                         &                                         & $\svdots$ &                                 & $\svdots$ &                         & $\svdots$ \\
+                         &                                         & $y_n$     &                                 & $y_n$     &                         & $y_n$     \\
+                         &                                         & $0$       &                                 & $0$       &                         & $0$       \\
+                         &                                         & $\svdots$ &                                 & $\svdots$ &                         & $\svdots$ \\
+  $0$                    &                                         & $0$       &                                 & $0$       &                         & $0$       \\
+\end{NiceTabular}
 
-\begin{table}[h!]
-  \begin{tabular}{c|c|c|c|c|c|c|c|c}
-    $x+1$ & \cellcolor{gr}\texttt{Pr} & $x$ & \cellcolor{gr}                              & \cellcolor{gr}                              & \cellcolor{gr}                              & $0$ \\
-    $0$   &                           & $0$ & \multirow{-2}{*}{\cellcolor{gr}\texttt{Sw}} & \multirow{-2}{*}{\cellcolor{gr}\texttt{Sw}} & \multirow{-2}{*}{\cellcolor{gr}\texttt{Sw}} & $x$ \\
-    $0$   &                           & $0$ &                                             &                                             &                                             & $0$ \\
-  \end{tabular}
-\end{table}
+\vspace{5mm}
+Viene poi eseguita per $y_0$ iterazioni la funzione
+
 
 \end{document}
