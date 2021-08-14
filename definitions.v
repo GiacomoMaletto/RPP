@@ -134,25 +134,14 @@ Definition tr := It (Su;; inc).
 Definition cp := inc ;; id ‖ (tr ;; dec) ;; dec ;;
   \[0;3;1]\ ;; inc ;; \[0;2;1]\.
 
-(* Nota: la funzione ifzsw ("if zero swap") prende come argomenti 3 elementi [x; y; 0].
-Se x=0 scambia i primi 2 elementi:
-[0; y; 0]   // valori iniziali
-[0; y; 0]   // If inc id id
-[0; y; 0]   // \[2;1;0]\
-[0; 0; y]   // If id Sw id
-[0; 0; y]   // dec
-[y; 0; 0]   // \[2;0;1]\
-Se x>0 e y>0 lascia tutto invariato:
-[x; y; 0]   // valori iniziali
-[x; y; y]   // If inc id id
-[y; y; x]   // \[2;1;0]\
-[y; y; x]   // If id Sw id
-[y; 0; x]   // dec
-[x; y; 0]   // \[2;0;1]\ *)
+(* Nota: la funzione ifzsw ("if zero swap") prende come argomenti 3 elementi [x; y; 0]. Se almeno uno tra x e y sono uguali a 0 allora scambia x e y. *)
 
 Definition ifzsw :=
-  If inc id id ;; \[2;1;0]\ ;;
-  If id Sw id ;; dec ;; \[2;0;1]\.
+  id ‖ (If id Su id;; Sw);;
+  If id Su id;; Sw;;
+  If Sw id id;;
+  inv (id ‖ (If id Su id;; Sw);;
+  If id Su id;; Sw).
 
 (* Nota: questa funzione esegue un "passo" lungo il percorso tracciato dal Cantor pairing.
 La funzione infatti prende 3 elementi [y; x; 0] e ritorna (per x≥0 e y≥0) 3 elementi [Y; X; 0], dove cp X Y = (cp x y) + 1.

@@ -290,7 +290,9 @@ Qed.
 
 Open Scope Z.
 Lemma ifzsw_z : ∀ n, «ifzsw» [0;n;0] = [n;0;0].
-Proof. unfold ifzsw. reflexivity. Qed.
+Proof.
+  intros. destruct n; reflexivity.
+Qed.
 
 Notation Zp := Zpos.
 Notation Zn := Zneg.
@@ -303,18 +305,8 @@ Ltac equal_list := unfold app; auto; repeat f_equal; lia.
 
 Lemma ifzsw_p : ∀ p q, «ifzsw» [Zp p; Zp q; 0] = [Zp p; Zp q; 0].
 Proof.
-  intros. unfold ifzsw. repeat rewrite co_def.
-  asserts_rewrite
-    («If inc id id» [Zp p; Zp q; 0] = [Zp p; Zp q; Zp q]).
-  { rewrite if_def. rewrite inc_def. all: liast. }
-  simpl («\[2;1;0]%nat\» [Zp p; Zp q; Zp q]).
-  simpl («If id Sw id» [Zp q; Zp q; Zp p]).
-  asserts_rewrite
-    («dec» [Zp q; Zp q; Zp p] = [Zp q; 0; Zp p]).
-  { partial. rewrite dec_def. equal_list. liast. }
-  reflexivity.
+  intros. unfold ifzsw. reflexivity.
 Qed.
-
 
 Open Scope nat.
 Definition cp' (n m : nat) := (list_sum (seq 1 (n+m)) + n).
@@ -407,7 +399,14 @@ Lemma cu_step_def : ∀ n m,
   «cu_step» [↑n; ↑m; 0] = [↑cu'_snd n m; ↑cu'_fst n m; 0].
 Proof.
   intros. destruct n.
-  - simpl. f_equal. lia.
+  - change (cu'_snd 0 m) with (S m).
+    change (cu'_fst 0 m) with 0%nat.
+    replace (↑ S m) with (↑ m + 1). 2:lia.
+    destruct (↑ m) eqn:eqn.
+    + reflexivity.
+    + Opaque Z.sub. simpl. Transparent Z.sub.
+      f_equal. lia.
+    + lia.
   - unfold cu_step. segment.
     asserts_rewrite (
       « id ‖ Su » [↑ S n; ↑ m; 0] = [↑ S n; ↑m + 1; 0]).
