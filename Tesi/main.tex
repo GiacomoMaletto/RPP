@@ -1,0 +1,37 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage[T1]{fontenc}
+
+\usepackage{amsmath}
+\usepackage{multirow}
+
+\usepackage[table]{xcolor}
+\setlength{\tabcolsep}{2mm}
+\arrayrulecolor{white}
+\setlength{\arrayrulewidth}{1mm}
+\definecolor{gr}{rgb}{.93, .96, .99}
+
+% font usato
+\usepackage{mathpazo}
+\usepackage{eulervm}
+
+\begin{document}
+
+\begin{table}[h!]
+  \begin{tabular}{c|c|c|c|c|c|c|c|c}
+    $0$ &                           & $0$   & \cellcolor{gr}                                       & $0$   & \cellcolor{gr}                                 & $x+2$ & \cellcolor{gr}\texttt{Pr} & $x+1$ \\
+    $x$ & \cellcolor{gr}\texttt{Su} & $x+1$ & \multirow{-2}{*}{\cellcolor{gr}\texttt{If id Su id}} & $x+2$ & \cellcolor{gr}                                 & $0$   &                           & $0$   \\
+    $0$ &                           & $0$   &                                                      & $0$   & \multirow{-3}{*}{\cellcolor{gr}\texttt{ifzsw}} & $0$   &                           & $0$   \\
+  \end{tabular}
+\end{table}
+
+\begin{table}[h!]
+  \begin{tabular}{c|c|c|c|c|c|c|c|c}
+    $x+1$ & \cellcolor{gr}\texttt{Pr} & $x$ & \cellcolor{gr}                              & \cellcolor{gr}                              & \cellcolor{gr}                              & $0$ \\
+    $0$   &                           & $0$ & \multirow{-2}{*}{\cellcolor{gr}\texttt{Sw}} & \multirow{-2}{*}{\cellcolor{gr}\texttt{Sw}} & \multirow{-2}{*}{\cellcolor{gr}\texttt{Sw}} & $x$ \\
+    $0$   &                           & $0$ &                                             &                                             &                                             & $0$ \\
+  \end{tabular}
+\end{table}
+
+\end{document}

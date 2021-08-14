@@ -31,6 +31,8 @@ Lemma inv_involute : forall f, inv (inv f) = f.
 Proof. induction f; try constructor; simpl; congruence. Qed.
 
 (* Notare che è possibile comporre funzioni di arità diverse: non è una grande differenza rispetto alle RPP originali, in effetti se si hanno arità diverse si può immaginare di applicare la funzione cast definita più avanti. *)
+
+f $\Vert$ g
 \end{lstlisting}
 \caption{Copia incolla da \texttt{definitions.v}.}
 \label{iteratve version of recF}
