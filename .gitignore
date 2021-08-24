@@ -19,3 +19,4 @@ dump.v
 *.blg
 *.ind
 .nia.cache
+example.v
