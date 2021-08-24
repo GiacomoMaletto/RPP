@@ -287,13 +287,6 @@ Proof.
   rewrite splice_app_skipn. all: liast.
 Qed.
 
-
-Open Scope Z.
-Lemma ifzsw_z : ∀ n, «ifzsw» [0;n;0] = [n;0;0].
-Proof.
-  intros. destruct n; reflexivity.
-Qed.
-
 Notation Zp := Zpos.
 Notation Zn := Zneg.
 
@@ -302,11 +295,6 @@ Notation Zn := Zneg.
 Ltac partial := rewrite longer; simpl_splice.
 Ltac segment := repeat rewrite co_def.
 Ltac equal_list := unfold app; auto; repeat f_equal; lia.
-
-Lemma ifzsw_p : ∀ p q, «ifzsw» [Zp p; Zp q; 0] = [Zp p; Zp q; 0].
-Proof.
-  intros. unfold ifzsw. reflexivity.
-Qed.
 
 Open Scope nat.
 Definition cp' (n m : nat) := (list_sum (seq 1 (n+m)) + n).
@@ -379,15 +367,15 @@ Proof.
 Qed.
 
 Definition cu'_fst (n m : nat) :=
-  match n with
+  match m with
   | O => O
-  | _ => S m
+  | _ => S n
   end.
 
 Definition cu'_snd (n m : nat) :=
-  match n with
-  | O => S m
-  | _ => pred n
+  match m with
+  | O => S n
+  | _ => pred m
   end.
 
 Lemma gt0_positive : ∀ n : Z, 0 < n → ∃ p : positive, n = Zp p.
@@ -395,59 +383,46 @@ Proof.
   intros. destruct n; try discriminate. eauto.
 Qed.
 
-Lemma cu_step_def : ∀ n m,
-  «cu_step» [↑n; ↑m; 0] = [↑cu'_snd n m; ↑cu'_fst n m; 0].
+Lemma clean_up : ∀ n,
+  match Pos.of_succ_nat n with
+  | (p~1)%positive => Zp p~0
+  | (p~0)%positive => Zp (Pos.pred_double p)
+  | 1%positive => 0
+  end = ↑ n.
 Proof.
-  intros. destruct n.
-  - change (cu'_snd 0 m) with (S m).
-    change (cu'_fst 0 m) with 0%nat.
-    replace (↑ S m) with (↑ m + 1). 2:lia.
-    destruct (↑ m) eqn:eqn.
-    + reflexivity.
-    + Opaque Z.sub. simpl. Transparent Z.sub.
-      f_equal. lia.
-    + lia.
-  - unfold cu_step. segment.
-    asserts_rewrite (
-      « id ‖ Su » [↑ S n; ↑ m; 0] = [↑ S n; ↑m + 1; 0]).
-    { reflexivity. }
-    asserts_rewrite (
-      « If id Su id » [↑ S n; ↑ m + 1; 0] = [↑ S n; ↑ m + 1; 0]).
-    { reflexivity. }
-    assert(∃ p, ↑m + 1 = Zp p). { eapply gt0_positive. lia. }
-    assert(∃ q, ↑S n = Zp q). { eapply gt0_positive. lia. }
-    destruct H. rewrite H. destruct H0. rewrite H0.
-    rewrite ifzsw_p. rewrite <- H. rewrite <- H0.
-    asserts_rewrite (
-      « Pr » [↑ S n; ↑ m + 1; 0] = [↑ S n - 1; ↑m + 1; 0]).
-    { reflexivity. }
-    unfold cu'_fst. unfold cu'_snd.
-    repeat f_equal. lia. lia.
+  intros. replace (↑ n) with (↑ S n - 1). 2:lia.
+  reflexivity.
+Qed.
+
+Lemma cu_step_def : ∀ n m,
+  «cu_step» [↑n; ↑m; 0] = [↑cu'_fst n m; ↑cu'_snd n m; 0].
+Proof.
+  intros.
+  destruct n; destruct m.
+  - reflexivity.
+  - simpl. rewrite clean_up. reflexivity.
+  - simpl. f_equal. f_equal. lia.
+  - simpl. rewrite clean_up. f_equal. lia.
 Qed.
 
 Lemma cu_step_z : ∀ m,
-  «cu_step» [0; ↑m; 0] = [↑m + 1; 0; 0].
+  «cu_step» [↑m; 0; 0] = [0; ↑m + 1; 0].
 Proof.
-  intros. replace 0 with (↑O). rewrite cu_step_def.
-  simpl. equal_list. reflexivity.
+  intros. replace 0 with (↑O). 2:lia. rewrite cu_step_def.
+  simpl. equal_list.
 Qed.
 
-Lemma cu_step_p : ∀ n m, (O < n)%nat →
-  «cu_step» [↑n; ↑m; 0] = [↑n - 1; ↑m + 1; 0].
+Lemma cu_step_p : ∀ n m, (O < m)%nat →
+  «cu_step» [↑n; ↑m; 0] = [↑n + 1; ↑m - 1; 0].
 Proof.
-  intros. rewrite cu_step_def. f_equal.
-  - unfold cu'_snd.
-    assert(∃ n', n = S n').
-    destruct n. lia. eauto. destruct H0. subst.
-    lia.
-  - unfold cu'_fst.
-    assert(∃ n', n = S n').
-    destruct n. lia. eauto. destruct H0. subst.
-    equal_list.
+  intros. rewrite cu_step_def.
+  unfold cu'_fst. unfold cu'_snd. destruct m.
+  - lia.
+  - simpl. rewrite clean_up. f_equal. lia.
 Qed.
 
-Lemma cu_step_le : ∀ n m k, k ≤ n →
-  iter «cu_step» k [↑n; ↑m; 0] = [↑n - ↑k; ↑m + ↑k; 0].
+Lemma cu_step_le : ∀ n m k, k ≤ m →
+  iter «cu_step» k [↑n; ↑m; 0] = [↑n + ↑k; ↑m - ↑k; 0].
 Proof.
   intros. induction k as [k IH] using lt_wf_ind.
   destruct k.
@@ -484,8 +459,8 @@ Proof. reflexivity. Qed.
 
 Open Scope Z.
 Lemma cu_step_Sn : ∀ n m,
-  iter «cu_step» (cp' n m) [0; 0; 0] = [↑m; ↑n; 0] →
-  iter «cu_step» (cp' (S n) m) [0; 0; 0] = [↑m; ↑n + 1; 0].
+  iter «cu_step» (cp' n m) [0; 0; 0] = [↑n; ↑m; 0] →
+  iter «cu_step» (cp' (S n) m) [0; 0; 0] = [↑n + 1; ↑m; 0].
 Proof.
   intros. rewrite cp'_Sn.
   replace (cp' n m +n+m+2)%nat with
@@ -501,8 +476,8 @@ Proof.
 Qed.
 
 Lemma cu_step_Sm : ∀ n m,
-  iter «cu_step» (cp' n m) [0; 0; 0] = [↑m; ↑n; 0] →
-  iter «cu_step» (cp' n (S m)) [0; 0; 0] = [↑m + 1; ↑n; 0].
+  iter «cu_step» (cp' n m) [0; 0; 0] = [↑n; ↑m; 0] →
+  iter «cu_step» (cp' n (S m)) [0; 0; 0] = [↑n; ↑m + 1; 0].
 Proof.
   intros. rewrite cp'_Sm.
   replace (cp' n m +n+m+1)%nat with
@@ -518,7 +493,7 @@ Proof.
 Qed.
 
 Lemma cu_def_iter : ∀ n m,
-  iter «cu_step» (cp' n m) [0; 0; 0] = [↑m; ↑n; 0].
+  iter «cu_step» (cp' n m) [0; 0; 0] = [↑n; ↑m; 0].
 Proof.
   intros. induction n; induction m.
   - reflexivity.
@@ -531,7 +506,7 @@ Lemma cu_def : ∀ n m,
   «cu» [↑cp' n m; 0; 0; 0] = [↑cp' n m; ↑n; ↑m; 0].
 Proof.
   intros.
-  unfold cu. segment. rewrite ev_it. rewrite Nat2Z.id.
+  unfold cu. rewrite ev_it. rewrite Nat2Z.id.
   rewrite cu_def_iter. reflexivity.
 Qed.
 

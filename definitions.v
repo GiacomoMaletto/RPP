@@ -134,50 +134,19 @@ Definition tr := It (Su;; inc).
 Definition cp := inc ;; id ‖ (tr ;; dec) ;; dec ;;
   \[0;3;1]\ ;; inc ;; \[0;2;1]\.
 
-(* Nota: la funzione ifzsw ("if zero swap") prende come argomenti 3 elementi [x; y; 0]. Se almeno uno tra x e y sono uguali a 0 allora scambia x e y. *)
+Definition cu_step :=
+  Su ‖ If Su id id;;
+  \[2;0;1]\;;
+  If (id ‖ Pr) Sw id;;
+  Sw;; If Pr id id;;
+  id ‖ Sw.
 
-Definition ifzsw :=
-  id ‖ (If id Su id;; Sw);;
-  If id Su id;; Sw;;
-  If Sw id id;;
-  inv (id ‖ (If id Su id;; Sw);;
-  If id Su id;; Sw).
-
-(* Nota: questa funzione esegue un "passo" lungo il percorso tracciato dal Cantor pairing.
-La funzione infatti prende 3 elementi [y; x; 0] e ritorna (per x≥0 e y≥0) 3 elementi [Y; X; 0], dove cp X Y = (cp x y) + 1.
-Per come è definito il Cantor pairing ciò avviene in questo modo:
-Se y=0 vogliamo che X=0 e Y=x+1:
-[0; x; 0]     // valori iniziali
-[0; x+1; 0]   // id ‖ Su
-[0; x+2; 0]   // If id Su id
-[x+2; 0; 0]   // ifzsw
-[x+1; 0; 0]   // Pr
-Se y>0 vogliamo che X=x+1 e Y=y-1:
-[y; x; 0]     // valori iniziali
-[y; x+1; 0]   // id ‖ Su
-[y; x+1; 0]   // If id Su id
-[y; x+1; 0]   // ifzsw
-[y-1; x+1; 0] // Pr *)
-
-Definition cu_step := id ‖ Su ;; If id Su id ;; ifzsw ;; Pr.
-
-(* Nota: cu è l'inversa del Cantor pairing; dati 4 elementi [n; 0; 0; 0], cu esegue n volte cu_step ottenendo [n; x; y; 0] dove cp x y = n:
-[n; 0; 0; 0]   // valori iniziali
-[n; y; x; 0]   // It cu_step
-[n; x; y; 0]   // id ‖ Sw
-È come se a partire da (0,0), iterando n volte cu_step si "seguisse" il percorso tracciato dal Cantor pairing arrivando infine a (x,y).
-Notare come in cu_step l'ordine di x, y sono invertiti, perciò bisogna eseguire uno swap finale. *)
-
-(* Differenza: questa definizione di cu è molto più semplice ed efficiente di quella descritta nell'articolo. *)
-
-Definition cu := It cu_step ;; id ‖ Sw.
+Definition cu := It cu_step.
 
 (* Differenza: per come sono state definite cp e cu, la funzione push richiede 2 ancille anzichè 8. *)
 
 Definition push := cp ;; \[2;0;1]\ ;; inv cu.
 Definition pop := inv push.
-
-
 
 (* /// Definizioni di base di PRF /// *)
 
