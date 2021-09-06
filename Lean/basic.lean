@@ -40,8 +40,8 @@ attribute [pp_nodot] If
 
 notation f `⁻¹` : 60 := inv f
 
-lemma inv_involute (f : RPP) : (f⁻¹)⁻¹ = f :=
-by { induction f; simp [inv, *] }
+@[simp] lemma inv_involute (f : RPP) : (f⁻¹)⁻¹ = f :=
+by { induction f; simp * }
 
 @[simp] def arity : RPP → ℕ
 | (Id n)     := n
@@ -54,7 +54,7 @@ by { induction f; simp [inv, *] }
 | (It f)     := f.arity + 1
 | (If f g h) := max (max f.arity g.arity) h.arity + 1
 
-lemma arity_inv (f : RPP) : f⁻¹.arity = f.arity :=
+@[simp] lemma arity_inv (f : RPP) : f⁻¹.arity = f.arity :=
 by { induction f; simp [*, max_comm] }
 
 prefix `↓` : 70 := int.to_nat
@@ -80,33 +80,26 @@ by { induction f; simp [ev, *] }
 
 @[simp] lemma ev_length (f : RPP) (l : list ℤ) : (‹f› l).length = l.length :=
 begin
-  induction f generalizing l; cases l with x l; try {rw ev_nil}; try {simp [ev, *], done},
+  induction f generalizing l; cases l with x l,
+  any_goals {simp [ev, *], done},
   { cases l with x l; refl },
   { simp [ev], rw [f_ih_f, f_ih_g, ←length_append, take_append_drop], refl },
   { simp [ev], induction (↓x), refl, rw [function.iterate_succ_apply'], simp * },
   { cases x, cases x, all_goals {simp [ev, *]} }
 end
 
-lemma pa_co_pa (f g f' g' : RPP) (l : list ℤ) : f.arity = g.arity →
-  ‹g ‖ g'› (‹f ‖ f'› l) = ‹(f ;; g) ‖ (f' ;; g')› l :=
-begin
-  intro h,
-  simp [ev], rw [←h, max_self],
-  cases (le_total f.arity l.length) with H H,
-  { rw [take_append_of_le_length, drop_append_of_le_length],
-    rw [take_all_of_le, drop_eq_nil_of_le],
-    refl, any_goals {simp}, any_goals {assumption} },
-  { rw [take_all_of_le H, drop_eq_nil_of_le H, ev_nil, append_nil],
-    rw [take_all_of_le, drop_eq_nil_of_le, ev_nil, append_nil],
-    any_goals {simpa} }
-end
-
 lemma proposition_2 (f g f' g' : RPP) (l : list ℤ) : f.arity = g.arity →
   ‹f ‖ f' ;; g ‖ g'› l = ‹(f ;; g) ‖ (f' ;; g')› l :=
 begin
   intro h,
-  calc ‹f ‖ f' ;; g ‖ g'› l = ‹g ‖ g'› (‹f ‖ f'› l) : rfl
-                        ... = ‹(f ;; g) ‖ (f' ;; g')› l : by rwa ←pa_co_pa
+  simp [ev], rw [←h, max_self], clear h,
+  cases (le_total f.arity l.length) with H H,
+  { rw [take_append_of_le_length, drop_append_of_le_length],
+    rw [take_all_of_le, drop_eq_nil_of_le],
+    refl, all_goals {simp *} },
+  { rw [take_all_of_le H, drop_eq_nil_of_le H, ev_nil, append_nil],
+    rw [take_all_of_le, drop_eq_nil_of_le, ev_nil, append_nil],
+    all_goals {simp *} }
 end
 
 lemma co_if (f g h f' g' h' : RPP) (l : list ℤ) :
@@ -118,12 +111,13 @@ end
 
 lemma proposition_1_co_l (f : RPP) (l : list ℤ) : ‹f ;; f⁻¹› l = l :=
 begin
-  induction f generalizing l; cases l with x l; try {rw ev_nil}; try {simp [ev, *], done},
+  induction f generalizing l; cases l with x l,
+  any_goals {simp [ev, *], done},
   { cases l with x l, refl, cases l with y l, refl, simp [ev] },
   { simp [ev, *] at * },
-  { simp, rw proposition_2, simp [ev, *] at *, rw ←arity_inv },
-  { simp [ev] at *, apply function.left_inverse.iterate f_ih },
-  { simp, rw co_if, cases x, cases x, all_goals {simp [ev, *]} }
+  { rw [inv, proposition_2], simp [ev, *] at *, rw ←arity_inv },
+  { simp [ev] at *, apply function.left_inverse.iterate, assumption },
+  { cases x, cases x, all_goals {simp [ev, *] at *} }
 end
 
 lemma proposition_1_co_r (f : RPP) (l : list ℤ) : ‹f⁻¹ ;; f› l = l :=
@@ -140,30 +134,32 @@ lemma take_ev (f : RPP) (n : ℕ) (l : list ℤ) : f.arity ≤ n →
   take n (‹f› l) = ‹f› (take n l) :=
 begin
   intro h,
-  induction f generalizing n l; try { cases l; cases n; trivial },
-  { cases l with x l; cases n with n; try {trivial},
-    cases l; cases n; try {trivial},
-    simp at h, linarith },
-  { simp at h, cases h with h₁ h₂, simp [ev, *] },
+  induction f generalizing n l,
+  any_goals { cases l; cases n; refl },
+  { rw arity at h, rcases n with _ | _ | n, linarith, linarith,
+    rcases l with _ | ⟨x, _ | l⟩; refl },
+  { rw [arity, max_le_iff] at h, cases h with h₁ h₂, simp [ev, *] },
   case Pa : f g hf hg
-  { simp at h, 
+  { rw arity at h,
     have h₁ : f.arity ≤ n := by linarith,
     have h₂ : g.arity ≤ n := by linarith,
-    simp [ev, *],
+    simp only [ev],
     rw [take_append_sub, hf _ _ h₁],
     rw [take_take, min_eq_right h₁],
     rw [take_take, min_eq_left h₁],
-    congr, simp,
+    rw [ev_length, length_take],
     cases (le_total f.arity l.length) with H H,
     rw [min_eq_left H, hg, ←drop_take], congr, omega, omega,
-    rw [drop_eq_nil_of_le H, drop_eq_nil_of_le], simp, rwa take_all_of_le, linarith },
-  { cases l with x l; cases n; try {trivial}, simp [ev],
+    rw [drop_eq_nil_of_le H, drop_eq_nil_of_le, take_all_of_le]; simp * },
+  case It : f hf
+  { cases l with x l; cases n; try {refl},
+    simp [ev],
     induction (↓x) generalizing l, refl,
-    simp at *, rw [ih, f_ih], apply nat.succ_le_succ_iff.mp h },
-  { cases l with x l; cases n; try {trivial},
-    simp at h, replace h := nat.succ_le_succ_iff.mp h,
-    replace h := max_le_iff.mp h, cases h with h₁ h₃,
-    replace h₁ := max_le_iff.mp h₁, cases h₁ with h₁ h₂,
+    replace h := nat.succ_le_succ_iff.mp h,
+    simp [arity, *] at * },
+  { cases l with x l; cases n; try {refl},
+    rw arity at h, replace h := nat.succ_le_succ_iff.mp h, simp [max_le_iff] at h, 
+    rcases h with ⟨⟨h₁, h₂⟩, h₃⟩,
     cases x, cases x, all_goals {simp [ev, *]} }
 end
 
@@ -173,31 +169,29 @@ begin
   intro h,
   induction f generalizing n l,
   { refl },
-  any_goals { cases l with x l, simp,
-              cases n, simp at h, contradiction, refl },
-  { cases l with x l, simp,
-    cases l with y l, simp [ev],
-    cases n, simp at h, contradiction,
-    cases n, simp at h, linarith, refl },
-  { simp at h, cases h with h₁ h₂, simp [ev, *] },
+  any_goals { rw arity at h, cases n, linarith, cases l; refl },
+  { rw arity at h, rcases n with _ | _ | n, linarith, linarith,
+    rcases l with _ | ⟨x, _ | l⟩; refl },
+  { rw [arity, max_le_iff] at h, cases h with h₁ h₂, simp [ev, *] },
   case Pa : f g hf hg
-  { simp at h, 
+  { rw arity at h,
     have h₁ : f.arity ≤ n := by linarith,
     have h₂ : g.arity ≤ n := by linarith,
-    simp [ev, *],
+    simp only [ev],
     rw [drop_append_sub, hf _ _ h₁],
-    rw [drop_eq_nil_of_le], simp,
+    rw [drop_eq_nil_of_le, nil_append],
+    rw [ev_length, length_take ],
     cases (le_total f.arity l.length) with H H,
     rw [min_eq_left H, hg, drop_drop], congr, omega, omega,
-    rw drop_eq_nil_of_le H, simp, rw drop_eq_nil_of_le, linarith,
-    simp, left, exact h₁ },
-  { cases l with x l; cases n; simp [ev] at *, contradiction,
+    rw [drop_eq_nil_of_le H, ev_nil, drop_nil, drop_eq_nil_of_le], linarith, simp * },
+  case It : f hf
+  { cases n, rw arity at h, linarith, cases l with x l, refl,
+    rw [ev, drop],
     induction (↓x) generalizing l, refl,
-    simp at *, rw [ih, f_ih], apply nat.succ_le_succ_iff.mp h},
-  { cases l with x l; cases n; simp [ev] at *, contradiction,
-    replace h := nat.succ_le_succ_iff.mp h,
-    replace h := max_le_iff.mp h, cases h with h₁ h₃,
-    replace h₁ := max_le_iff.mp h₁, cases h₁ with h₁ h₂,
+    replace h := nat.succ_le_succ_iff.mp h, simp [arity, *] at * },
+  { cases n, rw arity at h, linarith, cases l with x l, refl,
+    rw arity at h, replace h := nat.succ_le_succ_iff.mp h, simp [max_le_iff] at h, 
+    rcases h with ⟨⟨h₁, h₂⟩, h₃⟩,
     cases x, cases x, all_goals {simp [ev, *]} }
 end
 

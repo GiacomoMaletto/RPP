@@ -20,7 +20,7 @@ begin
       = √n + √n - n + √n * √n : by { norm_cast, ring }
   ... = √(n+1) + √(n+1) - n + √(n+1) * √(n+1) : by rw H
   ... = (√(n+1) + 1) * (√(n+1) + 1) - (n + 1) : by { norm_cast, simp, ring }
-  ... ≥ 1 : by { simp, apply le_sub_iff_add_le.mpr, norm_cast, rw add_comm,
+  ... ≥ 1 : by { rw ge_iff_le, apply le_sub_iff_add_le.mpr, norm_cast, rw add_comm,
                  exact nat.succ_le_succ_sqrt (n + 1), apply_instance }
 end
 
@@ -37,5 +37,5 @@ begin
                                                                apply nat.sqrt_pos.mpr,
                                                                exact nat.succ_pos n }
   ... = √(n+1) * √(n+1) - (n+1) : by ring
-  ... ≤ 0 : by { simp, norm_cast, exact nat.sqrt_le (n + 1) }
+  ... ≤ 0 : by { rw sub_nonpos, norm_cast, exact nat.sqrt_le (n + 1) }
 end

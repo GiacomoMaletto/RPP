@@ -1,3 +1,20 @@
+
+@[simp] lemma call_arity (n : ℕ) : (call n).arity = n + 1 :=
+begin
+  induction n with n hn,
+  refl, rw [call, arity], simp *,
+end
+
+lemma call_def (x : ℤ) (l : list ℤ) :
+  ‹call l.length› (l ++ [x]) = x :: l :=
+begin
+  induction l using list.ind_app with y l hl,
+  refl,
+  simp [ev], rw ev_split, simp,
+  rw [take_append, drop_append], simp,
+  rw hl, refl
+end
+
 def tr := It (Su ;; inc)
 
 @[simp] lemma tr_arity : tr.arity = 3 := rfl

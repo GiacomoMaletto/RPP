@@ -10,23 +10,6 @@ namespace RPP
 | 0       := Id1
 | (i + 1) := Id i ‖ Sw ;; call i
 
-@[simp] lemma call_arity (n : ℕ) : (call n).arity = n + 1 :=
-begin
-  induction n with n hn,
-  refl,
-  simp, linarith
-end
-
-lemma call_def (x : ℤ) (l : list ℤ) :
-  ‹call l.length› (l ++ [x]) = x :: l :=
-begin
-  induction l using list.ind_app with y l hl,
-  refl,
-  simp [ev], rw ev_split, simp,
-  rw [take_append, drop_append], simp,
-  rw hl, refl
-end
-
 @[simp] def call_list : list ℕ → RPP
 | []       := Id 0
 | (i :: l) := call i ;; call_list l
@@ -46,8 +29,8 @@ def inc := It Su
 
 lemma inc_def (n : ℕ) (x : ℤ) : ‹inc› [n, x] = [n, x + n] :=
 begin
-  induction n with n hn generalizing x, simp [inc, ev],
-  simp [inc, ev] at *, rw hn, congr' 1, ring
+  rw [inc], simp [ev],
+  induction n generalizing x, simp, simp [ev, *], ring
 end
 
 def dec := inc⁻¹
