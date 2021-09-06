@@ -218,7 +218,7 @@ begin
   rw Pa2, norm_cast, simp [ev, inc_def] },
   rw rewire, simp [ev] }}}},
   rw proposition_1, simp *, rw ev_split, simp [unpair'_fwd_def],
-  split, intro h₁, linarith, split, norm_cast, norm_cast
+  split, intro h₂, linarith, split, norm_cast, norm_cast
 end
 
 def mkpair := mkpair' ;; ⌊3, 2, 4, 5, 6, 0, 1⌉ ;; unpair'⁻¹
