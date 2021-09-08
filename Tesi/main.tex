@@ -25,9 +25,9 @@
 \definecolor{sortcolor}{rgb}{0.1, 0.5, 0.1}    % green
 
 % font
-\usepackage{mathpazo}
-\usepackage{eulervm}
-% \usepackage{amsfonts}
+% \usepackage{mathpazo}
+% \usepackage{eulervm}
+\usepackage{amsfonts}
 
 % code
 \usepackage{listings}
@@ -64,8 +64,8 @@
 \newcommand{\rppSu}{\mathsf{Su}}
 \newcommand{\rppPr}{\mathsf{Pr}}
 \newcommand{\rppSw}{\mathsf{Sw}}
-\newcommand{\rppCo}[2]{#1 \fatsemi #2}
-\newcommand{\rppPa}[2]{#1 \Vert #2}
+\newcommand{\rppCo}{\fatsemi}
+\newcommand{\rppPa}{\Vert}
 \newcommand{\rppIt}[1]{\mathsf{It}[#1]}
 \newcommand{\rppIf}[3]{\mathsf{If}[#1, #2, #3]}
 
@@ -77,5 +77,139 @@
 \begin{document}
 
 \maketitle
+
+\chapter{The definition}
+
+\section{Reversible computing}
+
+Reversible computing is a model of computation in which every process can be run backwards.
+Simply put, in a reversible setting any program takes inputs and gives outputs (like usual), but can also go the other way around:
+provided the output it can reconstruct the input.
+In a mathematical sense, every function is expected to be invertible.
+
+Why do we care about such a thing?
+
+Firstly, having a programming language in which every function (or even a subset of functions) is reversible could lead to interesting and practical applications.
+
+But we can also imagine reversible computers, in which the underlying architecture is inherently reversible:
+Toffoli gates provides a way to do so.
+The opposite of reversibility is loss of information, which (for thermodynamic reasons) leads to loss of energy and heat dissipation.
+This means that a non-reversible gate dissipates energy each time information is discarded, while in principle a reversible computer wouldn't.
+
+Lastly, reversible computing is directly related to quantum computing, as each operation in a quantum computer must be reversible.
+
+\section{Reversible Primitive Permutations}
+
+In the article I decided to formalize, the authors focus on providing a functional model of reversible computation.
+They develop an inductively defined set of functions, called \textbf{Reversible Primitive Permutations} or \textbf{RPP},
+which are expressive enough to represent all Primitive Recursive Functions (we talk about what this means in section ?).
+Here is the definition that we will use:
+
+\newpage
+
+\begin{definition}[Reversible Primitive Permutations] \hfill \\
+The class of \textbf{Reversible Primitive Permutations} or $\RPP$ is the smallest subset of functions $\Z^n \to \Z^n$ satisfying the following conditions:
+\begin{itemize}
+
+\item
+The \textbf{identity} $\rppId (x) = x$ belongs to $\RPP$.
+
+\[\begin{NiceMatrix}
+  x & \bloch{1-1}{\rppId} & x \\
+\end{NiceMatrix}\]
+
+\item
+The \textbf{sign-change} $\rppNe (x) = -x$ belongs to $\RPP$.
+
+\[\begin{NiceMatrix}
+  x & \bloch{1-1}{\rppNe} & -x \\
+\end{NiceMatrix}\]
+
+\item
+The \textbf{successor function} $\rppSu (x) = x+1$ belongs to $\RPP$.
+
+\[\begin{NiceMatrix}
+  x & \bloch{1-1}{\rppSu} & x+1 \\
+\end{NiceMatrix}\]
+
+\item
+The \textbf{predecessor function} $\rppPr (x) = x-1$ belongs to $\RPP$.
+
+\[\begin{NiceMatrix}
+  x & \bloch{1-1}{\rppPr} & x-1 \\
+\end{NiceMatrix}\]
+
+\item
+The \textbf{swap} $\rppSw (x, y) = (y, x)$ belongs to $\RPP$.
+
+\[\begin{NiceMatrix}
+  x & \bloch{2-1}{\rppSw} & y \\
+  y &                     & x \\
+\end{NiceMatrix}\]
+
+\item
+If $f : \Z^n \to \Z^n$ and $g : \Z^n \to \Z^n$ belongs to $\RPP$,
+then the \textbf{series composition} $(f \rppCo g) : \Z^n \to \Z^n$ belongs to $\RPP$ and is such that:
+\[(f \rppCo g) (x_1, \dots, x_n) = g (f (x_1, \dots, x_n)) = (g \circ f) (x_1, \dots, x_n)).\]
+We remark that $f \rppCo g$ means that $f$ is applied first, and then $g$, in opposition to the standard functional composition (denoted by $\circ$).
+
+\[\begin{NiceMatrix}[nullify-dots]
+  x_1    & \bloch{3-1}{f \rppCo g} & y_1    & \Block{3-1}{=} & x_1    & \bloch{3-1}{f} & \bloch{3-1}{g} & y_1    \\
+  \Vdots &                         & \Vdots &                & \Vdots &                &                & \Vdots \\
+  x_n    &                         & y_n    &                & x_n    &                &                & y_n    \\
+\end{NiceMatrix}\]
+
+\item
+
+If $f : \Z^n \to \Z^n$ and $g : \Z^m \to \Z^m$ belongs to $\RPP$,
+then the \textbf{parallel composition} $(f \rppPa g) : \Z^{n + m} \to \Z^{n + m} $ belongs to $\RPP$ and is such that:
+\[(f \rppPa g) (x_1, \dots, x_n, y_1, \dots, y_m) = (f (x_1, \dots, x_n), g (y_1, \dots, y_m)).\]
+
+\[\begin{NiceMatrix}[nullify-dots]
+  x_1    & \bloch{6-1}{f \rppPa g} & w_1    & \Block{6-1}{=} & x_1    & \bloch{3-1}{f} & w_1    \\
+  \Vdots &                         & \Vdots &                & \Vdots &                & \Vdots \\
+  x_n    &                         & w_n    &                & x_n    &                & w_n    \\
+  y_1    &                         & z_1    &                & y_1    & \bloch{3-1}{g} & z_1    \\
+  \Vdots &                         & \Vdots &                & \Vdots &                & \Vdots \\
+  y_m    &                         & z_m    &                & y_m    &                & z_m    \\
+\end{NiceMatrix}\]
+
+\item
+If $f : \Z^n \to \Z^n$ belongs to $\RPP$,
+then then \textbf{finite iteration} $\rppIt f : \Z^{n + 1} \to \Z^{n + 1}$ belongs to $\RPP$ and is such that:
+\[ \rppIt f (x, x_1, \dots, x_n) = (x, (\overbrace{f \circ \dots \circ f}^{\downarrow x \text{ times}}) (x_1, \dots, x_n)) \]
+where $\downarrow (\cdot) : \Z \to \N$ is defined as
+\[\downarrow x = \begin{cases} x, & \text{if $x \ge 0$} \\
+                               0, & \text{if $x < 0$} \end{cases}.\]
+This means that the function $f$ is applied $\downarrow x$ times to $(x_1, \dots, x_n)$.
+
+\[\begin{NiceMatrix}[nullify-dots]
+  x      & \bloch{4-1}{\rppIt{f}} & x      & \Block{4-1}{=} & x      &                                                                       &                    &                & x      \\  
+  x_1    &                        & y_1    &                & x_1    & \bloch{3-1}{f}                                                        & \Block{3-1}{\dots} & \bloch{3-1}{f} & y_1    \\
+  \Vdots &                        & \Vdots &                & \Vdots &                                                                       &                    &                & \Vdots \\
+  x_n    &                        & y_n    &                & x_n    &                                                                       &                    &                & y_n    \\
+         &                        &        &                &        & \Block{1-3}{\underbrace{\hspace{5.5em}}_{\downarrow x \text{ times}}} &                    &                &        \\
+\end{NiceMatrix}\]
+
+\item
+If $f, g, h : \Z^n \to \Z^n$ belongs to $\RPP$,
+then the \textbf{selection} $\rppIf f g h : \Z^{n + 1} \to \Z^{n + 1}$ belongs to $\RPP$ and is such that:
+\[\rppIf f g h (x, x_1, \dots, x_n) = \begin{cases} (x, f (x_1, \dots, x_n)), & \text{if $x > 0$} \\
+                                                    (x, g (x_1, \dots, x_n)), & \text{if $x = 0$} \\
+                                                    (x, h (x_1, \dots, x_n)), & \text{if $x < 0$} \end{cases}.\]
+We remark that the argument $x$ which determines which among $f$, $g$ and $h$ must be used cannot be among the arguments of $f$, $g$ and $h$,
+as that would break reversibility.
+
+\[\begin{NiceMatrix}[nullify-dots]
+  x      & \bloch{4-1}{\rppIf f g h} & x      &                &                        &                  \\
+  x_1    &                           & y_1    & \Block{3-1}{=} & f (x_1, \dots, x_n) & \text{if } x > 0 \\
+  \Vdots &                           & \Vdots &                & g (x_1, \dots, x_n) & \text{if } x = 0 \\
+  x_n    &                           & y_n    &                & h (x_1, \dots, x_n) & \text{if } x < 0 \\
+\CodeAfter
+\SubMatrix\}{2-4}{4-4}\{
+\end{NiceMatrix}\]
+
+\end{itemize}
+\end{definition}
 
 \end{document}
