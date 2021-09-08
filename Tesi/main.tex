@@ -19,10 +19,10 @@
 \definecolor{lblue}{rgb}{.80, .90, .95}
 
 \usepackage{color}
-\definecolor{keywordcolor}{rgb}{0.7, 0.1, 0.1}   % red
-\definecolor{commentcolor}{rgb}{0.4, 0.4, 0.4}   % grey
-\definecolor{symbolcolor}{rgb}{0.0, 0.1, 0.6}    % blue
-\definecolor{sortcolor}{rgb}{0.1, 0.5, 0.1}      % green
+\definecolor{keywordcolor}{rgb}{0.7, 0.1, 0.1} % red
+\definecolor{commentcolor}{rgb}{0.4, 0.4, 0.4} % grey
+\definecolor{symbolcolor}{rgb}{0.0, 0.1, 0.6}  % blue
+\definecolor{sortcolor}{rgb}{0.1, 0.5, 0.1}    % green
 
 % font
 \usepackage{mathpazo}
@@ -54,7 +54,8 @@
 \newcommand{\bloch}[2]{\Block[draw=white,fill=lblue,line-width=.5mm,rounded-corners]{#1}{#2}} % https://en.wikipedia.org/wiki/Ernest_Bloch
 \newcommand{\conv}[1]{\overbracket[.5pt][1pt]{\underbracket[.5pt][1pt]{#1}}}
 
-\newcommand{\Nat}{\mathbb{N}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
 
 \newcommand{\RPP}{\mathsf{RPP}}
 \newcommand{\ORPP}{\mathsf{ORPP}}
@@ -76,131 +77,5 @@
 \begin{document}
 
 \maketitle
-
-\chapter*{Introduction}
-
-% A \textit{proof assistant} is 
-
-% What is a formal proof? In any introductory mathematics course in which this question is asked, the answer will probably be something like: a list of statements, each following from the previous ones via certain logical rules. To avoid an infinite regress, some statements are simply accepted as true, and these are called axioms. So, in theory, true rigour is achieved by first deciding on a set of axioms, and then showing how each successive step can be justified, culminating in what was to be shown, QED.
-
-% Of course this is not actually how math is done.
-
-% Our playground will be Reversible Primitive Permutations, or RPP for short.
-
-\section*{Conventions}
-
-\chapter{The definition}
-
-\section{The original definition}
-
-Formalizing definitions can be quite a challenge on its own.
-Here is the original definition of Reversible Primitive Permutations ($\ORPP$ for short):
-
-\begin{definition}[Original Reversible Primitive Permutations] \hfill \\
-By definition, $\ORPP = \bigcup_{k \in \Nat} \ORPP^k$ is the smallest class of functions $\Nat^k \to \Nat$ such that
-\begin{itemize}
-
-\item The \emph{identity} $\rppId$,
-
-$\begin{NiceMatrix}
-  x & \bloch{1-1}{\rppId} & x \\
-\end{NiceMatrix}$
-
-\item The \emph{sign-change} $\rppNe$,
-
-$\begin{NiceMatrix}
-  x & \bloch{1-1}{\rppNe} & -x \\
-\end{NiceMatrix}$
-
-\item The \emph{successor} $\rppSu$,
-
-$\begin{NiceMatrix}
-  x & \bloch{1-1}{\rppSu} & x+1 \\
-\end{NiceMatrix}$
-
-\item The \emph{predecessor} $\rppPr$,
-
-$\begin{NiceMatrix}
-  x & \bloch{1-1}{\rppPr} & x-1 \\
-\end{NiceMatrix}$
-
-\item
-$\begin{NiceMatrix}
-  x & \bloch{2-1}{\rppSw} & y \\
-  y &                     & x \\
-\end{NiceMatrix}$
-
-\item
-$\begin{NiceMatrix}[nullify-dots]
-  x_1    & \bloch{3-1}{\rppCo{f}{g}} & y_1    & \Block{3-1}{=} & x_1    & \bloch{3-1}{f} & \bloch{3-1}{g} & y_1    \\
-  \Vdots &                           & \Vdots &                & \Vdots &                &                & \Vdots \\
-  x_n    &                           & y_n    &                & x_n    &                &                & y_n    \\
-\end{NiceMatrix}$
-
-\item
-$\begin{NiceMatrix}[nullify-dots]
-  x_1    & \bloch{6-1}{\rppPa{f}{g}} & w_1    & \Block{6-1}{=} & x_1    & \bloch{3-1}{f} & w_1    \\
-  \Vdots &                           & \Vdots &                & \Vdots &                & \Vdots \\
-  x_n    &                           & w_n    &                & x_n    &                & w_n    \\
-  y_1    &                           & z_1    &                & y_1    & \bloch{3-1}{g} & z_1    \\
-  \Vdots &                           & \Vdots &                & \Vdots &                & \Vdots \\
-  y_m    &                           & z_m    &                & y_m    &                & z_m    \\
-\end{NiceMatrix}$
-
-\item
-$\begin{NiceMatrix}[nullify-dots]
-         &                        &        &                &        & \Block{1-3}{_{\overbrace{\hspace{5.5em}}^{\lvert x \rvert \text{ times}}}} &                    &                        &        \\
-  x_1    & \bloch{4-1}{\rppIt{f}} & y_1    & \Block{4-1}{=} & x_1    & \bloch{3-1}{f}                                                             & \Block{3-1}{\dots} & \bloch{3-1}{\mathsf f} & y_1    \\
-  \Vdots &                        & \Vdots &                & \Vdots &                                                                            &                    &                        & \Vdots \\
-  x_n    &                        & y_n    &                & x_n    &                                                                            &                    &                        & y_n    \\
-  x      &                        & x      &                & x      &                                                                            &                    &                        & x      \\
-\end{NiceMatrix}$
-
-\item
-$\begin{NiceMatrix}[nullify-dots]
-  x_1    & \bloch{4-1}{\rppIf{f}{g}{h}} & y_1    & \Block{3-1}{=}  & f \ [x_1, \cdots, x_n] & \text{if } x > 0 \\
-  \Vdots &                              & \Vdots &                 & g \ [x_1, \cdots, x_n] & \text{if } x = 0 \\
-  x_n    &                              & y_n    &                 & h \ [x_1, \cdots, x_n] & \text{if } x < 0 \\
-  x      &                              & x      &                 &                        &                  \\
-\CodeAfter
-\SubMatrix\}{1-4}{3-4}\{
-\end{NiceMatrix}$
-
-\end{itemize}
-\end{definition}
-
-% \begin{lstlisting}
-% def prec_loop (g : RPP) :=
-%   Id 2 ‖₁ mkpair ;;
-%   Id 1 ‖₁ mkpair ;;
-%   Id 1 ‖₁ (Sw ;; g) ;;
-%   Id 2 ‖₁ unpair ;;
-%   Id 3 ‖₁ unpair ;;
-%   ⌊2, 3, 1, 0, 4⌉ ;;
-%   Id 1 ‖₁ Su ‖₁ Id 1 ‖₁ mkpair ;;
-%   ⌊3, 0, 1, 2⌉
-%   
-% @[simp] lemma ev_nil (f : RPP) : ‹f› [] = [] :=
-%   by { induction f; simp [ev, *] }
-% \end{lstlisting}
-
-% \begin{NiceMatrix}{ccccccc}
-%   $y_0$                  &                                         & $y_0$     &                                 & $y_0$     &                         & $y_0$     \\
-%   $y_1$                  & \bloch{12-1}{$\perm{n,n+1,\cdots,n+5}$} & $0$       &                                 & $0$       &                         & $0$       \\
-%   $\Vdots$              &                                         & $0$       &                                 & $0$       &                         & $0$       \\
-%   $y_n$                  &                                         & $0$       &                                 & $0$       &                         & $0$       \\
-%   $0$                    &                                         & $0$       &                                 & $0$       &                         & $0$       \\
-%   \Block{7-1}{$\Vdots$} &                                         & $0$       &                                 & $0$       & \bloch{2-1}{\texttt Sw} & $b_0$     \\
-%                          &                                         & $0$       & \bloch{7-1}{$\conv{\texttt F}$} & $b_0$     &                         & $0$       \\
-%                          &                                         & $y_1$     &                                 & $y_1$     &                         & $y_1$     \\
-%                          &                                         & $\Vdots$ &                                 & $\Vdots$ &                         & $\Vdots$ \\
-%                          &                                         & $y_n$     &                                 & $y_n$     &                         & $y_n$     \\
-%                          &                                         & $0$       &                                 & $0$       &                         & $0$       \\
-%                          &                                         & $\Vdots$ &                                 & $\Vdots$ &                         & $\Vdots$ \\
-%   $0$                    &                                         & $0$       &                                 & $0$       &                         & $0$       \\
-% \end{NiceMatrix}
-% 
-% \vspace{5mm}
-% Viene poi eseguita per $y_0$ iterazioni la funzione
 
 \end{document}

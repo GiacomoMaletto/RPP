@@ -1,0 +1,167 @@
+
+\chapter*{Introduction}
+
+I wanted to learn about \textit{theorem provers} (also called \textit{proof assistants}).
+A theorem prover is a computer program which checks the correctness of mathematical proofs.
+You can define mathematical objects through a sofisticated system, and then write theorems about these objects.
+The program checks each step of the proof and basically guarantees that everything is correct.
+This is very cool for a variety of reasons:
+
+\begin{itemize}
+\item Writing theorems in a proof assistant is very hard, but the reward is (almost) absolute certainty in the correctness of the result.
+\item Almost every definition comes from a very limited set of primitive objects; if you prove something, you know it follows directly from the axioms.
+\item Theorem provers require a high degree of precision, but checks everything you do, so in a way you create mathematical constructs in a very concrete way.
+\item They can also be used to verify the correctness of algorithms and computer programs, which is of course a very valuable thing.
+\item They are super fun to use.
+\end{itemize}
+
+I started my project using a proof assistant called \textit{Coq}, which is based on a branch of logic called \textit{type theory}.
+So, the primitive objects of this language are not sets like in "traditional" mathematics, but types, which differ in subtle ways (but that's not a problem).
+Coq has been around for a long time (it was released in 1989) and is one of the most widely used proof assistants.
+After using it for some months and achieving what I wanted, I decided to try out another language called \textit{Lean}.
+Lean is much more recent and in constant development, but has attracted a relatively large community which is working on \textit{Mathlib}, a unified big library of mathematics.
+
+
+What is a mathematical proof?
+
+I can give an example of what certainly looks like a proof:
+
+"We prove that $\sqrt 2$ is an irrational number.
+If it were rational, then it would be expressable as a fraction $\frac a b$ with $a$ and $b$ coprime integers.
+From $\sqrt 2 = \frac a b$ we get \[ 2 = \left(\frac a b\right)^2 = \frac {a^2} {b^2} \] and so \[ 2b^2 = a^2 .\]
+This means that $a^2$ is even and so is $a$, hence there exists an integer $k$ such that $2k = a$.
+Substituting in the previous equation we get \[ 2b^2 = (2k)^2 = 4k^2 \] therefore \[ b^2 = 2k^2 \]
+but this means that $b^2$ is even, and also $b$. So $2$ divides both $a$ and $b$,
+but we supposed they were coprime: a contradiction."
+
+This is how mathematics is done: through exposition and using natural language with some formulas here and there.
+But is that proof really \textit{true}?
+Is it true that a rational number can be expressed as a fraction of coprime integers?
+Is it true that $(\frac a b)^2 = \frac {a^2} {b^2}$?
+We can ask a lot of questions 
+
+\section*{Conventions}
+
+\chapter{The definition}
+
+\section{The original definition}
+
+Formalizing definitions can be quite a challenge on its own.
+Here is the original definition of Reversible Primitive Permutations ($\ORPP$ for short):
+
+
+
+A \textit{proof assistant} is 
+
+What is a formal proof? In any introductory mathematics course in which this question is asked, the answer will probably be something like: a list of statements, each following from the previous ones via certain logical rules. To avoid an infinite regress, some statements are simply accepted as true, and these are called axioms. So, in theory, true rigour is achieved by first deciding on a set of axioms, and then showing how each successive step can be justified, culminating in what was to be shown, QED.
+
+Of course this is not actually how math is done.
+
+Our playground will be Reversible Primitive Permutations, or RPP for short.
+
+\begin{definition}[Original Reversible Primitive Permutations] \hfill \\
+The (original) reversible primitive permutations are the least subset of functions $\Z^k \to \Z$ satisfying the following conditions:
+\begin{itemize}
+\item The unary identity $\rppId$ is in $ORPP$
+\item The unary succession function
+\end{itemize}
+\item The \emph{identity} $\rppId$,
+
+$\begin{NiceMatrix}
+  x & \bloch{1-1}{\rppId} & x \\
+\end{NiceMatrix}$
+
+\item The \emph{sign-change} $\rppNe$,
+
+$\begin{NiceMatrix}
+  x & \bloch{1-1}{\rppNe} & -x \\
+\end{NiceMatrix}$
+
+\item The \emph{successor} $\rppSu$,
+
+$\begin{NiceMatrix}
+  x & \bloch{1-1}{\rppSu} & x+1 \\
+\end{NiceMatrix}$
+
+\item The \emph{predecessor} $\rppPr$,
+
+$\begin{NiceMatrix}
+  x & \bloch{1-1}{\rppPr} & x-1 \\
+\end{NiceMatrix}$
+
+\item
+$\begin{NiceMatrix}
+  x & \bloch{2-1}{\rppSw} & y \\
+  y &                     & x \\
+\end{NiceMatrix}$
+
+\item
+$\begin{NiceMatrix}[nullify-dots]
+  x_1    & \bloch{3-1}{\rppCo{f}{g}} & y_1    & \Block{3-1}{=} & x_1    & \bloch{3-1}{f} & \bloch{3-1}{g} & y_1    \\
+  \Vdots &                           & \Vdots &                & \Vdots &                &                & \Vdots \\
+  x_n    &                           & y_n    &                & x_n    &                &                & y_n    \\
+\end{NiceMatrix}$
+
+\item
+$\begin{NiceMatrix}[nullify-dots]
+  x_1    & \bloch{6-1}{\rppPa{f}{g}} & w_1    & \Block{6-1}{=} & x_1    & \bloch{3-1}{f} & w_1    \\
+  \Vdots &                           & \Vdots &                & \Vdots &                & \Vdots \\
+  x_n    &                           & w_n    &                & x_n    &                & w_n    \\
+  y_1    &                           & z_1    &                & y_1    & \bloch{3-1}{g} & z_1    \\
+  \Vdots &                           & \Vdots &                & \Vdots &                & \Vdots \\
+  y_m    &                           & z_m    &                & y_m    &                & z_m    \\
+\end{NiceMatrix}$
+
+\item
+$\begin{NiceMatrix}[nullify-dots]
+         &                        &        &                &        & \Block{1-3}{_{\overbrace{\hspace{5.5em}}^{\lvert x \rvert \text{ times}}}} &                    &                        &        \\
+  x_1    & \bloch{4-1}{\rppIt{f}} & y_1    & \Block{4-1}{=} & x_1    & \bloch{3-1}{f}                                                             & \Block{3-1}{\dots} & \bloch{3-1}{\mathsf f} & y_1    \\
+  \Vdots &                        & \Vdots &                & \Vdots &                                                                            &                    &                        & \Vdots \\
+  x_n    &                        & y_n    &                & x_n    &                                                                            &                    &                        & y_n    \\
+  x      &                        & x      &                & x      &                                                                            &                    &                        & x      \\
+\end{NiceMatrix}$
+
+\item
+$\begin{NiceMatrix}[nullify-dots]
+  x_1    & \bloch{4-1}{\rppIf{f}{g}{h}} & y_1    & \Block{3-1}{=}  & f \ [x_1, \cdots, x_n] & \text{if } x > 0 \\
+  \Vdots &                              & \Vdots &                 & g \ [x_1, \cdots, x_n] & \text{if } x = 0 \\
+  x_n    &                              & y_n    &                 & h \ [x_1, \cdots, x_n] & \text{if } x < 0 \\
+  x      &                              & x      &                 &                        &                  \\
+\CodeAfter
+\SubMatrix\}{1-4}{3-4}\{
+\end{NiceMatrix}$
+
+\end{itemize}
+\end{definition
+\begin{lstlisting}
+def prec_loop (g : RPP) :=
+  Id 2 ‖₁ mkpair ;;
+  Id 1 ‖₁ mkpair ;;
+  Id 1 ‖₁ (Sw ;; g) ;;
+  Id 2 ‖₁ unpair ;;
+  Id 3 ‖₁ unpair ;;
+  ⌊2, 3, 1, 0, 4⌉ ;;
+  Id 1 ‖₁ Su ‖₁ Id 1 ‖₁ mkpair ;;
+  ⌊3, 0, 1, 2⌉
+  
+@[simp] lemma ev_nil (f : RPP) : ‹f› [] = [] :=
+  by { induction f; simp [ev, *] }
+\end{lstlisting
+\begin{NiceMatrix}{ccccccc}
+  $y_0$                  &                                         & $y_0$     &                                 & $y_0$     &                         & $y_0$     \\
+  $y_1$                  & \bloch{12-1}{$\perm{n,n+1,\cdots,n+5}$} & $0$       &                                 & $0$       &                         & $0$       \\
+  $\Vdots$              &                                         & $0$       &                                 & $0$       &                         & $0$       \\
+  $y_n$                  &                                         & $0$       &                                 & $0$       &                         & $0$       \\
+  $0$                    &                                         & $0$       &                                 & $0$       &                         & $0$       \\
+  \Block{7-1}{$\Vdots$} &                                         & $0$       &                                 & $0$       & \bloch{2-1}{\texttt Sw} & $b_0$     \\
+                         &                                         & $0$       & \bloch{7-1}{$\conv{\texttt F}$} & $b_0$     &                         & $0$       \\
+                         &                                         & $y_1$     &                                 & $y_1$     &                         & $y_1$     \\
+                         &                                         & $\Vdots$ &                                 & $\Vdots$ &                         & $\Vdots$ \\
+                         &                                         & $y_n$     &                                 & $y_n$     &                         & $y_n$     \\
+                         &                                         & $0$       &                                 & $0$       &                         & $0$       \\
+                         &                                         & $\Vdots$ &                                 & $\Vdots$ &                         & $\Vdots$ \\
+  $0$                    &                                         & $0$       &                                 & $0$       &                         & $0$       \\
+\end{NiceMatrix}
+
+\vspace{5mm}
+Viene poi eseguita per $y_0$ iterazioni la funzione

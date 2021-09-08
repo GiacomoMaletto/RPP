@@ -1,0 +1,40 @@
+- che cos'è un theorem prover
+- ho scelto come argomento RPP
+- uso Lean; ho usato maggiormente Coq ma ne parlerò di meno
+- introduzione a RPP
+  - computazione reversibile
+  - definizione mia
+  - alcuni esempi di funzioni, con schemini (inc, mul, square)
+  - inversa di una RPP, esempi (dec)
+- formalizzazione della definizione in Lean
+  - introduco liste, notazione funzionale
+  - definizione di inv
+  - proof by reflection
+- definizione originale, differenze
+  - tutto in nome della semplicità
+  - meglio controllare il primo elemento
+  - è più comodo avere Id n
+  - non serve suddividere in RPPn, posso avere funzione arity (in Coq meglio evitare certi dependent types)
+  - iteratore versatile (add)
+  - sono ancora le stesse funzioni? Dico di sì
+- proprietà di base
+  - introduzione alle dimostrazioni di Lean
+  - quanta automazione c'è?
+- enunciato teorema principale: ogni PRF è esprimibile con RPP
+  - definizione PRF
+  - cosa si intende con esprimibile
+  - due strade diverse: quella seguita in Coq e quella in Lean
+- piccola libreria di funzioni RPP
+  - permutazioni
+    - non servono dimostrazioni!
+  - square: dimostrazioni con tanti conv
+  - less
+  - che cosa sono i cantor pairing
+  - divisione, cp, radice quadrata
+  - mkpair', unpair', mkpair, unpair
+- teorema principale, versione Lean
+  - definizioni PRF in Mathlib
+  - come mai è più comoda quella che scelgo
+  - schizzo di dimostrazione
+- differenze tra Coq e Lean
+- approccio relazionale
