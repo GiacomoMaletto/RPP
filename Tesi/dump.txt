@@ -1,6 +1,7 @@
 
 \chapter*{Introduction}
 
+% flusso di coscienza:
 I wanted to learn about \textit{theorem provers} (also called \textit{proof assistants}).
 A theorem prover is a computer program which checks the correctness of mathematical proofs.
 You can define mathematical objects through a sofisticated system, and then write theorems about these objects.
