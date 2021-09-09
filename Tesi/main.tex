@@ -15,6 +15,7 @@
 % graphics
 \usepackage{mathdots}
 \usepackage{nicematrix}
+\setcounter{MaxMatrixCols}{20}
 \usepackage{rotating}
 \definecolor{lblue}{rgb}{.80, .90, .95}
 
@@ -42,7 +43,11 @@
 % theorems
 \usepackage{amsthm}
 \theoremstyle{definition}
-\newtheorem{definition}{Definition}[section]
+\newtheorem{definition}{Definition}
+\newtheorem*{definition*}{Definition}
+
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
 
 % hyphenation
 \usepackage{hyphenat}
@@ -59,6 +64,9 @@
 
 \newcommand{\RPP}{\mathsf{RPP}}
 \newcommand{\ORPP}{\mathsf{ORPP}}
+\newcommand{\rppf}{\mathsf{f}}
+\newcommand{\rppg}{\mathsf{g}}
+\newcommand{\rpph}{\mathsf{h}}
 \newcommand{\rppId}{\mathsf{Id}}
 \newcommand{\rppNe}{\mathsf{Ne}}
 \newcommand{\rppSu}{\mathsf{Su}}
@@ -68,6 +76,10 @@
 \newcommand{\rppPa}{\Vert}
 \newcommand{\rppIt}[1]{\mathsf{It}[#1]}
 \newcommand{\rppIf}[3]{\mathsf{If}[#1, #2, #3]}
+\newcommand{\rppinc}{\mathsf{inc}}
+\newcommand{\rppdec}{\mathsf{dec}}
+\newcommand{\rppmul}{\mathsf{mul}}
+\newcommand{\rppsquare}{\mathsf{square}}
 
 % title
 \title{A Formal Verification of Reversible Primitive Permutations}
@@ -98,6 +110,7 @@ This means that a non-reversible gate dissipates energy each time information is
 
 Lastly, reversible computing is directly related to quantum computing, as each operation in a quantum computer must be reversible.
 
+
 \section{Reversible Primitive Permutations}
 
 In the article I decided to formalize, the authors focus on providing a functional model of reversible computation.
@@ -107,41 +120,39 @@ Here is the definition that we will use:
 
 \newpage
 
-\begin{definition}[Reversible Primitive Permutations] \hfill \\
+\begin{definition}[Reversible Primitive Permutations]
 The class of \textbf{Reversible Primitive Permutations} or $\RPP$ is the smallest subset of functions $\Z^n \to \Z^n$ satisfying the following conditions:
 \begin{itemize}
 
 \item
-The \textbf{identity} $\rppId (x) = x$ belongs to $\RPP$.
-
-\[\begin{NiceMatrix}
-  x & \bloch{1-1}{\rppId} & x \\
+The $n$-ary \textbf{identity} $\rppId_n (x_1, \dots, x_n) = (x_1, \dots, x_n)$ belongs to $\RPP$.
+\[\begin{NiceMatrix}[nullify-dots]
+  x_1    & \bloch{3-1}{\rppId_n} & x_1    \\
+  \Vdots &                       & \Vdots \\
+  x_n    &                       & x_n    \\
 \end{NiceMatrix}\]
-
+The meaning of these diagrams should be fairly obvious:
+if the values on the left of a function are provided as inputs to that function, we get the values on the right as outputs.
 \item
 The \textbf{sign-change} $\rppNe (x) = -x$ belongs to $\RPP$.
-
 \[\begin{NiceMatrix}
   x & \bloch{1-1}{\rppNe} & -x \\
 \end{NiceMatrix}\]
 
 \item
 The \textbf{successor function} $\rppSu (x) = x+1$ belongs to $\RPP$.
-
 \[\begin{NiceMatrix}
   x & \bloch{1-1}{\rppSu} & x+1 \\
 \end{NiceMatrix}\]
 
 \item
 The \textbf{predecessor function} $\rppPr (x) = x-1$ belongs to $\RPP$.
-
 \[\begin{NiceMatrix}
   x & \bloch{1-1}{\rppPr} & x-1 \\
 \end{NiceMatrix}\]
 
 \item
 The \textbf{swap} $\rppSw (x, y) = (y, x)$ belongs to $\RPP$.
-
 \[\begin{NiceMatrix}
   x & \bloch{2-1}{\rppSw} & y \\
   y &                     & x \\
@@ -150,13 +161,12 @@ The \textbf{swap} $\rppSw (x, y) = (y, x)$ belongs to $\RPP$.
 \item
 If $f : \Z^n \to \Z^n$ and $g : \Z^n \to \Z^n$ belongs to $\RPP$,
 then the \textbf{series composition} $(f \rppCo g) : \Z^n \to \Z^n$ belongs to $\RPP$ and is such that:
-\[(f \rppCo g) (x_1, \dots, x_n) = g (f (x_1, \dots, x_n)) = (g \circ f) (x_1, \dots, x_n)).\]
+\[(f \rppCo g) (x_1, \dots, x_n) = g (f (x_1, \dots, x_n)) = (g \circ f) (x_1, \dots, x_n).\]
 We remark that $f \rppCo g$ means that $f$ is applied first, and then $g$, in opposition to the standard functional composition (denoted by $\circ$).
-
 \[\begin{NiceMatrix}[nullify-dots]
-  x_1    & \bloch{3-1}{f \rppCo g} & y_1    & \Block{3-1}{=} & x_1    & \bloch{3-1}{f} & \bloch{3-1}{g} & y_1    \\
-  \Vdots &                         & \Vdots &                & \Vdots &                &                & \Vdots \\
-  x_n    &                         & y_n    &                & x_n    &                &                & y_n    \\
+  x_1    & \bloch{3-1}{f \rppCo g} & z_1    & \Block{3-1}{=} & x_1    & \bloch{3-1}{f} & y_1    & \bloch{3-1}{g} & z_1    \\
+  \Vdots &                         & \Vdots &                & \Vdots &                & \Vdots &                & \Vdots \\
+  x_n    &                         & z_n    &                & x_n    &                & y_n    &                & z_n    \\
 \end{NiceMatrix}\]
 
 \item
@@ -164,7 +174,6 @@ We remark that $f \rppCo g$ means that $f$ is applied first, and then $g$, in op
 If $f : \Z^n \to \Z^n$ and $g : \Z^m \to \Z^m$ belongs to $\RPP$,
 then the \textbf{parallel composition} $(f \rppPa g) : \Z^{n + m} \to \Z^{n + m} $ belongs to $\RPP$ and is such that:
 \[(f \rppPa g) (x_1, \dots, x_n, y_1, \dots, y_m) = (f (x_1, \dots, x_n), g (y_1, \dots, y_m)).\]
-
 \[\begin{NiceMatrix}[nullify-dots]
   x_1    & \bloch{6-1}{f \rppPa g} & w_1    & \Block{6-1}{=} & x_1    & \bloch{3-1}{f} & w_1    \\
   \Vdots &                         & \Vdots &                & \Vdots &                & \Vdots \\
@@ -182,7 +191,6 @@ where $\downarrow (\cdot) : \Z \to \N$ is defined as
 \[\downarrow x = \begin{cases} x, & \text{if $x \ge 0$} \\
                                0, & \text{if $x < 0$} \end{cases}.\]
 This means that the function $f$ is applied $\downarrow x$ times to $(x_1, \dots, x_n)$.
-
 \[\begin{NiceMatrix}[nullify-dots]
   x      & \bloch{4-1}{\rppIt{f}} & x      & \Block{4-1}{=} & x      &                                                                       &                    &                & x      \\  
   x_1    &                        & y_1    &                & x_1    & \bloch{3-1}{f}                                                        & \Block{3-1}{\dots} & \bloch{3-1}{f} & y_1    \\
@@ -199,9 +207,8 @@ then the \textbf{selection} $\rppIf f g h : \Z^{n + 1} \to \Z^{n + 1}$ belongs t
                                                     (x, h (x_1, \dots, x_n)), & \text{if $x < 0$} \end{cases}.\]
 We remark that the argument $x$ which determines which among $f$, $g$ and $h$ must be used cannot be among the arguments of $f$, $g$ and $h$,
 as that would break reversibility.
-
 \[\begin{NiceMatrix}[nullify-dots]
-  x      & \bloch{4-1}{\rppIf f g h} & x      &                &                        &                  \\
+  x      & \bloch{4-1}{\rppIf f g h} & x      &                &                     &                  \\
   x_1    &                           & y_1    & \Block{3-1}{=} & f (x_1, \dots, x_n) & \text{if } x > 0 \\
   \Vdots &                           & \Vdots &                & g (x_1, \dots, x_n) & \text{if } x = 0 \\
   x_n    &                           & y_n    &                & h (x_1, \dots, x_n) & \text{if } x < 0 \\
@@ -211,5 +218,71 @@ as that would break reversibility.
 
 \end{itemize}
 \end{definition}
+
+\begin{remark}
+If we have two functions of different arity, for example $f : \Z^3 \to \Z^3$ and $g : \Z^5 \to \Z^5$,
+then we will still write $f \rppCo g$ to mean the function with arity $\max(3, 5)$ given by $(f \rppPa \rppId_2) \rppCo g$.
+In general, the arity of the "smaller" function can be enlarged by a suitable parallel composition with the identity.
+The same goes for the arguments of the selection $\rppIf f g h$.
+\[\begin{NiceMatrix}[nullify-dots]
+  x_1 & \bloch{5-1}{f \rppCo g} & z_1 & \Block{5-1}{=} & x_1 & \bloch{3-1}{f} & y_1 & \bloch{5-1}{g} & z_1 & \Block{5-1}{=} & x_1 & \bloch{3-1}{f}        & y_1 & \bloch{5-1}{g} & z_1 \\
+  x_2 &                         & z_2 &                & x_2 &                & y_2 &                & z_2 &                & x_2 &                       & y_2 &                & z_2 \\
+  x_3 &                         & z_3 &                & x_3 &                & y_3 &                & z_3 &                & x_3 &                       & y_3 &                & z_3 \\
+  x_4 &                         & z_4 &                & x_4 &                & x_4 &                & z_4 &                & x_4 & \bloch{2-1}{\rppId_2} & x_4 &                & z_4 \\
+  x_5 &                         & z_5 &                & x_5 &                & x_5 &                & z_5 &                & x_5 &                       & x_5 &                & z_5 \\
+\end{NiceMatrix}\]
+\end{remark}
+
+
+\section{Some examples}
+
+In order to get accustomed to this definition, let's see some examples.
+
+\paragraph{Increment and decrement}
+Let's try to imagine what addition should look like in $\RPP$.
+Of course, addition is usually thought of as a function which takes two inputs and yields their sum:
+something like $\texttt{add}(x,y) = x+y$.
+But notice that this operation is not reversible:
+given only the output (the value $x+y$) it is impossible to obtain the original values ($x, y$).
+As we will see, every function in $\RPP$ is reversible, so it's impossible to define addition in this way.
+
+Instead, we can define a function $\rppinc$ in $\RPP$ which, given $n \in \N$ and $x \in \Z$, yields
+\[\begin{NiceMatrix}
+  n & \bloch{2-1}{\rppinc} & n     \\
+  x &                      & x + n \\
+\end{NiceMatrix}\]
+If $n$ is negative the output is just $(n, x)$.
+The fact that the above diagram is only valid for $n \in \N$ might bother some of you;
+we'll explain later why it is so, and how we can also make it work for $n \in \Z$.
+
+For now let's focus on the output: we don't just have $x + n$ but also $n$, and indeed,
+given both $n$ and $x+n$ we can reconstruct $n$ (obviously) and $x$ (by $(x+n)-n$).
+As a matter of fact, the following function $\rppdec$ also belongs to $\RPP$:
+\[\begin{NiceMatrix}
+  n & \bloch{2-1}{\rppdec} & n     \\
+  x &                      & x - n \\
+\end{NiceMatrix}\]
+and if we try to compose $\rppinc$ and $\rppdec$ we get this remarkable result:
+\[\begin{NiceMatrix}
+  n & \bloch{2-1}{\rppinc} & n     & \bloch{2-1}{\rppdec} & n \\
+  x &                      & x + n &                      & x \\
+\end{NiceMatrix}\]
+and similarly for $\rppdec \rppCo \rppinc$.
+So indeed $\rppdec$ is the inverse of $\rppinc$, and we can write $\rppdec = \rppinc^{-1}$.
+
+But we haven't said how to actually define $\rppinc$.
+Well, just like this:
+\[\rppinc = \rppIt{\rppSu}\]
+This mean that we apply the successor function $\rppSu$ to the value $x$, for $\downarrow n$ times.
+If $n \in \N$ then $\downarrow n = n$, so we effectively add $n$ to the value $x$.
+If instead $n$ is negative then $\downarrow n = 0$ and nothing changes.
+
+Can you guess how $\rppdec$ is defined?
+\newpage
+In a very similar manner, using the predecessor function:
+\[\rppdec = \rppIt{\rppPr}\]
+and as we will shortly see, finding the inverse is not something that we have to do by hand.
+
+\paragraph{Multiplication and square}
 
 \end{document}

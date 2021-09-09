@@ -5,7 +5,7 @@
   - computazione reversibile
   - definizione mia
   - alcuni esempi di funzioni, con schemini (inc, mul, square)
-  - inversa di una RPP, esempi (dec)
+  - inversa di RPP, esempi (dec)
 - formalizzazione della definizione in Lean
   - introduco liste, notazione funzionale
   - definizione di inv
