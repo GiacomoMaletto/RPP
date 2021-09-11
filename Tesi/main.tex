@@ -273,7 +273,7 @@ So indeed $\rppdec$ is the inverse of $\rppinc$, and we can write $\rppdec = \rp
 But we haven't said how to actually define $\rppinc$.
 Well, just like this:
 \[\rppinc = \rppIt{\rppSu}\]
-This mean that we apply the successor function $\rppSu$ to the value $x$, for $\downarrow n$ times.
+This means that we apply the successor function $\rppSu$ to the value $x$, for $\downarrow n$ times.
 If $n \in \N$ then $\downarrow n = n$, so we effectively add $n$ to the value $x$.
 If instead $n$ is negative then $\downarrow n = 0$ and nothing changes.
 
@@ -284,5 +284,46 @@ In a very similar manner, using the predecessor function:
 and as we will shortly see, finding the inverse is not something that we have to do by hand.
 
 \paragraph{Multiplication and square}
+We now turn our attention to multiplication.
+The elementary-school way to define multiplication is by repeated addition, and we can define $\rppmul$ exactly like that:
+\[\rppmul = \rppIt{\rppinc}.\]
+As $\rppinc$ had arity $2$, $\rppmul$ has arity $2+1=3$.
+If $n, m \in \N$ and $x \in \Z$ then we have
+\[\begin{NiceMatrix}
+  n & \bloch{3-1}{\rppmul} & n             \\
+  m &                      & m             \\
+  x &                      & x + n \cdot m \\
+\end{NiceMatrix}\]
+because we're essentially "adding $m$ to $x$" $n$ times;
+so in this case we preserve both inputs and increase a variable $x$ which we don't care about.
+
+What is the inverse $\rppmul^{-1}$? Does it perform division?
+Well, the truth is rather disappointing:
+\[\begin{NiceMatrix}
+  n & \bloch{3-1}{\rppmul^{-1}} & n             \\
+  m &                           & m             \\
+  x &                           & x - n \cdot m \\
+\end{NiceMatrix}\]
+We will see a way to calculate division in $\RPP$, but this is not it.
+
+We're now ready to define the function $\rppsquare$ which is used to calculate the square of a number:
+\[\rppsquare = (\rppId_1 \rppPa \rppSw) \rppCo \rppinc \rppCo \rppmul \rppCo \rppdec \rppCo (\rppId_1 \rppPa \rppSw).\]
+That might look like a very complicated expression;
+thankfully we can make use of diagrams to show what each step does.
+Given $n \in \N$ and $x \in \Z$ we have
+\[\begin{NiceMatrix}
+  n &                     & n & \bloch{2-1}{\rppinc} & n & \bloch{3-1}{\rppmul} & n             & \bloch{2-1}{\rppdec} & n             &                     & n             \\
+  x & \bloch{2-1}{\rppSw} & 0 &                      & n &                      & n             &                      & 0             & \bloch{2-1}{\rppSw} & x + n \cdot n \\
+  0 &                     & x &                      & x &                      & x + n \cdot n &                      & x + n \cdot n &                     & 0             \\
+\end{NiceMatrix}\]
+so we add the result $n \cdot n$ to a variable $x$ which we don't care about;
+we also require an additional value initialized to 0.
+We will make frequent use of variables initially set to 0 and which come back to 0 after the calculation;
+these are traditionally called \textbf{ancillary arguments} or \textbf{ancillaes}, from the latin term used to describe female house slaves in ancient Rome.
+
+You might be wondering what would happen if $n < 0$ or the ancilla was different from $0$.
+The truth is, we don't really care.
+We will often specify the behaviour of these functions given some initial values,
+and we won't need to know what happens for different initial values because we'll never use those functions in other ways.
 
 \end{document}
