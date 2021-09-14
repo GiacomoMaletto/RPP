@@ -49,6 +49,9 @@
 \theoremstyle{remark}
 \newtheorem{remark}{Remark}
 
+\theoremstyle{plain}
+\newtheorem{proposition}{Proposition}
+
 % hyphenation
 \usepackage{hyphenat}
 \hyphenation{pri-mi-tive}
@@ -294,8 +297,8 @@ If $n, m \in \N$ and $x \in \Z$ then we have
   m &                      & m             \\
   x &                      & x + n \cdot m \\
 \end{NiceMatrix}\]
-because we're essentially "adding $m$ to $x$" $n$ times;
-so in this case we preserve both inputs and increase a variable $x$ which we don't care about.
+because we're essentially "incrementing by $m$" $n$ times;
+so in this case we preserve both inputs and increase a certain variable $x$.
 
 What is the inverse $\rppmul^{-1}$? Does it perform division?
 Well, the truth is rather disappointing:
@@ -316,7 +319,7 @@ Given $n \in \N$ and $x \in \Z$ we have
   x & \bloch{2-1}{\rppSw} & 0 &                      & n &                      & n             &                      & 0             & \bloch{2-1}{\rppSw} & x + n \cdot n \\
   0 &                     & x &                      & x &                      & x + n \cdot n &                      & x + n \cdot n &                     & 0             \\
 \end{NiceMatrix}\]
-so we add the result $n \cdot n$ to a variable $x$ which we don't care about;
+so we add the result $n \cdot n$ to a variable $x$;
 we also require an additional value initialized to 0.
 We will make frequent use of variables initially set to 0 and which come back to 0 after the calculation;
 these are traditionally called \textbf{ancillary arguments} or \textbf{ancillaes}, from the latin term used to describe female house slaves in ancient Rome.
@@ -325,5 +328,51 @@ You might be wondering what would happen if $n < 0$ or the ancilla was different
 The truth is, we don't really care.
 We will often specify the behaviour of these functions given some initial values,
 and we won't need to know what happens for different initial values because we'll never use those functions in other ways.
+
+\section{Calculating the inverse}
+
+Earlier we hinted at the fact that every function in $\RPP$ is invertible and the inverse belongs to $\RPP$;
+furthermore, we don't need to perform the calculation manually, case by case.
+In other words, there is an \textit{effective procedure} which produces the inverse $f^{-1} \in \RPP$ given any $f \in \RPP$.
+
+\begin{proposition}[The inverse $f^{-1}$ of any $f$]
+Let $f : \Z^n \to \Z^n$ belong to $\RPP$.
+Then the inverse $f^{-1} : \Z^n \to \Z^n$ exists, belongs to $\RPP$ and, by definition, is
+\begin{itemize}
+\item $\rppId_n^{-1} = \rppId_n$
+\item $\rppNe^{-1} = \rppNe$
+\item $\rppSu^{-1} = \rppPr$
+\item $\rppPr^{-1} = \rppSu$
+\item $\rppSw^{-1} = \rppSw$
+\item $(f \rppCo g)^{-1} = g^{-1} \rppCo f^{-1}$
+\item $(f \rppPa g)^{-1} = f^{-1} \rppPa g^{-1}$
+\item ${\rppIt f}^{-1} = \rppIt {f^{-1}}$
+\item ${\rppIf f g h}^{-1} = \rppIf {f^{-1}} {g^{-1}} {h^{-1}}$
+\end{itemize}
+Then $f \rppCo f^{-1} = \rppId_n$ and $f^{-1} \rppCo f = \rppId_n$.
+\end{proposition}
+\begin{proof}
+By induction on the definition of $f$.
+\end{proof}
+
+Well, that was rather succint.
+
+We invite the reader to check that every listed inverse does indeed make sense;
+for example, then function $\rppIt f (x, y_1, \dots, y_n)$ applies $\downarrow x$ times the function $f$ to the argument $(y_1, \dots, y_n)$.
+If we want to "undo" this effect we just need to apply $\downarrow x$ times $f^{-1}$ to the same argument, so
+${\rppIt f}^{-1} = \rppIt {f^{-1}}$.
+
+Of course, that reasoning only works if in turn $f$ is also invertible and $f^{-1} \in \RPP$.
+This is the reason that the proof is by induction:
+given an arbitrary $\RPP$, if we unfold one step of the definition we get one of the cases listed.
+We apply the appropriate step and then by inductive hypothesis we can assume that in turn its sub-terms are invertible.
+
+Notice that in this way, if we try to calculate $\rppinc^{-1}$ we really do get $\rppdec$, as we had hoped for.
+
+Since $\RPP$ is inductively defined, any proposition involving $\RPP$ functions can be proven using induction.
+Not only that, but any function which has an argument $\RPP$ can be defined recursively,
+and indeed we can also see $(\cdot)^{-1}:\RPP \to \RPP$ as a recursive function.
+When we delve into type theory and the Lean theorem prover we will see that induction and recursion can be seen as really the same thing,
+and it's just one of many similarities between functions and proofs.
 
 \end{document}
