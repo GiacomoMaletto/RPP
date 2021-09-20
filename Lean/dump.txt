@@ -8,7 +8,7 @@ end
 lemma call_def (x : ℤ) (l : list ℤ) :
   ‹call l.length› (l ++ [x]) = x :: l :=
 begin
-  induction l using list.ind_app with y l hl,
+  induction l using list.reverse_rec_on with y l hl,
   refl,
   simp [ev], rw ev_split, simp,
   rw [take_append, drop_append], simp,

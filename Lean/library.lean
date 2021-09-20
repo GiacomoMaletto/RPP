@@ -4,10 +4,10 @@ open list
 
 namespace RPP
 
-@[simp] def Id1 := Id 1
+@[simp] def Id₁ := Id 1
 
 @[simp] def call : ℕ → RPP
-| 0       := Id1
+| 0       := Id₁
 | (i + 1) := Id i ‖ Sw ;; call i
 
 @[simp] def call_list : list ℕ → RPP
@@ -55,7 +55,7 @@ def Pa2 := Pa
 infix `‖₁` : 55 := Pa1
 infix `‖₂` : 55 := Pa2
 
-def square := Id1 ‖₁ Sw ;; inc ;; mul ;; dec ;; Id1 ‖₁ Sw
+def square := Id₁ ‖₁ Sw ;; inc ;; mul ;; dec ;; Id₁ ‖₁ Sw
 
 lemma square_def (n : ℕ) (x : ℤ) : ‹square› [n, x, 0] = [n, x + n * n, 0] :=
 begin
@@ -72,7 +72,7 @@ begin
   rw Pa1, simp [ev] }
 end
 
-def less := dec ;; Id1 ‖₁ If Su Id1 Id1 ;; inc
+def less := dec ;; Id₁ ‖₁ If Su Id₁ Id₁ ;; inc
 
 @[simp] lemma less_arity : less.arity = 3 := rfl
 

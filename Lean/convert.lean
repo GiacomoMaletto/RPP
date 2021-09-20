@@ -39,7 +39,7 @@ begin
   rw succ, simp [ev], rw inc_def, simp [ev], ring
 end
 
-def left := Id1 ‖₁ unpair' ;; ⌊6, 0⌉ ;; inc ;; (Id1 ‖₁ unpair' ;; ⌊6, 0⌉)⁻¹
+def left := Id₁ ‖₁ unpair' ;; ⌊6, 0⌉ ;; inc ;; (Id₁ ‖₁ unpair' ;; ⌊6, 0⌉)⁻¹
 
 lemma left_def (z : ℤ) (n : ℕ) :
   ‹left› (z :: n :: repeat 0 6) = (z + (nat.unpair n).fst) :: n :: repeat 0 6 :=
@@ -57,7 +57,7 @@ begin
   rw Pa1, simp [ev], rw proposition_1, rw unpair'_def
 end
 
-def right := Id1 ‖₁ unpair' ;; ⌊7, 0⌉ ;; inc ;; (Id1 ‖₁ unpair' ;; ⌊7, 0⌉)⁻¹
+def right := Id₁ ‖₁ unpair' ;; ⌊7, 0⌉ ;; inc ;; (Id₁ ‖₁ unpair' ;; ⌊7, 0⌉)⁻¹
 
 lemma right_def (z : ℤ) (n : ℕ) :
   ‹right› (z :: n :: repeat 0 6) = (z + (nat.unpair n).snd) :: n :: repeat 0 6 :=

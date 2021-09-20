@@ -10,9 +10,9 @@ namespace RPP
 def mkpair' :=
   less ;;
   ⌊2, 0, 1⌉ ;;
-  If (Id1 ‖ square ;; Sw ;; Id1 ‖₁ inc ;; Sw)
-     (Id1 ‖ inc ;; Sw ;; Id1 ‖₁ (square ;; inc) ;; Sw)
-     Id1 ;;
+  If (Id₁ ‖ square ;; Sw ;; Id₁ ‖₁ inc ;; Sw)
+     (Id₁ ‖ inc ;; Sw ;; Id₁ ‖₁ (square ;; inc) ;; Sw)
+     Id₁ ;;
   ⌊1, 2, 0⌉ ;;
   less⁻¹
 
@@ -65,11 +65,11 @@ begin
 end
 
 def sqrt_step :=
-  Su ‖ If Su Id1 Id1 ;;
+  Su ‖ If Su Id₁ Id₁ ;;
   ⌊2, 0, 1⌉ ;;
-  If (Id1 ‖ Pr) (Su ;; Sw ‖ Su) Id1 ;;
-  Sw ;; If Pr Id1 Id1 ;;
-  Id1 ‖₁ Sw
+  If (Id₁ ‖ Pr) (Su ;; Sw ‖ Su) Id₁ ;;
+  Sw ;; If Pr Id₁ Id₁ ;;
+  Id₁ ‖₁ Sw
 
 def sqrt := It sqrt_step
 
@@ -125,7 +125,7 @@ def unpair'_fwd :=
   ⌊0, 1, 4, 2, 3⌉ ;;
   Id 2 ‖₁ dec ;;
   Id 3 ‖₁ Ne ;;
-  Id 3 ‖₁ If Id1 Id1 Pr ;;
+  Id 3 ‖₁ If Id₁ Id₁ Pr ;;
   ⌊0, 4, 1, 2, 3⌉
 
 @[simp] lemma unpair'_fwd_arity : unpair'_fwd.arity = 5 := rfl
@@ -174,9 +174,9 @@ end
 
 def unpair' :=
   unpair'_fwd ;;
-  Id1 ‖₁ If Id1
-           (⌊0, 1, 3, 2, 4⌉ ;; Id1 ‖₂ inc ‖₂ inc ;; ⌊0, 1, 3, 2, 4⌉)
-           (⌊0, 3, 1, 4, 2⌉ ;; inc ‖₂ inc ;; ⌊0, 2, 4, 1, 3⌉) ;;
+  Id₁ ‖₁ If Id₁
+            (⌊0, 1, 3, 2, 4⌉ ;; Id₁ ‖₂ inc ‖₂ inc ;; ⌊0, 1, 3, 2, 4⌉)
+            (⌊0, 3, 1, 4, 2⌉ ;; inc ‖₂ inc ;; ⌊0, 2, 4, 1, 3⌉) ;;
   unpair'_fwd⁻¹
 
 @[simp] lemma unpair'_arity : unpair'.arity = 7 := rfl
