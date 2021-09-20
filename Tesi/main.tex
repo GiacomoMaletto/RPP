@@ -34,6 +34,7 @@
 \usepackage{listings}
 \def\lstlanguagefiles{lstlean.tex}
 \lstset{language=lean}
+\usepackage{float}
 
 % sections
 \usepackage{emptypage}
@@ -128,7 +129,7 @@ The class of \textbf{Reversible Primitive Permutations} or $\RPP$ is the smalles
 \begin{itemize}
 
 \item
-The $n$-ary \textbf{identity} $\rppId_n (x_1, \dots, x_n) = (x_1, \dots, x_n)$ belongs to $\RPP$.
+The $n$-ary \textbf{identity} $\rppId_n (x_1, \dots, x_n) = (x_1, \dots, x_n)$ belongs to $\RPP$, for all $n \in \N$.
 \[\begin{NiceMatrix}[nullify-dots]
   x_1    & \bloch{3-1}{\rppId_n} & x_1    \\
   \Vdots &                       & \Vdots \\
@@ -224,7 +225,7 @@ as that would break reversibility.
 
 \begin{remark}
 If we have two functions of different arity, for example $f : \Z^3 \to \Z^3$ and $g : \Z^5 \to \Z^5$,
-then we will still write $f \rppCo g$ to mean the function with arity $\max(3, 5)$ given by $(f \rppPa \rppId_2) \rppCo g$.
+then we will still write $f \rppCo g$ to mean the function with arity $\max(3, 5)=5$ given by $(f \rppPa \rppId_2) \rppCo g$.
 In general, the arity of the "smaller" function can be enlarged by a suitable parallel composition with the identity.
 The same goes for the arguments of the selection $\rppIf f g h$.
 \[\begin{NiceMatrix}[nullify-dots]
@@ -247,7 +248,7 @@ Of course, addition is usually thought of as a function which takes two inputs a
 something like $\texttt{add}(x,y) = x+y$.
 But notice that this operation is not reversible:
 given only the output (the value $x+y$) it is impossible to obtain the original values ($x, y$).
-As we will see, every function in $\RPP$ is reversible, so it's impossible to define addition in this way.
+As we will see, every function in $\RPP$ is reversible, so we will not be able to define addition in this way.
 
 Instead, we can define a function $\rppinc$ in $\RPP$ which, given $n \in \N$ and $x \in \Z$, yields
 \[\begin{NiceMatrix}
@@ -358,7 +359,7 @@ By induction on the definition of $f$.
 Well, that was rather succint.
 
 We invite the reader to check that every listed inverse does indeed make sense;
-for example, then function $\rppIt f (x, y_1, \dots, y_n)$ applies $\downarrow x$ times the function $f$ to the argument $(y_1, \dots, y_n)$.
+for example, the function $\rppIt f (x, y_1, \dots, y_n)$ applies $\downarrow x$ times the function $f$ to the argument $(y_1, \dots, y_n)$.
 If we want to "undo" this effect we just need to apply $\downarrow x$ times $f^{-1}$ to the same argument, so
 ${\rppIt f}^{-1} = \rppIt {f^{-1}}$.
 
@@ -370,9 +371,80 @@ We apply the appropriate step and then by inductive hypothesis we can assume tha
 Notice that in this way, if we try to calculate $\rppinc^{-1}$ we really do get $\rppdec$, as we had hoped for.
 
 Since $\RPP$ is inductively defined, any proposition involving $\RPP$ functions can be proven using induction.
-Not only that, but any function which has an argument $\RPP$ can be defined recursively,
+Not only that, but any function which has for an argument a generic $\RPP$ can be defined recursively,
 and indeed we can also see $(\cdot)^{-1}:\RPP \to \RPP$ as a recursive function.
-When we delve into type theory and the Lean theorem prover we will see that induction and recursion can be seen as really the same thing,
-and it's just one of many similarities between functions and proofs.
+Now that we delve into the Lean theorem prover we will see that induction and recursion can be seen as really the same thing,
+and that's just one of many similarities between functions and proofs.
+
+\section{First steps with Lean}
+
+In Lean we primarily do three things:
+\begin{enumerate}
+\item define data structure
+\item define functions
+\item prove theorems about data and functions
+\end{enumerate}
+What sets Lean apart from your average functional programming language (like Haskell) is the third item on the list.
+Now we will instead focus on the first and second points.
+
+Data is defined using the \lstinline{inductive} keyword.
+Here is the typical example of data structure:
+\begin{lstlisting}
+inductive weekday
+| monday
+| tuesday
+| wednesday
+| thursday
+| friday
+| saturday
+| sunday
+\end{lstlisting}
+This defines a \textit{type} called \lstinline{weekday}.
+Days of the week like \lstinline{monday}, \lstinline{tuesday}, etc. are elements of the type \lstinline{weekday}.
+We can see this using the \lstinline{#check} command:
+\begin{lstlisting}
+#check tuesday -- this outputs "weekday"
+\end{lstlisting}
+Everything in Lean has a type. For example, natural numbers have type \lstinline{ℕ}:
+\begin{lstlisting}
+#check 3 -- ℕ
+\end{lstlisting}
+Even type themselves have a type\footnote{Types in Lean have a role similar to sets in math.
+Standard math axioms (like ZFC) dictates that everything is a set, including sets themselves.
+This basic notion can lead to some contradictory statements, like the famous Russell's paradox
+(let's consider the set of all sets that do not contain themselves; does this set contain itself?)
+and if one is not careful in defining types of types, the same thing could happen with type theory.
+But in fact, type theory was invented in the beginning of the 20th century by Bertrand Russell precisely to avoid Russell's paradox.
+The approach used in Lean is to define a cumulative hierarchy of universes,
+so that it's impossible to invoke objects like "the type of all types" or a type having itself as an element.}.
+Lean's type system is very expressive, and makes it possible to work with complex math in Lean.
+
+We can define functions over the type \lstinline{weekday} -
+for example, the function \lstinline{next}:
+
+\begin{lstlisting}
+-- opening the scope weekday (you can ignore this)
+open weekday
+
+-- special characters like → will abound
+-- and are easy to write using a text editor
+def next : weekday → weekday
+| monday    := tuesday
+| tuesday   := wednesday
+| wednesday := thursday
+| thursday  := friday
+| friday    := saturday
+| saturday  := sunday
+| sunday    := monday
+
+#reduce next wednesday -- this outputs "thursday"
+\end{lstlisting}
+
+(Almost) every expression - like \lstinline{next (next thursday)} or \lstinline{3 * 5 + 2} -
+have a corresponding \textit{reduced form} (respectively \lstinline{saturday} and \lstinline{17})
+which can be displayed using the \lstinline{#reduce} command,
+and is obtained by repeatedly applying functions to their arguments, until the full computation is carried out.
+In this sense, things like \lstinline{next wednesday} and \lstinline{next (next tuesday)}
+(or \lstinline{2 + 2} and \lstinline{1 + 3}) are \textit{definitionally equivalent}, because they're reduced to the same expression.
 
 \end{document}
