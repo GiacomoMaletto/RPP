@@ -57,6 +57,9 @@
 \usepackage{hyphenat}
 \hyphenation{pri-mi-tive}
 
+% other
+\usepackage[colorlinks=true]{hyperref}
+
 % macro
 % \newcommand{\svdots}{\scriptscriptstyle \boldsymbol \vdots}
 \newcommand{\perm}[1]{\scriptstyle \left\rmoustache #1 \right\rmoustache}
@@ -125,6 +128,7 @@ Here is the definition that we will use:
 \newpage
 
 \begin{definition}[Reversible Primitive Permutations]
+\label{rppdef}
 The class of \textbf{Reversible Primitive Permutations} or $\RPP$ is the smallest subset of functions $\Z^n \to \Z^n$ satisfying the following conditions:
 \begin{itemize}
 
@@ -224,6 +228,7 @@ as that would break reversibility.
 \end{definition}
 
 \begin{remark}
+\label{different_arity}
 If we have two functions of different arity, for example $f : \Z^3 \to \Z^3$ and $g : \Z^5 \to \Z^5$,
 then we will still write $f \rppCo g$ to mean the function with arity $\max(3, 5)=5$ given by $(f \rppPa \rppId_2) \rppCo g$.
 In general, the arity of the "smaller" function can be enlarged by a suitable parallel composition with the identity.
@@ -337,6 +342,7 @@ furthermore, we don't need to perform the calculation manually, case by case.
 In other words, there is an \textit{effective procedure} which produces the inverse $f^{-1} \in \RPP$ given any $f \in \RPP$.
 
 \begin{proposition}[The inverse $f^{-1}$ of any $f$]
+\label{rppinv}
 Let $f : \Z^n \to \Z^n$ belong to $\RPP$.
 Then the inverse $f^{-1} : \Z^n \to \Z^n$ exists, belongs to $\RPP$ and, by definition, is
 \begin{itemize}
@@ -378,6 +384,12 @@ and that's just one of many similarities between functions and proofs.
 
 \section{First steps with Lean}
 
+In this section we take a look at some of Lean's basic features.
+You don't have to understand every detail -
+just enought to have a vague sense of what it's like to define stuff in Lean.
+
+\paragraph{}
+
 In Lean we primarily do three things:
 \begin{enumerate}
 \item define data structures
@@ -387,6 +399,12 @@ In Lean we primarily do three things:
 What sets Lean apart from your average functional programming language (like Haskell) is the third item on the list.
 Now we will instead focus on the first and second points.
 
+You don't have to understand every detail of what will follow -
+a vague understanding of what's going on would be sufficient.
+The curious reader can run and play with most of the following snippets of code
+in the online editor \url{https://leanprover-community.github.io/lean-web-editor/}.
+
+\paragraph{A simple example of a type}
 Data is defined using the \lstinline{inductive} keyword.
 Here is the typical example of data structure:
 \begin{lstlisting}
@@ -403,8 +421,15 @@ This defines a \textit{type} called \lstinline{weekday}.
 Days of the week like \lstinline{monday}, \lstinline{tuesday}, etc. are elements of the type \lstinline{weekday}.
 We can see this using the \lstinline{#check} command:
 \begin{lstlisting}
+-- opening the scope weekday (you can ignore this)
+open weekday
+
 #check tuesday -- this outputs "weekday"
 \end{lstlisting}
+and we write this as
+\begin{center}\begin{lstlisting}
+tuesday : weekday
+\end{lstlisting}\end{center}
 Everything in Lean has a type. For example, natural numbers have type \lstinline{ℕ}:
 \begin{lstlisting}
 #check 3 -- ℕ
@@ -423,11 +448,10 @@ We can define functions over the type \lstinline{weekday} -
 for example, the function \lstinline{next}:
 
 \begin{lstlisting}
--- opening the scope weekday (you can ignore this)
-open weekday
-
--- special characters like → will abound
--- and are easy to write using a text editor
+-- Special characters like → will abound.
+-- In VS Code and the Lean Web Editor,
+-- arrows can be inserted by typing \to and hitting
+-- the space bar. 
 def next : weekday → weekday
 | monday    := tuesday
 | tuesday   := wednesday
@@ -438,7 +462,11 @@ def next : weekday → weekday
 | sunday    := monday
 
 #reduce next wednesday -- this outputs "thursday"
+#check next -- next has type "weekday → weekday"
 \end{lstlisting}
+This function is defined by cases:
+if we have \lstinline{monday}, output \lstinline{tuesday},
+if we have \lstinline{tuesday}, output \lstinline{wednesday}, and so on.
 
 (Almost) every expression - like \lstinline{next (next thursday)} or \lstinline{3 * 5 + 2} -
 have a corresponding \textit{reduced form} (respectively \lstinline{saturday} and \lstinline{17})
@@ -446,5 +474,319 @@ which can be displayed using the \lstinline{#reduce} command,
 and is obtained by repeatedly applying functions to their arguments, until the full computation is carried out.
 In this sense, things like \lstinline{next wednesday} and \lstinline{next (next tuesday)}
 (or \lstinline{2 + 2} and \lstinline{1 + 3}) are \textit{definitionally equivalent}, because they're reduced to the same expression.
+
+An important remark on notation:
+in math it is customary to call functions by enclosing arguments in parenthesis and separating them with commas, i.e. $f(x,y,z)$.
+Languages like Lean follow a different convention: the arguments are simply written after the function name, like \lstinline{f x y z}.
+So in our case, what we would write as $\mathsf{next(next(thursday))}$ is instead written \lstinline{next (next thursday)}
+(writing \lstinline{next next thursday} would be wrong
+because it would mean that the first argument to \lstinline{next} is the function \lstinline{next} itself, not \lstinline{next thursday}).
+This leads to no ambiguity and often helps reducing clutter.
+
+\paragraph{An example of an inductive type}
+Right now you could be wondering why we used the keyword \lstinline{inductive} to define \lstinline{weekday},
+when there's \textit{clearly} no induction going on at all in its construction.
+First of all, it depends on what you mean by induction; but it is true that that was a particularly simple case.
+As an example of a more overtly inductive object, we can define the natural numbers like this:
+\begin{lstlisting}
+inductive Nat
+| Zero
+| Succ (n : Nat)
+\end{lstlisting}
+The name \lstinline{Nat} and subsequent objects are capitalized in order to avoid conflict with the definition of \lstinline{nat} already present in Lean.
+We can read this definition as "every element of the type \lstinline{Nat} is either \lstinline{Zero}
+or \lstinline{Succ n} where \lstinline{n : Nat}",
+which is basically the Peano definition of natural numbers.
+Some examples of elements of this type:
+\begin{lstlisting}
+open Nat
+
+-- all these outputs "Nat"
+#check Zero -- represents 0
+#check Succ Zero -- represents 1
+#check Succ (Succ Zero) -- represents 2
+#check Succ (Succ (Succ Zero)) -- represent 3
+\end{lstlisting}
+Functions over \lstinline{Nat} have the possibility of being truly recursive:
+for example, we can recursively define addition \lstinline{Add m n} by induction over \lstinline{n}.
+\begin{itemize}
+\item if \lstinline{n = Zero} then \lstinline{Add m Zero = m}
+\item if \lstinline{n = Succ n'} for some \lstinline{n' : Nat}, \\
+      then \lstinline{Add m (Succ n') = Succ (Add m n')}.
+\end{itemize}
+Note that by definition each element of \lstinline{Nat} can be either \lstinline{Zero} or \lstinline{Succ n'} for some \lstinline{n' : Nat},
+so the two cases considered cover all possibilities.
+Written in Lean,
+\begin{lstlisting}
+def Add : Nat → Nat → Nat
+| m Zero      := m
+| m (Succ n') := Succ (Add m n')
+\end{lstlisting}
+It may have struck you that the type of \lstinline{Add} is not \lstinline{Nat × Nat → Nat}
+but instead \lstinline{Nat → Nat → Nat}.
+This is known as currying, and it's not as strange as it might look like at first.
+Consider this: we can think of \lstinline{Add} as a function which takes a pair \lstinline{(m,n) : Nat × Nat} and outputs \lstinline{Add m n : Nat},
+as is standard in mathematics.
+But we can also think of it as a function which takes just \lstinline{m : Nat} and outputs the function \lstinline{Add m : Nat → Nat},
+which in turn given \lstinline{n : Nat} outputs \lstinline{Add m n : Nat}.
+We can think of \lstinline{Add m} as a partially applied function, which becomes fully applied when it is given another argument \lstinline{n}.
+From this point of view, \lstinline{Add} is a function of type \lstinline{Nat → (Nat → Nat)} which is the same as
+\lstinline{Nat → Nat → Nat} because in Lean the arrow \lstinline{→} is right associative.
+
+In a certain sense, currying makes functions conceptually simpler;
+all functions are single variable, it's just that some return other functions.
+
+\paragraph{Syntax and semantics}
+Let's now ask ourselves: how can we define in a satisfactory way the class of functions $\RPP$ in Lean,
+using just types and functions?
+We'd like to be able to do proofs by induction over $\RPP$, like in proposition \ref{rppinv}, so we'll need to define an inductive type.
+
+The key is thinking about $\RPP$ not as a class of functions, but as a small programming language.
+In this sense, we can write down "programs" like our square function
+\[(\rppId_1 \rppPa \rppSw) \rppCo \rppinc \rppCo \rppmul \rppCo \rppdec \rppCo (\rppId_1 \rppPa \rppSw)\]
+but we should not view it only as a function belonging to $\Z^3 \to \Z^3$,
+but also as the sentence
+"$(\rppId_1 \rppPa \rppSw) \rppCo \rppinc \rppCo \rppmul \rppCo \rppdec \rppCo (\rppId_1 \rppPa \rppSw)$"
+which can then be interpreted as the mathematical function belonging to $\Z^3 \to \Z^3$.
+
+We thus separate between the \textit{syntax} and the \textit{semantics} of our language.
+\begin{itemize}
+\item The syntax are the rules which governs how to assemble well-structured sentences.
+For example, the selection symbol $\mathsf{If}$ should be followed by three other $\RPP$ functions;
+if we write $\mathsf{If}[\rppSu, \rppPr] \rppCo \rppNe$ we get a non-valid sentence.
+\item The semantics is the meaning we give to (well-structured) sentences -
+in our case, they are intepreted as functions $\Z^n \to \Z^n$.
+\end{itemize}
+
+A possible way to define $\RPP$ functions in Lean is
+\begin{itemize}
+\item define the type $\RPP$ which has for elements syntactically-correct sentences of $\RPP$
+\item define a function $\mathsf{evaluate} : \RPP \to (\Z^n \to \Z^n)$ which assigns to each $\RPP$-sentence its intended meaning,
+namely a function $\Z^n \to \Z^n$.
+\end{itemize}
+Note that this is not the only way in which this task can be accomplished;
+we will discuss other methods at the end of this chapter.
+
+We thus define the type $\RPP$ as follows:
+\begin{lstlisting}
+inductive RPP
+| Id (n : ℕ)
+| Ne
+| Su
+| Pr
+| Sw
+| Co (f g : RPP)
+| Pa (f g : RPP)
+| It (f : RPP)
+| If (f g h : RPP)
+\end{lstlisting}
+and also introduce custom notation:
+\begin{lstlisting}
+-- the numbers 50 and 55 denote the precedence -
+-- simply put, Ne ;; Su ‖ Pr is intepreted as
+-- Ne ;; (Su ‖ Pr), not (Ne ;; Su) ‖ Pr
+infix `;;` : 50 := Co
+infix `‖` : 55 := Pa
+\end{lstlisting}
+so it's now possible to write expressions like
+\begin{lstlisting}
+#check It Su ;; ((Id 1) f If Sw Pr Su) -- RPP
+\end{lstlisting}
+Remember that by remark \ref{different_arity}, it makes sense to consider the series composition of functions of different arity,
+as long as we give them the meaning specified in the remark.
+
+Talking about arity, how do we deal with it?
+In order to define $\mathsf{evaluate}$ and give meaning to $\RPP$,
+we must be able to define a concept of arity,
+otherwise we'll have trouble with parallel composition of two functions \lstinline{f ‖ g} -
+the arity of \lstinline{f} must be known,
+otherwise it's impossible to tell what to apply \lstinline{g} to.
+
+Luckily, we can reconstruct the arity of an \lstinline{RPP} just by looking at its symbolic representation:
+\begin{lstlisting}
+def arity : RPP → ℕ
+| (Id n)     := n
+| Ne         := 1
+| Su         := 1
+| Pr         := 1
+| Sw         := 2
+| (f ;; g)   := max f.arity g.arity
+| (f ‖ g)    := f.arity + g.arity
+| (It f)     := f.arity + 1
+| (If f g h) := max (max f.arity g.arity) h.arity + 1
+\end{lstlisting}
+Note that \lstinline{f.arity} is the same as \lstinline{(arity f)}.
+This is a recursive function:
+there are 5 base cases and in the other 4 the value of \lstinline{arity} is reconstructed from smaller sub-terms.
+
+\paragraph{Integers and lists}
+We're almost ready to define \lstinline{evaluate}.
+What we don't know yet is how to represent and work with integer tuples, $\Z^n$.
+
+The good news is that integers are already defined in Lean.
+Here is their definition:
+\begin{lstlisting}
+inductive int
+| of_nat (n : ℕ)
+| neg_succ_of_nat (n : ℕ)
+\end{lstlisting}
+The value \lstinline{of_nat n} represents the natural number \lstinline{n : ℕ} as an integer,
+while \lstinline{neg_succ_of_nat n} represents the negative number \lstinline{-(n+1)}.
+Of course it's not the definition we've just seen that gives this meaning to the \lstinline{int}s;
+rather, it's the functions defined on them (like addition, subtraction etc.).
+
+Immediately after the definition, some notation is introduced:
+\begin{itemize}
+\item \lstinline{ℤ} stands for \lstinline{int}
+\item in a context in which an integer is expected, if instead a natural number is supplied,
+the function \lstinline{of_nat} will be automatically applied on the natural number.
+This convenient feature is called coercion.
+\item for every \lstinline{n : ℕ}, \lstinline{-[1+ n]} stands for \lstinline{neg_succ_of_nat n}.
+This notation is almost never used.
+\end{itemize}
+\begin{lstlisting}
+notation `ℤ` := int
+
+instance : has_coe nat int := ⟨int.of_nat⟩
+
+notation `-[1+ ` n `]` := int.neg_succ_of_nat n
+\end{lstlisting}
+As an example of a function from \lstinline{ℤ} to \lstinline{ℤ}, this is negation:
+\begin{lstlisting}
+def neg : ℤ → ℤ
+| (of_nat n) := neg_of_nat n
+| -[1+ n]    := succ n
+\end{lstlisting}
+
+We're interested not just in integers, but in tuples of integers.
+We can implement the concept of a tuple in many ways,
+but a particularly simple one is through the use of lists,
+a very common data structure in computer science.
+
+Let's consider lists of natural numbers, i.e. the type \lstinline{list ℕ}.
+This is a list of 5 elements:
+\begin{lstlisting}
+open list
+#reduce [4, 5, 7, 2, 5] -- outputs "[4, 5, 7, 2, 5]"
+\end{lstlisting}
+The first element of a list is the \textit{head}
+\begin{lstlisting}
+#reduce head [4, 5, 7, 2, 5] -- "4"
+\end{lstlisting}
+while the other elements are the \textit{tail}.
+\begin{lstlisting}
+#reduce tail [4, 5, 7, 2, 5] -- "[5, 7, 2, 5]"
+\end{lstlisting}
+Given \lstinline{n : ℕ} and \lstinline{l : list ℕ} we can obtain a new list
+\lstinline{cons n l} (also written as \lstinline{n :: l}) such that
+\lstinline{head (n :: l) = n} and \lstinline{head (n :: l) = l}
+\begin{lstlisting}
+#reduce cons 2 [4, 5, 7, 2, 5] -- [2, 4, 5, 7, 2, 5]
+#reduce 2 :: [4, 5, 7, 2, 5]   -- the same thing  
+\end{lstlisting}
+and ultimately, every list can be obtained by starting with \lstinline{nil},
+the empty list, and repeatedly using \lstinline{cons}.
+\begin{lstlisting}
+#reduce nil -- the empty list
+#reduce []  -- alternative notation 
+#reduce cons 4 (cons 5 (cons 7 (cons 2 (cons 5 nil))))
+            -- [4, 5, 7, 2, 5]
+#reduce 4 :: 5 :: 7 :: 2 :: 5 :: []
+            -- alternative notation
+\end{lstlisting}
+This might suggest a definition of lists of naturals:
+a \lstinline{list_nat} is either the empty list \lstinline{nil_nat},
+or \lstinline{cons_nat hd tl} where \lstinline{hd : ℕ} and \lstinline{tl : list_nat}
+are respectively the head and tail of the list:
+\begin{lstlisting}
+inductive list_nat
+| nil_nat
+| cons_nat (hd : ℕ) (tl : list_nat)
+\end{lstlisting}
+There's nothing special about using natural numbers.
+We can use the same procedure to define lists of integers:
+\begin{lstlisting}
+inductive list_int
+| nil_int
+| cons_int (hd : ℤ) (tl : list_int)
+\end{lstlisting}
+but having to define different types of lists for each type of element is pretty cumbersome.
+Instead, we can define lists for a generic type \lstinline{T} using \textit{dependent types}:
+\begin{lstlisting}
+inductive list (T : Type*)
+| nil
+| cons (hd : T) (tl : list)
+\end{lstlisting}
+Rather than having \lstinline{list_nat}, \lstinline{list_int}...
+we use \lstinline{list ℕ}, \lstinline{list ℤ}...
+\lstinline{list α} where \lstinline{α} is any type.
+
+We can see how useful dependent types are by defining the function \lstinline{length}
+which returns the number of elements of a list:
+\begin{lstlisting}
+def length {α : Type*} : list α → ℕ
+| []       := 0
+| (a :: l) := length l + 1
+\end{lstlisting}
+Note that we can use \lstinline|{α : Type*}| to refer to a generic type \lstinline{α}.
+If instead we had stuck to \lstinline{list_nat}, \lstinline{list_int}...
+now we would have to define \lstinline{length_nat}, \lstinline{length_int}... separately for each type.
+
+We will identity tuples of $n$ elements $\Z^n$ with lists in \lstinline{list ℤ} of length \lstinline{n}.
+The function $\mathsf{evaluate}$ should take $\RPP$-sentences and return functions $\Z^n \to \Z^n$,
+so in Lean we will define it as a function of type
+\begin{lstlisting}
+RPP → (list ℤ → list ℤ)
+\end{lstlisting}
+which in Lean is the same as
+\begin{lstlisting}
+RPP → list ℤ → list ℤ.
+\end{lstlisting}
+\newpage
+\paragraph{The \lstinline{evaluate} function}
+We are now ready to define \lstinline{evaluate} (\lstinline{ev} for short):
+\begin{lstlisting}
+def ev : RPP → list ℤ → list ℤ
+| (Id n)     l                    := l
+| Ne         (x :: l)             := -x :: l
+| Su         (x :: l)             := (x + 1) :: l
+| Pr         (x :: l)             := (x - 1) :: l
+| Sw         (x :: y :: l)        := y :: x :: l
+| (f ;; g)   l                    := ev g (ev f l)
+| (f ‖ g)    l                    := ev f (take f.arity l) ++
+                                     ev g (drop f.arity l)
+| (It f)     (x :: l)             := x :: ((ev f)^[↓x] l)
+| (If f g h) (0 :: l)             := 0 :: ev g l
+| (If f g h) (((n : ℕ) + 1) :: l) := (n + 1) :: ev f l
+| (If f g h) (-[1+ n] :: l)       := -[1+ n] :: ev h l
+| _          l                    := l
+
+notation `‹` f `›` := ev f
+\end{lstlisting}
+We will write \lstinline{‹f›} to mean the function of type \lstinline{list ℤ → list ℤ} given by \lstinline{ev f}.
+
+Here's a case-by-case analysis:
+\begin{itemize}
+\item \lstinline{‹Id n› l} is the original list \lstinline{l}, unchanged.
+\item \lstinline{‹Ne› (x :: l)} reduce to \lstinline{-x :: l}, which is same list but with the head of opposite sign.
+\item \lstinline{‹Su› (x :: l)} reduce to the same list but with the head incremented by one.
+\item \lstinline{‹Pr› (x :: l)} reduce to the same list but with the head decremented by one.
+\item \lstinline{‹Sw› (x :: y :: l)} reduce the same list but with the first two elements swapped.
+\item \lstinline{‹f ;; g› l} successively applies \lstinline{‹f›} and \lstinline{‹g›} to the list.
+\item \lstinline{‹f ‖ g› l} applies \lstinline{‹f›} to the first \lstinline{f.arity} elements of the list,
+applies \lstinline{‹g›} to the remaining elements of the list,
+and then joins the two parts through \lstinline{append} (which is the \lstinline{(++)} operator).
+\item \lstinline{‹It f› (x :: l)} leaves the head unchanged and applies \lstinline{‹f›} to the tail \lstinline{↓x} times,
+where \lstinline{↓x} is defined as in definition \ref{rppdef}.
+\item \lstinline{‹If f g h› (0 :: l)} leaves the head unchanged and applies \lstinline{‹g›} to the tail.
+\item \lstinline{‹If f g h› (((n : ℕ) + 1) :: l)} is the case where the head is a positive number
+(a natural number plus \lstinline{1}),
+and as such leaves the head unchanged and applies \lstinline{‹f›} to the tail.
+\item \lstinline{‹If f g h› (-[1+ n] :: l)} is the case where the head is a negative number,
+and as such leaves the head unchanged and applies \lstinline{‹h›} to the tail.
+\item In all cases not considered (for example, applying \lstinline{‹Ne›} to an empty list) the whole list remains unchanged. 
+\end{itemize}
+
+The reader is invited to compare this definition with the one given in definition \ref{rppdef}.
 
 \end{document}

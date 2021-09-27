@@ -4,8 +4,6 @@ import logic.function.iterate
 import tactic.linarith
 import tactic.omega
 
-import list_lemmas
-
 open list
 
 inductive RPP

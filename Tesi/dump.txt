@@ -166,3 +166,33 @@ def prec_loop (g : RPP) :=
 
 \vspace{5mm}
 Viene poi eseguita per $y_0$ iterazioni la funzione
+
+We're interested not just in integers, but in tuples of integers.
+In Lean there's a notion of product of types:
+given arbitrary types \lstinline{A} and \lstinline{B} we can construct the type \lstinline{A × B},
+which has for elements pairs \lstinline{(a,b)} where \lstinline{a : A} and \lstinline{b : B}.
+From this it's possible to work with tuples of arbitrary length:
+for example, typing
+\begin{lstlisting}
+#check (1, 2, 3, 4)
+\end{lstlisting}
+we get the type \lstinline{ℕ × ℕ × ℕ × ℕ},
+which is really just another way to write \lstinline{ℕ × (ℕ × (ℕ × ℕ))} because in Lean the product is right associative.
+
+
+We will need some functions defined on lists.
+\begin{itemize}
+\item \begin{lstlisting}
+def length {α : Type*} : list α → ℕ
+| []       := 0
+| (a :: l) := length l + 1
+\end{lstlisting}
+is a recursive function that returns the length of a given list, i.e. the number of elements.
+Note that we can use \lstinline|{α : Type*}| to refer to a generic type \lstinline{α}.
+If instead we had stuck to \lstinline{list_nat}, \lstinline{list_int}...
+now we would have to define \lstinline{length_nat}, \lstinline{length_int}... separately for each type.
+\item \begin{lst
+\item \begin{lstlisting}
+
+\end{lstlisting}
+\end{itemize}
