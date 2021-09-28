@@ -59,6 +59,7 @@
 
 % other
 \usepackage[colorlinks=true]{hyperref}
+\usepackage{csquotes}
 
 % macro
 % \newcommand{\svdots}{\scriptscriptstyle \boldsymbol \vdots}
@@ -81,8 +82,10 @@
 \newcommand{\rppSw}{\mathsf{Sw}}
 \newcommand{\rppCo}{\fatsemi}
 \newcommand{\rppPa}{\Vert}
-\newcommand{\rppIt}[1]{\mathsf{It}[#1]}
-\newcommand{\rppIf}[3]{\mathsf{If}[#1, #2, #3]}
+\newcommand{\rppIt}{\mathsf{It}}
+\newcommand{\rppIta}{\mathsf{Ita}}
+\newcommand{\rppItr}{\mathsf{Itr}}
+\newcommand{\rppIf}{\mathsf{If}}
 \newcommand{\rppinc}{\mathsf{inc}}
 \newcommand{\rppdec}{\mathsf{dec}}
 \newcommand{\rppmul}{\mathsf{mul}}
@@ -193,14 +196,14 @@ then the \textbf{parallel composition} $(f \rppPa g) : \Z^{n + m} \to \Z^{n + m}
 
 \item
 If $f : \Z^n \to \Z^n$ belongs to $\RPP$,
-then then \textbf{finite iteration} $\rppIt f : \Z^{n + 1} \to \Z^{n + 1}$ belongs to $\RPP$ and is such that:
-\[ \rppIt f (x, x_1, \dots, x_n) = (x, (\overbrace{f \circ \dots \circ f}^{\downarrow x \text{ times}}) (x_1, \dots, x_n)) \]
+then then \textbf{finite iteration} $\rppIt[f] : \Z^{n + 1} \to \Z^{n + 1}$ belongs to $\RPP$ and is such that:
+\[ \rppIt[f] (x, x_1, \dots, x_n) = (x, (\overbrace{f \circ \dots \circ f}^{\downarrow x \text{ times}}) (x_1, \dots, x_n)) \]
 where $\downarrow (\cdot) : \Z \to \N$ is defined as
 \[\downarrow x = \begin{cases} x, & \text{if $x \ge 0$} \\
                                0, & \text{if $x < 0$} \end{cases}.\]
 This means that the function $f$ is applied $\downarrow x$ times to $(x_1, \dots, x_n)$.
 \[\begin{NiceMatrix}[nullify-dots]
-  x      & \bloch{4-1}{\rppIt{f}} & x      & \Block{4-1}{=} & x      &                                                                       &                    &                & x      \\  
+  x      & \bloch{4-1}{\rppIt[f]} & x      & \Block{4-1}{=} & x      &                                                                       &                    &                & x      \\  
   x_1    &                        & y_1    &                & x_1    & \bloch{3-1}{f}                                                        & \Block{3-1}{\dots} & \bloch{3-1}{f} & y_1    \\
   \Vdots &                        & \Vdots &                & \Vdots &                                                                       &                    &                & \Vdots \\
   x_n    &                        & y_n    &                & x_n    &                                                                       &                    &                & y_n    \\
@@ -209,14 +212,14 @@ This means that the function $f$ is applied $\downarrow x$ times to $(x_1, \dots
 
 \item
 If $f, g, h : \Z^n \to \Z^n$ belongs to $\RPP$,
-then the \textbf{selection} $\rppIf f g h : \Z^{n + 1} \to \Z^{n + 1}$ belongs to $\RPP$ and is such that:
-\[\rppIf f g h (x, x_1, \dots, x_n) = \begin{cases} (x, f (x_1, \dots, x_n)), & \text{if $x > 0$} \\
+then the \textbf{selection} $\rppIf[f, g, h] : \Z^{n + 1} \to \Z^{n + 1}$ belongs to $\RPP$ and is such that:
+\[\rppIf[f, g, h] (x, x_1, \dots, x_n) = \begin{cases} (x, f (x_1, \dots, x_n)), & \text{if $x > 0$} \\
                                                     (x, g (x_1, \dots, x_n)), & \text{if $x = 0$} \\
                                                     (x, h (x_1, \dots, x_n)), & \text{if $x < 0$} \end{cases}.\]
 We remark that the argument $x$ which determines which among $f$, $g$ and $h$ must be used cannot be among the arguments of $f$, $g$ and $h$,
 as that would break reversibility.
 \[\begin{NiceMatrix}[nullify-dots]
-  x      & \bloch{4-1}{\rppIf f g h} & x      &                &                     &                  \\
+  x      & \bloch{4-1}{\rppIf[f, g, h]} & x      &                &                     &                  \\
   x_1    &                           & y_1    & \Block{3-1}{=} & f (x_1, \dots, x_n) & \text{if } x > 0 \\
   \Vdots &                           & \Vdots &                & g (x_1, \dots, x_n) & \text{if } x = 0 \\
   x_n    &                           & y_n    &                & h (x_1, \dots, x_n) & \text{if } x < 0 \\
@@ -232,7 +235,7 @@ as that would break reversibility.
 If we have two functions of different arity, for example $f : \Z^3 \to \Z^3$ and $g : \Z^5 \to \Z^5$,
 then we will still write $f \rppCo g$ to mean the function with arity $\max(3, 5)=5$ given by $(f \rppPa \rppId_2) \rppCo g$.
 In general, the arity of the "smaller" function can be enlarged by a suitable parallel composition with the identity.
-The same goes for the arguments of the selection $\rppIf f g h$.
+The same goes for the arguments of the selection $\rppIf[f, g, h]$.
 \[\begin{NiceMatrix}[nullify-dots]
   x_1 & \bloch{5-1}{f \rppCo g} & z_1 & \Block{5-1}{=} & x_1 & \bloch{3-1}{f} & y_1 & \bloch{5-1}{g} & z_1 & \Block{5-1}{=} & x_1 & \bloch{3-1}{f}        & y_1 & \bloch{5-1}{g} & z_1 \\
   x_2 &                         & z_2 &                & x_2 &                & y_2 &                & z_2 &                & x_2 &                       & y_2 &                & z_2 \\
@@ -281,7 +284,7 @@ So indeed $\rppdec$ is the inverse of $\rppinc$, and we can write $\rppdec = \rp
 
 But we haven't said how to actually define $\rppinc$.
 Well, just like this:
-\[\rppinc = \rppIt{\rppSu}\]
+\[\rppinc = \rppIt[\rppSu]\]
 This means that we apply the successor function $\rppSu$ to the value $x$, for $\downarrow n$ times.
 If $n \in \N$ then $\downarrow n = n$, so we effectively add $n$ to the value $x$.
 If instead $n$ is negative then $\downarrow n = 0$ and nothing changes.
@@ -289,13 +292,13 @@ If instead $n$ is negative then $\downarrow n = 0$ and nothing changes.
 Can you guess how $\rppdec$ is defined?
 \newpage
 In a very similar manner, using the predecessor function:
-\[\rppdec = \rppIt{\rppPr}\]
+\[\rppdec = \rppIt[\rppPr]\]
 and as we will shortly see, finding the inverse is not something that we have to do by hand.
 
 \paragraph{Multiplication and square}
 We now turn our attention to multiplication.
 The elementary-school way to define multiplication is by repeated addition, and we can define $\rppmul$ exactly like that:
-\[\rppmul = \rppIt{\rppinc}.\]
+\[\rppmul = \rppIt[\rppinc].\]
 As $\rppinc$ had arity $2$, $\rppmul$ has arity $2+1=3$.
 If $n, m \in \N$ and $x \in \Z$ then we have
 \[\begin{NiceMatrix}
@@ -353,8 +356,8 @@ Then the inverse $f^{-1} : \Z^n \to \Z^n$ exists, belongs to $\RPP$ and, by defi
 \item $\rppSw^{-1} = \rppSw$
 \item $(f \rppCo g)^{-1} = g^{-1} \rppCo f^{-1}$
 \item $(f \rppPa g)^{-1} = f^{-1} \rppPa g^{-1}$
-\item ${\rppIt f}^{-1} = \rppIt {f^{-1}}$
-\item ${\rppIf f g h}^{-1} = \rppIf {f^{-1}} {g^{-1}} {h^{-1}}$
+\item ${\rppIt[f]}^{-1} = \rppIt[f^{-1}]$
+\item ${\rppIf[f, g, h]}^{-1} = \rppIf [f^{-1}, g^{-1}, h^{-1}]$
 \end{itemize}
 Then $f \rppCo f^{-1} = \rppId_n$ and $f^{-1} \rppCo f = \rppId_n$.
 \end{proposition}
@@ -365,9 +368,9 @@ By induction on the definition of $f$.
 Well, that was rather succint.
 
 We invite the reader to check that every listed inverse does indeed make sense;
-for example, the function $\rppIt f (x, y_1, \dots, y_n)$ applies $\downarrow x$ times the function $f$ to the argument $(y_1, \dots, y_n)$.
+for example, the function $\rppIt[f] (x, y_1, \dots, y_n)$ applies $\downarrow x$ times the function $f$ to the argument $(y_1, \dots, y_n)$.
 If we want to "undo" this effect we just need to apply $\downarrow x$ times $f^{-1}$ to the same argument, so
-${\rppIt f}^{-1} = \rppIt {f^{-1}}$.
+${\rppIt[f]}^{-1} = \rppIt[f^{-1}]$.
 
 Of course, that reasoning only works if in turn $f$ is also invertible and $f^{-1} \in \RPP$.
 This is the reason that the proof is by induction:
@@ -419,9 +422,11 @@ inductive weekday
 \end{lstlisting}
 This defines a \textit{type} called \lstinline{weekday}.
 Days of the week like \lstinline{monday}, \lstinline{tuesday}, etc. are elements of the type \lstinline{weekday}.
-We can see this using the \lstinline{#check} command:
+We can see the type of an element by using the \lstinline{#check} command:
 \begin{lstlisting}
--- opening the scope weekday (you can ignore this)
+-- opening the scope weekday (otherwise to refer
+-- to an element - for example tuesday - of weekday
+-- we have to write weekday.tuesday)
 open weekday
 
 #check tuesday -- this outputs "weekday"
@@ -536,92 +541,9 @@ From this point of view, \lstinline{Add} is a function of type \lstinline{Nat �
 In a certain sense, currying makes functions conceptually simpler;
 all functions are single variable, it's just that some return other functions.
 
-\paragraph{Syntax and semantics}
-Let's now ask ourselves: how can we define in a satisfactory way the class of functions $\RPP$ in Lean,
-using just types and functions?
-We'd like to be able to do proofs by induction over $\RPP$, like in proposition \ref{rppinv}, so we'll need to define an inductive type.
-
-The key is thinking about $\RPP$ not as a class of functions, but as a small programming language.
-In this sense, we can write down "programs" like our square function
-\[(\rppId_1 \rppPa \rppSw) \rppCo \rppinc \rppCo \rppmul \rppCo \rppdec \rppCo (\rppId_1 \rppPa \rppSw)\]
-but we should not view it only as a function belonging to $\Z^3 \to \Z^3$,
-but also as the sentence
-"$(\rppId_1 \rppPa \rppSw) \rppCo \rppinc \rppCo \rppmul \rppCo \rppdec \rppCo (\rppId_1 \rppPa \rppSw)$"
-which can then be interpreted as the mathematical function belonging to $\Z^3 \to \Z^3$.
-
-We thus separate between the \textit{syntax} and the \textit{semantics} of our language.
-\begin{itemize}
-\item The syntax are the rules which governs how to assemble well-structured sentences.
-For example, the selection symbol $\mathsf{If}$ should be followed by three other $\RPP$ functions;
-if we write $\mathsf{If}[\rppSu, \rppPr] \rppCo \rppNe$ we get a non-valid sentence.
-\item The semantics is the meaning we give to (well-structured) sentences -
-in our case, they are intepreted as functions $\Z^n \to \Z^n$.
-\end{itemize}
-
-A possible way to define $\RPP$ functions in Lean is
-\begin{itemize}
-\item define the type $\RPP$ which has for elements syntactically-correct sentences of $\RPP$
-\item define a function $\mathsf{evaluate} : \RPP \to (\Z^n \to \Z^n)$ which assigns to each $\RPP$-sentence its intended meaning,
-namely a function $\Z^n \to \Z^n$.
-\end{itemize}
-Note that this is not the only way in which this task can be accomplished;
-we will discuss other methods at the end of this chapter.
-
-We thus define the type $\RPP$ as follows:
-\begin{lstlisting}
-inductive RPP
-| Id (n : ℕ)
-| Ne
-| Su
-| Pr
-| Sw
-| Co (f g : RPP)
-| Pa (f g : RPP)
-| It (f : RPP)
-| If (f g h : RPP)
-\end{lstlisting}
-and also introduce custom notation:
-\begin{lstlisting}
--- the numbers 50 and 55 denote the precedence -
--- simply put, Ne ;; Su ‖ Pr is intepreted as
--- Ne ;; (Su ‖ Pr), not (Ne ;; Su) ‖ Pr
-infix `;;` : 50 := Co
-infix `‖` : 55 := Pa
-\end{lstlisting}
-so it's now possible to write expressions like
-\begin{lstlisting}
-#check It Su ;; ((Id 1) f If Sw Pr Su) -- RPP
-\end{lstlisting}
-Remember that by remark \ref{different_arity}, it makes sense to consider the series composition of functions of different arity,
-as long as we give them the meaning specified in the remark.
-
-Talking about arity, how do we deal with it?
-In order to define $\mathsf{evaluate}$ and give meaning to $\RPP$,
-we must be able to define a concept of arity,
-otherwise we'll have trouble with parallel composition of two functions \lstinline{f ‖ g} -
-the arity of \lstinline{f} must be known,
-otherwise it's impossible to tell what to apply \lstinline{g} to.
-
-Luckily, we can reconstruct the arity of an \lstinline{RPP} just by looking at its symbolic representation:
-\begin{lstlisting}
-def arity : RPP → ℕ
-| (Id n)     := n
-| Ne         := 1
-| Su         := 1
-| Pr         := 1
-| Sw         := 2
-| (f ;; g)   := max f.arity g.arity
-| (f ‖ g)    := f.arity + g.arity
-| (It f)     := f.arity + 1
-| (If f g h) := max (max f.arity g.arity) h.arity + 1
-\end{lstlisting}
-Note that \lstinline{f.arity} is the same as \lstinline{(arity f)}.
-This is a recursive function:
-there are 5 base cases and in the other 4 the value of \lstinline{arity} is reconstructed from smaller sub-terms.
-
 \paragraph{Integers and lists}
-We're almost ready to define \lstinline{evaluate}.
-What we don't know yet is how to represent and work with integer tuples, $\Z^n$.
+Functions belonging to $\RPP$ have $\Z^n$ as their domain and codomain,
+so we need a way to represent and work with integer tuples.
 
 The good news is that integers are already defined in Lean.
 Here is their definition:
@@ -667,22 +589,22 @@ Let's consider lists of natural numbers, i.e. the type \lstinline{list ℕ}.
 This is a list of 5 elements:
 \begin{lstlisting}
 open list
-#reduce [4, 5, 7, 2, 5] -- outputs "[4, 5, 7, 2, 5]"
+#reduce [4, 5, 7, 2, 5] -- [4, 5, 7, 2, 5]
 \end{lstlisting}
 The first element of a list is the \textit{head}
 \begin{lstlisting}
-#reduce head [4, 5, 7, 2, 5] -- "4"
+#reduce head [4, 5, 7, 2, 5] -- 4
 \end{lstlisting}
 while the other elements are the \textit{tail}.
 \begin{lstlisting}
-#reduce tail [4, 5, 7, 2, 5] -- "[5, 7, 2, 5]"
+#reduce tail [4, 5, 7, 2, 5] -- [5, 7, 2, 5]
 \end{lstlisting}
 Given \lstinline{n : ℕ} and \lstinline{l : list ℕ} we can obtain a new list
 \lstinline{cons n l} (also written as \lstinline{n :: l}) such that
 \lstinline{head (n :: l) = n} and \lstinline{head (n :: l) = l}
 \begin{lstlisting}
 #reduce cons 2 [4, 5, 7, 2, 5] -- [2, 4, 5, 7, 2, 5]
-#reduce 2 :: [4, 5, 7, 2, 5]   -- the same thing  
+#reduce 2 :: [4, 5, 7, 2, 5]   -- alternative notation  
 \end{lstlisting}
 and ultimately, every list can be obtained by starting with \lstinline{nil},
 the empty list, and repeatedly using \lstinline{cons}.
@@ -733,7 +655,108 @@ If instead we had stuck to \lstinline{list_nat}, \lstinline{list_int}...
 now we would have to define \lstinline{length_nat}, \lstinline{length_int}... separately for each type.
 
 We will identity tuples of $n$ elements $\Z^n$ with lists in \lstinline{list ℤ} of length \lstinline{n}.
-The function $\mathsf{evaluate}$ should take $\RPP$-sentences and return functions $\Z^n \to \Z^n$,
+
+\section{The definition in Lean}
+
+\paragraph{Syntax and semantics}
+Let's now ask ourselves: how can we define in a satisfactory way the class of functions $\RPP$ in Lean,
+using just types and functions?
+We'd like to be able to do proofs by induction over $\RPP$, like in proposition \ref{rppinv}, so we'll need to define an inductive type.
+
+The key is thinking about $\RPP$ not as a class of functions, but as a small programming language.
+In this sense, we can write down "programs" like our square function
+\[(\rppId_1 \rppPa \rppSw) \rppCo \rppinc \rppCo \rppmul \rppCo \rppdec \rppCo (\rppId_1 \rppPa \rppSw)\]
+but we should not view it only as a function belonging to $\Z^3 \to \Z^3$,
+but also as the sentence
+"$(\rppId_1 \rppPa \rppSw) \rppCo \rppinc \rppCo \rppmul \rppCo \rppdec \rppCo (\rppId_1 \rppPa \rppSw)$"
+which can then be interpreted as the mathematical function belonging to $\Z^3 \to \Z^3$.
+
+We thus separate between the \textit{syntax} and the \textit{semantics} of our language.
+\begin{itemize}
+\item The syntax are the rules which governs how to assemble well-structured sentences.
+For example, the selection symbol $\rppIf$ should be followed by three other $\RPP$ functions;
+if we write $\rppIf[\rppSu, \rppPr] \rppCo \rppNe$ we get a non-valid sentence.
+\item The semantics is the meaning we give to (well-structured) sentences -
+in our case, they are intepreted as functions $\Z^n \to \Z^n$.
+\end{itemize}
+
+A possible way to define $\RPP$ functions in Lean is
+\begin{itemize}
+\item define the type $\RPP$ which has for elements syntactically-correct sentences of $\RPP$
+\item define a function $\mathsf{evaluate} : \RPP \to (\Z^n \to \Z^n)$ which assigns to each $\RPP$-sentence its intended meaning,
+namely a function $\Z^n \to \Z^n$.
+\end{itemize}
+Note that this is not the only way in which this task can be accomplished;
+we will discuss other methods at the end of this chapter.
+
+We thus define the type $\RPP$ as follows:
+\begin{lstlisting}
+inductive RPP
+| Id (n : ℕ)
+| Ne
+| Su
+| Pr
+| Sw
+| Co (f g : RPP)
+| Pa (f g : RPP)
+| It (f : RPP)
+| If (f g h : RPP)
+\end{lstlisting}
+and also introduce custom notation:
+\begin{lstlisting}
+-- the numbers 50 and 55 denote the precedence -
+-- simply put, Ne ;; Su ‖ Pr is intepreted as
+-- Ne ;; (Su ‖ Pr), not (Ne ;; Su) ‖ Pr
+infix `;;` : 50 := Co
+infix `‖` : 55 := Pa
+\end{lstlisting}
+so it's now possible to write expressions like
+\begin{lstlisting}
+#check It Su ;; (Id 1 ‖ If Sw Pr Su) -- RPP
+\end{lstlisting}
+Remember that by remark \ref{different_arity}, it makes sense to consider the series composition of functions of different arity,
+as long as we give them the meaning specified in the remark.
+
+Talking about arity, how do we deal with it?
+In order to define $\mathsf{evaluate}$ and give meaning to $\RPP$,
+we must be able to define a concept of arity,
+otherwise we'll have trouble with parallel composition of two functions \lstinline{f ‖ g} -
+the arity of \lstinline{f} must be known,
+otherwise it's impossible to tell what to apply \lstinline{g} to.
+
+Luckily, we can reconstruct the arity of an \lstinline{RPP} just by looking at its symbolic representation:
+\begin{lstlisting}
+def arity : RPP → ℕ
+| (Id n)     := n
+| Ne         := 1
+| Su         := 1
+| Pr         := 1
+| Sw         := 2
+| (f ;; g)   := max f.arity g.arity
+| (f ‖ g)    := f.arity + g.arity
+| (It f)     := f.arity + 1
+| (If f g h) := max (max f.arity g.arity) h.arity + 1
+\end{lstlisting}
+Note that \lstinline{f.arity} is the same as \lstinline{(arity f)}.
+This is a recursive function:
+there are 5 base cases and in the other 4 the value of \lstinline{arity} is reconstructed from smaller sub-terms.
+
+It's now possible to define some \lstinline{RPP}-sentences in Lean
+\begin{lstlisting}
+def inc := It Su
+def dec := It Pr
+def mul := It inc
+def square := Id 1 ‖ Sw ;; inc ;; mul ;; dec ;; Id 1 ‖ Sw
+\end{lstlisting}
+and it's even possible to calculate their arity
+\begin{lstlisting}
+#reduce square.arity -- outputs "3"
+\end{lstlisting}
+but we haven't yet given their meaning as functions.
+
+\paragraph{The \lstinline{evaluate} function}
+We are now ready to define \lstinline{evaluate} (\lstinline{ev} for short).
+The function $\mathsf{ev}$ should take $\RPP$-sentences and return functions $\Z^n \to \Z^n$,
 so in Lean we will define it as a function of type
 \begin{lstlisting}
 RPP → (list ℤ → list ℤ)
@@ -742,9 +765,7 @@ which in Lean is the same as
 \begin{lstlisting}
 RPP → list ℤ → list ℤ.
 \end{lstlisting}
-\newpage
-\paragraph{The \lstinline{evaluate} function}
-We are now ready to define \lstinline{evaluate} (\lstinline{ev} for short):
+Here's how we do it:
 \begin{lstlisting}
 def ev : RPP → list ℤ → list ℤ
 | (Id n)     l                    := l
@@ -788,5 +809,125 @@ and as such leaves the head unchanged and applies \lstinline{‹h›} to the tai
 \end{itemize}
 
 The reader is invited to compare this definition with the one given in definition \ref{rppdef}.
+
+Let's see some examples:
+\begin{lstlisting}
+#check ‹It Su ;; (Id 1 ‖ If Sw Pr Su)› -- list ℤ → list ℤ
+-- #eval is similar to #reduce
+-- but in this case gives more readable output
+#eval ‹inc› [3, 4] -- [3, 7]
+#eval ‹square› [19, 0, 0] -- [19, 361, 0]
+\end{lstlisting}
+It magically works. We finally have our definition formalized in Lean.
+
+It is worth noting that even though lists supplied to \lstinline{‹f›} are supposed to have length equal to \lstinline{f.arity},
+this is never enforced.
+So we are free to apply \lstinline{‹f›} to a list which is too short or too long.
+If it's too short, unspecified things will happen, we don't care.
+If it's too long, only the first \lstinline{f.arity} items are utilized and affected,
+and this is guaranteed by theorem \lstinline{ev_split} which we will prove in Lean.
+So, when we apply \lstinline{RPP} functions to a list, we'll have to make sure that
+\lstinline{f.arity ≤ l.length}.
+
+\paragraph{The \lstinline{inverse} function}
+It's not hard to convert our proposition \ref{rppinv} into a function definition:
+\lstinline{inv : RPP → RPP} which given \lstinline{f : RPP} returns its inverse.
+\begin{lstlisting}
+def inv : RPP → RPP
+| (Id n)     := Id n
+| Ne         := Ne
+| Su         := Pr
+| Pr         := Su
+| Sw         := Sw
+| (f ;; g)   := inv g ;; inv f
+| (f ‖ g)    := inv f ‖ inv g
+| (It f)     := It (inv f)
+| (If f g h) := If (inv f) (inv g) (inv h)
+
+notation f `⁻¹` := inv f
+\end{lstlisting}
+Now it's possible to define \lstinline{dec} simply as \lstinline{inc⁻¹}.
+
+We will also prove in Lean that \lstinline{f⁻¹} really is the inverse (in the functional sense) of \lstinline{f},
+but it will require some work.
+\section{Differences with the original definition}
+The definition of \lstinline{RPP} functions we've given differs quite a bit from the original one.
+Every change has been made in the name of simplicity:
+theorem proving in Lean is hard enough,
+we don't need to make it harder by choosing inconvenient definitions.
+Below is a list of changes, not only for completeness' sake but also to illustrate the kind of reasoning which goes
+when formalizing definitions in Lean.
+\begin{itemize}
+\item In the original definition,
+in the iterator $\rppIt$ and selection $\rppIf$ the last element of the tuple is checked,
+not the first one (the head).
+It was more convenient to work with the first element because of the definition of lists:
+it's much easier to consider a list's head and tail than its last element and the elements before the last.
+\item We have defined $\rppId_n$ as a $n$-ary function, while originally it was just unary.
+Having a $n$-ary identity function is very useful,
+because we can use parallel composition as in remark \ref{different_arity},
+and also because we have the possibility of having a $0$-ary function, which is not useless in some cases.
+\item The original $\RPP$ functions are defined as the union $\cup_{n \in \N}\RPP^n$
+where $\RPP^n$ are the $n$-ary $\RPP$ functions.
+A similar decision could've been made in Lean by definining \lstinline{RPP n} as a dependent type
+with parameter \lstinline{n : ℕ},
+but it turned out that it was possible to calculate the arity of an \lstinline{RPP} simply by looking at
+the corresponding \lstinline{RPP}-sentence, which is what we did when we defined the function \lstinline{arity}.
+This rendered superfluous using dependent types and separating \lstinline{RPP} based on their arity.
+
+There's a reason we tried to avoid dependent types wherever possible
+(which also led to the use of \lstinline{list}s instead of \lstinline{vector}s):
+at least in Coq (which is another proof assistants we used at the beginning of the project)
+working with dependent types is often painful, because Coq doesn't recognize that certain types are the same.
+For example, elements of \lstinline{RPP (n + 1)} and \lstinline{RPP (1 + n)} cannot be compared even though it is (demonstrably!) true that
+\lstinline{n + 1 = 1 + n}. To get around this, it's possible to use something called John Major's Equality
+to state the equality of two objects with seemingly different types,
+but this involves the invocation of an additional axiom and is in general annoying to use.
+Other ways to deal with the problem exists,
+but our choice ended up being avoiding dependent types completely.
+As someone on the internet says,
+\begin{displayquote}
+Coq has this really powerful type system, but... don't use it.
+\end{displayquote}
+By extension, we also avoided them in Lean.
+\item When defining the iterator $\rppIt[f] (x, x_1, \dots, x_n)$ it's not immediately clear what to do when $x < 0$.
+In our definition, nothing happens, as $f$ in general is applied $\downarrow x = 0$ times.
+In the original definition, $f$ is instead applied $| x |$ times - let's call this iterator $\rppIta$.
+
+Reversibility gifts us with a third option: if $x < 0$,
+we can apply $f$ a negative amount of times - or in other words, we can apply $f^{-1}$ for $- x$ times.
+Let's call this iterator $\rppItr$.
+Its usage leads to more natural definitions:
+for example, our function $\rppinc (n, x) = (\rppIt[\rppSu]) (n, x)$ returns $(n, x+n)$ only if $n \ge 0$.
+If instead we use $\rppItr$, suddenly $(\rppItr[\rppSu]) (n, x) = (n, x + n)$ for all values of $n \in \Z$.
+
+So why didn't we use $\rppItr$?
+Because our $\rppIt$ is the most versatile option:
+we can define both $\rppIta$ and $\rppItr$ in terms of $\rppIt$,
+by using the fact that $\rppIt$ doesn't do anything when the first argument is negative:
+\begin{align*}
+  \rppIta[f] = \rppIt[f] \rppCo \rppNe \rppCo \rppIt[f] \rppCo \rppNe \\
+  \rppItr[f] = \rppIt[f] \rppCo \rppNe \rppCo \rppIt[f^{-1}] \rppCo \rppNe
+\end{align*}
+For example, in the case of $\rppIta[f](x,x_1,\cdots,x_n)$, if $x \ge 0$ then the first $\rppIt$ applies $f$ for $x$ times,
+then $x$ changes sign and becomes $-x$ with $\rppNe$, then the second $\rppIt$ doesn't do anything because $- x < 0$,
+and finally $-x$ changes sign again to $x$; if instead $x < 0$, only the second $\rppIt$ does something.
+
+Another reason to prefer $\rppIt$ over $\rppItr$ is that in the definition of \lstinline{evaluate},
+using $\rppItr$ it's hard to convince Lean (or Coq) that the function terminates (that is, it doesn't run on an infinite loop).
+Since every function in Lean must terminate (otherwise there would be consistency issues), Lean rejects the definition.
+There are ways to get around this - but once again we follow the path of least resistance and just get on with $\rppIt$.
+\end{itemize}
+
+After seeing all these changes you might ask yourself - are these still the original $\RPP$s?
+What's the point of formalizing a definition in Lean if in the process we change the definition completely?
+
+We think that yes, we can still identify what we've constructed as the original functions,
+because in a way, the \textit{essence} of what $\RPP$s are has not been changed.
+We shouldn't view definitions as something unchanging and rigid, especially in rapidly evolving fields.
+Definitions should be molded and modified to fit our needs,
+because that's why we created them in the first place.
+
+\chapter{Theorem proving}
 
 \end{document}

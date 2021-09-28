@@ -196,3 +196,9 @@ now we would have to define \lstinline{length_nat}, \lstinline{length_int}... se
 
 \end{lstlisting}
 \end{itemize}
+
+
+Originally, $\rppIt f (x, x_1, \dots, x_n)$ applied the function $f$ to $(x_1, \dots, x_n)$ repeatedly for $| x |$ times.
+ 
+
+In our definition, the iterator $\rppIt f (x, x_1, \dots, x_n)$ applies $f$ for $\downarrow x$ times to $(x_1, \dots, x_n)$.
