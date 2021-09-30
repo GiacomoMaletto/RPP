@@ -114,7 +114,7 @@ Why do we care about such a thing?
 Firstly, having a programming language in which every function (or even a subset of functions) is reversible could lead to interesting and practical applications.
 
 But we can also imagine reversible computers, in which the underlying architecture is inherently reversible:
-Toffoli gates provides a way to do so.
+Toffoli gates provide a way to do so.
 The opposite of reversibility is loss of information, which (for thermodynamic reasons) leads to loss of energy and heat dissipation.
 This means that a non-reversible gate dissipates energy each time information is discarded, while in principle a reversible computer wouldn't.
 
@@ -123,7 +123,7 @@ Lastly, reversible computing is directly related to quantum computing, as each o
 
 \section{Reversible Primitive Permutations}
 
-In the article I decided to formalize, the authors focus on providing a functional model of reversible computation.
+In the article we decided to formalize, the authors focus on providing a functional model of reversible computation.
 They develop an inductively defined set of functions, called \textbf{Reversible Primitive Permutations} or \textbf{RPP},
 which are expressive enough to represent all Primitive Recursive Functions (we talk about what this means in section ?).
 Here is the definition that we will use:
@@ -211,7 +211,7 @@ This means that the function $f$ is applied $\downarrow x$ times to $(x_1, \dots
 \end{NiceMatrix}\]
 
 \item
-If $f, g, h : \Z^n \to \Z^n$ belongs to $\RPP$,
+If $f, g, h : \Z^n \to \Z^n$ belong to $\RPP$,
 then the \textbf{selection} $\rppIf[f, g, h] : \Z^{n + 1} \to \Z^{n + 1}$ belongs to $\RPP$ and is such that:
 \[\rppIf[f, g, h] (x, x_1, \dots, x_n) = \begin{cases} (x, f (x_1, \dots, x_n)), & \text{if $x > 0$} \\
                                                     (x, g (x_1, \dots, x_n)), & \text{if $x = 0$} \\
@@ -219,12 +219,18 @@ then the \textbf{selection} $\rppIf[f, g, h] : \Z^{n + 1} \to \Z^{n + 1}$ belong
 We remark that the argument $x$ which determines which among $f$, $g$ and $h$ must be used cannot be among the arguments of $f$, $g$ and $h$,
 as that would break reversibility.
 \[\begin{NiceMatrix}[nullify-dots]
-  x      & \bloch{4-1}{\rppIf[f, g, h]} & x      &                &                     &                  \\
-  x_1    &                           & y_1    & \Block{3-1}{=} & f (x_1, \dots, x_n) & \text{if } x > 0 \\
-  \Vdots &                           & \Vdots &                & g (x_1, \dots, x_n) & \text{if } x = 0 \\
-  x_n    &                           & y_n    &                & h (x_1, \dots, x_n) & \text{if } x < 0 \\
+  x      & \bloch{4-1}{\rppIf[f, g, h]} & x      \\
+  x_1    &                              & y_1    \\
+  \Vdots &                              & \Vdots \\
+  x_n    &                              & y_n    \\
+\end{NiceMatrix} \quad
+\begin{NiceMatrix}[nullify-dots]
+                 &                     &                  \\
+  \Block{3-1}{=} & f (x_1, \dots, x_n) & \text{if } x > 0 \\
+                 & g (x_1, \dots, x_n) & \text{if } x = 0 \\
+                 & h (x_1, \dots, x_n) & \text{if } x < 0 \\
 \CodeAfter
-\SubMatrix\}{2-4}{4-4}\{
+\SubMatrix\}{2-1}{4-1}\{  
 \end{NiceMatrix}\]
 
 \end{itemize}
@@ -919,11 +925,11 @@ Since every function in Lean must terminate (otherwise there would be consistenc
 There are ways to get around this - but once again we follow the path of least resistance and just get on with $\rppIt$.
 \end{itemize}
 
-After seeing all these changes you might ask yourself - are these still the original $\RPP$s?
+After seeing all these changes you might ask yourself - is this still the original $\RPP$?
 What's the point of formalizing a definition in Lean if in the process we change the definition completely?
 
 We think that yes, we can still identify what we've constructed as the original functions,
-because in a way, the \textit{essence} of what $\RPP$s are has not been changed.
+because in a way, the \textit{essence} of what $\RPP$ is has not been altered.
 We shouldn't view definitions as something unchanging and rigid, especially in rapidly evolving fields.
 Definitions should be molded and modified to fit our needs,
 because that's why we created them in the first place.

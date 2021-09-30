@@ -35,68 +35,40 @@ def succ := Su ;; Sw ;; inc ;; Sw
 @[simp] lemma succ_arity : succ.arity = 2 := rfl
 
 lemma succ_def (z : ℤ) (n : ℕ) : ‹succ› [z, n] = [(z + n.succ), n] :=
-begin
-  rw succ, simp [ev], rw inc_def, simp [ev], ring
-end
+by { simp [succ, ev], ring }
 
-def left := Id₁ ‖₁ unpair' ;; ⌊6, 0⌉ ;; inc ;; (Id₁ ‖₁ unpair' ;; ⌊6, 0⌉)⁻¹
+def left := Id₁ ‖ unpair' ;; ⌊6, 0⌉ ;; inc ;; (Id₁ ‖ unpair' ;; ⌊6, 0⌉)⁻¹
 
 lemma left_def (z : ℤ) (n : ℕ) :
   ‹left› (z :: n :: repeat 0 6) = (z + (nat.unpair n).fst) :: n :: repeat 0 6 :=
-begin
-  rw left, simp [ev],
-  conv { to_lhs,
-  conv { congr, skip,
-  conv { congr, skip,
-  conv { congr, skip,
-  conv { congr, skip,
-  rw Pa1, simp [ev], rw unpair'_def},
-  rw rewire, simp [ev] },
-  rw ev_split, simp [inc_def] },
-  rw rewire, simp [ev] }},
-  rw Pa1, simp [ev], rw proposition_1, rw unpair'_def
-end
+by simp [left, ev, rewire]
 
-def right := Id₁ ‖₁ unpair' ;; ⌊7, 0⌉ ;; inc ;; (Id₁ ‖₁ unpair' ;; ⌊7, 0⌉)⁻¹
+def right := Id₁ ‖ unpair' ;; ⌊7, 0⌉ ;; inc ;; (Id₁ ‖ unpair' ;; ⌊7, 0⌉)⁻¹
 
 lemma right_def (z : ℤ) (n : ℕ) :
   ‹right› (z :: n :: repeat 0 6) = (z + (nat.unpair n).snd) :: n :: repeat 0 6 :=
-begin
-  rw right, simp [ev],
-  conv { to_lhs,
-  conv { congr, skip,
-  conv { congr, skip,
-  conv { congr, skip,
-  conv { congr, skip,
-  rw Pa1, simp [ev], rw unpair'_def},
-  rw rewire, simp [ev] },
-  rw ev_split, simp [inc_def] },
-  rw rewire, simp [ev] }},
-  rw Pa1, simp [ev], rw proposition_1, rw unpair'_def
-end
+by simp [right, ev, rewire]
 
 def pair_fwd (f g : RPP) :=
-  Id 1 ‖₁ (Sw ;; f) ;;
-  Id 2 ‖₁ (Sw ;; g) ;;
+  Id 1 ‖ (Sw ;; f) ;;
+  Id 2 ‖ (Sw ;; g) ;;
   ⌊0, 3, 1, 2⌉ ;;
-  Id 2 ‖₁ mkpair' ;;
+  Id 2 ‖ mkpair' ;;
   ⌊5, 0⌉
 
 lemma pair_fwd_arity_le1 (f g : RPP) : 7 ≤ (pair_fwd f g).arity :=
-begin
-  rw [pair_fwd, Pa1], simp
-end
+by simp [pair_fwd]
 
 lemma pair_fwd_arity_le2 (f g : RPP) : f.arity + 1 ≤ (pair_fwd f g).arity :=
 begin
-  rw pair_fwd, rw Pa1, simp, left, left, left, left,
+  rw pair_fwd, simp, left, left, left, left,
   rw [add_comm, add_le_add_iff_left],
   apply le_max_right
 end
 
 lemma pair_fwd_arity_le3 (f g : RPP) : g.arity + 2 ≤ (pair_fwd f g).arity :=
 begin
-  rw pair_fwd, rw Pa1, simp, left, left, left, right,
+  rw pair_fwd, simp, left, left, left, right,
   rw [add_comm, add_le_add_iff_left],
   apply le_max_right
 end
@@ -112,29 +84,16 @@ begin
   split, omega, omega
 end
 
-lemma pair_fwd_def (F G : ℕ → ℕ) (f g : RPP) : thesis F f → thesis G g → ∀ (z : ℤ) (n : ℕ),
+lemma pair_fwd_def (F G : ℕ → ℕ) (f g : RPP) :
+  thesis F f → thesis G g → ∀ (z : ℤ) (n : ℕ),
   ‹pair_fwd f g› (z :: n :: repeat 0 ((pair_fwd f g).arity-2)) =
   nat.mkpair (F n) (G n) :: z :: n :: F n :: G n :: 0 :: repeat 0 ((pair_fwd f g).arity-6) :=
 begin
   intros hF hG z n,
-  have HF := thesis_le _ _ hF, clear hF,
-  have HG := thesis_le _ _ hG, clear hG,
   rcases pair_fwd_arity f g with ⟨a, h₁, h₂, h₃⟩, rw h₁,
-  rw pair_fwd, simp [ev],
-  conv { to_lhs,
-  conv { congr, skip,
-  conv { congr, skip,
-  conv { congr, skip,
-  conv { congr, skip,
-  rw Pa1, simp [ev],
-  rw [←repeat_succ, ←repeat_succ, ←repeat_succ, ←repeat_succ], ring_nf,
-  rw HF _ h₂, simp },
-  rw Pa1, simp [ev],
-  rw [←repeat_succ, ←repeat_succ, ←repeat_succ], ring_nf,
-  rw HG _ h₃, simp },
-  rw rewire, simp [ev] },
-  rw Pa1, simp [ev], rw ev_split, simp [mkpair'_def] },
-  rw rewire, simp [ev] }
+  have HF := thesis_le _ _ hF _ h₂, clear hF,
+  have HG := thesis_le _ _ hG _ h₃, clear hG,
+  simp [pair_fwd, ev, rewire, *] at *
 end
 
 def pair (f g : RPP) := pair_fwd f g ;; inc ;; (pair_fwd f g)⁻¹
@@ -150,36 +109,31 @@ lemma pair_def (F G : ℕ → ℕ) (f g : RPP) : thesis F f → thesis G g → �
   (z + nat.mkpair (F n) (G n)) :: n :: repeat 0 ((pair f g).arity-2) :=
 begin
   intros hF hG z n, rw pair_arity_eq,
-  unfold pair, simp [ev],
-  conv { to_lhs,
-  conv { congr, skip,
-  conv { congr, skip,
-  rw pair_fwd_def _ _ _ _ hF hG },
-  rw ev_split, simp [inc_def] }},
-  rw proposition_1, rw pair_fwd_def _ _ _ _ hF hG
+  have H := pair_fwd_def _ _ _ _ hF hG,
+  simp [pair, ev, *]
 end
 
 def comp_fwd (f g : RPP) :=
-  Id 1 ‖₁ (Sw ;; g ;; Sw) ;;
-  Id 2 ‖₁ (Sw ;; f) ;;
+  Id 1 ‖ (Sw ;; g ;; Sw) ;;
+  Id 2 ‖ (Sw ;; f) ;;
   ⌊2, 0⌉
 
 lemma comp_fwd_arity_le1 (f g : RPP) : 4 ≤ (comp_fwd f g).arity :=
 begin
-  rw [comp_fwd, Pa1], simp, left, right,
+  rw comp_fwd, simp, left, right,
   rw [show 4 = 2 + 2, by refl], rw add_le_add_iff_left, apply le_max_left
 end
 
 lemma comp_fwd_arity_le2 (f g : RPP) : f.arity + 2 ≤ (comp_fwd f g).arity :=
 begin
-  rw comp_fwd, rw Pa1, simp, left, right,
+  rw comp_fwd, simp, left, right,
   rw [add_comm, add_le_add_iff_left],
   apply le_max_right
 end
 
 lemma comp_fwd_arity_le3 (f g : RPP) : g.arity + 1 ≤ (comp_fwd f g).arity :=
 begin
-  rw comp_fwd, rw Pa1, simp, left, left,
+  rw comp_fwd, simp, left, left,
   rw [add_comm, add_le_add_iff_left],
   apply le_max_right
 end
@@ -200,16 +154,10 @@ lemma comp_fwd_def (F G : ℕ → ℕ) (f g : RPP) : thesis F f → thesis G g �
   F (G n) :: z :: n :: ↑(G n) :: repeat 0 ((comp_fwd f g).arity-4) :=
 begin
   intros hF hG z n,
-  have HF := thesis_le _ _ hF, clear hF,
-  have HG := thesis_le _ _ hG, clear hG,
   rcases comp_fwd_arity f g with ⟨a, h₁, h₂, h₃⟩, rw h₁,
-  rw comp_fwd, simp [ev],
-  conv { to_lhs,
-  conv { congr, skip,
-  conv { congr, skip,
-  rw Pa1, simp [ev], rw [←repeat_succ], rw HG _ h₃, simp [ev] },
-  rw Pa1, simp [ev], rw HF _ h₂, simp },
-  rw rewire, simp [ev] }
+  have HF := thesis_le _ _ hF _ h₂, clear hF,
+  have HG := thesis_le _ _ hG _ h₃, clear hG,
+  simp [comp_fwd, ev, rewire, *] at *
 end
 
 def comp (f g : RPP) := comp_fwd f g ;; inc ;; (comp_fwd f g)⁻¹
@@ -225,48 +173,43 @@ lemma comp_def (F G : ℕ → ℕ) (f g : RPP) : thesis F f → thesis G g → �
   (z + F (G n)) :: n :: repeat 0 ((comp f g).arity-2) :=
 begin
   intros hF hG z n, rw comp_arity_eq,
-  unfold comp, simp [ev],
-  conv { to_lhs,
-  conv { congr, skip,
-  conv { congr, skip,
-  rw comp_fwd_def _ _ _ _ hF hG },
-  rw ev_split, simp [inc_def] }},
-  rw proposition_1, rw comp_fwd_def _ _ _ _ hF hG
+  have H := comp_fwd_def _ _ _ _ hF hG,
+  simp [comp, ev, *]
 end
 
 def prec_loop (g : RPP) :=
-  Id 2 ‖₁ mkpair ;;
-  Id 1 ‖₁ mkpair ;;
-  Id 1 ‖₁ (Sw ;; g) ;;
-  Id 2 ‖₁ unpair ;;
-  Id 3 ‖₁ unpair ;;
+  Id 2 ‖ mkpair ;;
+  Id 1 ‖ mkpair ;;
+  Id 1 ‖ (Sw ;; g) ;;
+  Id 2 ‖ unpair ;;
+  Id 3 ‖ unpair ;;
   ⌊2, 3, 1, 0, 4⌉ ;;
-  Id 1 ‖₁ Su ‖₁ Id 1 ‖₁ mkpair ;;
+  Id 1 ‖ Su ‖ Id 1 ‖ mkpair ;;
   ⌊3, 0, 1, 2⌉
 
 def prec_fwd (f g : RPP) :=
-  Id 1 ‖₁ unpair ;;
+  Id 1 ‖ unpair ;;
   ⌊0, 2, 3, 1⌉ ;;
-  Id 2 ‖₁ f ;;
+  Id 2 ‖ f ;;
   ⌊0, 1, 4, 3, 5, 2⌉ ;;
-  Id 1 ‖₁ It (prec_loop g) ;;
+  Id 1 ‖ It (prec_loop g) ;;
   ⌊5, 0⌉
 
 lemma prec_fwd_arity_le1 (f g : RPP) : 12 ≤ (prec_fwd f g).arity :=
 begin
-  rw [prec_fwd, prec_loop, Pa1], simp,
+  rw [prec_fwd, prec_loop], simp,
   left, right, rw [show 12 = 1 + (10 + 1), by refl], simp
 end
 
 lemma prec_fwd_arity_le2 (f g : RPP) : f.arity + 2 ≤ (prec_fwd f g).arity :=
 begin
-  rw [prec_fwd, prec_loop, Pa1], simp,
+  rw [prec_fwd, prec_loop], simp,
   left, left, left, right, rw add_comm
 end
 
 lemma prec_fwd_arity_le3 (f g : RPP) : g.arity + 3 ≤ (prec_fwd f g).arity :=
 begin
-  rw [prec_fwd, prec_loop, Pa1], simp,
+  rw [prec_fwd, prec_loop], simp,
   left, right, rw [show g.arity + 3 = 1 + (g.arity + 1 + 1), by ring], simp,
   left, left, left, right,
   rw [add_comm, add_le_add_iff_left],
@@ -289,29 +232,9 @@ lemma prec_loop_def (F G : ℕ → ℕ) (f g : RPP) : thesis G g → ∀ (Z N s 
   s' :: Z :: (N + 1) :: nat.prec_loop F G Z (N + 1) :: repeat 0 ((prec_fwd f g).arity-6) :=
 begin
   intros hG Z N s, use nat.mkpair s (nat.prec_loop F G Z N),
-  have HG := thesis_le _ _ hG, clear hG,
   rcases prec_fwd_arity f g with ⟨a, h₁, h₂, h₃⟩, rw h₁,
-  rw prec_loop, simp [ev],
-  conv { to_lhs,
-  conv { congr, skip,
-  conv { congr, skip,
-  conv { congr, skip,
-  conv { congr, skip,
-  conv { congr, skip,
-  conv { congr, skip,
-  conv { congr, skip,
-  rw Pa1, simp [ev], rw ev_split, simp [mkpair_def] },
-  rw Pa1, simp [ev], rw ev_split, simp [mkpair_def] },
-  rw Pa1, simp [ev],
-  rw [←repeat_succ, ←repeat_succ, ←repeat_succ, ←repeat_succ,
-      ←repeat_succ, ←repeat_succ, ←repeat_succ], ring_nf,
-  rw HG _ h₃, simp [ev] },
-  rw Pa1, simp [ev], rw ev_split, simp [unpair_def] },
-  rw Pa1, simp [ev], rw ev_split, simp [unpair_def] },
-  rw rewire, simp [ev] },
-  rw Pa1, simp [ev], rw ev_split, simp [mkpair_def] },
-  rw rewire, simp [ev] },
-  rw [nat.prec_loop, nat.prec_loop, nat.elim], simp
+  have HG := thesis_le _ _ hG _ h₃, clear hG,
+  simp [prec_loop, nat.prec_loop, ev, rewire, *] at *
 end
 
 lemma it_prec_loop_def (F G : ℕ → ℕ) (f g : RPP) : thesis G g → ∀ (Z N : ℕ), ∃ (s : ℕ),
@@ -333,30 +256,11 @@ lemma prec_fwd_def (F G : ℕ → ℕ) (f g : RPP) :
     repeat 0 ((prec_fwd f g).arity-6) :=
 begin
   intros hF hG n,
-  have HF := thesis_le _ _ hF, clear hF,
+  rcases prec_fwd_arity f g with ⟨a, h₁, h₂, h₃⟩, rw h₁ at *,
+  have HF := thesis_le _ _ hF _ h₂, clear hF,
   have h := it_prec_loop_def F G f g hG (nat.unpair n).fst (nat.unpair n).snd,
   rcases h with ⟨s, h⟩, use s, intro z,
-  rcases prec_fwd_arity f g with ⟨a, h₁, h₂, h₃⟩, rw h₁ at *,
-  rw [show a + 12 - 6 = a + 6, by refl] at h,
-  rw prec_fwd, simp [ev],
-  conv { to_lhs,
-  conv { congr, skip,
-  conv { congr, skip,
-  conv { congr, skip,
-  conv { congr, skip,
-  conv { congr, skip,
-  rw Pa1, simp [ev], rw ev_split, simp [unpair_def] },
-  rw rewire, simp [ev] },
-  rw Pa1, simp [ev],
-  rw [←repeat_succ, ←repeat_succ, ←repeat_succ, ←repeat_succ,
-      ←repeat_succ, ←repeat_succ, ←repeat_succ, ←repeat_succ], ring_nf,
-  rw HF _ h₂, simp [ev] },
-  rw rewire, simp [ev] },
-  rw Pa1, simp [ev],
-  rw [←repeat_succ, ←repeat_succ, ←repeat_succ,
-      ←repeat_succ, ←repeat_succ, ←repeat_succ], ring_nf,
-  rw h },
-  rw rewire, simp [ev] }
+  simp [prec_fwd, ev, rewire, *] at *
 end
 
 def prec (f g : RPP) := prec_fwd f g ;; inc ;; (prec_fwd f g)⁻¹
@@ -374,13 +278,7 @@ lemma prec_def (F G : ℕ → ℕ) (f g : RPP) : thesis F f → thesis G g → �
 begin
   intros hF hG z n, rw prec_arity_eq,
   have h := prec_fwd_def _ _ _ _ hF hG n, rcases h with ⟨s, h⟩,
-  unfold prec, simp [ev],
-  conv { to_lhs,
-  conv { congr, skip,
-  conv { congr, skip,
-  rw h },
-  rw ev_split, simp [inc_def] }},
-  rw proposition_1, rw h
+  simp [prec, ev, *]
 end
 
 theorem proposition_5 (F : ℕ → ℕ) : nat.primrec F → ∃ f, thesis F f :=

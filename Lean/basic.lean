@@ -58,18 +58,18 @@ by { induction f; simp [*, max_comm] }
 prefix `↓` : 70 := int.to_nat
 
 def ev : RPP → list ℤ → list ℤ
-| (Id n)      l                    := l
-| Ne          (x :: l)             := -x :: l
-| Su          (x :: l)             := (x + 1) :: l
-| Pr          (x :: l)             := (x - 1) :: l
-| Sw          (x :: y :: l)        := y :: x :: l
-| (f ;; g)    l                    := ev g (ev f l)
-| (f ‖ g)     l                    := ev f (take f.arity l) ++ ev g (drop f.arity l)
-| (It f)      (x :: l)             := x :: ((ev f)^[↓x] l)
-| (If f g h)  (0 :: l)             := 0 :: ev g l
-| (If f g h)  (((n : ℕ) + 1) :: l) := (n + 1) :: ev f l
-| (If f g h)  (-[1+ n] :: l)       := -[1+ n] :: ev h l
-| _           l                    := l
+| (Id n)     l                    := l
+| Ne         (x :: l)             := -x :: l
+| Su         (x :: l)             := (x + 1) :: l
+| Pr         (x :: l)             := (x - 1) :: l
+| Sw         (x :: y :: l)        := y :: x :: l
+| (f ;; g)   l                    := ev g (ev f l)
+| (f ‖ g)    l                    := ev f (take f.arity l) ++ ev g (drop f.arity l)
+| (It f)     (x :: l)             := x :: ((ev f)^[↓x] l)
+| (If f g h) (0 :: l)             := 0 :: ev g l
+| (If f g h) (((n : ℕ) + 1) :: l) := (n + 1) :: ev f l
+| (If f g h) (-[1+ n] :: l)       := -[1+ n] :: ev h l
+| _          l                    := l
 
 notation `‹` f `›` : 50 := ev f
 
@@ -121,7 +121,7 @@ end
 lemma proposition_1_co_r (f : RPP) (l : list ℤ) : ‹f⁻¹ ;; f› l = l :=
 by { convert proposition_1_co_l (f⁻¹) l, rw inv_involute }
 
-theorem proposition_1 (f : RPP) (l m : list ℤ) : ‹f⁻¹› l = m ↔ ‹f› m = l :=
+@[simp] theorem proposition_1 (f : RPP) (l m : list ℤ) : ‹f⁻¹› l = m ↔ ‹f› m = l :=
 begin
   split; intro h; rw ←h,
   conv_rhs {rw ←proposition_1_co_r f l}, refl,

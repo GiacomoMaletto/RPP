@@ -27,7 +27,7 @@ def inc := It Su
 
 @[simp] lemma inc_arity : inc.arity = 2 := rfl
 
-lemma inc_def (n : ℕ) (x : ℤ) : ‹inc› [n, x] = [n, x + n] :=
+@[simp] lemma inc_def (n : ℕ) (x : ℤ) (l : list ℤ): ‹inc› (n :: x :: l) = n :: (x + n) :: l :=
 begin
   rw [inc], simp [ev],
   induction n generalizing x, simp, simp [ev, *], ring
@@ -37,42 +37,26 @@ def dec := inc⁻¹
 
 @[simp] lemma dec_arity : dec.arity = 2 := rfl
 
-lemma dec_def (n : ℕ) (x : ℤ) : ‹dec› [n, x] = [n, x - n] :=
-by { rw [dec, proposition_1, inc_def], congr, ring }
+@[simp] lemma dec_def (n : ℕ) (x : ℤ) (l : list ℤ) : ‹dec› (n :: x :: l) = n :: (x - n) :: l :=
+by simp[dec]
 
 def mul := It inc
 
-lemma mul_def (n m : ℕ) (x : ℤ) : ‹mul› [n, m, x] = [n, m, x + n * m] :=
-begin
+@[simp] lemma mul_def (n m : ℕ) (x : ℤ) (l : list ℤ):
+  ‹mul› (n :: m :: x :: l) = n :: m :: (x + n * m) :: l :=
+begin 
   simp [mul, ev], induction n with n hn,
   simp,
-  rw [function.iterate_succ_apply', hn, inc_def],
-  simp, ring
+  simp [function.iterate_succ_apply', *], ring
 end
 
-def Pa1 := Pa
-def Pa2 := Pa
-infix `‖₁` : 55 := Pa1
-infix `‖₂` : 55 := Pa2
+def square := Id₁ ‖ Sw ;; inc ;; mul ;; dec ;; Id₁ ‖ Sw
 
-def square := Id₁ ‖₁ Sw ;; inc ;; mul ;; dec ;; Id₁ ‖₁ Sw
+@[simp] lemma square_def (n : ℕ) (x : ℤ) (l : list ℤ):
+  ‹square› (n :: x :: 0 :: l) = n :: (x + n * n) :: 0 :: l :=
+by simp [square, ev]
 
-lemma square_def (n : ℕ) (x : ℤ) : ‹square› [n, x, 0] = [n, x + n * n, 0] :=
-begin
-  simp [square, ev],
-  conv { to_lhs,
-  conv { congr, skip,
-  conv { congr, skip,
-  conv { congr, skip,
-  conv { congr, skip,
-  rw Pa1, simp [ev] },
-  rw ev_split, simp, rw inc_def, simp },
-  rw mul_def },
-  rw ev_split, simp, rw dec_def, simp },
-  rw Pa1, simp [ev] }
-end
-
-def less := dec ;; Id₁ ‖₁ If Su Id₁ Id₁ ;; inc
+def less := dec ;; Id₁ ‖ If Su Id₁ Id₁ ;; inc
 
 @[simp] lemma less_arity : less.arity = 3 := rfl
 
@@ -103,19 +87,14 @@ begin
   simp at H, contradiction
 end
 
-lemma less_def (n m : ℕ) : ‹less› [n, m, 0] = [n, m, ite (n < m) 1 0] :=
+@[simp] lemma less_def (n m : ℕ) (l : list ℤ) :
+  ‹less› (n :: m :: 0 :: l) = n :: m :: (ite (n < m) 1 0) :: l :=
 begin
-  simp [less, ev],
-  conv in (‹dec› _) { rw ev_split, simp, rw dec_def, simp },
-  rw Pa1, simp [ev],
-  have h : n < m ∨ n = m ∨ m < n := trichotomous n m,
+  have h : (m : ℤ) - n < 0 ∨ (m : ℤ) - n = 0 ∨ (0 : ℤ) < m - n := trichotomous ((m : ℤ) - n) 0,
   rcases h with h | h | h,
-  { have H : (0 : ℤ) < m - n, by linarith,
-    rw if_gtz, simp [ev, *], rw ev_split, simp [inc_def], assumption },
-  { rw h, simp [ev], rw ev_split, simp [inc_def] },
-  { have H₁ : ¬ (n < m), by linarith,
-    have H₂ : (m - n : ℤ) < 0, by linarith,
-    rw if_ltz, simp [ev, *], rw ev_split, simp [inc_def], assumption }
+  have H : ¬ (n < m) := by linarith, simp [less, ev, *],
+  have H : n = m     := by linarith, simp [less, ev, *],
+  have H : n < m     := by linarith, simp [less, ev, *]
 end
 
 end RPP
