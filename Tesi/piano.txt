@@ -38,3 +38,20 @@
   - schizzo di dimostrazione
 - differenze tra Coq e Lean
 - approccio relazionale
+
+- dimostrazioni in Lean
+  - refl, rw, induction
+  - Prop, tutto è funzione, Curry-Howard
+    - intuizionismo
+  - simp
+- basic
+  - obiettivo: inversa
+  - sketch della dimostrazione
+- library, pair
+  - funzioni base...
+  - divisione, cantor pairing, radice quadrata
+- PRF-complete
+  - cosa sono le PRF
+  - cosa vuol dire PRF-complete
+  - come sono formalizzate le PRF in Lean
+  - come dimostrare il risultato

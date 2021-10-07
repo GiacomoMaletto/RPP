@@ -90,6 +90,7 @@
 \newcommand{\rppdec}{\mathsf{dec}}
 \newcommand{\rppmul}{\mathsf{mul}}
 \newcommand{\rppsquare}{\mathsf{square}}
+\newcommand{\PRF}{\mathsf{PRF}}
 
 % title
 \title{A Formal Verification of Reversible Primitive Permutations}
@@ -125,7 +126,8 @@ Lastly, reversible computing is directly related to quantum computing, as each o
 
 In the article we decided to formalize, the authors focus on providing a functional model of reversible computation.
 They develop an inductively defined set of functions, called \textbf{Reversible Primitive Permutations} or \textbf{RPP},
-which are expressive enough to represent all Primitive Recursive Functions (we talk about what this means in section ?).
+which are expressive enough to represent all Primitive Recursive Functions -
+that is to say, $\RPP$ is $\PRF$-complete (we talk about what this means in section ?).
 Here is the definition that we will use:
 
 \newpage
@@ -395,7 +397,7 @@ and that's just one of many similarities between functions and proofs.
 
 In this section we take a look at some of Lean's basic features.
 You don't have to understand every detail -
-just enought to have a vague sense of what it's like to define stuff in Lean.
+just enough to have a vague sense of what it's like to define stuff in Lean.
 
 \paragraph{}
 
@@ -417,14 +419,14 @@ in the online editor \url{https://leanprover-community.github.io/lean-web-editor
 Data is defined using the \lstinline{inductive} keyword.
 Here is the typical example of data structure:
 \begin{lstlisting}
-inductive weekday
-| monday
-| tuesday
-| wednesday
-| thursday
-| friday
-| saturday
-| sunday
+inductive weekday : Type
+| monday : weekday
+| tuesday : weekday
+| wednesday : weekday
+| thursday : weekday
+| friday : weekday
+| saturday : weekday
+| sunday : weekday
 \end{lstlisting}
 This defines a \textit{type} called \lstinline{weekday}.
 Days of the week like \lstinline{monday}, \lstinline{tuesday}, etc. are elements of the type \lstinline{weekday}.
@@ -441,7 +443,7 @@ and we write this as
 \begin{center}\begin{lstlisting}
 tuesday : weekday
 \end{lstlisting}\end{center}
-Everything in Lean has a type. For example, natural numbers have type \lstinline{ℕ}:
+Everything in Lean has a type (and only one). For example, natural numbers have type \lstinline{ℕ}:
 \begin{lstlisting}
 #check 3 -- ℕ
 \end{lstlisting}
@@ -451,7 +453,7 @@ This basic notion can lead to some contradictory statements, like the famous Rus
 (let's consider the set of all sets that do not contain themselves; does this set contain itself?)
 and if one is not careful in defining types of types, the same thing could happen with type theory.
 But in fact, type theory was invented in the beginning of the 20th century by Bertrand Russell precisely to avoid Russell's paradox.
-The approach used in Lean is to define a cumulative hierarchy of universes,
+The approach used in Lean is to define a cumulative hierarchy of universes \lstinline{Type : Type 1 : Type 2 ...},
 so that it's impossible to invoke objects like "the type of all types" or a type having itself as an element.}.
 Lean's type system is very expressive, and makes it possible to work with complex math in Lean.
 
@@ -500,9 +502,9 @@ when there's \textit{clearly} no induction going on at all in its construction.
 First of all, it depends on what you mean by induction; but it is true that that was a particularly simple case.
 As an example of a more overtly inductive object, we can define the natural numbers like this:
 \begin{lstlisting}
-inductive Nat
-| Zero
-| Succ (n : Nat)
+inductive Nat : Type
+| Zero : Nat
+| Succ (n : Nat) : Nat
 \end{lstlisting}
 The name \lstinline{Nat} and subsequent objects are capitalized in order to avoid conflict with the definition of \lstinline{nat} already present in Lean.
 We can read this definition as "every element of the type \lstinline{Nat} is either \lstinline{Zero}
@@ -517,6 +519,8 @@ open Nat
 #check Succ Zero -- represents 1
 #check Succ (Succ Zero) -- represents 2
 #check Succ (Succ (Succ Zero)) -- represent 3
+#check Zero.Succ.Succ.Succ -- also represents 3
+                           -- alternative notation
 \end{lstlisting}
 Functions over \lstinline{Nat} have the possibility of being truly recursive:
 for example, we can recursively define addition \lstinline{Add m n} by induction over \lstinline{n}.
@@ -554,9 +558,9 @@ so we need a way to represent and work with integer tuples.
 The good news is that integers are already defined in Lean.
 Here is their definition:
 \begin{lstlisting}
-inductive int
-| of_nat (n : ℕ)
-| neg_succ_of_nat (n : ℕ)
+inductive int : Type
+| of_nat (n : ℕ) : int
+| neg_succ_of_nat (n : ℕ) : int  
 \end{lstlisting}
 The value \lstinline{of_nat n} represents the natural number \lstinline{n : ℕ} as an integer,
 while \lstinline{neg_succ_of_nat n} represents the negative number \lstinline{-(n+1)}.
@@ -627,23 +631,24 @@ a \lstinline{list_nat} is either the empty list \lstinline{nil_nat},
 or \lstinline{cons_nat hd tl} where \lstinline{hd : ℕ} and \lstinline{tl : list_nat}
 are respectively the head and tail of the list:
 \begin{lstlisting}
-inductive list_nat
-| nil_nat
-| cons_nat (hd : ℕ) (tl : list_nat)
+inductive list_nat : Type
+| nil_nat : list_nat
+| cons_nat (hd : ℕ) (tl : list_nat) : list_nat
 \end{lstlisting}
 There's nothing special about using natural numbers.
 We can use the same procedure to define lists of integers:
 \begin{lstlisting}
-inductive list_int
-| nil_int
-| cons_int (hd : ℤ) (tl : list_int)
+inductive list_int : Type
+| nil_int : list_int
+| cons_int (hd : ℤ) (tl : list_int) : list_int
 \end{lstlisting}
 but having to define different types of lists for each type of element is pretty cumbersome.
-Instead, we can define lists for a generic type \lstinline{T} using \textit{dependent types}:
+Instead, we can define lists for a generic type \lstinline{T} using \textit{dependent types}:\footnote{a Lean user would probably frown at this,
+because it would be best to choose an explicit universe \lstinline{u} and work with \lstinline{Type u}.}
 \begin{lstlisting}
-inductive list (T : Type*)
-| nil
-| cons (hd : T) (tl : list)
+inductive list (T : Type) : Type
+| nil : list
+| cons (hd : T) (tl : list) : list
 \end{lstlisting}
 Rather than having \lstinline{list_nat}, \lstinline{list_int}...
 we use \lstinline{list ℕ}, \lstinline{list ℤ}...
@@ -697,16 +702,16 @@ we will discuss other methods at the end of this chapter.
 
 We thus define the type $\RPP$ as follows:
 \begin{lstlisting}
-inductive RPP
-| Id (n : ℕ)
-| Ne
-| Su
-| Pr
-| Sw
-| Co (f g : RPP)
-| Pa (f g : RPP)
-| It (f : RPP)
-| If (f g h : RPP)
+inductive RPP : Type
+| Id (n : ℕ) : RPP
+| Ne : RPP
+| Su : RPP
+| Pr : RPP
+| Sw : RPP
+| Co (f g : RPP) : RPP
+| Pa (f g : RPP) : RPP
+| It (f : RPP) : RPP
+| If (f g h : RPP) : RPP
 \end{lstlisting}
 and also introduce custom notation:
 \begin{lstlisting}
@@ -795,10 +800,10 @@ We will write \lstinline{‹f›} to mean the function of type \lstinline{list �
 Here's a case-by-case analysis:
 \begin{itemize}
 \item \lstinline{‹Id n› l} is the original list \lstinline{l}, unchanged.
-\item \lstinline{‹Ne› (x :: l)} reduce to \lstinline{-x :: l}, which is same list but with the head of opposite sign.
-\item \lstinline{‹Su› (x :: l)} reduce to the same list but with the head incremented by one.
-\item \lstinline{‹Pr› (x :: l)} reduce to the same list but with the head decremented by one.
-\item \lstinline{‹Sw› (x :: y :: l)} reduce the same list but with the first two elements swapped.
+\item \lstinline{‹Ne› (x :: l)} reduces to \lstinline{-x :: l}, which is same list but with the head of opposite sign.
+\item \lstinline{‹Su› (x :: l)} reduces to the same list but with the head incremented by one.
+\item \lstinline{‹Pr› (x :: l)} reduces to the same list but with the head decremented by one.
+\item \lstinline{‹Sw› (x :: y :: l)} reduces to the same list but with the first two elements swapped.
 \item \lstinline{‹f ;; g› l} successively applies \lstinline{‹f›} and \lstinline{‹g›} to the list.
 \item \lstinline{‹f ‖ g› l} applies \lstinline{‹f›} to the first \lstinline{f.arity} elements of the list,
 applies \lstinline{‹g›} to the remaining elements of the list,
@@ -861,7 +866,7 @@ The definition of \lstinline{RPP} functions we've given differs quite a bit from
 Every change has been made in the name of simplicity:
 theorem proving in Lean is hard enough,
 we don't need to make it harder by choosing inconvenient definitions.
-Below is a list of changes, not only for completeness' sake but also to illustrate the kind of reasoning which goes
+Below is a list of changes, not only for completeness' sake but also to illustrate the kind of reasoning which goes on
 when formalizing definitions in Lean.
 \begin{itemize}
 \item In the original definition,
@@ -889,7 +894,7 @@ For example, elements of \lstinline{RPP (n + 1)} and \lstinline{RPP (1 + n)} can
 \lstinline{n + 1 = 1 + n}. To get around this, it's possible to use something called John Major's Equality
 to state the equality of two objects with seemingly different types,
 but this involves the invocation of an additional axiom and is in general annoying to use.
-Other ways to deal with the problem exists,
+Other ways to deal with the problem exist,
 but our choice ended up being avoiding dependent types completely.
 As someone on the internet says,
 \begin{displayquote}
@@ -929,11 +934,422 @@ After seeing all these changes you might ask yourself - is this still the origin
 What's the point of formalizing a definition in Lean if in the process we change the definition completely?
 
 We think that yes, we can still identify what we've constructed as the original functions,
-because in a way, the \textit{essence} of what $\RPP$ is has not been altered.
+because in a way, the \textit{essence} of what $\RPP$ is has not been altered:
+a class of functions which is reversible by construction and that is $\PRF$-complete.
 We shouldn't view definitions as something unchanging and rigid, especially in rapidly evolving fields.
 Definitions should be molded and modified to fit our needs,
 because that's why we created them in the first place.
 
+
 \chapter{Theorem proving}
+
+\section{Some examples of Lean proofs}
+
+\paragraph{Reflexivity}
+
+We define the type \lstinline{Nat} similarly as before
+\begin{lstlisting}
+inductive Nat : Type
+| O : Nat -- it's a capital o, not a zero
+| S (n : Nat) : Nat
+
+open Nat
+#reduce O -- represents 0
+#reduce S O -- represents 1
+#reduce O.S -- also represents 1
+            -- we'll use this notation
+#reduce O.S.S -- represents 2
+
+\end{lstlisting}
+together with addition
+\begin{lstlisting}
+def Add : Nat → Nat → Nat
+| m O      := m
+| m (S n') := (Add m n').S  
+
+-- if n m : Nat then n + m is defined as Add n m
+infix `+` := Add
+\end{lstlisting}
+  
+Now let's prove some theorems about these objects.
+Let's start with something simple: we want to prove,
+beyond the shadow of a doubt, that \lstinline{O = O}.
+We open our code editor and type this:
+\begin{lstlisting}
+lemma O_eq_O : O = O :=
+begin
+
+end
+\end{lstlisting}
+If we now place the cursor between \lstinline{begin} and \lstinline{end}
+this appears in the sidebar:
+\begin{lstlisting}
+  1 goal
+  
+  ⊢ O = O
+\end{lstlisting}
+This is called the \textbf{tactic state}.
+The line beginning with the turnstile \lstinline{⊢ O = O} is our \textbf{goal}.
+We can write commands called \textbf{tactics} which helps us solve goals.
+In this case, the goal is an equality in which the left-hand side happens to coincide perfectly with the right-hand side,
+so we can solve our goal using the \lstinline{refl} command
+\begin{lstlisting}
+lemma O_eq_O : O = O :=
+begin
+  refl,
+end
+\end{lstlisting}
+and placing the cursor just after the comma, a pleasant message appears:
+\begin{lstlisting}
+  goals accomplished
+\end{lstlisting}
+The name \lstinline{refl} stands for "reflexivity",
+which is a property of equality (for any \lstinline{a}, it is true that \lstinline{a = a}).
+Let's try something more involved: $2 + 2 = 4$.
+\begin{lstlisting}
+lemma two_plus_two : O.S.S + O.S.S = O.S.S.S.S :=
+begin
+
+end
+\end{lstlisting}
+This time the left-hand side and the right-hand side do not look identical.
+However, there's something interesting to note:
+\begin{lstlisting}
+#reduce O.S.S.S.S -- outputs "O.S.S.S.S"
+#reduce O.S.S + O.S.S -- also outputs "O.S.S.S.S"
+\end{lstlisting}
+that is, \lstinline{O.S.S + O.S.S} reduces to \lstinline{O.S.S.S.S}.
+Since the left-hand side and the right-hand side reduce to the same element,
+they are \textbf{definitionally equivalent} and so we can use the tactic \lstinline{refl} again:
+\begin{lstlisting}
+lemma two_plus_two : O.S.S + O.S.S = O.S.S.S.S :=
+begin
+  refl, -- goals accomplished
+end
+\end{lstlisting}
+Remember that by definition of \lstinline{Add}, for any \lstinline{n m : Nat},
+we have that \lstinline{n + m.S = (n + m).S}.
+We can express this with another theorem
+\begin{lstlisting}
+lemma plus_S (n m : Nat) : n + m.S = (n + m).S :=
+begin
+  refl, -- goals accomplished
+end
+\end{lstlisting}
+which again can be solved using \lstinline{refl}, because \lstinline{n + m.S} reduces to \lstinline{(n + m).S}.
+By the way, we could write \lstinline{theorem} instead of \lstinline{lemma}: the difference is only stylistic.
+Similarly, by definition of \lstinline{Add}, \lstinline{n + O = n} for all \lstinline{n : Nat}
+\begin{lstlisting}
+lemma plus_O (n : Nat) : n + O = n :=
+begin
+  refl, -- goals accomplished
+end
+\end{lstlisting}
+
+\paragraph{Induction and rewrite}
+
+If we instead we try to prove in the same way that \lstinline{O + n = n},
+\begin{lstlisting}
+def O_plus (n : Nat) : O + n = n :=
+begin
+  refl,
+end
+\end{lstlisting}
+something surprising happens:
+\begin{lstlisting}
+invalid apply tactic, failed to unify
+    O+n = n
+  with
+    ?m_2 = ?m_2
+  state:
+  n : Nat
+  ⊢ O+n = n
+\end{lstlisting}
+our trusted \lstinline{refl} has, alas, failed.
+This is because \lstinline{O + n} is \textbf{not} definitionally equivalent to \lstinline{n}:
+the function \lstinline{Add} defines two definitional equivalences
+(\lstinline{m + O = m} and \lstinline{m + n.S = (m + n).S})
+and there's nothing regarding \lstinline{0 + n} when we have a generic \lstinline{n : Nat}.
+However, two things can still be equal even if they are not definitionally equivalent.
+
+To prove \lstinline{O_plus} we need something stronger: the tactic \lstinline{induction}.
+Let's try it:
+\begin{lstlisting}
+def O_plus (n : Nat) : O + n = n :=
+begin
+  induction n using n hn,
+end
+\end{lstlisting}
+Now the tactic state has become
+\begin{lstlisting}
+  2 goals
+
+  case Nat.O
+  ⊢ O+O = O
+
+  case Nat.S
+  n: Nat
+  hn: O+n = n
+  ⊢ O+n.S = n.S
+\end{lstlisting}
+What happened is that we used induction:
+to prove a property \lstinline{P n} (in this case, \lstinline{O + n = n}) for all \lstinline{n : Nat},
+it suffices to prove that \lstinline{P O} holds and that from \lstinline{P n} follows \lstinline{P n.S}.
+The first subgoal is the base case \lstinline{O+O = O}, and can be solved using \lstinline{refl}
+\begin{lstlisting}
+lemma O_plus (n : Nat) : O + n = n :=
+begin
+  induction n with n hn,
+  refl,
+end
+\end{lstlisting}
+Only the second goal remains
+\begin{lstlisting}
+  1 goal
+
+  case Nat.S
+  n : Nat
+  hn : O+n = n
+  ⊢ O+n.S = n.S
+\end{lstlisting}
+This means that \lstinline{n} is an element of \lstinline{Nat}
+and that we have an hypothesis named \lstinline{hn} which tells us that \lstinline{O+n = n}.
+Our goal is to prove that \lstinline{O+n.S = n.S}.
+A proof of this fact would go somewhat like this:
+\begin{enumerate}
+\item by lemma \lstinline{plus_S} we have \lstinline{O+n.S = (O+n).S}
+\item by the induction hypothesis \lstinline{hn} we have \lstinline{O+n = n} and by substitution we get \lstinline{(0+n).S = n.S}
+\end{enumerate}
+so \lstinline{O+n.S = (O+n).S = n.S}, and this completes the proof.
+
+We can capture this act of substituting a term in an equation with an equivalent one using the tactic \lstinline{rw} ("rewrite"):
+for example, \lstinline{rw plus_S} search in the goal for subterms of the form \lstinline{O+n.S} and substitutes them with \lstinline{(O+n).S}.
+More generally, given an equality \lstinline{h : a = b}, calling \lstinline{rw h} substitutes occurrences of \lstinline{a} in the goal with \lstinline{b}.
+\begin{lstlisting}
+lemma O_plus (n : Nat) : O + n = n :=
+begin
+  induction n with n hn,
+  refl,
+             -- goal: O+n.S = n.S
+  rw plus_S, -- goal: (O+n).S = n.S
+  rw hn,     -- goal: n.S = n.S
+             -- refl is automatically called with rw,
+             -- so: goal accomplished!
+end
+\end{lstlisting}
+Let's tackle one more theorem: the commutativiy of addition
+\begin{lstlisting}
+lemma plus_comm (n m : Nat) : n + m = m + n :=
+begin
+
+end
+\end{lstlisting}
+Again, using \lstinline{refl} doesn't work, so we use induction.
+We have a choice: using induction on \lstinline{n} or \lstinline{m};
+note that doing induction on one or the other is not the same,
+because \lstinline{n} and \lstinline{m} have asymmetric roles in the definition of \lstinline{Add}.
+In particular, the second argument gets "broken down" at each step
+(since \lstinline{n + m.S = (n + m).S}) while the first argument doesn't change.
+Thus, in this case the best choice is induction on \lstinline{m}.
+\begin{lstlisting}
+lemma plus_comm (n m : Nat) : n + m = m + n :=
+begin
+  induction m with m hm, -- 2 goals
+
+                         case Nat.O
+                         n: Nat
+                         ⊢ n+O = O+n
+
+                         case Nat.S
+                         nm: Nat
+                         hm: n+m = m+n
+                         ⊢ n+m.S = m.S+n
+end
+\end{lstlisting}
+We can deal with the base case \lstinline{n+O = O+n} by using \lstinline{rw} with our two lemmas
+\lstinline{plus_O : n + O = n} and \lstinline{O_plus : O + n = n}:
+\begin{lstlisting}
+  rw plus_O, rw O_plus, -- first goal vanquished
+\end{lstlisting}
+So now we have hypothesis \lstinline{hm : n+m = m+n} and goal \lstinline{n+m.S = m.S+n}.
+We can use \lstinline{rw plus_S} to change the goal to \lstinline{(n+m).S = m.S+n},
+and if we could further rewrite it to \lstinline{(n+m).S = (m+n).S} then we would use the hypothesis
+to solve the goal.
+Problem is, we don't have a theorem which states that \lstinline{m.S+n = (m+n).S} - but we leave it as an exercise for the reader.
+Having called it \lstinline{S_plus} we can thus conclude our proof
+\begin{lstlisting}
+lemma plus_comm (n m : Nat) : n + m = m + n :=
+begin
+  induction m with m hm,
+  rw plus_O, rw O_plus,
+  rw plus_S, rw S_plus, rw hm, -- goal accomplished
+end
+\end{lstlisting}
+So, we've now learned some basics about theorem proving in Lean,
+but we don't know anything yet about what proofs \textit{are} and how they fit in the general scheme of things.
+There is a lot to be learned.
+
+\section{Curry-Howard correspondence}
+
+The following section is not necessary to understand the rest of the thesis,
+so the busy reader can skip it.
+
+In Lean, things like propositions and proofs are not completely separated from data objects like types and elements of types.
+We previously stated that in Lean, everything has a type, and we can see what type a certain object has by using the \lstinline{#check} command.
+
+So, let's feed random stuff to \lstinline{#check}.
+\begin{lstlisting}
+#check O -- Nat
+#check Nat -- Type
+#check Type -- Type 1
+#check Type 1 -- Type 2
+              -- it's an infinite family of types
+              -- for each u, Type u is an element of Type (u+1)
+#check Add -- Nat → Nat → Nat
+#check Nat → Nat → Nat -- Type
+
+-- some theorem names...
+#check two_plus_two -- O.S.S+O.S.S = O.S.S.S.S
+#check O_plus -- ∀ (n : Nat), O+n = n
+#check plus_comm -- ∀ (n m : Nat), n+m = m+n
+
+-- ..and their statements
+#check O.S.S+O.S.S = O.S.S.S.S -- Prop
+#check ∀ (n : Nat), O+n = n -- Prop
+#check ∀ (n m : Nat), n+m = m+n -- Prop
+
+#check Prop -- Type
+\end{lstlisting}
+So, there is a type called \lstinline{Prop} and its elements are propositions.
+Any proposition, like \lstinline{∀ (n : Nat), O+n = n}, is in turn a type - but what exactly are its elements?
+
+The elements of a proposition are proofs of that proposition.
+This means that what we have called \lstinline{two_plus_two} is a proof of the fact that \lstinline{O.S.S+O.S.S = O.S.S.S.S}.
+What we mean by proving a proposition, is finding an element whose type is that proposition.
+For example, here is the definition of the proposition \lstinline{true}:
+\begin{lstlisting}
+inductive true : Prop -- this is a Prop, not a Type
+| intro : true    
+\end{lstlisting}
+How do we know that \lstinline{true} is true? Because it has an element, \lstinline{true.intro}:
+\begin{lstlisting}
+lemma true_is_true : true :=
+begin
+  exact true.intro, -- if we have an explicit element
+                    -- of the proposition to be proven,
+                    -- we can use the tactic exact
+end
+\end{lstlisting}
+The proposition \lstinline{false} is defined like this:
+\begin{lstlisting}
+inductive false : Prop  
+\end{lstlisting}
+It's a type with no elements, so \lstinline{false} can't be proven.
+
+Suppose that $A$ is a proposition in classical logic.
+Then it is true that $A \Rightarrow A$ (we can derive it using natural deduction, for example).
+In Lean this fact can be expressed as the proposition \lstinline{A → A}, and it's something provable:
+\begin{lstlisting}
+lemma A_implies_A (A : Prop) : A → A :=
+begin
+  -- 1 goal
+  -- A: Prop
+  -- ⊢ A → A
+end
+\end{lstlisting}
+At the left of the implication arrow we have \lstinline{A}:
+we can thus turn \lstinline{A} into an hypothesis using the \lstinline{intro} tactic
+\begin{lstlisting}
+lemma A_implies_A (A : Prop) : A → A :=
+begin
+  intro h, -- creates a hypothesis h : A
+  -- 1 goal
+  -- A : Prop
+  -- h : A
+  -- ⊢ A
+  exact h, -- goal accomplished
+end
+\end{lstlisting}
+Let's forget for a moment that \lstinline{A} is a proposition, let's think of it as just a type.
+Then something funny happens: we see that \lstinline{A → A} is just the type of functions from \lstinline{A} to \lstinline{A}.
+If we can exhibit an element of this type, then we have proven that \lstinline{A → A}.
+But this is easy enough: we can use the identity function
+\begin{lstlisting}
+def A_implies_A' (A : Prop) : A → A
+| h := h    
+\end{lstlisting}
+and this proves the proposition, but also defines a function.
+It can be interpreted like this:
+if we have a proof \lstinline{h : A} and we have to prove \lstinline{A} then we can just exhibit \lstinline{h}; that's it.
+
+Amazingly, it turns out all proofs are really just functions: we can see this using the \lstinline{#print} command,
+which given a function prints out its definition.
+\begin{lstlisting}
+#print Add
+  -- def Add : Nat → Nat → Nat :=
+  -- λ (n m : Nat), Nat.rec n (λ (m' n_m' : Nat), n_m'.S) m
+#print A_implies_A
+  -- theorem A_implies_A : ∀ (A : Prop), A → A :=
+  -- λ (A : Prop) (h : A), h
+#print O_plus
+  -- theorem O_plus : ∀ (n : Nat), O+n = n :=
+  -- λ (n : Nat),
+  --   Nat.rec (eq.refl (O+O))
+  --     (λ (n : Nat) (hn : O+n = n),
+  --        (id (eq.rec (eq.refl (O+n.S = n.S))
+  --                    (plus_S O n))).mpr
+  --          ((id (eq.rec (eq.refl ((O+n).S = n.S)) hn)).mpr
+  --            (eq.refl n.S)))
+  --     n
+\end{lstlisting}
+When we proved \lstinline{O_plus} we didn't explicitly write a function,
+we used tactics, but it's important to notice that the sequence of tactics \textit{isn't} the proof -
+instead, tactics generate proofs (functions).
+To further illustrate this point, notice that we can also define the function \lstinline{Add} using tactics:
+\begin{lstlisting}
+def Add_tactic (n m : Nat) : Nat :=
+begin
+  -- 1 goal
+  -- n m : Nat
+  -- ⊢ Nat
+  -- to "solve" the goal we have to provide a Nat
+  induction m with m' n_m', -- induction on m
+  exact n, -- base case, m=O: we return n
+  exact n_m'.S, -- inductive case, Add n m' = n_m'
+                -- we have to provide Add n m'.S:
+                -- we return n_m'.S
+                -- "goal accomplished"
+end
+
+#reduce Add_tactic O.S.S O.S.S.S.S -- O.S.S.S.S.S.S
+\end{lstlisting}
+And notice! \lstinline{Add} is a recursive function, so to define it we had to use induction.
+Going back to \lstinline{#print Add} and \lstinline{#print O_plus},
+we can see that both call a function called \lstinline{Nat.rec}. Let's investigate:
+\begin{lstlisting}
+#check Nat.rec
+  -- Nat.rec : ?M_1 O →
+  --           (Π (n : Nat), ?M_1 n → ?M_1 n.S) →
+  --           Π (n : Nat), ?M_1 n
+\end{lstlisting}
+If we intepret \lstinline{?M_1} as a proposition \lstinline{P : Nat → Prop} which ranges over a \lstinline{Nat},
+then \lstinline{Nat.rec} reads off as
+"if \lstinline{P O} holds true and for all \lstinline{n : Nat},
+\lstinline{P n} implies \lstinline{P n.S}, then \lstinline{P n} holds for all \lstinline{n : Nat}" which is the principle of induction.
+If instead we interpret \lstinline{?M_1} as a function \lstinline{f : Nat → T} with domain \lstinline{Nat} and codomain a certain type \lstinline{T},
+then \lstinline{Nat.rec} reads off as
+"if we define \lstinline{f O} and for all \lstinline{n : Nat},
+given \lstinline{f n} we define \lstinline{f n.S}, then we have defined a function \lstinline{Nat → T}" which is how we define recursive functions.
+
+\lstinline{Nat.rec} is called the induction principle of \lstinline{Nat},
+and is auto-generated as soon as \lstinline{Nat} is defined.
+Every type generates an induction principle - even simple types like our earlier \lstinline{weekday} -
+hence every type is defined using the \lstinline{inductive} keyword.
+The same induction principle is used both for recursive functions and inductive proofs.
+
+The remarkable thing about Lean is that the concepts of types and propositions, functions and proofs are united in a single mechanism,
+which results in a particularly simple foundation for mathematics and computing.
+This concept is called the \textbf{Curry-Howard correspondence} and it's not something unique to Lean -
+it's a common characteristic of many theorem prover, especially those based on (intuitionistic) type theory.
 
 \end{document}
