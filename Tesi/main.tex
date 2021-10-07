@@ -1224,7 +1224,7 @@ So, there is a type called \lstinline{Prop} and its elements are propositions.
 Any proposition, like \lstinline{∀ (n : Nat), O+n = n}, is in turn a type - but what exactly are its elements?
 
 The elements of a proposition are proofs of that proposition.
-This means that what we have called \lstinline{two_plus_two} is a proof of the fact that \lstinline{O.S.S+O.S.S = O.S.S.S.S}.
+This means that what we have called \lstinline{two_plus_two} is a proof of the fact that \lstinline{O.S.S + O.S.S = O.S.S.S.S}.
 What we mean by proving a proposition, is finding an element whose type is that proposition.
 For example, here is the definition of the proposition \lstinline{true}:
 \begin{lstlisting}
@@ -1341,7 +1341,7 @@ then \lstinline{Nat.rec} reads off as
 "if we define \lstinline{f O} and for all \lstinline{n : Nat},
 given \lstinline{f n} we define \lstinline{f n.S}, then we have defined a function \lstinline{Nat → T}" which is how we define recursive functions.
 
-\lstinline{Nat.rec} is called the induction principle of \lstinline{Nat},
+\lstinline{Nat.rec} is called the \textbf{induction principle} of \lstinline{Nat},
 and is auto-generated as soon as \lstinline{Nat} is defined.
 Every type generates an induction principle - even simple types like our earlier \lstinline{weekday} -
 hence every type is defined using the \lstinline{inductive} keyword.
@@ -1351,5 +1351,19 @@ The remarkable thing about Lean is that the concepts of types and propositions, 
 which results in a particularly simple foundation for mathematics and computing.
 This concept is called the \textbf{Curry-Howard correspondence} and it's not something unique to Lean -
 it's a common characteristic of many theorem prover, especially those based on (intuitionistic) type theory.
+
+\paragraph{The \lstinline{simp} tactic}
+
+\section{Basic theorems about RPP}
+
+\section{A library of functions}
+
+\section{PRF-completeness}
+
+\section{Alternative ways to define RPP in Lean}
+
+\chapter{Conclusions}
+
+\section{Further work}
 
 \end{document}
