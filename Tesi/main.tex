@@ -1155,15 +1155,15 @@ Thus, in this case the best choice is induction on \lstinline{m}.
 lemma plus_comm (n m : Nat) : n + m = m + n :=
 begin
   induction m with m hm, -- 2 goals
-
-                         case Nat.O
-                         n: Nat
-                         ⊢ n+O = O+n
-
-                         case Nat.S
-                         nm: Nat
-                         hm: n+m = m+n
-                         ⊢ n+m.S = m.S+n
+                         -- 
+                         -- case Nat.O
+                         -- n: Nat
+                         -- ⊢ n+O = O+n
+                         --
+                         -- case Nat.S
+                         -- nm: Nat
+                         -- hm: n+m = m+n
+                         -- ⊢ n+m.S = m.S+n
 end
 \end{lstlisting}
 We can deal with the base case \lstinline{n+O = O+n} by using \lstinline{rw} with our two lemmas
@@ -1188,6 +1188,15 @@ end
 A remark: since the rules \lstinline{n + m.S = (n + m).S} and \lstinline{n + O = n} are exactly the definition of \lstinline{Add},
 we don't actually need to write \lstinline{rw plus_S} and \lstinline{rw plus_O}, we can instead use \lstinline{rw Add}
 which includes both these equalities.
+
+After seeing some examples of tactics-based proofs,
+you might come to the conclusion that they are very unreadable and difficult to understand.
+That's not entirely false, but it's important to notice that the interactive component of Lean is vital to its usage:
+just reading tactics it's practically impossible to get what's going on, especially for more involved proofs.
+On the other hand seeing the hypotheses, the goals, and how they change at each steps of the proof
+immensely clarifies the process of understanding and usage.
+
+\paragraph{}
 
 So, we've now learned some basics about theorem proving in Lean,
 but we don't know anything yet about what proofs \textit{are} and how they fit in the general scheme of things.
@@ -1423,9 +1432,9 @@ each new theorem makes \lstinline{simp} stronger, which helps it prove new theor
 In the following section we will make heavy use of \lstinline{simp} on theorems about \lstinline{RPP}.
 
 It's usually not a good idea to indiscriminately mark every equality with \lstinline{@[simp]}, however.
-That's because \lstinline{simp} is very eager to apply every theorem each time it has the opportunity.
+That's because \lstinline{simp} is very eager to apply every theorem it can each time it has the opportunity.
 This means that if we mark something like our \lstinline{add_comm : ∀ (n m : Nat), n+m = m+n}
-then if \lstinline{simp} meets a sum \lstinline{n+m}, it gets stuck in an infinite loop,
+then when \lstinline{simp} meets a sum \lstinline{n+m}, it gets stuck in an infinite loop,
 endlessly "simplifying" it to \lstinline{m+n} and back to \lstinline{n+m}.
 Hence, when we tag an equality as \lstinline{@[simp]},
 it's good practice to make sure that the right-hand side is strictly simpler than the left-hand side,
