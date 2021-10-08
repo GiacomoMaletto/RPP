@@ -1185,6 +1185,10 @@ begin
   rw plus_S, rw S_plus, rw hm, -- goal accomplished
 end
 \end{lstlisting}
+A remark: since the rules \lstinline{n + m.S = (n + m).S} and \lstinline{n + O = n} are exactly the definition of \lstinline{Add},
+we don't actually need to write \lstinline{rw plus_S} and \lstinline{rw plus_O}, we can instead use \lstinline{rw Add}
+which includes both these equalities.
+
 So, we've now learned some basics about theorem proving in Lean,
 but we don't know anything yet about what proofs \textit{are} and how they fit in the general scheme of things.
 There is a lot to be learned.
@@ -1352,7 +1356,80 @@ which results in a particularly simple foundation for mathematics and computing.
 This concept is called the \textbf{Curry-Howard correspondence} and it's not something unique to Lean -
 it's a common characteristic of many theorem prover, especially those based on (intuitionistic) type theory.
 
-\paragraph{The \lstinline{simp} tactic}
+\section{The simplification tactic}
+
+A hot topic in proof assistants is automatization.
+For many, being able to generate automatically new theorems and new math is the ultimate objective of theorem provers.
+Certainly Lean has value even before such a feat is accomplished,
+but where automation is already avaiable it would be a waste not to use it.
+
+A simple tool which helps tremendously with theorem proving is the \lstinline{simp} tactic.
+It automaticaly tries to apply already known theorems in order to simplify a given expression.
+We illustrate this with an example:
+\begin{lstlisting}
+lemma many_adds (n : Nat) :
+  (O + (O + (n.S + (n.S + (O + n))))) = (n + (n + n)).S.S :=
+begin
+  rw O_plus,
+  rw O_plus,
+  rw O_plus,
+  rw S_plus,
+  rw S_plus,
+  rw plus_S, -- goal accomplished
+end
+\end{lstlisting}
+Using our previous lemmas it's not hard to prove this,
+but there's a lot of repetition and any slight change to the statement probably results in some misapplied tactics.
+Equalities like \lstinline{O + n = n} makes our expression strictly simpler,
+so usually there wouldn't be any reason to not rewrite it automatically.
+We can do such a thing by marking the theorem with the \lstinline{@[simp]} tag
+\begin{lstlisting}
+@[simp] lemma O_plus (n : Nat) : O + n = n :=
+begin
+  ...  
+\end{lstlisting}
+and then using the \lstinline{simp} tactic in the proof of \lstinline{many_adds}:
+\begin{lstlisting}
+lemma many_adds (n : Nat) :
+  (O + (O + (n.S + (n.S + (O + n))))) = (n + (n + n)).S.S :=
+begin
+  simp, -- 1 goal
+        -- n : Nat
+        -- ⊢ n.S+(n.S+n) = (n+(n+n)).S.S
+end
+\end{lstlisting}
+If we also mark lemmas \lstinline{plus_S} \lstinline{S_plus} with \lstinline{@[simp]},
+then we can conclude \lstinline{many_adds} with a single use tactic:
+\begin{lstlisting}
+lemma many_adds (n : Nat) :
+  (O + (O + (n.S + (n.S + (O + n))))) = (n + (n + n)).S.S :=
+begin
+  simp, -- goal accomplished
+end  
+\end{lstlisting}
+We can mark with \lstinline{@[simp]} theorems which have an equality or a bi-implication as thesis.
+We can also mark definitions and functions,
+so that direct consequences of the the definition are automatically simplified.
+For example, marking \lstinline{Add} with \lstinline{@[simp]} is the same as marking \lstinline{plus_O} and \lstinline{plus_S}. 
+
+This tactic has some more functionalities: if we want to mark certain theorems or definitions \lstinline{th1, th2, def1, ...}
+just for one \lstinline{simp} call, we can write \lstinline{simp[th1, th2, def1, ...]} and we can also mark every local hypothesis
+by using the asterisk \lstinline{simp[*]}.
+Finally, hypotheses themselves can be the target of simplification:
+if we want to simplify a hypothesis \lstinline{h} we write \lstinline{simp at h}.
+
+Using \lstinline{simp} and marking theorems often starts off an avalanche effect:
+each new theorem makes \lstinline{simp} stronger, which helps it prove new theorems.
+In the following section we will make heavy use of \lstinline{simp} on theorems about \lstinline{RPP}.
+
+It's usually not a good idea to indiscriminately mark every equality with \lstinline{@[simp]}, however.
+That's because \lstinline{simp} is very eager to apply every theorem each time it has the opportunity.
+This means that if we mark something like our \lstinline{add_comm : ∀ (n m : Nat), n+m = m+n}
+then if \lstinline{simp} meets a sum \lstinline{n+m}, it gets stuck in an infinite loop,
+endlessly "simplifying" it to \lstinline{m+n} and back to \lstinline{n+m}.
+Hence, when we tag an equality as \lstinline{@[simp]},
+it's good practice to make sure that the right-hand side is strictly simpler than the left-hand side,
+and that no infinite loops can occur.
 
 \section{Basic theorems about RPP}
 
