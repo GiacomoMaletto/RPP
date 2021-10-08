@@ -943,6 +943,9 @@ because that's why we created them in the first place.
 
 \chapter{Theorem proving}
 
+Here we finally delve into the main characteristic which distinguishes Lean from usual programming languages:
+the possibility of formally proving results about the objects defined.
+
 \section{Some examples of Lean proofs}
 
 \paragraph{Reflexivity}
@@ -990,7 +993,7 @@ this appears in the sidebar:
 \end{lstlisting}
 This is called the \textbf{tactic state}.
 The line beginning with the turnstile \lstinline{⊢ O = O} is our \textbf{goal}.
-We can write commands called \textbf{tactics} which helps us solve goals.
+We can write commands called \textbf{tactics} which help us solve goals.
 In this case, the goal is an equality in which the left-hand side happens to coincide perfectly with the right-hand side,
 so we can solve our goal using the \lstinline{refl} command
 \begin{lstlisting}
@@ -999,7 +1002,7 @@ begin
   refl,
 end
 \end{lstlisting}
-and placing the cursor just after the comma, a pleasant message appears:
+Placing the cursor just after the comma, a pleasant message appears:
 \begin{lstlisting}
   goals accomplished
 \end{lstlisting}
@@ -1048,7 +1051,7 @@ end
 
 \paragraph{Induction and rewrite}
 
-If we instead we try to prove in the same way that \lstinline{O + n = n},
+If instead we try to prove in the same way that \lstinline{O + n = n},
 \begin{lstlisting}
 def O_plus (n : Nat) : O + n = n :=
 begin
@@ -1094,7 +1097,7 @@ Now the tactic state has become
 \end{lstlisting}
 What happened is that we used induction:
 to prove a property \lstinline{P n} (in this case, \lstinline{O + n = n}) for all \lstinline{n : Nat},
-it suffices to prove that \lstinline{P O} holds and that from \lstinline{P n} follows \lstinline{P n.S}.
+it suffices to prove that \lstinline{P O} holds and that \lstinline{P n} implies \lstinline{P n.S}.
 The first subgoal is the base case \lstinline{O+O = O}, and can be solved using \lstinline{refl}
 \begin{lstlisting}
 lemma O_plus (n : Nat) : O + n = n :=
@@ -1134,7 +1137,7 @@ begin
   rw plus_S, -- goal: (O+n).S = n.S
   rw hn,     -- goal: n.S = n.S
              -- refl is automatically called with rw,
-             -- so: goal accomplished!
+             -- so: goals accomplished!
 end
 \end{lstlisting}
 Let's tackle one more theorem: the commutativiy of addition
@@ -1182,7 +1185,7 @@ lemma plus_comm (n m : Nat) : n + m = m + n :=
 begin
   induction m with m hm,
   rw plus_O, rw O_plus,
-  rw plus_S, rw S_plus, rw hm, -- goal accomplished
+  rw plus_S, rw S_plus, rw hm, -- goals accomplished
 end
 \end{lstlisting}
 A remark: since the rules \lstinline{n + m.S = (n + m).S} and \lstinline{n + O = n} are exactly the definition of \lstinline{Add},
@@ -1244,7 +1247,8 @@ For example, here is the definition of the proposition \lstinline{true}:
 inductive true : Prop -- this is a Prop, not a Type
 | intro : true    
 \end{lstlisting}
-How do we know that \lstinline{true} is true? Because it has an element, \lstinline{true.intro}:
+How do we know that \lstinline{true} is true? Because it has an element, \lstinline{true.intro}
+(another way to say it is that \lstinline{true.intro} is a proof of the proposition \lstinline{true}):
 \begin{lstlisting}
 lemma true_is_true : true :=
 begin
@@ -1253,6 +1257,7 @@ begin
                     -- we can use the tactic exact
 end
 \end{lstlisting}
+
 The proposition \lstinline{false} is defined like this:
 \begin{lstlisting}
 inductive false : Prop  
@@ -1280,7 +1285,7 @@ begin
   -- A : Prop
   -- h : A
   -- ⊢ A
-  exact h, -- goal accomplished
+  exact h, -- goals accomplished
 end
 \end{lstlisting}
 Let's forget for a moment that \lstinline{A} is a proposition, let's think of it as just a type.
@@ -1331,7 +1336,7 @@ begin
   exact n_m'.S, -- inductive case, Add n m' = n_m'
                 -- we have to provide Add n m'.S:
                 -- we return n_m'.S
-                -- "goal accomplished"
+                -- "goals accomplished"
 end
 
 #reduce Add_tactic O.S.S O.S.S.S.S -- O.S.S.S.S.S.S
@@ -1384,14 +1389,14 @@ begin
   rw O_plus,
   rw S_plus,
   rw S_plus,
-  rw plus_S, -- goal accomplished
+  rw plus_S, -- goals accomplished
 end
 \end{lstlisting}
 Using our previous lemmas it's not hard to prove this,
 but there's a lot of repetition and any slight change to the statement probably results in some misapplied tactics.
-Equalities like \lstinline{O + n = n} makes our expression strictly simpler,
+Equalities like \lstinline{O_plus : O + n = n} makes our expression strictly simpler,
 so usually there wouldn't be any reason to not rewrite it automatically.
-We can do such a thing by marking the theorem with the \lstinline{@[simp]} tag
+We can do such a thing by marking the theorem \lstinline{O_plus} with the \lstinline{@[simp]} tag
 \begin{lstlisting}
 @[simp] lemma O_plus (n : Nat) : O + n = n :=
 begin
@@ -1407,16 +1412,19 @@ begin
         -- ⊢ n.S+(n.S+n) = (n+(n+n)).S.S
 end
 \end{lstlisting}
-If we also mark lemmas \lstinline{plus_S} \lstinline{S_plus} with \lstinline{@[simp]},
+If we also mark lemmas \lstinline{plus_S} and \lstinline{S_plus} with \lstinline{@[simp]},
 then we can conclude \lstinline{many_adds} with a single use tactic:
 \begin{lstlisting}
 lemma many_adds (n : Nat) :
   (O + (O + (n.S + (n.S + (O + n))))) = (n + (n + n)).S.S :=
 begin
-  simp, -- goal accomplished
+  simp, -- goals accomplished
 end  
 \end{lstlisting}
 We can mark with \lstinline{@[simp]} theorems which have an equality or a bi-implication as thesis.
+Notice that we put \lstinline{@[simp]} besides theorems that we want to be later utilized by \lstinline{simp},
+not in theorems where we want to use the tactic \lstinline{simp}.
+
 We can also mark definitions and functions,
 so that direct consequences of the the definition are automatically simplified.
 For example, marking \lstinline{Add} with \lstinline{@[simp]} is the same as marking \lstinline{plus_O} and \lstinline{plus_S}. 
