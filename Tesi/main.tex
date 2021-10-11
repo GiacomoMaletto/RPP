@@ -8,6 +8,8 @@
 \usepackage{stmaryrd}
 \SetSymbolFont{stmry}{bold}{U}{stmry}{m}{n}
 
+\usepackage{comment}
+
 % math
 \usepackage{amsmath}
 \usepackage{mathtools}
@@ -18,12 +20,15 @@
 \setcounter{MaxMatrixCols}{20}
 \usepackage{rotating}
 \definecolor{lblue}{rgb}{.80, .90, .95}
+\definecolor{lorange}{rgb}{1, .85, .60}
 
 \usepackage{color}
 \definecolor{keywordcolor}{rgb}{0.7, 0.1, 0.1} % red
 \definecolor{commentcolor}{rgb}{0.4, 0.4, 0.4} % grey
 \definecolor{symbolcolor}{rgb}{0.0, 0.1, 0.6}  % blue
 \definecolor{sortcolor}{rgb}{0.1, 0.5, 0.1}    % green
+
+\usepackage{graphicx}
 
 % font
 % \usepackage{mathpazo}
@@ -65,10 +70,11 @@
 % \newcommand{\svdots}{\scriptscriptstyle \boldsymbol \vdots}
 \newcommand{\perm}[1]{\scriptstyle \left\rmoustache #1 \right\rmoustache}
 \newcommand{\bloch}[2]{\Block[draw=white,fill=lblue,line-width=.5mm,rounded-corners]{#1}{#2}} % https://en.wikipedia.org/wiki/Ernest_Bloch
+\newcommand{\oloch}[2]{\Block[draw=white,fill=lorange,line-width=.5mm,rounded-corners]{#1}{#2}}
 \newcommand{\conv}[1]{\overbracket[.5pt][1pt]{\underbracket[.5pt][1pt]{#1}}}
 
-\newcommand{\N}{\mathbb{N}}
-\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\ZZ}{\mathbb{Z}}
 
 \newcommand{\RPP}{\mathsf{RPP}}
 \newcommand{\ORPP}{\mathsf{ORPP}}
@@ -90,6 +96,14 @@
 \newcommand{\rppdec}{\mathsf{dec}}
 \newcommand{\rppmul}{\mathsf{mul}}
 \newcommand{\rppsquare}{\mathsf{square}}
+\newcommand{\rppcp}{\mathsf{cp}}
+\newcommand{\rpptr}{\mathsf{tr}}
+\newcommand{\rppcu}{\mathsf{cu}}
+\newcommand{\rppcustep}{\mathsf{cu_{step}}}
+\newcommand{\rppdiv}{\mathsf{div}}
+\newcommand{\rppdivstep}{\mathsf{div_{step}}}
+\newcommand{\rppsqrt}{\mathsf{sqrt}}
+\newcommand{\rppsqrtstep}{\mathsf{sqrt_[step]}}
 \newcommand{\PRF}{\mathsf{PRF}}
 
 % title
@@ -134,11 +148,11 @@ Here is the definition that we will use:
 
 \begin{definition}[Reversible Primitive Permutations]
 \label{rppdef}
-The class of \textbf{Reversible Primitive Permutations} or $\RPP$ is the smallest subset of functions $\Z^n \to \Z^n$ satisfying the following conditions:
+The class of \textbf{Reversible Primitive Permutations} or $\RPP$ is the smallest subset of functions $\ZZ^n \to \ZZ^n$ satisfying the following conditions:
 \begin{itemize}
 
 \item
-The $n$-ary \textbf{identity} $\rppId_n (x_1, \dots, x_n) = (x_1, \dots, x_n)$ belongs to $\RPP$, for all $n \in \N$.
+The $n$-ary \textbf{identity} $\rppId_n (x_1, \dots, x_n) = (x_1, \dots, x_n)$ belongs to $\RPP$, for all $n \in \NN$.
 \[\begin{NiceMatrix}[nullify-dots]
   x_1    & \bloch{3-1}{\rppId_n} & x_1    \\
   \Vdots &                       & \Vdots \\
@@ -172,8 +186,8 @@ The \textbf{swap} $\rppSw (x, y) = (y, x)$ belongs to $\RPP$.
 \end{NiceMatrix}\]
 
 \item
-If $f : \Z^n \to \Z^n$ and $g : \Z^n \to \Z^n$ belongs to $\RPP$,
-then the \textbf{series composition} $(f \rppCo g) : \Z^n \to \Z^n$ belongs to $\RPP$ and is such that:
+If $f : \ZZ^n \to \ZZ^n$ and $g : \ZZ^n \to \ZZ^n$ belongs to $\RPP$,
+then the \textbf{series composition} $(f \rppCo g) : \ZZ^n \to \ZZ^n$ belongs to $\RPP$ and is such that:
 \[(f \rppCo g) (x_1, \dots, x_n) = g (f (x_1, \dots, x_n)) = (g \circ f) (x_1, \dots, x_n).\]
 We remark that $f \rppCo g$ means that $f$ is applied first, and then $g$, in opposition to the standard functional composition (denoted by $\circ$).
 \[\begin{NiceMatrix}[nullify-dots]
@@ -184,8 +198,8 @@ We remark that $f \rppCo g$ means that $f$ is applied first, and then $g$, in op
 
 \item
 
-If $f : \Z^n \to \Z^n$ and $g : \Z^m \to \Z^m$ belongs to $\RPP$,
-then the \textbf{parallel composition} $(f \rppPa g) : \Z^{n + m} \to \Z^{n + m} $ belongs to $\RPP$ and is such that:
+If $f : \ZZ^n \to \ZZ^n$ and $g : \ZZ^m \to \ZZ^m$ belongs to $\RPP$,
+then the \textbf{parallel composition} $(f \rppPa g) : \ZZ^{n + m} \to \ZZ^{n + m} $ belongs to $\RPP$ and is such that:
 \[(f \rppPa g) (x_1, \dots, x_n, y_1, \dots, y_m) = (f (x_1, \dots, x_n), g (y_1, \dots, y_m)).\]
 \[\begin{NiceMatrix}[nullify-dots]
   x_1    & \bloch{6-1}{f \rppPa g} & w_1    & \Block{6-1}{=} & x_1    & \bloch{3-1}{f} & w_1    \\
@@ -197,10 +211,10 @@ then the \textbf{parallel composition} $(f \rppPa g) : \Z^{n + m} \to \Z^{n + m}
 \end{NiceMatrix}\]
 
 \item
-If $f : \Z^n \to \Z^n$ belongs to $\RPP$,
-then then \textbf{finite iteration} $\rppIt[f] : \Z^{n + 1} \to \Z^{n + 1}$ belongs to $\RPP$ and is such that:
+If $f : \ZZ^n \to \ZZ^n$ belongs to $\RPP$,
+then then \textbf{finite iteration} $\rppIt[f] : \ZZ^{n + 1} \to \ZZ^{n + 1}$ belongs to $\RPP$ and is such that:
 \[ \rppIt[f] (x, x_1, \dots, x_n) = (x, (\overbrace{f \circ \dots \circ f}^{\downarrow x \text{ times}}) (x_1, \dots, x_n)) \]
-where $\downarrow (\cdot) : \Z \to \N$ is defined as
+where $\downarrow (\cdot) : \ZZ \to \NN$ is defined as
 \[\downarrow x = \begin{cases} x, & \text{if $x \ge 0$} \\
                                0, & \text{if $x < 0$} \end{cases}.\]
 This means that the function $f$ is applied $\downarrow x$ times to $(x_1, \dots, x_n)$.
@@ -213,8 +227,8 @@ This means that the function $f$ is applied $\downarrow x$ times to $(x_1, \dots
 \end{NiceMatrix}\]
 
 \item
-If $f, g, h : \Z^n \to \Z^n$ belong to $\RPP$,
-then the \textbf{selection} $\rppIf[f, g, h] : \Z^{n + 1} \to \Z^{n + 1}$ belongs to $\RPP$ and is such that:
+If $f, g, h : \ZZ^n \to \ZZ^n$ belong to $\RPP$,
+then the \textbf{selection} $\rppIf[f, g, h] : \ZZ^{n + 1} \to \ZZ^{n + 1}$ belongs to $\RPP$ and is such that:
 \[\rppIf[f, g, h] (x, x_1, \dots, x_n) = \begin{cases} (x, f (x_1, \dots, x_n)), & \text{if $x > 0$} \\
                                                     (x, g (x_1, \dots, x_n)), & \text{if $x = 0$} \\
                                                     (x, h (x_1, \dots, x_n)), & \text{if $x < 0$} \end{cases}.\]
@@ -240,7 +254,7 @@ as that would break reversibility.
 
 \begin{remark}
 \label{different_arity}
-If we have two functions of different arity, for example $f : \Z^3 \to \Z^3$ and $g : \Z^5 \to \Z^5$,
+If we have two functions of different arity, for example $f : \ZZ^3 \to \ZZ^3$ and $g : \ZZ^5 \to \ZZ^5$,
 then we will still write $f \rppCo g$ to mean the function with arity $\max(3, 5)=5$ given by $(f \rppPa \rppId_2) \rppCo g$.
 In general, the arity of the "smaller" function can be enlarged by a suitable parallel composition with the identity.
 The same goes for the arguments of the selection $\rppIf[f, g, h]$.
@@ -266,14 +280,14 @@ But notice that this operation is not reversible:
 given only the output (the value $x+y$) it is impossible to obtain the original values ($x, y$).
 As we will see, every function in $\RPP$ is reversible, so we will not be able to define addition in this way.
 
-Instead, we can define a function $\rppinc$ in $\RPP$ which, given $n \in \N$ and $x \in \Z$, yields
+Instead, we can define a function $\rppinc$ in $\RPP$ which, given $n \in \NN$ and $x \in \ZZ$, yields
 \[\begin{NiceMatrix}
   n & \bloch{2-1}{\rppinc} & n     \\
   x &                      & x + n \\
 \end{NiceMatrix}\]
 If $n$ is negative the output is just $(n, x)$.
-The fact that the above diagram is only valid for $n \in \N$ might bother some of you;
-we'll explain later why it is so, and how we can also make it work for $n \in \Z$.
+The fact that the above diagram is only valid for $n \in \NN$ might bother some of you;
+we'll explain later why it is so, and how we can also make it work for $n \in \ZZ$.
 
 For now let's focus on the output: we don't just have $x + n$ but also $n$, and indeed,
 given both $n$ and $x+n$ we can reconstruct $n$ (obviously) and $x$ (by $(x+n)-n$).
@@ -294,7 +308,7 @@ But we haven't said how to actually define $\rppinc$.
 Well, just like this:
 \[\rppinc = \rppIt[\rppSu]\]
 This means that we apply the successor function $\rppSu$ to the value $x$, for $\downarrow n$ times.
-If $n \in \N$ then $\downarrow n = n$, so we effectively add $n$ to the value $x$.
+If $n \in \NN$ then $\downarrow n = n$, so we effectively add $n$ to the value $x$.
 If instead $n$ is negative then $\downarrow n = 0$ and nothing changes.
 
 Can you guess how $\rppdec$ is defined?
@@ -308,7 +322,7 @@ We now turn our attention to multiplication.
 The elementary-school way to define multiplication is by repeated addition, and we can define $\rppmul$ exactly like that:
 \[\rppmul = \rppIt[\rppinc].\]
 As $\rppinc$ had arity $2$, $\rppmul$ has arity $2+1=3$.
-If $n, m \in \N$ and $x \in \Z$ then we have
+If $n, m \in \NN$ and $x \in \ZZ$ then we have
 \[\begin{NiceMatrix}
   n & \bloch{3-1}{\rppmul} & n             \\
   m &                      & m             \\
@@ -330,7 +344,7 @@ We're now ready to define the function $\rppsquare$ which is used to calculate t
 \[\rppsquare = (\rppId_1 \rppPa \rppSw) \rppCo \rppinc \rppCo \rppmul \rppCo \rppdec \rppCo (\rppId_1 \rppPa \rppSw).\]
 That might look like a very complicated expression;
 thankfully we can make use of diagrams to show what each step does.
-Given $n \in \N$ and $x \in \Z$ we have
+Given $n \in \NN$ and $x \in \ZZ$ we have
 \[\begin{NiceMatrix}
   n &                     & n & \bloch{2-1}{\rppinc} & n & \bloch{3-1}{\rppmul} & n             & \bloch{2-1}{\rppdec} & n             &                     & n             \\
   x & \bloch{2-1}{\rppSw} & 0 &                      & n &                      & n             &                      & 0             & \bloch{2-1}{\rppSw} & x + n \cdot n \\
@@ -354,8 +368,8 @@ In other words, there is an \textit{effective procedure} which produces the inve
 
 \begin{proposition}[The inverse $f^{-1}$ of any $f$]
 \label{rppinv}
-Let $f : \Z^n \to \Z^n$ belong to $\RPP$.
-Then the inverse $f^{-1} : \Z^n \to \Z^n$ exists, belongs to $\RPP$ and, by definition, is
+Let $f : \ZZ^n \to \ZZ^n$ belong to $\RPP$.
+Then the inverse $f^{-1} : \ZZ^n \to \ZZ^n$ exists, belongs to $\RPP$ and, by definition, is
 \begin{itemize}
 \item $\rppId_n^{-1} = \rppId_n$
 \item $\rppNe^{-1} = \rppNe$
@@ -373,7 +387,7 @@ Then $f \rppCo f^{-1} = \rppId_n$ and $f^{-1} \rppCo f = \rppId_n$.
 By induction on the definition of $f$.
 \end{proof}
 
-Well, that was rather succint.
+Well, that was rather succinct.
 
 We invite the reader to check that every listed inverse does indeed make sense;
 for example, the function $\rppIt[f] (x, y_1, \dots, y_n)$ applies $\downarrow x$ times the function $f$ to the argument $(y_1, \dots, y_n)$.
@@ -552,7 +566,7 @@ In a certain sense, currying makes functions conceptually simpler;
 all functions are single variable, it's just that some return other functions.
 
 \paragraph{Integers and lists}
-Functions belonging to $\RPP$ have $\Z^n$ as their domain and codomain,
+Functions belonging to $\RPP$ have $\ZZ^n$ as their domain and codomain,
 so we need a way to represent and work with integer tuples.
 
 The good news is that integers are already defined in Lean.
@@ -665,7 +679,7 @@ Note that we can use \lstinline|{α : Type*}| to refer to a generic type \lstinl
 If instead we had stuck to \lstinline{list_nat}, \lstinline{list_int}...
 now we would have to define \lstinline{length_nat}, \lstinline{length_int}... separately for each type.
 
-We will identity tuples of $n$ elements $\Z^n$ with lists in \lstinline{list ℤ} of length \lstinline{n}.
+We will identity tuples of $n$ elements $\ZZ^n$ with lists in \lstinline{list ℤ} of length \lstinline{n}.
 
 \section{The definition in Lean}
 
@@ -677,10 +691,10 @@ We'd like to be able to do proofs by induction over $\RPP$, like in proposition 
 The key is thinking about $\RPP$ not as a class of functions, but as a small programming language.
 In this sense, we can write down "programs" like our square function
 \[(\rppId_1 \rppPa \rppSw) \rppCo \rppinc \rppCo \rppmul \rppCo \rppdec \rppCo (\rppId_1 \rppPa \rppSw)\]
-but we should not view it only as a function belonging to $\Z^3 \to \Z^3$,
+but we should not view it only as a function belonging to $\ZZ^3 \to \ZZ^3$,
 but also as the sentence
 "$(\rppId_1 \rppPa \rppSw) \rppCo \rppinc \rppCo \rppmul \rppCo \rppdec \rppCo (\rppId_1 \rppPa \rppSw)$"
-which can then be interpreted as the mathematical function belonging to $\Z^3 \to \Z^3$.
+which can then be interpreted as the mathematical function belonging to $\ZZ^3 \to \ZZ^3$.
 
 We thus separate between the \textit{syntax} and the \textit{semantics} of our language.
 \begin{itemize}
@@ -688,17 +702,17 @@ We thus separate between the \textit{syntax} and the \textit{semantics} of our l
 For example, the selection symbol $\rppIf$ should be followed by three other $\RPP$ functions;
 if we write $\rppIf[\rppSu, \rppPr] \rppCo \rppNe$ we get a non-valid sentence.
 \item The semantics is the meaning we give to (well-structured) sentences -
-in our case, they are intepreted as functions $\Z^n \to \Z^n$.
+in our case, they are intepreted as functions $\ZZ^n \to \ZZ^n$.
 \end{itemize}
 
 A possible way to define $\RPP$ functions in Lean is
 \begin{itemize}
 \item define the type $\RPP$ which has for elements syntactically-correct sentences of $\RPP$
-\item define a function $\mathsf{evaluate} : \RPP \to (\Z^n \to \Z^n)$ which assigns to each $\RPP$-sentence its intended meaning,
-namely a function $\Z^n \to \Z^n$.
+\item define a function $\mathsf{evaluate} : \RPP \to (\ZZ^n \to \ZZ^n)$ which assigns to each $\RPP$-sentence its intended meaning,
+namely a function $\ZZ^n \to \ZZ^n$.
 \end{itemize}
 Note that this is not the only way in which this task can be accomplished;
-we will discuss other methods at the end of this chapter.
+we will discuss other methods in section ?.
 
 We thus define the type $\RPP$ as follows:
 \begin{lstlisting}
@@ -723,7 +737,7 @@ infix `‖` : 55 := Pa
 \end{lstlisting}
 so it's now possible to write expressions like
 \begin{lstlisting}
-#check It Su ;; (Id 1 ‖ If Sw Pr Su) -- RPP
+#check It Su ;; (Id 2 ‖ If Sw Pr Su) -- RPP
 \end{lstlisting}
 Remember that by remark \ref{different_arity}, it makes sense to consider the series composition of functions of different arity,
 as long as we give them the meaning specified in the remark.
@@ -754,10 +768,11 @@ there are 5 base cases and in the other 4 the value of \lstinline{arity} is reco
 
 It's now possible to define some \lstinline{RPP}-sentences in Lean
 \begin{lstlisting}
+def Id₁ := Id 1
 def inc := It Su
 def dec := It Pr
 def mul := It inc
-def square := Id 1 ‖ Sw ;; inc ;; mul ;; dec ;; Id 1 ‖ Sw
+def square := Id₁ ‖ Sw ;; inc ;; mul ;; dec ;; Id₁ ‖ Sw
 \end{lstlisting}
 and it's even possible to calculate their arity
 \begin{lstlisting}
@@ -765,9 +780,9 @@ and it's even possible to calculate their arity
 \end{lstlisting}
 but we haven't yet given their meaning as functions.
 
-\paragraph{The \lstinline{evaluate} function}
+\paragraph{The \lstinline{ev} function}
 We are now ready to define \lstinline{evaluate} (\lstinline{ev} for short).
-The function $\mathsf{ev}$ should take $\RPP$-sentences and return functions $\Z^n \to \Z^n$,
+The function $\mathsf{ev}$ should take $\RPP$-sentences and return functions $\ZZ^n \to \ZZ^n$,
 so in Lean we will define it as a function of type
 \begin{lstlisting}
 RPP → (list ℤ → list ℤ)
@@ -823,7 +838,7 @@ The reader is invited to compare this definition with the one given in definitio
 
 Let's see some examples:
 \begin{lstlisting}
-#check ‹It Su ;; (Id 1 ‖ If Sw Pr Su)› -- list ℤ → list ℤ
+#check ‹It Su ;; (Id₁ ‖ If Sw Pr Su)› -- list ℤ → list ℤ
 -- #eval is similar to #reduce
 -- but in this case gives more readable output
 #eval ‹inc› [3, 4] -- [3, 7]
@@ -878,7 +893,7 @@ it's much easier to consider a list's head and tail than its last element and th
 Having a $n$-ary identity function is very useful,
 because we can use parallel composition as in remark \ref{different_arity},
 and also because we have the possibility of having a $0$-ary function, which is not useless in some cases.
-\item The original $\RPP$ functions are defined as the union $\cup_{n \in \N}\RPP^n$
+\item The original $\RPP$ functions are defined as the union $\cup_{n \in \NN}\RPP^n$
 where $\RPP^n$ are the $n$-ary $\RPP$ functions.
 A similar decision could've been made in Lean by definining \lstinline{RPP n} as a dependent type
 with parameter \lstinline{n : ℕ},
@@ -909,8 +924,8 @@ Reversibility gifts us with a third option: if $x < 0$,
 we can apply $f$ a negative amount of times - or in other words, we can apply $f^{-1}$ for $- x$ times.
 Let's call this iterator $\rppItr$.
 Its usage leads to more natural definitions:
-for example, our function $\rppinc (n, x) = (\rppIt[\rppSu]) (n, x)$ returns $(n, x+n)$ only if $n \ge 0$.
-If instead we use $\rppItr$, suddenly $(\rppItr[\rppSu]) (n, x) = (n, x + n)$ for all values of $n \in \Z$.
+for example, our function $\rppinc (n, x) = \rppIt[\rppSu] (n, x)$ returns $(n, x+n)$ only if $n \ge 0$.
+If instead we use $\rppItr$, suddenly $\rppItr[\rppSu] (n, x) = (n, x + n)$ for all values of $n \in \ZZ$.
 
 So why didn't we use $\rppItr$?
 Because our $\rppIt$ is the most versatile option:
@@ -924,7 +939,7 @@ For example, in the case of $\rppIta[f](x,x_1,\cdots,x_n)$, if $x \ge 0$ then th
 then $x$ changes sign and becomes $-x$ with $\rppNe$, then the second $\rppIt$ doesn't do anything because $- x < 0$,
 and finally $-x$ changes sign again to $x$; if instead $x < 0$, only the second $\rppIt$ does something.
 
-Another reason to prefer $\rppIt$ over $\rppItr$ is that in the definition of \lstinline{evaluate},
+Another reason to prefer $\rppIt$ over $\rppItr$ is that in the definition of \lstinline{ev},
 using $\rppItr$ it's hard to convince Lean (or Coq) that the function terminates (that is, it doesn't run on an infinite loop).
 Since every function in Lean must terminate (otherwise there would be consistency issues), Lean rejects the definition.
 There are ways to get around this - but once again we follow the path of least resistance and just get on with $\rppIt$.
@@ -1433,7 +1448,8 @@ This tactic has some more functionalities: if we want to mark certain theorems o
 just for one \lstinline{simp} call, we can write \lstinline{simp[th1, th2, def1, ...]} and we can also mark every local hypothesis
 by using the asterisk \lstinline{simp[*]}.
 Finally, hypotheses themselves can be the target of simplification:
-if we want to simplify a hypothesis \lstinline{h} we write \lstinline{simp at h}.
+if we want to simplify a hypothesis \lstinline{h} we write \lstinline{simp at h};
+if we want to simplify all hypotheses and the goal, we write \lstinline{simp at *}.
 
 Using \lstinline{simp} and marking theorems often starts off an avalanche effect:
 each new theorem makes \lstinline{simp} stronger, which helps it prove new theorems.
@@ -1450,7 +1466,597 @@ and that no infinite loops can occur.
 
 \section{Basic theorems about RPP}
 
+In the previous chapter we found a meaningful way to express $\RPP$ in Lean.
+Our next objective is proving the most important property of this class of functions:
+each $f \in \RPP$ admits an inverse $f^{-1} \in \RPP$.
+
+This result was discussed in proposition \ref{rppinv},
+and we already constructed the function \lstinline{inv : RPP → RPP} which given an \lstinline{RPP} returns its syntactical inverse.
+What remains to be done is to show that this \textit{really} provides the inverse function,
+i.e. that \lstinline{‹f ;; f⁻¹› l = ‹f⁻¹ ;; f› l = l} for all \lstinline{f : RPP} and \lstinline{l : list ℤ}.
+
+To be honest, we could settle for something easier:
+since we decided that we don't really care about what happens when \lstinline{l.length < f.arity},
+we could put \lstinline{f.arity ≤ l.length} as an hypothesis, making our theorem slightly weaker.
+However, we will not do this, because it'd mean that at each use of the theorem we'd have to supply that hypothesis;
+and because the way in which we defined \lstinline{RPP} allows us to state the result in full generality.
+
+This is the statement:
+\begin{lstlisting}
+-- proposition 1 expressed with RPP composition,
+-- about the left inverse
+theorem proposition_1_co_l (f : RPP) (l : list ℤ) :
+  ‹f ;; f⁻¹› l = l
+\end{lstlisting}
+We also need to prove \lstinline{proposition_1_co_r} about the right inverse \lstinline{‹f⁻¹ ;; f› l = l},
+but there's a clever way to derive this fact from \lstinline{proposition_1_co_l}
+and a lemma called \lstinline{inv_involute} which will be our first result about \lstinline{RPP} formalized in Lean:
+\begin{lstlisting}
+@[simp] lemma inv_involute (f : RPP) : (f⁻¹)⁻¹ = f :=
+by { induction f; simp * } -- by { ... } is equivalent to
+                           -- begin ... end
+\end{lstlisting}
+We mark this lemma with \lstinline{@[simp]} because it is an equality where the right-hand side is strictly simpler than the left-hand side.
+Using this fact, to prove that
+\begin{lstlisting}
+‹f⁻¹ ;; f› l = l
+\end{lstlisting}
+we rewrite it as
+\begin{lstlisting}
+‹f⁻¹ ;; (f⁻¹)⁻¹› l = l
+\end{lstlisting}
+and then apply theorem \lstinline{proposition_1_co_l} with argument \lstinline{f⁻¹}.
+
+We still have to prove that theorem, though.
+Let's follow in the footsteps of proposition \ref{rppinv} and begin by induction on f:
+\begin{lstlisting}
+theorem proposition_1_co_l (f : RPP) (l : list ℤ) :
+  ‹f ;; f⁻¹› l = l :=
+begin
+  induction f,
+end
+\end{lstlisting}
+This generates not less than 9 goals!
+It's something to be expected, because the inductive definition of \lstinline{RPP} is composed of 9 cases.
+Let's study each one in excruciating detail.
+
+\paragraph{The base cases}
+
+Seeing all 9 goals at each step is stressful;
+let's use curly braces to limit our view to just the current goal:
+\begin{lstlisting}
+begin
+  induction f,
+  {  }, -- putting the cursor between the curly braces shows
+        --   1 goal
+        --   case RPP.Id
+        --   l : list ℤ
+        --   n : ℕ
+        --   ⊢ ‹Id n;;Id n⁻¹› l = l
+end
+\end{lstlisting}
+We're in luck: by definition of \lstinline{ev} and \lstinline{inv},
+\lstinline{‹Id n;;Id n⁻¹› l} is definitionally equivalent to \lstinline{l},
+so \lstinline{refl} solves the goal
+\begin{lstlisting}
+  { refl, }, -- goals accomplished
+\end{lstlisting}
+
+Now we just have 8 left.
+Here's the second one:
+\begin{lstlisting}
+  case RPP.Ne
+  l: list ℤ
+  ⊢ ‹Ne;;Ne⁻¹› l = l
+\end{lstlisting}
+Sadly, just shoving in \lstinline{refl} like before doesn't do much good.
+We should proceed by cases:
+\begin{itemize}
+\item The simplest case is when \lstinline{l} is the empty list \lstinline{[]}.
+When this happens, the definitional equality \lstinline{‹Ne› (x :: l) = -x :: l} doesn't apply because \lstinline{l} is not of the form \lstinline{x :: l'}.
+Instead, we fall back to the last case considered in the definition of \lstinline{ev}, that is: the whole list remains unchanged.
+As a consequence, by \lstinline{refl} we get that
+\begin{lstlisting}
+‹Ne;;Ne⁻¹› l = ‹Ne⁻¹› (‹Ne› []) = [] = l.
+\end{lstlisting}
+
+\item If \lstinline{l} is not the empty list, i.e. \lstinline{l = x :: l'} for some \lstinline{x : ℤ} and \lstinline{l' : list ℤ},
+then by our definitions
+\begin{lstlisting}
+‹Ne;;Ne⁻¹› l = ‹Ne⁻¹› (‹Ne› (x :: l')) = ‹Ne⁻¹› (-x :: l')
+             = ‹Ne› (-x :: l') = -(-x) :: l'
+             = x :: l' = l
+\end{lstlisting}
+The tactic \lstinline{refl} would \textit{almost} solve this,
+but doesn't because \lstinline{-(-x)} is not definitionally equivalent to \lstinline{x}.
+However, that equality is proven elsewhere and is marked as \lstinline{@[simp]}.
+For \lstinline{simp} to fully work, it must also use the definitions of \lstinline{inv} and \lstinline{ev}.
+Since the functions \lstinline{inv} and \lstinline{arity} depends only on the syntax and are generally pretty easy to calculate,
+we mark these two functions as \lstinline{@[simp]}, so that they are always simplified:
+\begin{lstlisting}
+@[simp] def inv : RPP → RPP
+  ...
+
+@[simp] def arity : RPP → ℕ
+  ...
+\end{lstlisting}
+but we \textbf{do not} do the same for \lstinline{ev}, because it's a considerably more complicated function
+which also depends on the list that the \lstinline{RPP} function is applied to.
+When we want \lstinline{simp} to simplify \lstinline{ev} (like in this case), we will explictly write \lstinline{simp [ev]}.
+\end{itemize}
+How do we consider separately the cases when \lstinline{l} is of the form \lstinline{x :: l'} or \lstinline{[]}?
+By using the tactics
+\lstinline{cases}:\footnote{Deep down, \lstinline{cases} is just an alternative to \lstinline{induction} that doesn't generate inductive hypotheses.}
+\begin{lstlisting}
+{ cases l with x l', -- splits into 2 goals
+  refl,              -- case when l = []
+  simp [ev],         -- case when l = x :: l'
+                     -- goals accomplished
+},
+\end{lstlisting}
+We've succesfully solved another goal.
+The cases \lstinline{Su}, \lstinline{Pr}, \lstinline{Sw} are very similar and we won't discuss them further.
+
+\paragraph{Series composition}
+
+After those we get \lstinline{Co}:
+\begin{lstlisting}
+  case RPP.Co
+  l : list ℤ
+  f g : RPP
+  hf : ‹f;;f⁻¹› l = l
+  hg : ‹g;;g⁻¹› l = l
+  ⊢ ‹f;;g;;(f;;g)⁻¹› l = l
+\end{lstlisting}
+Rather than jumping straight to Lean,
+it's very often helpful to sketch proofs on pen and paper, to get an idea of how to proceed:
+\begin{lstlisting}
+‹f;;g;;(f;;g)⁻¹› l = ‹f⁻¹› (‹g⁻¹› (‹g› (‹f› l)))
+                   = ‹f⁻¹› (‹g;;g⁻¹› (‹f› l))
+             (!!!) = ‹f⁻¹› (‹f› l)
+                   = ‹f;;f⁻¹› l
+                   = l
+\end{lstlisting}
+There's something worrying:
+we can't apply step \lstinline{(!!!)} because the inductive hypothesis \lstinline{hg} is too weak,
+it works only if the applied list is precisely \lstinline{l}, while in this case it is \lstinline{‹f› l}.
+The proper induction hypothesis would be something like this:
+\begin{lstlisting}
+∀ (l : list ℤ), ‹g;;g⁻¹› l = l
+\end{lstlisting}
+and Lean provides a functionality precisely for these instances:
+at the beginning of the proof, it's sufficient to substitute \lstinline{induction f} with \lstinline{induction f generalizing l}.
+
+After this is done, the \lstinline{simp} tactics makes short work of the goal:
+\begin{lstlisting}
+{ simp [ev, *] at *, -- simplifies every hypothesis and the goal,
+                     -- using ev and each hypothesis.
+                     -- goals accomplished
+},
+\end{lstlisting}
+
+\paragraph{Parallel composition}
+
+Parallel composition turns out to be the the most troublesome case.
+\begin{lstlisting}
+  case RPP.Pa
+  l : list ℤ
+  f g : RPP
+  hf : ‹f;;f⁻¹› l = l
+  hg : ‹g;;g⁻¹› l = l
+  ⊢ ‹f‖g;;(f‖g)⁻¹› l = l
+\end{lstlisting}
+This is what we'd like to do:
+\begin{lstlisting}
+‹f‖g;;(f‖g)⁻¹› l = ‹f‖g;;f⁻¹‖g⁻¹› l
+           (!!!) = ‹(f;;f⁻¹)‖(g;;g⁻¹)› l
+                 = ‹f;;f⁻¹› (take f.arity l) ++
+                   ‹g;;g⁻¹› (drop f.arity l)
+                 = take f.arity l ++ drop f.arity l
+                 = l
+\end{lstlisting}
+The tactic \lstinline{simp} is able to take care of each step, except for \lstinline{(!!!)},
+which is not obvious at all and must be proven:
+\begin{lstlisting}
+lemma pa_co_pa (f f' g g' : RPP) (l : list ℤ) :
+  f.arity = f'.arity →
+  ‹f ‖ g ;; f' ‖ g'› l = ‹(f ;; f') ‖ (g ;; g')› l
+\end{lstlisting}
+The proof of this fact is rather tedious, partly because there are no hypotheses on the length of the list \lstinline{l},
+so multiple cases have to be considered.
+
+There is, however, the hypothesis \lstinline{f.arity = f'.arity}, without which the lemma is false.
+Returning to the main proof, we can use our newly proven \lstinline{pa_co_pa} together with \lstinline{simp} to prove the goal,
+but Lean requires the hypothesis to be satisfied:
+\begin{lstlisting}
+  f.arity = f⁻¹.arity
+\end{lstlisting}
+Yet another lemma needs to be proven and used
+\begin{lstlisting}
+@[simp] lemma arity_inv (f : RPP) : f⁻¹.arity = f.arity :=
+by { induction f; simp [*, max_comm] }
+\end{lstlisting}
+after which everything goes smoothly.
+
+\paragraph{Iteration and selection}
+This is the \lstinline{It} case:
+\begin{lstlisting}
+  case RPP.It
+  f: RPP
+  hf : ∀ (l : list ℤ), ‹f;;f⁻¹› l = l
+  l : list ℤ
+  ⊢ ‹It f;;It f⁻¹› l = l
+\end{lstlisting}
+Let's start by using \lstinline{cases l} to split the proof:
+\begin{lstlisting}
+  case list.nil RPP.It
+  f: RPP
+  hf : ∀ (l : list ℤ), ‹f;;f⁻¹› l = l
+  ⊢ ‹It f;;It f⁻¹› [] = []
+
+  case list.cons RPP.It
+  f: RPP
+  hf : ∀ (l : list ℤ), ‹f;;f⁻¹› l = l
+  x : ℤ
+  l' : list ℤ
+  ⊢ ‹It f;;It f⁻¹› (x :: l') = x :: l'
+\end{lstlisting}
+The first case is trivially solvable using \lstinline{refl}.
+In the second one, running \lstinline{simp} turns the goal state into
+\begin{lstlisting}
+  f: RPP
+  x : ℤ
+  l' : list ℤ
+  hf : ∀ (l : list ℤ), ‹f⁻¹› (‹f› l) = l
+  ⊢ ‹f⁻¹›^[↓x] (‹f›^[↓x] l') = l'
+\end{lstlisting}
+The notation \lstinline{‹f›^[↓x]} means "\lstinline{‹f›} applied \lstinline{↓x} times".
+Our objective is essentially "given that \lstinline{‹f⁻¹›} is the left inverse of \lstinline{‹f›} (hypothesis \lstinline{hf}),
+prove that \lstinline{‹f⁻¹›^[↓x]} is the left inverse of \lstinline{‹f›^[↓x]} (goal)".
+
+This fact is true in general and luckily, it's a result already present in Mathlib:
+\begin{lstlisting}
+theorem left_inverse.iterate {g : α → α}
+  (hg : left_inverse g f) (n : ℕ) :
+  left_inverse (g^[n]) (f^[n])
+\end{lstlisting}
+where \lstinline{left_inverse} is a proposition defined like this:
+\begin{lstlisting}
+def left_inverse (g : β → α) (f : α → β) : Prop :=
+  ∀ x, g (f x) = x
+\end{lstlisting}
+so applying \lstinline{function.left_inverse.iterate} solves our goal.
+Hopefully it's clear how useful having an extensive underlying math library is when proving things:
+most basic facts are already present, so we can concentrate on more specific matters.
+
+\paragraph{}
+
+Finally, the \lstinline{If} case is not that hard,
+we just split it into many sub-cases:
+\lstinline{l} is equal to \lstinline{[]} or \lstinline{x :: l'} with \lstinline{x : ℤ} and \lstinline{l' : list ℤ},
+and \lstinline{x} is either \lstinline{0}, a positive or a negative number.
+Each of the sub-goals is solved using \lstinline{simp}.
+
+\paragraph{Wrapping it all up}
+Well, that was rather prolix.
+
+The resulting proof, however, is not so large
+\begin{lstlisting}
+theorem proposition_1_co_l (f : RPP) (l : list ℤ) :
+  ‹f ;; f⁻¹› l = l :=
+begin
+  induction f generalizing l,
+  { refl, },
+  { cases l with x l', refl, simp [ev], },
+  { cases l with x l', refl, simp [ev], },
+  { cases l with x l', refl, simp [ev], },
+  { cases l with x l', refl,
+    cases l' with y l'', refl, refl, },
+  { simp [ev, *] at *, },
+  { rw [inv, pa_co_pa], simp [ev, *] at *, rw arity_inv, },
+  { cases l with x l', refl, simp [ev] at *,
+    exact function.left_inverse.iterate f_ih (↓x) l', },
+  { cases l with x l', refl,
+    cases x, cases x,
+    simp [ev, *] at *, simp [ev, *] at *, simp [ev, *] at *, },
+end
+\end{lstlisting}
+and by knowing some more tactics, it can be further shortened to
+\begin{lstlisting}
+theorem proposition_1_co_l (f : RPP) (l : list ℤ) :
+  ‹f ;; f⁻¹› l = l :=
+begin
+  induction f generalizing l; cases l with x l,
+  any_goals {simp [ev, *], done},
+  { cases l with y l, refl, simp [ev] },
+  { simp [ev, *] at * },
+  { rw [inv, pa_co_pa], simp [ev, *] at *, rw arity_inv },
+  { simp [ev] at *, apply function.left_inverse.iterate f_ih },
+  { rcases x with ⟨n, n⟩; simp [ev, *] at * }
+end
+\end{lstlisting}
+We've succesfully proved a non-trivial result in Lean.
+It is possible to express it in a more convenient, \lstinline{simp}-friendly way, which will become useful later:
+\begin{lstlisting}
+@[simp] theorem proposition_1 (f : RPP) (l l' : list ℤ) :
+  ‹f⁻¹› l = l' ↔ ‹f› l' = l
+\end{lstlisting}
+
+It's natural to compare the Lean proof to "the \LaTeX\space one" given in proposition \ref{rppinv}.
+The traditional proof is short and ignores a lot of finer points;
+the Lean one is considerably longer,
+practically unreadable without looking at the proof state and absolutely precise in every detail.
+They both have their strengths and weaknesses,
+and what we will hopefully see in the future of mathematics is a joyful collaboration between these two types of data.
+
+\paragraph{}
+
+We state just two more general results:
+the first is that \lstinline{RPP} functions don't alter the length of a list:
+\begin{lstlisting}
+@[simp] lemma ev_length (f : RPP) (l : list ℤ) :
+  (‹f› l).length = l.length
+\end{lstlisting}
+The second is that applying \lstinline{‹f›} to a list \lstinline{l}
+is equivalent to applying \lstinline{‹f›} to the first \lstinline{f.arity} elements of \lstinline{l}
+and then appending the remaining ones, like this:
+\begin{lstlisting}
+theorem ev_split (f : RPP) (l : list ℤ) :
+  ‹f› l = ‹f› (take f.arity l) ++ drop f.arity l
+\end{lstlisting}
+Marking this theorem as \lstinline{@[simp]} would be a very bad idea,
+because the right-hand side is more complicated than the left one,
+so an infinite loop would occur.
+
+\newpage
 \section{A library of functions}
+
+In this section we show that many common functions have a \lstinline{RPP} counterpart.
+Some arguments will be declared as natural numbers (usually denoted with variables \lstinline{n}, \lstinline{m}):
+we do not care about the behaviour of these functions when a negative number is supplied in place of a natural number.
+
+For reference, here's a summary of already defined functions:
+\begin{lstlisting}
+def Id₁ := Id 1
+def inc := It Su
+def dec := It Pr
+def mul := It inc 
+\end{lstlisting}
+\[\begin{NiceMatrix}[nullify-dots]
+  x & \bloch{1-1}{\rppId_1} & x \\
+\end{NiceMatrix}
+\hspace{3em}
+\begin{NiceMatrix}
+  n & \bloch{2-1}{\rppinc} & n     \\
+  x &                      & x + n \\
+\end{NiceMatrix}
+\hspace{3em}
+\begin{NiceMatrix}
+  n & \bloch{2-1}{\rppdec} & n     \\
+  x &                      & x - n \\
+\end{NiceMatrix}
+\hspace{3em}
+\begin{NiceMatrix}
+  n & \bloch{3-1}{\rppmul} & n             \\
+  m &                      & m             \\
+  x &                      & x + n \cdot m \\
+\end{NiceMatrix}\]
+\begin{lstlisting}
+def square := Id₁ ‖ Sw ;; inc ;; mul ;; dec ;; Id₁ ‖ Sw 
+\end{lstlisting}
+\[\begin{NiceMatrix}
+  n &                     & n & \bloch{2-1}{\rppinc} & n & \bloch{3-1}{\rppmul} & n             & \bloch{2-1}{\rppdec} & n             &                     & n             \\
+  x & \bloch{2-1}{\rppSw} & 0 &                      & n &                      & n             &                      & 0             & \bloch{2-1}{\rppSw} & x + n \cdot n \\
+  0 &                     & x &                      & x &                      & x + n \cdot n &                      & x + n \cdot n &                     & 0             \\
+\end{NiceMatrix}\]
+
+\paragraph{Rewiring permutations}
+We call a function a \textit{rewiring permutation} if it only results in a finite permutation of the positions of its arguments.
+
+We use the following notation: given $I = \{ i_0, \dots, i_n \} \subseteq \{ 0, \dots, m \}$ with all $i_k$ \textbf{distinct},
+let $J = \{ j_1, \dots, j_{m-n} \} := \{ 0, \dots, m \} \setminus I$ be the set of remaining indices, ordered such that each $j_k < j_{k+1}$.
+Then we define the rewiring permutation $\lfloor i_0, \dots, i_n \rceil$ to be the function such that
+\[ \lfloor i_0, \dots, i_n \rceil (x_0, \dots, x_m) = (x_{i_0}, \dots, x_{i_n}, x_{j_1}, \dots, x_{j_{m-n}}) .\]
+For example, $\lfloor 3, 1, 4 \rceil (a, b, c, d, e, f) = (d, b, e, a, c, f)$.
+Of course, every rewiring permutation can be written in such a way.
+
+To express this function in \lstinline{RPP} we begin by defining a function \lstinline{call n}
+which moves the argument found in position \lstinline{n} to position \lstinline{0}, like so:
+\begin{lstlisting}
+def call : ℕ → RPP
+| 0       := Id₁
+| (i + 1) := Id i ‖ Sw ;; call i
+\end{lstlisting}
+We can see it as a long chain of swaps \lstinline{Sw}
+that progressively move the argument in position \lstinline{n} to position \lstinline{n-1}, then \lstinline{n-2} etc.
+
+The function \lstinline{rewire : list ℕ → RPP} takes a list of indices \lstinline{i₀, i₁, ..., iₙ} and returns an \lstinline{RPP}
+that performs the permutation \lstinline{⌊i₀, i₁, ..., iₙ⌉}, through a clever repeated use of \lstinline{call}.
+We do not mark \lstinline{rewire} as \lstinline{@[simp]} because it would lead to extremely messy goal states,
+but instead mark every auxiliary function used in the definition of \lstinline{rewire},
+so that when we do need to use \lstinline{simp},
+we just have to write \lstinline{simp[rewire]} without having to also list all the auxiliary functions.
+\[\begin{NiceMatrix}
+  a & \bloch{6-1}{3\\ 1\\ 4} & d \\
+  b &                        & b \\
+  c &                        & e \\
+  d &                        & a \\
+  e &                        & c \\
+  f &                        & f \\
+\end{NiceMatrix}\]
+
+\paragraph{A comparison function}
+
+The following function takes two naturals \lstinline{n m : ℕ} and a number set to \lstinline{0},
+and changes it to \lstinline{1} if \lstinline{n < m}.
+The logic behind it is straightforward.
+
+\begin{lstlisting}
+def less := dec ;; Id₁ ‖ If Su Id₁ Id₁ ;; inc
+\end{lstlisting}
+\[\begin{NiceMatrix}
+  \oloch{3-1}{\ n < m} & n & \bloch{2-1}{\rppdec} & n     &                                                             & n     & \bloch{2-1}{\rppinc} & n \\
+                       & m &                      & m - n & \bloch{2-1}{\rppIf [\boldsymbol\rppSu, \rppId_1, \rppId_1]} & m - n &                      & m \\
+                       & 0 &                      & 0     &                                                             & 1     &                      & 1 \\
+\\
+  \oloch{3-1}{\ n \ge m} & n & \bloch{2-1}{\rppdec} & n     &                                                                            & n     & \bloch{2-1}{\rppinc} & n \\
+                         & m &                      & m - n & \bloch{2-1}{\rppIf [\rppSu, \boldsymbol{\rppId_1}, \boldsymbol{\rppId_1}]} & m - n &                      & m \\
+                         & 0 &                      & 0     &                                                                            & 0     &                      & 0 \\
+\end{NiceMatrix}\]
+
+\paragraph{Division, Cantor unpairing \& square root}
+Here we learn that division, Cantor unpairing and square root function are (almost) the same thing.
+
+\paragraph{}
+
+We define the \textbf{Cantor pairing} as the function $\rppcp : \NN^2 \to \NN$ such that
+\[ \rppcp(x,y)= \sum_{i=1}^{x+y}i + x = \frac{(x + y)(x + y + 1)}{2} + x.\]
+What's special about this function is that it's a bijection between $\NN^2$ and $\NN$
+(\textit{maybe} the only polynomial to be so\footnote{It's currently an open question
+whether there are other polynomials which are bijection $\NN^2 \to \NN$.}).
+We can imagine it to be an enumeration of the square grid $\NN^2$:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=15em]{Immagini/cp.png}
+\end{figure}
+
+But also as a "path" taken on the same grid, which traverses each point exactly once:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=15em]{Immagini/cammino.png}
+\end{figure}
+
+Naturally, being bijective means that there exists an inverse function $\rppcu : \NN \to \NN^2$,
+called the \textbf{Cantor unpairing}, which is usually expressed as
+\[ \rppcu(n) = \left( n - \frac{i(1+i)}{2}, \frac{i(3+i)}{2} - n \right) \quad \text{ where } \quad i = \left\lfloor \frac{\sqrt{8n + 1} - 1}{2} \right\rfloor .\]
+We want to implement $\rppcu$ inside $\RPP$, but there's a more natural way to define it than this.
+
+Instead of thinking about $\rppcu$ analytically, let's imagine it again as a path in $\NN^2$:
+we start at position $(0, 0)$ and successively apply a series of steps,
+moving to $(x+1,y-1)$ if $y > 0$ or to $(0, x+1)$ if $y = 0$.
+If we're able to find $\rppcustep \in \RPP$ such that
+\[ \rppcustep(x,y) = \begin{cases} (x+1,y-1) &  y > 0 \\
+                                   (0, x+1) &   y = 0 \end{cases} \]
+then we can define $\rppcu_i = \rppIt[\rppcustep]$, so that $\rppcu_i(n, 0, 0)$ applies $n$ steps in the path, and reaches $(n, \rppcu(n))$
+(the subscript $_i$ is motivated by the fact that we keep the input $n$).
+
+It turns out that it's indeed possible to express $\rppcustep$ in $\RPP$:
+\begin{lstlisting}
+def cu_step :=
+  Id₁ ‖ If Su Id₁ Id₁ ;;
+  ⌊2, 0, 1⌉ ;;
+  If (Su ‖ Pr) (Su ;; Sw) Id₁ ;;
+  Sw ;; If Pr Id₁ Id₁ ;;
+  Id₁ ‖ Sw
+\end{lstlisting}
+
+\makebox[\textwidth][c]{$\begin{NiceMatrix}
+  \oloch{3-1}{\ y > 0} & x &                                                              & x & \bloch{3-1}{2 \\ 0 \\ 1} & 1 & \bloch{3-1}{\rppIf[\boldsymbol{\rppSu \rppPa \rppPr}, \ \rppSu \rppCo \rppSw, \ \rppId_1]} & 1     & \bloch{2-1}{\rppSw} & x + 1 & \bloch{2-1}{\rppIf[\boldsymbol{\rppPr}, \rppId_1, \rppId_1]} & x + 1 &                     & x + 1 \\
+                       & y & \bloch{2-1}{\rppIf[\boldsymbol{\rppSu}, \rppId_1, \rppId_1]} & y &                          & x &                                                                                            & x + 1 &                     & 1     &                                                              & 0     & \bloch{2-1}{\rppSw} & y - 1 \\
+                       & 0 &                                                              & 1 &                          & y &                                                                                            & y - 1 &                     & y - 1 &                                                              & y - 1 &                     & 0     \\
+\\
+  \oloch{3-1}{\ y = 0} & x &                                                              & x & \bloch{3-1}{2 \\ 0 \\ 1} & 0 & \bloch{3-1}{\rppIf[\rppSu \rppPa \rppPr, \ \boldsymbol{\rppSu \rppCo \rppSw}, \ \rppId_1]} & 0     & \bloch{2-1}{\rppSw} & 0     & \bloch{2-1}{\rppIf[\rppPr, \boldsymbol{\rppId_1}, \rppId_1]} & 0     &                     & 0     \\
+                       & 0 & \bloch{2-1}{\rppIf[\rppSu, \boldsymbol{\rppId_1}, \rppId_1]} & 0 &                          & x &                                                                                            & 0     &                     & 0     &                                                              & 0     & \bloch{2-1}{\rppSw} & x + 1 \\
+                       & 0 &                                                              & 0 &                          & 0 &                                                                                            & x + 1 &                     & x + 1 &                                                              & x + 1 &                     & 0     \\
+\\
+\end{NiceMatrix}$}
+
+Notice that we can't directly use $y$ as the condition for the selection $\rppIf$,
+because we also want to manipulate $y$ in those calculations.
+We get around this limitation by using an ancillary variable initially set to $0$,
+which assumes value $1$ or $0$ depending on whether $y>0$ or $y=0$,
+and is then set back to $0$ using a variable that we know is positive or equal to zero depending on the case considered.
+
+At this point we can define \lstinline{cuᵢ} (which also keeps the input around, hence the subscript) like so:
+\begin{lstlisting}
+def cuᵢ := It cu_step
+\end{lstlisting}
+
+\[\begin{NiceMatrix}
+  n & \bloch{4-1}{\rppcu_i} & n \\
+  0 &                       & x \\
+  0 &                       & y \\
+  0 &                       & 0 \\
+\end{NiceMatrix}\]
+where $(x,y)=\rppcu(n)$ or, equivalently, $n=\rppcp(x,y)$.
+
+The function in the other direction is less intricate to define:
+\begin{lstlisting}
+def tr := It (Su ;; inc) -- triangular numbers
+\end{lstlisting}
+\[\begin{NiceMatrix}
+  x & \bloch{3-1}{\rpptr} & x \\
+  0 &                     & x \\
+  0 &                     & \sum_{i=1}^x i \\
+\end{NiceMatrix}\]
+\begin{lstlisting}
+def cpᵢ :=
+  inc ;; Id₁ ‖ tr ;;
+  Id₁ ‖ dec ;; dec ;;
+  ⌊0, 3, 1⌉ ;; inc ;; Id₁ ‖ Sw 
+\end{lstlisting}
+\makebox[\textwidth][c]{$\begin{NiceMatrix}
+  x & \bloch{2-1}{\rppinc} & x     &                     & x                    &                      & \bloch{2-1}{\rppdec} & x                    & \bloch{4-1}{0\\3\\1} & \bloch{2-1}{\rppinc} &                     & x                        & \Block{4-1}{=} & x           \\
+  y &                      & x + y & \bloch{3-1}{\rpptr} & x + y                & \bloch{2-1}{\rppdec} &                      & y                    &                      &                      & \bloch{2-1}{\rppSw} & y                        &                & y           \\
+  0 &                      & 0     &                     & x + y                &                      &                      & 0                    &                      &                      &                     & \sum_{i=1}^{x + y} i + x &                & \rppcp(x,y) \\
+  0 &                      & 0     &                     & \sum_{i=1}^{x + y} i &                      &                      & \sum_{i=1}^{x + y} i &                      &                      &                     & 0                        &                & 0           \\
+\\
+\end{NiceMatrix}$}
+We can combine \lstinline{cpᵢ} and \lstinline{cuᵢ} to get rid of the input values they both leave behind:
+\begin{lstlisting}
+def cp := cpᵢ ;; ⌊2, 0, 1⌉ ;; cuᵢ⁻¹
+def cu := cp⁻¹
+\end{lstlisting}
+\[\begin{NiceMatrix}
+  x & \bloch{4-1}{\rppcp_i} & x           & \bloch{3-1}{2\\0\\1} & \rppcp(x,y) & \bloch{4-1}{\rppcu_i^{-1}} & \rppcp(x,y) \\
+  y &                       & y           &                      & x           &                            & 0           \\
+  0 &                       & \rppcp(x,y) &                      & y           &                            & 0           \\
+  0 &                       & 0           &                      & 0           &                            & 0           \\
+\end{NiceMatrix}\]
+This is very powerful: we succesfully defined a function which is able to "erase" data from one position by storing it in the preceding one.
+But we will talk more about pairings and their uses in the next paragraph; for now, let's focus on the technique we used.
+
+
+\begin{comment}
+\begin{lstlisting}
+def div_step :=
+  Id₁ ‖ If Su Id₁ Id₁ ;;
+  ⌊2, 0, 1⌉ ;;
+  If (Su ‖ Pr) @@(Sw ‖ Su)@@ Id₁ ;;
+  Sw ;; If Pr Id₁ Id₁ ;;
+  Id₁ ‖ Sw
+
+def cu_step :=
+  Id₁ ‖ If Su Id₁ Id₁ ;;
+  ⌊2, 0, 1⌉ ;;
+  If (Su ‖ Pr) @@(Su ;; Sw)@@ Id₁ ;;
+  Sw ;; If Pr Id₁ Id₁ ;;
+  Id₁ ‖ Sw
+
+def sqrt_step :=
+  Id₁ ‖ If Su Id₁ Id₁ ;;
+  ⌊2, 0, 1⌉ ;;
+  If (Su ‖ Pr) @@(Su ;; Su ;; Sw ‖ Su)@@ Id₁ ;;
+  Sw ;; If Pr Id₁ Id₁ ;;
+  Id₁ ‖ Sw
+
+def div  := It div_step
+def cu   := It cu_step
+def sqrt := It sqrt_step
+
+def tr := It (Su ;; inc)
+
+def cp :=
+  inc ;; Id₁ ‖ (tr ;; dec) ;; dec ;;
+  ⌊0, 3, 1⌉ ;; inc ;; ⌊0, 2, 1⌉
+
+def push := cp ;; ⌊2, 0, 1⌉ ;; cu⁻¹
+\end{lstlisting}
+\end{comment}
+
+\paragraph{Another pairing function}
 
 \section{PRF-completeness}
 
