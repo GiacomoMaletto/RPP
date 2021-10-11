@@ -103,7 +103,7 @@
 \newcommand{\rppdiv}{\mathsf{div}}
 \newcommand{\rppdivstep}{\mathsf{div_{step}}}
 \newcommand{\rppsqrt}{\mathsf{sqrt}}
-\newcommand{\rppsqrtstep}{\mathsf{sqrt_[step]}}
+\newcommand{\rppsqrtstep}{\mathsf{sqrt_{step}}}
 \newcommand{\PRF}{\mathsf{PRF}}
 
 % title
@@ -2015,11 +2015,24 @@ def cu := cp⁻¹
   0 &                       & \rppcp(x,y) &                      & y           &                            & 0           \\
   0 &                       & 0           &                      & 0           &                            & 0           \\
 \end{NiceMatrix}\]
-This is very powerful: we succesfully defined a function which is able to "erase" data from one position by storing it in the preceding one.
-But we will talk more about pairings and their uses in the next paragraph; for now, let's focus on the technique we used.
+This is very powerful: we succesfully defined a function which stores data from two positions to just one.
+We will discuss pairings at greater lengths in the next paragraph; for now, let's focus on the technique we used.
+In defining the function $\rppcu_i$ we framed it as a "path" in a two-dimensional grid.
+By slightly tweaking $\rppcustep$ we can trace out other paths which helps us solve new problems.
 
+For example, let's imagine starting on coordinates $(0,n)$ and moving each turn in direction $(+1,-1)$ (like before)
+but now when we reach $(n,0)$, instead of jumping to $(0,n+1)$ we land again on $(0,n)$, looping in the same diagonal forever:
 
-\begin{comment}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=15em]{Immagini/div.png}
+\end{figure}
+
+If we call $\rppdivstep$ the function which performs one step of this diagram, by iterating it with $\rppIt[\rppdivstep]$
+we've essentially found a way to do modular arithmetic: since it takes $n+1$ steps to get to where we started,
+if we perform $m$ steps the $x$ coordinate will be such that $x \equiv m \pmod{n+1}$ and $0 \le x \le n$.
+Furthermore, if we increase a counter by one each time we land on $(0,n)$ we can calculate division with remainder.
+The differences between such a $\rppdivstep$ and $\rppcustep$ are minimal (highlighted in red):
 \begin{lstlisting}
 def div_step :=
   Id₁ ‖ If Su Id₁ Id₁ ;;
@@ -2028,13 +2041,31 @@ def div_step :=
   Sw ;; If Pr Id₁ Id₁ ;;
   Id₁ ‖ Sw
 
-def cu_step :=
-  Id₁ ‖ If Su Id₁ Id₁ ;;
-  ⌊2, 0, 1⌉ ;;
-  If (Su ‖ Pr) @@(Su ;; Sw)@@ Id₁ ;;
-  Sw ;; If Pr Id₁ Id₁ ;;
-  Id₁ ‖ Sw
+def div := It div_step
+\end{lstlisting}
+The general behaviour of \lstinline{div} is the following: given \lstinline{n m : ℕ},
+\begin{lstlisting}
+‹div› [m, 0, n, 0, 0] = [m, r, (n+1) - r, 0, m / (n+1)]
+\end{lstlisting}
+where by \lstinline{/} is integer division and \lstinline{r = m % (n+1)} the remainder through the modulo operation.
 
+Lastly, there's a way in which we can express the truncated square root function $\left\lfloor \sqrt{n} \right\rfloor$ in $\RPP$.
+Of course, the square root is not an invertible function, like division - and like division,
+we can get a "remainder" which is the difference $n - \left\lfloor \sqrt{n} \right\rfloor^2$.
+We get $\rppsqrtstep$ by tweaking $\rppcustep$ a little - we start off at $(0,0)$ again,
+but whenever we reach $(x,0)$ we jump to $(0,x+2)$ and increase a counter by one:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=18em]{Immagini/sqrt.png}
+\end{figure}
+
+The first jump is performed $1$ step from the starting position $(0,0)$; the next one is performed after $3$ steps, then $5$, $7$ etc.
+It's well known that for each $k$, the sum of the first $k$ odd numbers $1 + 3 + \dots + (2k - 1) = k^2$,
+so when we reach the number $k^2$ we've performed $k$ jumps - hence, we calculated the square root.
+
+Again, we highlight the (minor) differences with $\rppcustep$:
+\begin{lstlisting}
 def sqrt_step :=
   Id₁ ‖ If Su Id₁ Id₁ ;;
   ⌊2, 0, 1⌉ ;;
@@ -2042,19 +2073,13 @@ def sqrt_step :=
   Sw ;; If Pr Id₁ Id₁ ;;
   Id₁ ‖ Sw
 
-def div  := It div_step
-def cu   := It cu_step
 def sqrt := It sqrt_step
-
-def tr := It (Su ;; inc)
-
-def cp :=
-  inc ;; Id₁ ‖ (tr ;; dec) ;; dec ;;
-  ⌊0, 3, 1⌉ ;; inc ;; ⌊0, 2, 1⌉
-
-def push := cp ;; ⌊2, 0, 1⌉ ;; cu⁻¹
 \end{lstlisting}
-\end{comment}
+We get this behaviour: given \lstinline{n : ℕ},
+\begin{lstlisting}
+‹sqrt› [n, 0, 0, 0, 0] = [n, r, 2 * √n - r, 0, √n]
+\end{lstlisting}
+where \lstinline{√n} is the truncated square root and \lstinline{r = n - √n * √n \ } our "square-root remainder".
 
 \paragraph{Another pairing function}
 
