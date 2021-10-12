@@ -76,6 +76,8 @@
 \newcommand{\NN}{\mathbb{N}}
 \newcommand{\ZZ}{\mathbb{Z}}
 
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+
 \newcommand{\RPP}{\mathsf{RPP}}
 \newcommand{\ORPP}{\mathsf{ORPP}}
 \newcommand{\rppf}{\mathsf{f}}
@@ -96,15 +98,24 @@
 \newcommand{\rppdec}{\mathsf{dec}}
 \newcommand{\rppmul}{\mathsf{mul}}
 \newcommand{\rppsquare}{\mathsf{square}}
+\newcommand{\rppless}{\mathsf{less}}
 \newcommand{\rppcp}{\mathsf{cp}}
+\newcommand{\rppcpi}{\mathsf{cp_{input}}}
 \newcommand{\rpptr}{\mathsf{tr}}
 \newcommand{\rppcu}{\mathsf{cu}}
+\newcommand{\rppcui}{\mathsf{cu_{input}}}
 \newcommand{\rppcustep}{\mathsf{cu_{step}}}
 \newcommand{\rppdiv}{\mathsf{div}}
 \newcommand{\rppdivstep}{\mathsf{div_{step}}}
 \newcommand{\rppsqrt}{\mathsf{sqrt}}
 \newcommand{\rppsqrtstep}{\mathsf{sqrt_{step}}}
 \newcommand{\PRF}{\mathsf{PRF}}
+\newcommand{\rpprewire}[1]{\lfloor #1 \rceil}
+\newcommand{\rppmkpair}{\mathsf{mkpair}}
+\newcommand{\rppmkpairi}{\mathsf{mkpair_{input}}}
+\newcommand{\rppunpair}{\mathsf{unpair}}
+\newcommand{\rppunpairi}{\mathsf{unpair_{input}}}
+\newcommand{\rppunpairifwd}{\mathsf{unpair_{input, \rightarrow}}}
 
 % title
 \title{A Formal Verification of Reversible Primitive Permutations}
@@ -454,9 +465,9 @@ open weekday
 #check tuesday -- this outputs "weekday"
 \end{lstlisting}
 and we write this as
-\begin{center}\begin{lstlisting}
+\begin{lstlisting}
 tuesday : weekday
-\end{lstlisting}\end{center}
+\end{lstlisting}
 Everything in Lean has a type (and only one). For example, natural numbers have type \lstinline{ℕ}:
 \begin{lstlisting}
 #check 3 -- ℕ
@@ -733,7 +744,7 @@ and also introduce custom notation:
 -- simply put, Ne ;; Su ‖ Pr is intepreted as
 -- Ne ;; (Su ‖ Pr), not (Ne ;; Su) ‖ Pr
 infix `;;` : 50 := Co
-infix `‖` : 55 := Pa
+infix `‖` : 55 := Pa -- \Vert ‖
 \end{lstlisting}
 so it's now possible to write expressions like
 \begin{lstlisting}
@@ -768,7 +779,7 @@ there are 5 base cases and in the other 4 the value of \lstinline{arity} is reco
 
 It's now possible to define some \lstinline{RPP}-sentences in Lean
 \begin{lstlisting}
-def Id₁ := Id 1
+def Id₁ := Id 1 -- ₁ \1
 def inc := It Su
 def dec := It Pr
 def mul := It inc
@@ -808,7 +819,7 @@ def ev : RPP → list ℤ → list ℤ
 | (If f g h) (-[1+ n] :: l)       := -[1+ n] :: ev h l
 | _          l                    := l
 
-notation `‹` f `›` := ev f
+notation `‹` f `›` := ev f -- ‹ \f › \fr
 \end{lstlisting}
 We will write \lstinline{‹f›} to mean the function of type \lstinline{list ℤ → list ℤ} given by \lstinline{ev f}.
 
@@ -870,7 +881,7 @@ def inv : RPP → RPP
 | (It f)     := It (inv f)
 | (If f g h) := If (inv f) (inv g) (inv h)
 
-notation f `⁻¹` := inv f
+notation f `⁻¹` := inv f -- ⁻¹ \-1
 \end{lstlisting}
 Now it's possible to define \lstinline{dec} simply as \lstinline{inc⁻¹}.
 
@@ -1390,7 +1401,7 @@ it's a common characteristic of many theorem prover, especially those based on (
 A hot topic in proof assistants is automatization.
 For many, being able to generate automatically new theorems and new math is the ultimate objective of theorem provers.
 Certainly Lean has value even before such a feat is accomplished,
-but where automation is already avaiable it would be a waste not to use it.
+but where automation is already available it would be a waste not to use it.
 
 A simple tool which helps tremendously with theorem proving is the \lstinline{simp} tactic.
 It automaticaly tries to apply already known theorems in order to simplify a given expression.
@@ -1811,39 +1822,34 @@ so an infinite loop would occur.
 \newpage
 \section{A library of functions}
 
-In this section we show that many common functions have a \lstinline{RPP} counterpart.
-Some arguments will be declared as natural numbers (usually denoted with variables \lstinline{n}, \lstinline{m}):
+In this section we show that many common functions have a $\RPP$ counterpart.
+Some arguments will be declared as natural numbers (usually denoted with variables $n, m$):
 we do not care about the behaviour of these functions when a negative number is supplied in place of a natural number.
+We agree that composition ($\rppPa$) has higher precedence than the series composition ($\rppCo$),
+so for example $f \rppPa g \rppCo h$ is intepreted as $(f \rppPa g) \rppCo h$.
 
 For reference, here's a summary of already defined functions:
-\begin{lstlisting}
-def Id₁ := Id 1
-def inc := It Su
-def dec := It Pr
-def mul := It inc 
-\end{lstlisting}
-\[\begin{NiceMatrix}[nullify-dots]
-  x & \bloch{1-1}{\rppId_1} & x \\
-\end{NiceMatrix}
-\hspace{3em}
-\begin{NiceMatrix}
+\begin{align*}
+\rppinc = \rppIt[\rppSu] \\
+\rppdec = \rppinc^{-1} \\
+\rppmul = \rppIt[\rppinc]
+\end{align*}
+\[\begin{NiceMatrix}
   n & \bloch{2-1}{\rppinc} & n     \\
   x &                      & x + n \\
 \end{NiceMatrix}
-\hspace{3em}
+\hspace{4em}
 \begin{NiceMatrix}
   n & \bloch{2-1}{\rppdec} & n     \\
   x &                      & x - n \\
 \end{NiceMatrix}
-\hspace{3em}
+\hspace{4em}
 \begin{NiceMatrix}
   n & \bloch{3-1}{\rppmul} & n             \\
   m &                      & m             \\
   x &                      & x + n \cdot m \\
 \end{NiceMatrix}\]
-\begin{lstlisting}
-def square := Id₁ ‖ Sw ;; inc ;; mul ;; dec ;; Id₁ ‖ Sw 
-\end{lstlisting}
+\[ \rppsquare = \rppId_1 \rppPa \rppSw \rppCo \rppinc \rppCo \rppmul \rppCo \rppdec \rppCo \rppId_1 \rppPa \rppSw \]
 \[\begin{NiceMatrix}
   n &                     & n & \bloch{2-1}{\rppinc} & n & \bloch{3-1}{\rppmul} & n             & \bloch{2-1}{\rppdec} & n             &                     & n             \\
   x & \bloch{2-1}{\rppSw} & 0 &                      & n &                      & n             &                      & 0             & \bloch{2-1}{\rppSw} & x + n \cdot n \\
@@ -1852,15 +1858,26 @@ def square := Id₁ ‖ Sw ;; inc ;; mul ;; dec ;; Id₁ ‖ Sw
 
 \paragraph{Rewiring permutations}
 We call a function a \textit{rewiring permutation} if it only results in a finite permutation of the positions of its arguments.
+It should be clear that any rewiring permutation can be expressed in $\RPP$
+by a suitable combination of the identity $\rppId_n$, parallel composition $\rppPa$, swap $\rppSw$ and series composition $\rppCo$.
 
 We use the following notation: given $I = \{ i_0, \dots, i_n \} \subseteq \{ 0, \dots, m \}$ with all $i_k$ \textbf{distinct},
 let $J = \{ j_1, \dots, j_{m-n} \} := \{ 0, \dots, m \} \setminus I$ be the set of remaining indices, ordered such that each $j_k < j_{k+1}$.
-Then we define the rewiring permutation $\lfloor i_0, \dots, i_n \rceil$ to be the function such that
-\[ \lfloor i_0, \dots, i_n \rceil (x_0, \dots, x_m) = (x_{i_0}, \dots, x_{i_n}, x_{j_1}, \dots, x_{j_{m-n}}) .\]
-For example, $\lfloor 3, 1, 4 \rceil (a, b, c, d, e, f) = (d, b, e, a, c, f)$.
+Then we define the rewiring permutation $\rpprewire{i_0, \dots, i_n}$ to be the function such that
+\[ \rpprewire{i_0, \dots, i_n} (x_0, \dots, x_m) = (x_{i_0}, \dots, x_{i_n}, x_{j_1}, \dots, x_{j_{m-n}}) .\]
+For example, $\rpprewire{3, 1, 4} (a, b, c, d, e, f) = (d, b, e, a, c, f)$.
+In our usual diagrams,
+\[\begin{NiceMatrix}
+  a & \bloch{6-1}{3\\ 1\\ 4} & d \\
+  b &                        & b \\
+  c &                        & e \\
+  d &                        & a \\
+  e &                        & c \\
+  f &                        & f \\
+\end{NiceMatrix}\]
 Of course, every rewiring permutation can be written in such a way.
 
-To express this function in \lstinline{RPP} we begin by defining a function \lstinline{call n}
+To express this function in Lean we begin by defining a function \lstinline{call n}
 which moves the argument found in position \lstinline{n} to position \lstinline{0}, like so:
 \begin{lstlisting}
 def call : ℕ → RPP
@@ -1876,14 +1893,6 @@ We do not mark \lstinline{rewire} as \lstinline{@[simp]} because it would lead t
 but instead mark every auxiliary function used in the definition of \lstinline{rewire},
 so that when we do need to use \lstinline{simp},
 we just have to write \lstinline{simp[rewire]} without having to also list all the auxiliary functions.
-\[\begin{NiceMatrix}
-  a & \bloch{6-1}{3\\ 1\\ 4} & d \\
-  b &                        & b \\
-  c &                        & e \\
-  d &                        & a \\
-  e &                        & c \\
-  f &                        & f \\
-\end{NiceMatrix}\]
 
 \paragraph{A comparison function}
 
@@ -1891,9 +1900,7 @@ The following function takes two naturals \lstinline{n m : ℕ} and a number set
 and changes it to \lstinline{1} if \lstinline{n < m}.
 The logic behind it is straightforward.
 
-\begin{lstlisting}
-def less := dec ;; Id₁ ‖ If Su Id₁ Id₁ ;; inc
-\end{lstlisting}
+\[ \rppless = \rppdec \rppCo \rppId_1 \rppPa \rppIf[\rppSu, \rppId_1, \rppId_1] \rppCo \rppinc \]
 \[\begin{NiceMatrix}
   \oloch{3-1}{\ n < m} & n & \bloch{2-1}{\rppdec} & n     &                                                             & n     & \bloch{2-1}{\rppinc} & n \\
                        & m &                      & m - n & \bloch{2-1}{\rppIf [\boldsymbol\rppSu, \rppId_1, \rppId_1]} & m - n &                      & m \\
@@ -1905,7 +1912,7 @@ def less := dec ;; Id₁ ‖ If Su Id₁ Id₁ ;; inc
 \end{NiceMatrix}\]
 
 \paragraph{Division, Cantor unpairing \& square root}
-Here we learn that division, Cantor unpairing and square root function are (almost) the same thing.
+Here we learn that division, Cantor unpairing and the square root function are (almost) the same thing.
 
 \paragraph{}
 
@@ -1914,7 +1921,8 @@ We define the \textbf{Cantor pairing} as the function $\rppcp : \NN^2 \to \NN$ s
 What's special about this function is that it's a bijection between $\NN^2$ and $\NN$
 (\textit{maybe} the only polynomial to be so\footnote{It's currently an open question
 whether there are other polynomials which are bijection $\NN^2 \to \NN$.}).
-We can imagine it to be an enumeration of the square grid $\NN^2$:
+We can imagine it to be an enumeration of the square grid $\NN^2$,
+which assignes to each coordinate $(x,y)$ a unique number $\rppcp(x,y)$:
 
 \begin{figure}[H]
   \centering
@@ -1928,9 +1936,10 @@ But also as a "path" taken on the same grid, which traverses each point exactly 
   \includegraphics[width=15em]{Immagini/cammino.png}
 \end{figure}
 
-Naturally, being bijective means that there exists an inverse function $\rppcu : \NN \to \NN^2$,
+Naturally, being bijective means that there exists an inverse function $\rppcu = \big( \rppcu_1, \rppcu_2 \big) : \NN \to \NN^2$,
 called the \textbf{Cantor unpairing}, which is usually expressed as
-\[ \rppcu(n) = \left( n - \frac{i(1+i)}{2}, \frac{i(3+i)}{2} - n \right) \quad \text{ where } \quad i = \left\lfloor \frac{\sqrt{8n + 1} - 1}{2} \right\rfloor .\]
+\[ \rppcu(n) = \left( n - \frac{i(1+i)}{2}, \frac{i(3+i)}{2} - n \right) \]
+where $i = \left\lfloor \frac{\sqrt{8n + 1} - 1}{2} \right\rfloor $.
 We want to implement $\rppcu$ inside $\RPP$, but there's a more natural way to define it than this.
 
 Instead of thinking about $\rppcu$ analytically, let's imagine it again as a path in $\NN^2$:
@@ -1939,20 +1948,19 @@ moving to $(x+1,y-1)$ if $y > 0$ or to $(0, x+1)$ if $y = 0$.
 If we're able to find $\rppcustep \in \RPP$ such that
 \[ \rppcustep(x,y) = \begin{cases} (x+1,y-1) &  y > 0 \\
                                    (0, x+1) &   y = 0 \end{cases} \]
-then we can define $\rppcu_i = \rppIt[\rppcustep]$, so that $\rppcu_i(n, 0, 0)$ applies $n$ steps in the path, and reaches $(n, \rppcu(n))$
-(the subscript $_i$ is motivated by the fact that we keep the input $n$).
+then we can define $\rppcui = \rppIt[\rppcustep]$, so that $\rppcui(n, 0, 0)$ applies $n$ steps in the path, and reaches $\big( n, \rppcu_1(n), \rppcu_2(n) \big)$
+(the subscript $\mathsf{_{input}}$ is motivated by the fact that we keep the input $n$).
 
 It turns out that it's indeed possible to express $\rppcustep$ in $\RPP$:
-\begin{lstlisting}
-def cu_step :=
-  Id₁ ‖ If Su Id₁ Id₁ ;;
-  ⌊2, 0, 1⌉ ;;
-  If (Su ‖ Pr) (Su ;; Sw) Id₁ ;;
-  Sw ;; If Pr Id₁ Id₁ ;;
-  Id₁ ‖ Sw
-\end{lstlisting}
+\begin{align*}
+\rppcustep \ = \ & \rppId_1 \rppPa \rppIf[\rppSu, \rppId_1, \rppId_1] \rppCo \\
+                 & \rpprewire{2, 0, 1} \rppCo \\
+                 & \rppIf[\rppSu \rppPa \rppPr , \ \rppSu \rppCo \rppSw, \ \rppId_1] \rppCo \\
+                 & \rppSw \rppCo \rppIf[\rppPr, \rppId_1, \rppId_1] \rppCo \\
+                 & \rppId_1 \rppPa \rppSw
+\end{align*}
 
-\makebox[\textwidth][c]{$\begin{NiceMatrix}
+\makebox[1.1\textwidth][c]{$\begin{NiceMatrix}
   \oloch{3-1}{\ y > 0} & x &                                                              & x & \bloch{3-1}{2 \\ 0 \\ 1} & 1 & \bloch{3-1}{\rppIf[\boldsymbol{\rppSu \rppPa \rppPr}, \ \rppSu \rppCo \rppSw, \ \rppId_1]} & 1     & \bloch{2-1}{\rppSw} & x + 1 & \bloch{2-1}{\rppIf[\boldsymbol{\rppPr}, \rppId_1, \rppId_1]} & x + 1 &                     & x + 1 \\
                        & y & \bloch{2-1}{\rppIf[\boldsymbol{\rppSu}, \rppId_1, \rppId_1]} & y &                          & x &                                                                                            & x + 1 &                     & 1     &                                                              & 0     & \bloch{2-1}{\rppSw} & y - 1 \\
                        & 0 &                                                              & 1 &                          & y &                                                                                            & y - 1 &                     & y - 1 &                                                              & y - 1 &                     & 0     \\
@@ -1969,34 +1977,38 @@ We get around this limitation by using an ancillary variable initially set to $0
 which assumes value $1$ or $0$ depending on whether $y>0$ or $y=0$,
 and is then set back to $0$ using a variable that we know is positive or equal to zero depending on the case considered.
 
-At this point we can define \lstinline{cuᵢ} (which also keeps the input around, hence the subscript) like so:
-\begin{lstlisting}
-def cuᵢ := It cu_step
-\end{lstlisting}
+At this point we can define \lstinline{cuᵢ} like so:
 
+\noindent\begin{minipage}{.5\linewidth}
+\[ \rppcui = \rppIt[\rppcustep] \]
+\end{minipage}%
+\begin{minipage}{.5\linewidth}
 \[\begin{NiceMatrix}
-  n & \bloch{4-1}{\rppcu_i} & n \\
-  0 &                       & x \\
-  0 &                       & y \\
-  0 &                       & 0 \\
+  n & \bloch{4-1}{\rppcui} & n           \\
+  0 &                      & \rppcu_1(n) \\
+  0 &                      & \rppcu_2(n) \\
+  0 &                      & 0           \\
 \end{NiceMatrix}\]
-where $(x,y)=\rppcu(n)$ or, equivalently, $n=\rppcp(x,y)$.
+\end{minipage}
 
-The function in the other direction is less intricate to define:
-\begin{lstlisting}
-def tr := It (Su ;; inc) -- triangular numbers
-\end{lstlisting}
+The function in the other direction is less intricate to define ($\rppcpi$ also keeps the input around, hence the subscript) :
+
+\noindent\begin{minipage}{.5\linewidth}
+\[ \rpptr = \rppIt[\rppSu \rppCo \rppinc] \]
+\end{minipage}%
+\begin{minipage}{.5\linewidth}
 \[\begin{NiceMatrix}
   x & \bloch{3-1}{\rpptr} & x \\
   0 &                     & x \\
   0 &                     & \sum_{i=1}^x i \\
 \end{NiceMatrix}\]
-\begin{lstlisting}
-def cpᵢ :=
-  inc ;; Id₁ ‖ tr ;;
-  Id₁ ‖ dec ;; dec ;;
-  ⌊0, 3, 1⌉ ;; inc ;; Id₁ ‖ Sw 
-\end{lstlisting}
+\end{minipage}
+
+\begin{align*}
+  \rppcpi = & \rppinc \rppCo \rppId_1 \rppPa \rpptr \rppCo \\
+             & \rppId_1 \rppPa \rppdec \rppCo \rppdec \rppCo \\
+             & \rpprewire{0, 3, 1} \rppCo \rppinc \rppCo \rppId_1 \rppPa \rppSw
+\end{align*}
 \makebox[\textwidth][c]{$\begin{NiceMatrix}
   x & \bloch{2-1}{\rppinc} & x     &                     & x                    &                      & \bloch{2-1}{\rppdec} & x                    & \bloch{4-1}{0\\3\\1} & \bloch{2-1}{\rppinc} &                     & x                        & \Block{4-1}{=} & x           \\
   y &                      & x + y & \bloch{3-1}{\rpptr} & x + y                & \bloch{2-1}{\rppdec} &                      & y                    &                      &                      & \bloch{2-1}{\rppSw} & y                        &                & y           \\
@@ -2005,19 +2017,19 @@ def cpᵢ :=
 \\
 \end{NiceMatrix}$}
 We can combine \lstinline{cpᵢ} and \lstinline{cuᵢ} to get rid of the input values they both leave behind:
-\begin{lstlisting}
-def cp := cpᵢ ;; ⌊2, 0, 1⌉ ;; cuᵢ⁻¹
-def cu := cp⁻¹
-\end{lstlisting}
+\begin{align*}
+\rppcp & = \rppcpi \rppCo \rpprewire{2, 0, 1} \rppCo \rppcui^{-1} \\
+\rppcu & = \rppcp^{-1}
+\end{align*}
 \[\begin{NiceMatrix}
-  x & \bloch{4-1}{\rppcp_i} & x           & \bloch{3-1}{2\\0\\1} & \rppcp(x,y) & \bloch{4-1}{\rppcu_i^{-1}} & \rppcp(x,y) \\
+  x & \bloch{4-1}{\rppcpi} & x           & \bloch{3-1}{2\\0\\1} & \rppcp(x,y) & \bloch{4-1}{\rppcui^{-1}} & \rppcp(x,y) \\
   y &                       & y           &                      & x           &                            & 0           \\
   0 &                       & \rppcp(x,y) &                      & y           &                            & 0           \\
   0 &                       & 0           &                      & 0           &                            & 0           \\
 \end{NiceMatrix}\]
 This is very powerful: we succesfully defined a function which stores data from two positions to just one.
-We will discuss pairings at greater lengths in the next paragraph; for now, let's focus on the technique we used.
-In defining the function $\rppcu_i$ we framed it as a "path" in a two-dimensional grid.
+We will discuss pairings at greater lengths in the next paragraphs; for now, let's focus on the technique we used.
+In defining the function $\rppcui$ we framed it as a "path" in a two-dimensional grid.
 By slightly tweaking $\rppcustep$ we can trace out other paths which helps us solve new problems.
 
 For example, let's imagine starting on coordinates $(0,n)$ and moving each turn in direction $(+1,-1)$ (like before)
@@ -2031,23 +2043,30 @@ but now when we reach $(n,0)$, instead of jumping to $(0,n+1)$ we land again on 
 If we call $\rppdivstep$ the function which performs one step of this diagram, by iterating it with $\rppIt[\rppdivstep]$
 we've essentially found a way to do modular arithmetic: since it takes $n+1$ steps to get to where we started,
 if we perform $m$ steps the $x$ coordinate will be such that $x \equiv m \pmod{n+1}$ and $0 \le x \le n$.
-Furthermore, if we increase a counter by one each time we land on $(0,n)$ we can calculate division with remainder.
-The differences between such a $\rppdivstep$ and $\rppcustep$ are minimal (highlighted in red):
-\begin{lstlisting}
-def div_step :=
-  Id₁ ‖ If Su Id₁ Id₁ ;;
-  ⌊2, 0, 1⌉ ;;
-  If (Su ‖ Pr) @@(Sw ‖ Su)@@ Id₁ ;;
-  Sw ;; If Pr Id₁ Id₁ ;;
-  Id₁ ‖ Sw
+Furthermore, if we increase a counter by one each time we land on $(0,n)$ we can calculate integer division.
+The differences between such a $\rppdivstep$ and $\rppcustep$ are minimal (highlighted in bold):
 
-def div := It div_step
-\end{lstlisting}
-The general behaviour of \lstinline{div} is the following: given \lstinline{n m : ℕ},
-\begin{lstlisting}
-‹div› [m, 0, n, 0, 0] = [m, r, (n+1) - r, 0, m / (n+1)]
-\end{lstlisting}
-where by \lstinline{/} is integer division and \lstinline{r = m % (n+1)} the remainder through the modulo operation.
+\noindent\begin{minipage}{.5\linewidth}
+\begin{align*}
+\rppdivstep \ = \ & \rppId_1 \rppPa \rppIf[\rppSu, \rppId_1, \rppId_1] \rppCo \\
+                  & \rpprewire{2, 0, 1} \rppCo \\
+                  & \rppIf[\rppSu \rppPa \rppPr, \ \boldsymbol{\rppSw \rppPa \rppSu}, \ \rppId_1] \rppCo \\
+                  & \rppSw \rppCo \rppIf[\rppPr, \rppId_1, \rppId_1] \rppCo \\
+                  & \rppId_1 \rppCo \rppSw \\
+\\
+\rppdiv =     & \rppIt[\rppdivstep] \\
+\end{align*}
+\end{minipage}%
+\begin{minipage}{.5\linewidth}
+\[\begin{NiceMatrix}
+  m & \bloch{5-1}{\rppdiv} & m         \\
+  0 &                      & r         \\
+  n &                      & n + 1 - r \\
+  0 &                      & 0         \\
+  0 &                      & q         \\
+\end{NiceMatrix}\]
+\end{minipage}
+where $m = q(n + 1) + r$ is the division with remainder of $m$ by $n+1$.
 
 Lastly, there's a way in which we can express the truncated square root function $\left\lfloor \sqrt{n} \right\rfloor$ in $\RPP$.
 Of course, the square root is not an invertible function, like division - and like division,
@@ -2061,31 +2080,269 @@ but whenever we reach $(x,0)$ we jump to $(0,x+2)$ and increase a counter by one
 \end{figure}
 
 The first jump is performed $1$ step from the starting position $(0,0)$; the next one is performed after $3$ steps, then $5$, $7$ etc.
-It's well known that for each $k$, the sum of the first $k$ odd numbers $1 + 3 + \dots + (2k - 1) = k^2$,
-so when we reach the number $k^2$ we've performed $k$ jumps - hence, we calculated the square root.
+It's well known that for each $k$, the sum of the first $k$ odd numbers is $1 + 3 + \dots + (2k - 1) = k^2$,
+so when we reach the number $k^2$ we've performed $k$ jumps - hence, we calculated a square root.
 
 Again, we highlight the (minor) differences with $\rppcustep$:
-\begin{lstlisting}
-def sqrt_step :=
-  Id₁ ‖ If Su Id₁ Id₁ ;;
-  ⌊2, 0, 1⌉ ;;
-  If (Su ‖ Pr) @@(Su ;; Su ;; Sw ‖ Su)@@ Id₁ ;;
-  Sw ;; If Pr Id₁ Id₁ ;;
-  Id₁ ‖ Sw
 
-def sqrt := It sqrt_step
-\end{lstlisting}
-We get this behaviour: given \lstinline{n : ℕ},
-\begin{lstlisting}
-‹sqrt› [n, 0, 0, 0, 0] = [n, r, 2 * √n - r, 0, √n]
-\end{lstlisting}
-where \lstinline{√n} is the truncated square root and \lstinline{r = n - √n * √n \ } our "square-root remainder".
+\noindent\begin{minipage}{.5\linewidth}
+\begin{align*}
+  \rppdivstep = & \rppId_1 \rppPa \rppIf[\rppSu, \rppId_1, \rppId_1] \rppCo \\
+                & \rpprewire{2, 0, 1} \rppCo \\
+                & \rppIf[\rppSu \rppPa \rppPr, \ \boldsymbol{\rppSu \rppCo \rppSu \rppCo \rppSw \rppPa \rppSu}, \ \rppId_1] \rppCo \\
+                & \rppSw \rppCo \rppIf[\rppPr, \rppId_1, \rppId_1] \rppCo \\
+                & \rppId_1 \rppCo \rppSw \\
+  \\
+  \rppdiv =     & \rppIt[\rppdivstep] \\
+\end{align*}
+\end{minipage}%
+\begin{minipage}{.5\linewidth}
+\[\begin{NiceMatrix}
+  n & \bloch{5-1}{\rppdiv} & n                      \\
+  0 &                      & r                      \\
+  0 &                      & 2 \floor{\sqrt{n}} - r \\
+  0 &                      & 0                      \\
+  0 &                      & \floor{\sqrt{n}}       \\
+\end{NiceMatrix}\]
+\end{minipage}
+
+where $\floor{\sqrt{n}}$ is the truncated square root and $r = n - \floor{\sqrt{n}}^2$ our "square-root remainder".
+% The term $2 \floor{\sqrt{n}} - r$ could be cancelled out by adding $r$ and subtracting two times $\floor{\sqrt{n}}$,
+% but it'll come in hand soon so we leave it.
 
 \paragraph{Another pairing function}
 
+The Cantor pairing is not the only bijection $\NN^2 \to \NN$.
+Another one is $\rppmkpair$:
+\[\rppmkpair(x,y) = \begin{cases} y^2 + x & x < y \\ x^2 + x + y & \text{otherwise} \end{cases} \]
+which has inverse $\rppunpair = \big( \rppunpair_1, \rppunpair_2 \big) : \NN \to \NN^2$:
+\begin{align*}
+  \rppunpair(x,y) = \begin{cases} \big( n - \floor{\sqrt{n}}^2, \floor{\sqrt{n}} \big)                    & n - \floor{\sqrt{n}}^2 < \floor{\sqrt{n}} \\
+                                  \big( \floor{\sqrt{n}}, n - \floor{\sqrt{n}}^2 - \floor{\sqrt{n}} \big) & \text{otherwise} \end{cases}
+\end{align*}
+
+We want to express $\rppmkpair$ as an $\RPP$ function, because we'll need it later.
+Similarly to $\rppcp$, we first define functions $\rppmkpairi$, $\rppunpairi$ which keep their original input,
+and then combine them to "erase" the inputs and get the true $\rppmkpair$ and $\rppunpair$.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=15em]{Immagini/mkpair.png}
+\end{figure}
+
+The definitions of $\rppmkpair$ and $\rppunpair$ only involve sums, subtractions, squares, comparisons between naturals and truncated square roots;
+we already know how to deal with all these, so the construction isn't particularly interesting.
+For reference, here's the definitions:
+
+\noindent\begin{minipage}{.5\linewidth}
+\begin{align*}
+\rppmkpairi \ = \ & \rppless \rppCo \\
+                   & \rpprewire{2, 0, 1} \rppCo \\
+                   & \rppIf[     \rppId_1 \rppPa \rppsquare \rppCo \rppSw \rppCo \rppId_1 \rppPa \rppinc \rppCo \rppSw, \\
+                   & \hspace{1em}\rppId_1 \rppPa \rppinc \rppCo \rppSw \rppCo \rppId_1 \rppPa (\rppsquare \rppCo \rppinc) \rppCo \rppSw, \\
+                   & \hspace{1em}\rppId_1] \rppCo \\
+                   & \rpprewire{1, 2, 0} \rppCo \\
+                   & \rppless^{-1} \\
+\end{align*}
+\end{minipage}%
+\begin{minipage}{.5\linewidth}
+\[\begin{NiceMatrix}
+  n & \bloch{5-1}{\rppmkpairi} & n                \\
+  m &                           & m                \\
+  0 &                           & 0                \\
+  0 &                           & \rppmkpair(n, m) \\
+  0 &                           & 0                \\
+\end{NiceMatrix}\]
+\end{minipage}
+
+\noindent\begin{minipage}{.5\linewidth}
+\begin{align*}
+\rppunpairifwd \ = \  & \rppsqrt \rppCo \\
+                                   & \rpprewire{0, 1, 4, 2, 3} \rppCo \\
+                                   & \rppId_2 \rppPa \rppdec \rppCo \\
+                                   & \rppId_3 \rppPa \rppNe \rppCo \\
+                                   & \rppId_3 \rppPa \rppIf[\rppId_1, \rppId_1, \rppPr] \rppCo \\
+                                   & \rpprewire{0, 4, 1, 2, 3} \\
+\end{align*}
+\end{minipage}%
+\begin{minipage}{.5\linewidth}
+\[\begin{NiceMatrix}
+  n & \bloch{5-1}{\rppunpairifwd} & n                                         \\
+  0 &                             & s                                         \\
+  0 &                             & n - \floor{\sqrt{n}}^2                    \\
+  0 &                             & \floor{\sqrt{n}}                          \\
+  0 &                             & n - \floor{\sqrt{n}}^2 - \floor{\sqrt{n}} \\
+\end{NiceMatrix}\]
+\end{minipage}
+
+where $s = -1 \ $ if $ \ n - \floor{\sqrt{n}}^2 < \floor{\sqrt{n}}$, and $s = 0$ otherwise.
+
+\noindent\begin{minipage}{.5\linewidth}
+\begin{align*}
+\rppunpairi \ = \ & \rppunpairifwd \\
+                   & \rppId_1 \rppPa \rppIf \big[ \rppId_1, \\
+                   & \hspace{2.6em}         \rpprewire{0, 1, 3, 2, 4} \rppCo \rppId_1 \rppPa \rppinc \rppPa \rppinc \rppCo \rpprewire{0, 1, 3, 2, 4}, \\
+                   & \hspace{2.6em}         \rpprewire{0, 3, 1, 4, 2} \rppCo \rppinc \rppPa \rppinc \rppCo \rpprewire{0, 2, 4, 1, 3} \big] \rppCo \\
+                   & \rppunpairifwd^{-1} \\
+\end{align*}
+\end{minipage}%
+\begin{minipage}{.5\linewidth}
+\[\begin{NiceMatrix}
+  n & \bloch{7-1}{\rppunpairi} & n               \\
+  0 &                          & 0               \\
+  0 &                          & 0               \\
+  0 &                          & 0               \\
+  0 &                          & 0               \\
+  0 &                          & \rppunpair_1(n) \\
+  0 &                          & \rppunpair_2(n) \\
+\end{NiceMatrix}\]
+\end{minipage}
+
+\noindent\begin{minipage}{.5\linewidth}
+\begin{align*}
+\rppmkpair \ = \ & \rppmkpairi \rppCo \rpprewire{3, 2, 4, 5, 6, 0, 1} \rppCo \rppunpair_i^{-1} \\
+\rppunpair \ = \ & \rppmkpair^{-1} \\
+\end{align*}
+\end{minipage}%
+\begin{minipage}{.5\linewidth}
+\[\begin{NiceMatrix}
+  n & \bloch{7-1}{\rppmkpair} & \rppmkpair(n, m) \\
+  m &                         & 0                \\
+  0 &                         & 0                \\
+  0 &                         & 0                \\
+  0 &                         & 0                \\
+  0 &                         & 0                \\
+  0 &                         & 0                \\
+\end{NiceMatrix}\]
+\end{minipage}
+
+With $\rppunpairi$ we make use of \textit{Bennet's trick}:
+we perform a computation $\rppunpairifwd$ which gives us the result we need, alongside some other useless data.
+The obvious next step would be to throw away the useless data and just keep the result,
+but in reversible computing we can't erase information.
+Instead, we store the result and then run the whole computation backwards:
+in this way, we get to where we started but with the result.
+
+In general, reversible programs must always face the following problem: how to best manage information?
+Where do we put things we don't need?
+This is something we'll have to think about when we analyze $\PRF$-completeness,
+and pairing functions will be the key.
+
+\paragraph*{Verifying the behaviour}
+
+We've looked at some functions which can be defined within $\RPP$.
+Using Lean we can input the definitions and then test them in a concrete way,
+to check if they work correctly:
+\begin{lstlisting}
+#eval ‹square› [22, 0, 0]  -- [22, 484, 0]
+#eval ‹square› [6, 100, 0] -- [6, 136, 0]
+                              -- seems fine, I guess
+\end{lstlisting}
+But we can do much more: we can \textit{prove} that they work correctly,
+in the same environment where we defined them.
+
+This is a big step over defining them in a standard programming language and then
+writing a proof of their correctness on "pen and paper",
+because in that case there's no guarantee that what has been defined on machine
+is the same thing as what is being discussed in the proof:
+they're two different objects living in different worlds,
+linked only by our commitment to avoid mistakes in any of the two.
+
+Instead, in Lean we can define \lstinline{square} and then write on the following line
+\begin{lstlisting}
+@[simp] lemma square_def (n : ℕ) (x : ℤ) (l : list ℤ) :
+  ‹square› (n :: x :: 0 :: l) = n :: (x + n * n) :: 0 :: l :=
+by simp [square, ev]
+\end{lstlisting}
+and if there's a typo in the definition, or a hole in the argumentation,
+the proof will just fail.
+
+Even better: if \lstinline{square} is used in the definition of other functions,
+like \lstinline{mkpairᵢ}, when we verify the correctness of \lstinline{mkpairᵢ}
+we'll already have the theorem about \lstinline{square} at our disposal.
+
+As an example let's see some of these theorems:
+\begin{lstlisting}
+@[simp] lemma inc_def (n : ℕ) (x : ℤ) (l : list ℤ) :
+  ‹inc› (n :: x :: l) = n :: (x + n) :: l :=
+begin
+  rw [inc], simp [ev],
+  -- ring is used to solve automatically simple equations 
+  induction n generalizing x, simp, simp [ev, *], ring
+end
+\end{lstlisting}
+The proof is by induction on \lstinline{n} and it's nothing remarkable.
+What's interesting is that we mark this lemma as \lstinline{@[simp]}.
+The next proof is about \lstinline{dec := inc⁻¹}:
+\begin{lstlisting}
+lemma dec_def (n : ℕ) (x : ℤ) (l : list ℤ) :
+  ‹dec› (n :: x :: l) = n :: (x - n) :: l :=
+begin
+  -- (the arrow ↑ denotes the cast ℕ → ℤ)
+  -- ⊢ ‹dec› (↑n :: x :: l) = ↑n :: (x - ↑n) :: l
+  rw dec,
+  -- ⊢ ‹inc⁻¹› (↑n :: x :: l) = ↑n :: (x - ↑n) :: l
+  rw proposition_1,
+  -- ⊢ ‹inc› (↑n :: (x - ↑n) :: l) = ↑n :: x :: l
+  rw inc_def,
+  -- ⊢ ↑n :: (x - ↑n + ↑n) :: l = ↑n :: x :: l
+  simp,
+  -- goals accomplished
+end
+\end{lstlisting}
+We made good use of our lemma \lstinline{inc_def}.
+However, since we marked it as \lstinline{simp}, the proof can be greatly shortened:
+\begin{lstlisting}
+@[simp] lemma dec_def (n : ℕ) (x : ℤ) (l : list ℤ) :
+  ‹dec› (n :: x :: l) = n :: (x - n) :: l :=
+by simp[dec]
+\end{lstlisting}
+and in turn we mark \lstinline{dec_def} as \lstinline{@[simp]},
+commencing our snowball of automation.
+
+Indeed, each one of these theorems can be proven with (relatively) little effort
+by first setting things up right and then unleashing the simplifier.
+As an example, here's \lstinline{sqrt_def}:
+\begin{lstlisting}
+@[simp] lemma sqrt_def (n : ℕ) (l : list ℤ) :
+  ‹sqrt› (n :: 0 :: 0 :: 0 :: 0 :: l) =
+  n :: (n - √n * √n) :: (√n + √n - (n - √n * √n))
+    :: 0 :: √n :: l :=
+begin
+  -- initial set up
+  simp [sqrt, ev],
+  induction n with n hn,
+  simp,
+  rw [function.iterate_succ_apply', hn], clear hn,
+
+  -- divides the proof in two cases
+  cases (sqrt_succ_or n) with h h,
+
+  -- first case
+  -- the tactic have introduces a new goal
+  -- which is added to the hypotheses once solved
+  have H₁ := sqrt_lemma_1 n h,
+  have H₂ : (0 : ℤ) < n - √n * √n + 1,
+    by { have h := nat.sqrt_le n, norm_cast, linarith },
+  simp[sqrt_step, ev, rewire, *], split, ring, ring,
+
+  -- second case
+  have H₁ := sqrt_lemma_2 n h,
+  have H₂ : (n : ℤ) = √n + √n + √n * √n,
+    by { symmetry, rw ←sub_eq_zero, rw ←H₁, ring },
+  simp[sqrt_step, ev, rewire, *], split, ring, ring
+end
+\end{lstlisting}
+There's an initial set up, then it splits into two cases.
+In each, some hypothesis are added to aid \lstinline{simp} and \lstinline{ring},
+which are subsequently called to finish the job.
+
+We restate that the purpose of Lean is not being an automatic theorem prover.
+However, it's nice when it can be used in that way.
+
 \section{PRF-completeness}
 
-\section{Alternative ways to define RPP in Lean}
+\section{Alternative paths}
 
 \chapter{Conclusions}
 

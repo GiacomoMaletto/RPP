@@ -14,7 +14,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="New document 1">
+   sodipodi:docname="cammini.svg">
   <defs
      id="defs4">
     <marker
@@ -103,9 +103,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.49497475"
-     inkscape:cx="480.03801"
-     inkscape:cy="646.27314"
+     inkscape:zoom="0.7"
+     inkscape:cx="120.89346"
+     inkscape:cy="311.19391"
      inkscape:document-units="px"
      inkscape:current-layer="layer5"
      showgrid="false"
@@ -137,7 +137,8 @@
      inkscape:groupmode="layer"
      id="layer3"
      inkscape:label="invisible"
-     style="display:none">
+     style="display:none"
+     sodipodi:insensitive="true">
     <path
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 151.52287,452.33158 0,115.74489"
@@ -330,451 +331,1470 @@
        id="path6888"
        d="m 1598.0614,452.33157 0,115.74489"
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path6908"
+       d="m -359.61432,452.33158 0,115.74489"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -258.59905,452.33157 0,115.74489"
+       id="path6910"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path6912"
+       d="m -157.58379,452.33157 0,115.74489"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -56.568528,452.33157 0,115.74489"
+       id="path6914"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path6916"
+       d="m -359.61431,452.33157 -115.74489,0"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -359.61431,351.31631 -115.74489,0"
+       id="path6918"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path6920"
+       d="m -359.61431,250.30105 -115.74489,0"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -359.61431,149.2858 -115.74489,0"
+       id="path6922"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path6924"
+       d="m -387.56576,127.36218 0,402.14286"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path6926"
+       d="m -359.61431,452.33157 0,27.95145"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -11.757158,480.28302 -402.142862,0"
+       id="path6928"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path6930"
+       d="M -258.59905,452.33157 -395.38853,315.54209"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -359.61432,929.47444 0,115.74486"
+       id="path3314"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3316"
+       d="m -258.59905,929.47443 0,115.74487"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -157.58379,929.47443 0,115.74487"
+       id="path3318"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3320"
+       d="m -56.568528,929.47443 0,115.74487"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -359.61431,929.47443 -115.74489,0"
+       id="path3322"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3324"
+       d="m -359.61431,828.45917 -115.74489,0"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -359.61431,727.44391 -115.74489,0"
+       id="path3326"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3328"
+       d="m -359.61431,626.42866 -115.74489,0"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -387.56576,604.50504 0,402.14286"
+       id="path3330"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -359.61431,929.47443 0,27.95145"
+       id="path3332"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3334"
+       d="m -11.757158,957.42588 -402.142862,0"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline"
+       d="M -258.59905,929.47443 -395.38853,792.68495"
+       id="path3336"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3482"
+       d="m 151.52287,928.04587 0,115.74493"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 252.53814,928.04586 0,115.74484"
+       id="path3484"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3486"
+       d="m 353.5534,928.04586 0,115.74484"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 454.56866,928.04586 0,115.74484"
+       id="path3488"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3490"
+       d="m 151.52288,928.04586 -115.74489,0"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 151.52288,827.0306 -115.74489,0"
+       id="path3492"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3494"
+       d="m 151.52288,726.01534 -115.74489,0"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 151.52288,625.00009 -115.74489,0"
+       id="path3496"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3498"
+       d="m 123.57143,603.07647 0,402.14283"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3500"
+       d="m 151.52288,928.04586 0,27.95145"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 499.38003,955.99731 -402.142864,0"
+       id="path3502"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3504"
+       d="M 252.53814,928.04586 115.74866,791.25638"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline" />
   </g>
   <g
      inkscape:label="grid"
      inkscape:groupmode="layer"
-     id="layer1"
-     sodipodi:insensitive="true">
+     id="layer1">
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 151.52288,452.33157 101.01526,0"
        id="path2985"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path2987"
        d="m 252.53814,452.33157 101.01526,0"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 353.5534,452.33157 101.01526,0"
        id="path2989"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path2991"
        d="m 151.52288,351.31631 0,101.01526"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 252.53814,351.31631 0,101.01526"
        id="path2993"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path2995"
        d="m 353.5534,351.31631 0,101.01526"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 454.56866,351.31631 0,101.01526"
        id="path2997"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path2999"
        d="m 151.52288,351.31631 101.01526,0"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 252.53814,351.31631 101.01526,0"
        id="path3001"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path3003"
        d="m 353.5534,351.31631 101.01526,0"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 151.52288,250.30105 0,101.01526"
        id="path3005"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path3007"
        d="m 252.53814,250.30105 0,101.01526"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 353.5534,250.30105 0,101.01526"
        id="path3009"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path3011"
        d="m 454.56866,250.30105 0,101.01526"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 151.52288,250.30105 101.01526,0"
        id="path3013"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path3015"
        d="m 252.53814,250.30105 101.01526,0"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 353.5534,250.30105 101.01526,0"
        id="path3017"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path3019"
        d="m 151.52288,149.28579 0,101.01526"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 252.53814,149.28579 0,101.01526"
        id="path3021"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path3023"
        d="m 353.5534,149.28579 0,101.01526"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 454.56866,149.28579 0,101.01526"
        id="path3025"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path3027"
        d="m 151.52288,149.28579 101.01526,0"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 252.53814,149.28579 101.01526,0"
        id="path3029"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path3031"
        d="m 353.5534,149.28579 101.01526,0"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6562"
        d="m 682.86312,452.33157 101.01526,0"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 783.87838,452.33157 101.0153,0"
        id="path6564"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6566"
        d="m 884.89368,452.33157 101.0152,0"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 682.86312,351.31631 0,101.01526"
        id="path6568"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6570"
        d="m 783.87838,351.31631 0,101.01526"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 884.89368,351.31631 0,101.01526"
        id="path6572"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6574"
        d="m 985.90888,351.31631 0,101.01526"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 682.86312,351.31631 101.01526,0"
        id="path6576"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6578"
        d="m 783.87838,351.31631 101.0153,0"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 884.89368,351.31631 101.0152,0"
        id="path6580"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6582"
        d="m 682.86312,250.30105 0,101.01526"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 783.87838,250.30105 0,101.01526"
        id="path6584"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6586"
        d="m 884.89368,250.30105 0,101.01526"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 985.90888,250.30105 0,101.01526"
        id="path6588"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6590"
        d="m 682.86312,250.30105 101.01526,0"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 783.87838,250.30105 101.0153,0"
        id="path6592"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6594"
        d="m 884.89368,250.30105 101.0152,0"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 682.86312,149.28579 0,101.01526"
        id="path6596"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6598"
        d="m 783.87838,149.28579 0,101.01526"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 884.89368,149.28579 0,101.01526"
        id="path6600"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6602"
        d="m 985.90888,149.28579 0,101.01526"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 682.86312,149.28579 101.01526,0"
        id="path6604"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6606"
        d="m 783.87838,149.28579 101.0153,0"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 884.89368,149.28579 101.0152,0"
        id="path6608"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6724"
        d="m 1194.0003,452.33157 101.0153,0"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 1295.0156,452.33157 101.0152,0"
        id="path6726"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6728"
        d="m 1396.0308,452.33157 101.0153,0"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 1194.0003,351.31631 0,101.01526"
        id="path6730"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6732"
        d="m 1295.0156,351.31631 0,101.01526"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 1396.0308,351.31631 0,101.01526"
        id="path6734"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6736"
        d="m 1497.0461,351.31631 0,101.01526"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 1194.0003,351.31631 101.0153,0"
        id="path6738"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6740"
        d="m 1295.0156,351.31631 101.0152,0"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 1396.0308,351.31631 101.0153,0"
        id="path6742"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6744"
        d="m 1194.0003,250.30105 0,101.01526"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 1295.0156,250.30105 0,101.01526"
        id="path6746"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6748"
        d="m 1396.0308,250.30105 0,101.01526"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 1497.0461,250.30105 0,101.01526"
        id="path6750"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6752"
        d="m 1194.0003,250.30105 101.0153,0"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 1295.0156,250.30105 101.0152,0"
        id="path6754"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6756"
        d="m 1396.0308,250.30105 101.0153,0"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 1194.0003,149.28579 0,101.01526"
        id="path6758"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6760"
        d="m 1295.0156,149.28579 0,101.01526"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 1396.0308,149.28579 0,101.01526"
        id="path6762"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6764"
        d="m 1497.0461,149.28579 0,101.01526"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 1194.0003,149.28579 101.0153,0"
        id="path6766"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6768"
        d="m 1295.0156,149.28579 101.0152,0"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 1396.0308,149.28579 101.0153,0"
        id="path6770"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6854"
        d="m 1194.0003,48.270532 0,101.015258"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 1295.0156,48.270532 0,101.015258"
        id="path6856"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6858"
        d="m 1396.0308,48.270532 0,101.015258"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 1497.0461,48.270532 0,101.015258"
        id="path6860"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6862"
        d="m 1194.0003,48.270532 101.0153,0"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 1295.0156,48.270532 101.0152,0"
        id="path6864"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6866"
        d="m 1396.0308,48.270532 101.0153,0"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 1497.0461,452.33157 101.0153,0"
        id="path6868"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 1598.0614,351.31631 0,101.01526"
        id="path6870"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6872"
        d="m 1497.0461,351.31631 101.0153,0"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6874"
        d="m 1598.0614,250.30105 0,101.01526"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 1497.0461,250.30105 101.0153,0"
        id="path6876"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 1598.0614,149.28579 0,101.01526"
        id="path6878"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6880"
        d="m 1497.0461,149.28579 101.0153,0"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6882"
        d="m 1598.0614,48.270532 0,101.015258"
-       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 1497.0461,48.270532 101.0153,0"
        id="path6884"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       id="path6932"
+       d="m -359.61431,452.33157 101.01526,0"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -258.59905,452.33157 101.01526,0"
+       id="path6934"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       id="path6936"
+       d="m -157.58379,452.33157 101.015262,0"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -359.61431,351.31631 0,101.01526"
+       id="path6938"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       id="path6940"
+       d="m -258.59905,351.31631 0,101.01526"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -157.58379,351.31631 0,101.01526"
+       id="path6942"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       id="path6944"
+       d="m -56.568528,351.31631 0,101.01526"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -359.61431,351.31631 101.01526,0"
+       id="path6946"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       id="path6948"
+       d="m -258.59905,351.31631 101.01526,0"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -157.58379,351.31631 101.015262,0"
+       id="path6950"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       id="path6952"
+       d="m -359.61431,250.30105 0,101.01526"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -258.59905,250.30105 0,101.01526"
+       id="path6954"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       id="path6956"
+       d="m -157.58379,250.30105 0,101.01526"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -56.568528,250.30105 0,101.01526"
+       id="path6958"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       id="path6960"
+       d="m -359.61431,250.30105 101.01526,0"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -258.59905,250.30105 101.01526,0"
+       id="path6962"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       id="path6964"
+       d="m -157.58379,250.30105 101.015262,0"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -359.61431,149.28579 0,101.01526"
+       id="path6966"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       id="path6968"
+       d="m -258.59905,149.28579 0,101.01526"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -157.58379,149.28579 0,101.01526"
+       id="path6970"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       id="path6972"
+       d="m -56.568528,149.28579 0,101.01526"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -359.61431,149.28579 101.01526,0"
+       id="path6974"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       id="path6976"
+       d="m -258.59905,149.28579 101.01526,0"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -157.58379,149.28579 101.015262,0"
+       id="path6978"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -359.61431,929.47443 101.01526,0"
+       id="path3338"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3340"
+       d="m -258.59905,929.47443 101.01526,0"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -157.58379,929.47443 101.015262,0"
+       id="path3342"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3344"
+       d="m -359.61431,828.45917 0,101.01526"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -258.59905,828.45917 0,101.01526"
+       id="path3346"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3348"
+       d="m -157.58379,828.45917 0,101.01526"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -56.568528,828.45917 0,101.01526"
+       id="path3350"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3352"
+       d="m -359.61431,828.45917 101.01526,0"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -258.59905,828.45917 101.01526,0"
+       id="path3354"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3356"
+       d="m -157.58379,828.45917 101.015262,0"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -359.61431,727.44391 0,101.01526"
+       id="path3358"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3360"
+       d="m -258.59905,727.44391 0,101.01526"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -157.58379,727.44391 0,101.01526"
+       id="path3362"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3364"
+       d="m -56.568528,727.44391 0,101.01526"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -359.61431,727.44391 101.01526,0"
+       id="path3366"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3368"
+       d="m -258.59905,727.44391 101.01526,0"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -157.58379,727.44391 101.015262,0"
+       id="path3370"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3372"
+       d="m -359.61431,626.42865 0,101.01526"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -258.59905,626.42865 0,101.01526"
+       id="path3374"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3376"
+       d="m -157.58379,626.42865 0,101.01526"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -56.568528,626.42865 0,101.01526"
+       id="path3378"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3380"
+       d="m -359.61431,626.42865 101.01526,0"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -258.59905,626.42865 101.01526,0"
+       id="path3382"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3384"
+       d="m -157.58379,626.42865 101.015262,0"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       id="path3506"
+       d="m 151.52288,928.04586 101.01526,0"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 252.53814,928.04586 101.01526,0"
+       id="path3508"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       id="path3510"
+       d="m 353.5534,928.04586 101.01526,0"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 151.52288,827.0306 0,101.01526"
+       id="path3512"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       id="path3514"
+       d="m 252.53814,827.0306 0,101.01526"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 353.5534,827.0306 0,101.01526"
+       id="path3516"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       id="path3518"
+       d="m 454.56866,827.0306 0,101.01526"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 151.52288,827.0306 101.01526,0"
+       id="path3520"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       id="path3522"
+       d="m 252.53814,827.0306 101.01526,0"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 353.5534,827.0306 101.01526,0"
+       id="path3524"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       id="path3526"
+       d="m 151.52288,726.01534 0,101.01526"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 252.53814,726.01534 0,101.01526"
+       id="path3528"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       id="path3530"
+       d="m 353.5534,726.01534 0,101.01526"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 454.56866,726.01534 0,101.01526"
+       id="path3532"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       id="path3534"
+       d="m 151.52288,726.01534 101.01526,0"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 252.53814,726.01534 101.01526,0"
+       id="path3536"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       id="path3538"
+       d="m 353.5534,726.01534 101.01526,0"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 151.52288,625.00008 0,101.01526"
+       id="path3540"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       id="path3542"
+       d="m 252.53814,625.00008 0,101.01526"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 353.5534,625.00008 0,101.01526"
+       id="path3544"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       id="path3546"
+       d="m 454.56866,625.00008 0,101.01526"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 151.52288,625.00008 101.01526,0"
+       id="path3548"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       id="path3550"
+       d="m 252.53814,625.00008 101.01526,0"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       style="fill:none;stroke:#b3b3b3;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 353.5534,625.00008 101.01526,0"
+       id="path3552"
        inkscape:connector-curvature="0" />
   </g>
   <g
@@ -786,160 +1806,384 @@
        style="fill:#000000;fill-opacity:0.98000004;stroke:none"
        d="m 160.35714,452.33157 c 0,4.87903 -3.95524,8.83427 -8.83427,8.83427 -4.87903,0 -8.83426,-3.95524 -8.83426,-8.83427 0,-4.87903 3.95523,-8.83426 8.83426,-8.83426 4.87903,0 8.83427,3.95523 8.83427,8.83426 z"
        id="path3033"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        id="path3068"
        d="m 257.07926,452.33157 c 0,2.50799 -2.03313,4.54112 -4.54112,4.54112 -2.50799,0 -4.54112,-2.03313 -4.54112,-4.54112 0,-2.50799 2.03313,-4.54112 4.54112,-4.54112 2.50799,0 4.54112,2.03313 4.54112,4.54112 z"
        style="fill:#000000;fill-opacity:0.98000004;stroke:none"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        id="path3070"
        d="m 358.09451,452.33157 c 0,2.50799 -2.03313,4.54112 -4.54112,4.54112 -2.50799,0 -4.54111,-2.03313 -4.54111,-4.54112 0,-2.50798 2.03312,-4.54111 4.54111,-4.54111 2.50799,0 4.54112,2.03313 4.54112,4.54111 z"
        style="fill:#000000;fill-opacity:0.98000004;stroke:none"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        style="fill:#000000;fill-opacity:0.98000004;stroke:none"
        d="m 459.10978,452.33157 c 0,2.50799 -2.03313,4.54112 -4.54112,4.54112 -2.50799,0 -4.54112,-2.03313 -4.54112,-4.54112 0,-2.50799 2.03313,-4.54112 4.54112,-4.54112 2.50799,0 4.54112,2.03313 4.54112,4.54112 z"
-       id="path3072" />
+       id="path3072"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        id="path3074"
        d="m 156.064,351.31631 c 0,2.50799 -2.03313,4.54112 -4.54112,4.54112 -2.50799,0 -4.54112,-2.03313 -4.54112,-4.54112 0,-2.50799 2.03313,-4.54111 4.54112,-4.54111 2.50799,0 4.54112,2.03312 4.54112,4.54111 z"
        style="fill:#000000;fill-opacity:0.98000004;stroke:none"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        style="fill:#000000;fill-opacity:0.98000004;stroke:none"
        d="m 257.07926,351.3163 c 0,2.50799 -2.03313,4.54112 -4.54112,4.54112 -2.50799,0 -4.54112,-2.03313 -4.54112,-4.54112 0,-2.50799 2.03313,-4.54111 4.54112,-4.54111 2.50799,0 4.54112,2.03312 4.54112,4.54111 z"
-       id="path3076" />
+       id="path3076"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        style="fill:#000000;fill-opacity:0.98000004;stroke:none"
        d="m 358.09451,351.3163 c 0,2.50799 -2.03313,4.54112 -4.54111,4.54112 -2.50799,0 -4.54111,-2.03313 -4.54111,-4.54112 0,-2.50797 2.03312,-4.54111 4.54111,-4.54111 2.50799,0 4.54111,2.03313 4.54111,4.54111 z"
-       id="path3078" />
+       id="path3078"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        id="path3080"
        d="m 459.10978,351.3163 c 0,2.50799 -2.03313,4.54112 -4.54112,4.54112 -2.50799,0 -4.54111,-2.03313 -4.54111,-4.54112 0,-2.50799 2.03313,-4.54111 4.54111,-4.54111 2.508,0 4.54112,2.03312 4.54112,4.54111 z"
        style="fill:#000000;fill-opacity:0.98000004;stroke:none"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        id="path3082"
        d="m 156.06399,250.30106 c 0,2.50799 -2.03313,4.54112 -4.54112,4.54112 -2.50799,0 -4.54111,-2.03313 -4.54111,-4.54112 0,-2.50799 2.03312,-4.54111 4.54111,-4.54111 2.50799,0 4.54112,2.03312 4.54112,4.54111 z"
        style="fill:#000000;fill-opacity:0.98000004;stroke:none"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        style="fill:#000000;fill-opacity:0.98000004;stroke:none"
        d="m 257.07926,250.30106 c 0,2.50799 -2.03313,4.54112 -4.54112,4.54112 -2.50799,0 -4.54112,-2.03313 -4.54112,-4.54112 0,-2.50799 2.03313,-4.54112 4.54112,-4.54112 2.50799,0 4.54112,2.03313 4.54112,4.54112 z"
-       id="path3084" />
+       id="path3084"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        style="fill:#000000;fill-opacity:0.98000004;stroke:none"
        d="m 358.09451,250.30106 c 0,2.50799 -2.03313,4.54112 -4.54112,4.54112 -2.50799,0 -4.54111,-2.03313 -4.54111,-4.54112 0,-2.50798 2.03312,-4.54111 4.54111,-4.54111 2.50799,0 4.54112,2.03313 4.54112,4.54111 z"
-       id="path3086" />
+       id="path3086"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        id="path3088"
        d="m 459.10978,250.30106 c 0,2.50799 -2.03313,4.54112 -4.54112,4.54112 -2.50799,0 -4.54112,-2.03313 -4.54112,-4.54112 0,-2.50799 2.03313,-4.54112 4.54112,-4.54112 2.50799,0 4.54112,2.03313 4.54112,4.54112 z"
        style="fill:#000000;fill-opacity:0.98000004;stroke:none"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        style="fill:#000000;fill-opacity:0.98000004;stroke:none"
        d="m 156.064,149.2858 c 0,2.50799 -2.03313,4.54112 -4.54112,4.54112 -2.50799,0 -4.54112,-2.03313 -4.54112,-4.54112 0,-2.50799 2.03313,-4.54111 4.54112,-4.54111 2.50799,0 4.54112,2.03312 4.54112,4.54111 z"
-       id="path3090" />
+       id="path3090"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        id="path3092"
        d="m 257.07926,149.28579 c 0,2.50799 -2.03313,4.54112 -4.54112,4.54112 -2.50799,0 -4.54112,-2.03313 -4.54112,-4.54112 0,-2.50799 2.03313,-4.54111 4.54112,-4.54111 2.50799,0 4.54112,2.03312 4.54112,4.54111 z"
        style="fill:#000000;fill-opacity:0.98000004;stroke:none"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        id="path3094"
        d="m 358.09451,149.28579 c 0,2.50799 -2.03313,4.54112 -4.54111,4.54112 -2.50799,0 -4.54111,-2.03313 -4.54111,-4.54112 0,-2.50797 2.03312,-4.54111 4.54111,-4.54111 2.50799,0 4.54111,2.03313 4.54111,4.54111 z"
        style="fill:#000000;fill-opacity:0.98000004;stroke:none"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        style="fill:#000000;fill-opacity:0.98000004;stroke:none"
        d="m 459.10978,149.28579 c 0,2.50799 -2.03313,4.54112 -4.54112,4.54112 -2.50799,0 -4.54111,-2.03313 -4.54111,-4.54112 0,-2.50799 2.03313,-4.54111 4.54111,-4.54111 2.508,0 4.54112,2.03312 4.54112,4.54111 z"
-       id="path3096" />
+       id="path3096"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        id="path6616"
        d="m 990.44998,452.33157 c 0,2.50799 -2.0331,4.54112 -4.5411,4.54112 -2.508,0 -4.5411,-2.03313 -4.5411,-4.54112 0,-2.50799 2.0331,-4.54112 4.5411,-4.54112 2.508,0 4.5411,2.03313 4.5411,4.54112 z"
        style="fill:#000000;fill-opacity:0.98000004;stroke:none"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        id="path6622"
        d="m 889.43478,351.3163 c 0,2.50799 -2.0332,4.54112 -4.5411,4.54112 -2.508,0 -4.5412,-2.03313 -4.5412,-4.54112 0,-2.50797 2.0332,-4.54111 4.5412,-4.54111 2.5079,0 4.5411,2.03313 4.5411,4.54111 z"
        style="fill:#000000;fill-opacity:0.98000004;stroke:none"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        id="path6628"
        d="m 788.4195,250.30106 c 0,2.50799 -2.03313,4.54112 -4.54112,4.54112 -2.50799,0 -4.54112,-2.03313 -4.54112,-4.54112 0,-2.50799 2.03313,-4.54112 4.54112,-4.54112 2.50799,0 4.54112,2.03313 4.54112,4.54112 z"
        style="fill:#000000;fill-opacity:0.98000004;stroke:none"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        id="path6634"
        d="m 687.40424,149.2858 c 0,2.50799 -2.03313,4.54112 -4.54112,4.54112 -2.50799,0 -4.54112,-2.03313 -4.54112,-4.54112 0,-2.50799 2.03313,-4.54111 4.54112,-4.54111 2.50799,0 4.54112,2.03312 4.54112,4.54111 z"
        style="fill:#000000;fill-opacity:0.98000004;stroke:none"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        id="path6772"
        d="m 1198.5414,452.33157 c 0,2.50799 -2.0331,4.54112 -4.5411,4.54112 -2.508,0 -4.5411,-2.03313 -4.5411,-4.54112 0,-2.50798 2.0331,-4.54111 4.5411,-4.54111 2.508,0 4.5411,2.03313 4.5411,4.54111 z"
-       style="fill:#000000;fill-opacity:0.98000004;stroke:none" />
+       style="fill:#000000;fill-opacity:0.98000004;stroke:none"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        style="fill:#000000;fill-opacity:0.98000004;stroke:none"
        d="m 1400.5719,452.33157 c 0,2.50799 -2.0331,4.54112 -4.5411,4.54112 -2.508,0 -4.5411,-2.03313 -4.5411,-4.54112 0,-2.50798 2.0331,-4.54111 4.5411,-4.54111 2.508,0 4.5411,2.03313 4.5411,4.54111 z"
-       id="path6776" />
+       id="path6776"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        id="path6778"
        d="m 1602.6025,452.33157 c 0,2.50799 -2.0331,4.54112 -4.5411,4.54112 -2.508,0 -4.5411,-2.03313 -4.5411,-4.54112 0,-2.50799 2.0331,-4.54112 4.5411,-4.54112 2.508,0 4.5411,2.03313 4.5411,4.54112 z"
        style="fill:#000000;fill-opacity:0.98000004;stroke:none"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        id="path6782"
        d="m 1299.5567,351.3163 c 0,2.50799 -2.0331,4.54112 -4.5411,4.54112 -2.508,0 -4.5412,-2.03313 -4.5412,-4.54112 0,-2.50799 2.0332,-4.54111 4.5412,-4.54111 2.508,0 4.5411,2.03312 4.5411,4.54111 z"
        style="fill:#000000;fill-opacity:0.98000004;stroke:none"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        style="fill:#000000;fill-opacity:0.98000004;stroke:none"
        d="m 1501.5872,351.3163 c 0,2.50799 -2.0331,4.54112 -4.5411,4.54112 -2.508,0 -4.5411,-2.03313 -4.5411,-4.54112 0,-2.50799 2.0331,-4.54111 4.5411,-4.54111 2.508,0 4.5411,2.03312 4.5411,4.54111 z"
-       id="path6786" />
+       id="path6786"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        style="fill:#000000;fill-opacity:0.98000004;stroke:none"
        d="m 1198.5414,250.30106 c 0,2.50799 -2.0331,4.54112 -4.5411,4.54112 -2.508,0 -4.5411,-2.03313 -4.5411,-4.54112 0,-2.50799 2.0331,-4.54111 4.5411,-4.54111 2.508,0 4.5411,2.03312 4.5411,4.54111 z"
-       id="path6788" />
+       id="path6788"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        id="path6792"
        d="m 1400.5719,250.30106 c 0,2.50799 -2.0331,4.54112 -4.5411,4.54112 -2.508,0 -4.5411,-2.03313 -4.5411,-4.54112 0,-2.50798 2.0331,-4.54111 4.5411,-4.54111 2.508,0 4.5411,2.03313 4.5411,4.54111 z"
        style="fill:#000000;fill-opacity:0.98000004;stroke:none"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        style="fill:#000000;fill-opacity:0.98000004;stroke:none"
        d="m 1602.6025,250.30105 c 0,2.50799 -2.0331,4.54112 -4.5411,4.54112 -2.508,0 -4.5411,-2.03313 -4.5411,-4.54112 0,-2.50799 2.0331,-4.54112 4.5411,-4.54112 2.508,0 4.5411,2.03313 4.5411,4.54112 z"
-       id="path6794" />
+       id="path6794"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        style="fill:#000000;fill-opacity:0.98000004;stroke:none"
        d="m 1299.5567,149.28579 c 0,2.50799 -2.0331,4.54112 -4.5411,4.54112 -2.508,0 -4.5412,-2.03313 -4.5412,-4.54112 0,-2.50799 2.0332,-4.54111 4.5412,-4.54111 2.508,0 4.5411,2.03312 4.5411,4.54111 z"
-       id="path6798" />
+       id="path6798"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        inkscape:connector-curvature="0"
        style="fill:#000000;fill-opacity:0.98000004;stroke:none"
        d="m 1400.5719,48.270527 c 0,2.50799 -2.0331,4.54112 -4.5411,4.54112 -2.508,0 -4.5411,-2.03313 -4.5411,-4.54112 0,-2.50797 2.0331,-4.54111 4.5411,-4.54111 2.508,0 4.5411,2.03313 4.5411,4.54111 z"
-       id="path6800" />
+       id="path6800"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        id="path6802"
        d="m 1501.5872,149.28579 c 0,2.50799 -2.0331,4.54112 -4.5411,4.54112 -2.508,0 -4.5411,-2.03313 -4.5411,-4.54112 0,-2.50799 2.0331,-4.54111 4.5411,-4.54111 2.508,0 4.5411,2.03312 4.5411,4.54111 z"
        style="fill:#000000;fill-opacity:0.98000004;stroke:none"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        id="path6898"
        d="m 1198.5415,48.270527 c 0,2.50799 -2.0332,4.54112 -4.5411,4.54112 -2.508,0 -4.5412,-2.03313 -4.5412,-4.54112 0,-2.50799 2.0332,-4.54111 4.5412,-4.54111 2.508,0 4.5411,2.03312 4.5411,4.54111 z"
+       style="fill:#000000;fill-opacity:0.98000004;stroke:none"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       id="path3554"
+       d="m 156.06399,928.04586 c 0,2.50799 -2.03313,4.54112 -4.54112,4.54112 -2.50799,0 -4.54111,-2.03313 -4.54111,-4.54112 0,-2.50799 2.03312,-4.54111 4.54111,-4.54111 2.50799,0 4.54112,2.03312 4.54112,4.54111 z"
+       style="fill:#000000;fill-opacity:0.98000004;stroke:none" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       style="fill:#000000;fill-opacity:0.98000004;stroke:none"
+       d="m 257.07926,928.04586 c 0,2.50799 -2.03313,4.54112 -4.54112,4.54112 -2.50799,0 -4.54112,-2.03313 -4.54112,-4.54112 0,-2.50799 2.03313,-4.54112 4.54112,-4.54112 2.50799,0 4.54112,2.03313 4.54112,4.54112 z"
+       id="path3556" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       style="fill:#000000;fill-opacity:0.98000004;stroke:none"
+       d="m 358.09451,928.04586 c 0,2.50799 -2.03313,4.54112 -4.54112,4.54112 -2.50799,0 -4.54111,-2.03313 -4.54111,-4.54112 0,-2.50798 2.03312,-4.54111 4.54111,-4.54111 2.50799,0 4.54112,2.03313 4.54112,4.54111 z"
+       id="path3558" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       id="path3560"
+       d="m 459.10978,928.04586 c 0,2.50799 -2.03313,4.54112 -4.54112,4.54112 -2.50799,0 -4.54112,-2.03313 -4.54112,-4.54112 0,-2.50799 2.03313,-4.54112 4.54112,-4.54112 2.50799,0 4.54112,2.03313 4.54112,4.54112 z"
+       style="fill:#000000;fill-opacity:0.98000004;stroke:none"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       style="fill:#000000;fill-opacity:0.98000004;stroke:none"
+       d="m 156.064,827.0306 c 0,2.50799 -2.03313,4.54112 -4.54112,4.54112 -2.50799,0 -4.54112,-2.03313 -4.54112,-4.54112 0,-2.50799 2.03313,-4.54111 4.54112,-4.54111 2.50799,0 4.54112,2.03312 4.54112,4.54111 z"
+       id="path3562" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       id="path3564"
+       d="m 257.07926,827.03059 c 0,2.50799 -2.03313,4.54112 -4.54112,4.54112 -2.50799,0 -4.54112,-2.03313 -4.54112,-4.54112 0,-2.50799 2.03313,-4.54111 4.54112,-4.54111 2.50799,0 4.54112,2.03312 4.54112,4.54111 z"
+       style="fill:#000000;fill-opacity:0.98000004;stroke:none"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       id="path3566"
+       d="m 358.09451,827.03059 c 0,2.50799 -2.03313,4.54112 -4.54111,4.54112 -2.50799,0 -4.54111,-2.03313 -4.54111,-4.54112 0,-2.50797 2.03312,-4.54111 4.54111,-4.54111 2.50799,0 4.54111,2.03313 4.54111,4.54111 z"
+       style="fill:#000000;fill-opacity:0.98000004;stroke:none"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       style="fill:#000000;fill-opacity:0.98000004;stroke:none"
+       d="m 459.10978,827.03059 c 0,2.50799 -2.03313,4.54112 -4.54112,4.54112 -2.50799,0 -4.54111,-2.03313 -4.54111,-4.54112 0,-2.50799 2.03313,-4.54111 4.54111,-4.54111 2.508,0 4.54112,2.03312 4.54112,4.54111 z"
+       id="path3568" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       style="fill:#000000;fill-opacity:0.98000004;stroke:none"
+       d="m 156.06399,726.01535 c 0,2.50799 -2.03313,4.54112 -4.54112,4.54112 -2.50799,0 -4.54111,-2.03313 -4.54111,-4.54112 0,-2.50799 2.03312,-4.54111 4.54111,-4.54111 2.50799,0 4.54112,2.03312 4.54112,4.54111 z"
+       id="path3570" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       id="path3572"
+       d="m 257.07926,726.01535 c 0,2.50799 -2.03313,4.54112 -4.54112,4.54112 -2.50799,0 -4.54112,-2.03313 -4.54112,-4.54112 0,-2.50799 2.03313,-4.54112 4.54112,-4.54112 2.50799,0 4.54112,2.03313 4.54112,4.54112 z"
+       style="fill:#000000;fill-opacity:0.98000004;stroke:none"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       id="path3574"
+       d="m 358.09451,726.01535 c 0,2.50799 -2.03313,4.54112 -4.54112,4.54112 -2.50799,0 -4.54111,-2.03313 -4.54111,-4.54112 0,-2.50798 2.03312,-4.54111 4.54111,-4.54111 2.50799,0 4.54112,2.03313 4.54112,4.54111 z"
+       style="fill:#000000;fill-opacity:0.98000004;stroke:none"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       style="fill:#000000;fill-opacity:0.98000004;stroke:none"
+       d="m 459.10978,726.01535 c 0,2.50799 -2.03313,4.54112 -4.54112,4.54112 -2.50799,0 -4.54112,-2.03313 -4.54112,-4.54112 0,-2.50799 2.03313,-4.54112 4.54112,-4.54112 2.50799,0 4.54112,2.03313 4.54112,4.54112 z"
+       id="path3576" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       id="path3578"
+       d="m 156.064,625.00009 c 0,2.50799 -2.03313,4.54112 -4.54112,4.54112 -2.50799,0 -4.54112,-2.03313 -4.54112,-4.54112 0,-2.50799 2.03313,-4.54111 4.54112,-4.54111 2.50799,0 4.54112,2.03312 4.54112,4.54111 z"
+       style="fill:#000000;fill-opacity:0.98000004;stroke:none"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       style="fill:#000000;fill-opacity:0.98000004;stroke:none"
+       d="m 257.07926,625.00008 c 0,2.50799 -2.03313,4.54112 -4.54112,4.54112 -2.50799,0 -4.54112,-2.03313 -4.54112,-4.54112 0,-2.50799 2.03313,-4.54111 4.54112,-4.54111 2.50799,0 4.54112,2.03312 4.54112,4.54111 z"
+       id="path3580" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:connector-curvature="0"
+       style="fill:#000000;fill-opacity:0.98000004;stroke:none"
+       d="m 358.09451,625.00008 c 0,2.50799 -2.03313,4.54112 -4.54111,4.54112 -2.50799,0 -4.54111,-2.03313 -4.54111,-4.54112 0,-2.50797 2.03312,-4.54111 4.54111,-4.54111 2.50799,0 4.54111,2.03313 4.54111,4.54111 z"
+       id="path3582" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       id="path3584"
+       d="m 459.10978,625.00008 c 0,2.50799 -2.03313,4.54112 -4.54112,4.54112 -2.50799,0 -4.54111,-2.03313 -4.54111,-4.54112 0,-2.50799 2.03313,-4.54111 4.54111,-4.54111 2.508,0 4.54112,2.03312 4.54112,4.54111 z"
        style="fill:#000000;fill-opacity:0.98000004;stroke:none"
        inkscape:connector-curvature="0" />
   </g>
@@ -954,7 +2198,10 @@
        x="146.53543"
        y="486.72638"
        id="text3123"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
          sodipodi:role="line"
          id="tspan3125"
          x="146.53543"
@@ -965,7 +2212,10 @@
        y="486.72638"
        x="247.5507"
        style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
-       xml:space="preserve"><tspan
+       xml:space="preserve"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
          y="486.72638"
          x="247.5507"
          id="tspan3136"
@@ -976,7 +2226,10 @@
        x="348.56598"
        y="486.72638"
        id="text3138"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
          sodipodi:role="line"
          id="tspan3140"
          x="348.56598"
@@ -987,7 +2240,10 @@
        y="486.72638"
        x="449.58124"
        style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
-       xml:space="preserve"><tspan
+       xml:space="preserve"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
          y="486.72638"
          x="449.58124"
          id="tspan3144"
@@ -998,7 +2254,10 @@
        y="458.77493"
        x="118.58399"
        style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
-       xml:space="preserve"><tspan
+       xml:space="preserve"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
          y="458.77493"
          x="118.58399"
          id="tspan3148"
@@ -1009,7 +2268,10 @@
        x="118.58399"
        y="357.75967"
        id="text3150"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
          sodipodi:role="line"
          id="tspan3152"
          x="118.58399"
@@ -1020,7 +2282,10 @@
        y="256.74438"
        x="118.58399"
        style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
-       xml:space="preserve"><tspan
+       xml:space="preserve"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
          y="256.74438"
          x="118.58399"
          id="tspan3156"
@@ -1031,7 +2296,10 @@
        x="118.58399"
        y="155.72916"
        id="text3158"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
          sodipodi:role="line"
          id="tspan3160"
          x="118.58399"
@@ -1042,7 +2310,10 @@
        y="486.72638"
        x="677.87567"
        style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
-       xml:space="preserve"><tspan
+       xml:space="preserve"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
          y="486.72638"
          x="677.87567"
          id="tspan6644"
@@ -1053,7 +2324,10 @@
        x="778.89093"
        y="486.72638"
        id="text6646"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
          sodipodi:role="line"
          id="tspan6648"
          x="778.89093"
@@ -1064,7 +2338,10 @@
        y="486.72638"
        x="879.90619"
        style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
-       xml:space="preserve"><tspan
+       xml:space="preserve"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
          y="486.72638"
          x="879.90619"
          id="tspan6652"
@@ -1075,7 +2352,10 @@
        x="980.92145"
        y="486.72638"
        id="text6654"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
          sodipodi:role="line"
          id="tspan6656"
          x="980.92145"
@@ -1086,7 +2366,10 @@
        x="649.92426"
        y="458.77493"
        id="text6658"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
          sodipodi:role="line"
          id="tspan6660"
          x="649.92426"
@@ -1097,7 +2380,10 @@
        y="357.75967"
        x="649.92426"
        style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
-       xml:space="preserve"><tspan
+       xml:space="preserve"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
          y="357.75967"
          x="649.92426"
          id="tspan6664"
@@ -1108,7 +2394,10 @@
        x="649.92426"
        y="256.74438"
        id="text6666"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
          sodipodi:role="line"
          id="tspan6668"
          x="649.92426"
@@ -1119,7 +2408,10 @@
        y="155.72916"
        x="649.92426"
        style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
-       xml:space="preserve"><tspan
+       xml:space="preserve"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
          y="155.72916"
          x="649.92426"
          id="tspan6672"
@@ -1130,7 +2422,10 @@
        y="486.72638"
        x="1189.0128"
        style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
-       xml:space="preserve"><tspan
+       xml:space="preserve"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
          y="486.72638"
          x="1189.0128"
          id="tspan6806"
@@ -1141,7 +2436,10 @@
        x="1290.0281"
        y="486.72638"
        id="text6808"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
          sodipodi:role="line"
          id="tspan6810"
          x="1290.0281"
@@ -1152,7 +2450,10 @@
        y="486.72638"
        x="1391.0435"
        style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
-       xml:space="preserve"><tspan
+       xml:space="preserve"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
          y="486.72638"
          x="1391.0435"
          id="tspan6814"
@@ -1163,7 +2464,10 @@
        x="1492.0587"
        y="486.72638"
        id="text6816"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
          sodipodi:role="line"
          id="tspan6818"
          x="1492.0587"
@@ -1174,7 +2478,10 @@
        x="1161.0614"
        y="458.77493"
        id="text6820"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
          sodipodi:role="line"
          id="tspan6822"
          x="1161.0614"
@@ -1185,7 +2492,10 @@
        y="357.75967"
        x="1161.0614"
        style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
-       xml:space="preserve"><tspan
+       xml:space="preserve"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
          y="357.75967"
          x="1161.0614"
          id="tspan6826"
@@ -1196,7 +2506,10 @@
        x="1161.0614"
        y="256.74438"
        id="text6828"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
          sodipodi:role="line"
          id="tspan6830"
          x="1161.0614"
@@ -1207,7 +2520,10 @@
        y="155.72916"
        x="1161.0614"
        style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
-       xml:space="preserve"><tspan
+       xml:space="preserve"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
          y="155.72916"
          x="1161.0614"
          id="tspan6834"
@@ -1218,7 +2534,10 @@
        y="486.72638"
        x="1593.0714"
        style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
-       xml:space="preserve"><tspan
+       xml:space="preserve"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
          y="486.72638"
          x="1593.0714"
          id="tspan6892"
@@ -1229,141 +2548,1132 @@
        x="1160.8828"
        y="54.710449"
        id="text6894"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
          sodipodi:role="line"
          id="tspan6896"
          x="1160.8828"
          y="54.710449">4</tspan></text>
+    <text
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       sodipodi:linespacing="125%"
+       id="text7012"
+       y="486.72638"
+       x="-364.60175"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       xml:space="preserve"><tspan
+         y="486.72638"
+         x="-364.60175"
+         id="tspan7014"
+         sodipodi:role="line">0</tspan></text>
+    <text
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       x="-263.58649"
+       y="486.72638"
+       id="text7016"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan7018"
+         x="-263.58649"
+         y="486.72638">1</tspan></text>
+    <text
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       sodipodi:linespacing="125%"
+       id="text7020"
+       y="486.72638"
+       x="-162.57121"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       xml:space="preserve"><tspan
+         y="486.72638"
+         x="-162.57121"
+         id="tspan7022"
+         sodipodi:role="line">2</tspan></text>
+    <text
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       x="-61.55595"
+       y="486.72638"
+       id="text7024"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan7026"
+         x="-61.55595"
+         y="486.72638">3</tspan></text>
+    <text
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       x="-392.55319"
+       y="458.77493"
+       id="text7028"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan7030"
+         x="-392.55319"
+         y="458.77493">0</tspan></text>
+    <text
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       sodipodi:linespacing="125%"
+       id="text7032"
+       y="357.75967"
+       x="-392.55319"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       xml:space="preserve"><tspan
+         y="357.75967"
+         x="-392.55319"
+         id="tspan7034"
+         sodipodi:role="line">1</tspan></text>
+    <text
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       x="-392.55319"
+       y="256.74438"
+       id="text7036"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan7038"
+         x="-392.55319"
+         y="256.74438">2</tspan></text>
+    <text
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       sodipodi:linespacing="125%"
+       id="text7040"
+       y="155.72916"
+       x="-392.55319"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       xml:space="preserve"><tspan
+         y="155.72916"
+         x="-392.55319"
+         id="tspan7042"
+         sodipodi:role="line">3</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       x="-364.60175"
+       y="963.86926"
+       id="text3386"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
+         sodipodi:role="line"
+         id="tspan3388"
+         x="-364.60175"
+         y="963.86926">0</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text3390"
+       y="963.86926"
+       x="-263.58649"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       xml:space="preserve"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
+         y="963.86926"
+         x="-263.58649"
+         id="tspan3392"
+         sodipodi:role="line">1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       x="-162.57121"
+       y="963.86926"
+       id="text3394"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
+         sodipodi:role="line"
+         id="tspan3396"
+         x="-162.57121"
+         y="963.86926">2</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text3398"
+       y="963.86926"
+       x="-61.55595"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       xml:space="preserve"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
+         y="963.86926"
+         x="-61.55595"
+         id="tspan3400"
+         sodipodi:role="line">3</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text3402"
+       y="935.91779"
+       x="-392.55319"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       xml:space="preserve"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
+         y="935.91779"
+         x="-392.55319"
+         id="tspan3404"
+         sodipodi:role="line">0</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       x="-392.55319"
+       y="834.90253"
+       id="text3406"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
+         sodipodi:role="line"
+         id="tspan3408"
+         x="-392.55319"
+         y="834.90253">1</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text3410"
+       y="733.88727"
+       x="-392.55319"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       xml:space="preserve"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
+         y="733.88727"
+         x="-392.55319"
+         id="tspan3412"
+         sodipodi:role="line">2</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       x="-392.55319"
+       y="632.87201"
+       id="text3414"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
+         sodipodi:role="line"
+         id="tspan3416"
+         x="-392.55319"
+         y="632.87201">3</tspan></text>
+    <text
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       sodipodi:linespacing="125%"
+       id="text3586"
+       y="962.44067"
+       x="146.53543"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       xml:space="preserve"><tspan
+         y="962.44067"
+         x="146.53543"
+         id="tspan3588"
+         sodipodi:role="line">0</tspan></text>
+    <text
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       x="247.5507"
+       y="962.44067"
+       id="text3590"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3592"
+         x="247.5507"
+         y="962.44067">1</tspan></text>
+    <text
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       sodipodi:linespacing="125%"
+       id="text3594"
+       y="962.44067"
+       x="348.56598"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       xml:space="preserve"><tspan
+         y="962.44067"
+         x="348.56598"
+         id="tspan3596"
+         sodipodi:role="line">2</tspan></text>
+    <text
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       x="449.58124"
+       y="962.44067"
+       id="text3598"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3600"
+         x="449.58124"
+         y="962.44067">3</tspan></text>
+    <text
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       x="118.58399"
+       y="934.4892"
+       id="text3602"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3604"
+         x="118.58399"
+         y="934.4892">0</tspan></text>
+    <text
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       sodipodi:linespacing="125%"
+       id="text3606"
+       y="833.47394"
+       x="118.58399"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       xml:space="preserve"><tspan
+         y="833.47394"
+         x="118.58399"
+         id="tspan3608"
+         sodipodi:role="line">1</tspan></text>
+    <text
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       x="118.58399"
+       y="732.45868"
+       id="text3610"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3612"
+         x="118.58399"
+         y="732.45868">2</tspan></text>
+    <text
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       sodipodi:linespacing="125%"
+       id="text3614"
+       y="631.44342"
+       x="118.58399"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       xml:space="preserve"><tspan
+         y="631.44342"
+         x="118.58399"
+         id="tspan3616"
+         sodipodi:role="line">3</tspan></text>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer6"
+     inkscape:label="enumeration">
+    <text
+       xml:space="preserve"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       x="-367.09546"
+       y="461.99661"
+       id="text7067"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
+         sodipodi:role="line"
+         id="tspan7069"
+         x="-367.09546"
+         y="461.99661">0</tspan></text>
+    <text
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       sodipodi:linespacing="125%"
+       id="text7073"
+       y="360.98135"
+       x="-367.09546"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       xml:space="preserve"><tspan
+         y="360.98135"
+         x="-367.09546"
+         id="tspan7075"
+         sodipodi:role="line">1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       x="-266.0802"
+       y="461.99661"
+       id="text7077"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
+         sodipodi:role="line"
+         id="tspan7079"
+         x="-266.0802"
+         y="461.99661">2</tspan></text>
+    <text
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       sodipodi:linespacing="125%"
+       id="text7081"
+       y="259.96609"
+       x="-367.09546"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       xml:space="preserve"><tspan
+         y="259.96609"
+         x="-367.09546"
+         id="tspan7083"
+         sodipodi:role="line">3</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       x="-266.0802"
+       y="360.98135"
+       id="text7085"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
+         sodipodi:role="line"
+         id="tspan7087"
+         x="-266.0802"
+         y="360.98135">4</tspan></text>
+    <text
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       sodipodi:linespacing="125%"
+       id="text7089"
+       y="461.99661"
+       x="-165.06494"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       xml:space="preserve"><tspan
+         y="461.99661"
+         x="-165.06494"
+         id="tspan7091"
+         sodipodi:role="line">5</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       x="-367.09546"
+       y="158.95082"
+       id="text7093"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
+         sodipodi:role="line"
+         id="tspan7095"
+         x="-367.09546"
+         y="158.95082">6</tspan></text>
+    <text
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       sodipodi:linespacing="125%"
+       id="text7097"
+       y="259.96609"
+       x="-266.0802"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       xml:space="preserve"><tspan
+         y="259.96609"
+         x="-266.0802"
+         id="tspan7099"
+         sodipodi:role="line">7</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       x="-165.06494"
+       y="360.98135"
+       id="text7101"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
+         sodipodi:role="line"
+         id="tspan7103"
+         x="-165.06494"
+         y="360.98135">8</tspan></text>
+    <text
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       sodipodi:linespacing="125%"
+       id="text7105"
+       y="461.99661"
+       x="-64.049683"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       xml:space="preserve"><tspan
+         y="461.99661"
+         x="-64.049683"
+         id="tspan7107"
+         sodipodi:role="line">9</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       x="-273.71896"
+       y="159.72229"
+       id="text7109"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
+         sodipodi:role="line"
+         id="tspan7111"
+         x="-273.71896"
+         y="159.72229">11</tspan></text>
+    <text
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       sodipodi:linespacing="125%"
+       id="text7113"
+       y="259.66614"
+       x="-173.17056"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       xml:space="preserve"><tspan
+         y="259.66614"
+         x="-173.17056"
+         id="tspan7115"
+         sodipodi:role="line">12</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       x="-72.258423"
+       y="361.54361"
+       id="text7117"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
+         sodipodi:role="line"
+         id="tspan7119"
+         x="-72.258423"
+         y="361.54361">13</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       x="-173.17056"
+       y="159.28503"
+       id="text7121"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
+         sodipodi:role="line"
+         id="tspan7123"
+         x="-173.17056"
+         y="159.28503">17</tspan></text>
+    <text
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       sodipodi:linespacing="125%"
+       id="text7125"
+       y="259.97031"
+       x="-72.265923"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       xml:space="preserve"><tspan
+         y="259.97031"
+         x="-72.265923"
+         id="tspan7127"
+         sodipodi:role="line">18</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       x="-72.265923"
+       y="158.95505"
+       id="text7129"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
+         sodipodi:role="line"
+         id="tspan7131"
+         x="-72.265923"
+         y="158.95505">24</tspan></text>
+    <text
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       sodipodi:linespacing="125%"
+       id="text3418"
+       y="939.13947"
+       x="-367.09546"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       xml:space="preserve"><tspan
+         y="939.13947"
+         x="-367.09546"
+         id="tspan3420"
+         sodipodi:role="line">0</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       x="-367.09546"
+       y="838.12421"
+       id="text3422"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
+         sodipodi:role="line"
+         id="tspan3424"
+         x="-367.09546"
+         y="838.12421">1</tspan></text>
+    <text
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       sodipodi:linespacing="125%"
+       id="text3426"
+       y="939.13947"
+       x="-266.0802"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       xml:space="preserve"><tspan
+         y="939.13947"
+         x="-266.0802"
+         id="tspan3428"
+         sodipodi:role="line">2</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       x="-367.09546"
+       y="737.10895"
+       id="text3430"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
+         sodipodi:role="line"
+         id="tspan3432"
+         x="-367.09546"
+         y="737.10895">4</tspan></text>
+    <text
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       sodipodi:linespacing="125%"
+       id="text3434"
+       y="838.12421"
+       x="-266.0802"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       xml:space="preserve"><tspan
+         y="838.12421"
+         x="-266.0802"
+         id="tspan3436"
+         sodipodi:role="line">3</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       x="-165.06494"
+       y="939.13947"
+       id="text3438"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
+         sodipodi:role="line"
+         id="tspan3440"
+         x="-165.06494"
+         y="939.13947">6</tspan></text>
+    <text
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       sodipodi:linespacing="125%"
+       id="text3442"
+       y="636.09369"
+       x="-367.09546"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       xml:space="preserve"><tspan
+         y="636.09369"
+         x="-367.09546"
+         id="tspan3444"
+         sodipodi:role="line">9</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       x="-266.0802"
+       y="737.10895"
+       id="text3446"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
+         sodipodi:role="line"
+         id="tspan3448"
+         x="-266.0802"
+         y="737.10895">5</tspan></text>
+    <text
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       sodipodi:linespacing="125%"
+       id="text3450"
+       y="838.12421"
+       x="-165.06494"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       xml:space="preserve"><tspan
+         y="838.12421"
+         x="-165.06494"
+         id="tspan3452"
+         sodipodi:role="line">7</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       x="-72.155296"
+       y="939.47369"
+       id="text3454"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
+         sodipodi:role="line"
+         id="tspan3456"
+         x="-72.155296"
+         y="939.47369">12</tspan></text>
+    <text
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       sodipodi:linespacing="125%"
+       id="text3458"
+       y="636.86517"
+       x="-273.71896"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       xml:space="preserve"><tspan
+         y="636.86517"
+         x="-273.71896"
+         id="tspan3460"
+         sodipodi:role="line">10</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       x="-165.07619"
+       y="737.10376"
+       id="text3462"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
+         sodipodi:role="line"
+         id="tspan3464"
+         x="-165.07619"
+         y="737.10376">8</tspan></text>
+    <text
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       sodipodi:linespacing="125%"
+       id="text3466"
+       y="838.12842"
+       x="-72.258423"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       xml:space="preserve"><tspan
+         y="838.12842"
+         x="-72.258423"
+         id="tspan3468"
+         sodipodi:role="line">13</tspan></text>
+    <text
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       sodipodi:linespacing="125%"
+       id="text3470"
+       y="636.42792"
+       x="-173.17056"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       xml:space="preserve"><tspan
+         y="636.42792"
+         x="-173.17056"
+         id="tspan3472"
+         sodipodi:role="line">11</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       x="-72.468422"
+       y="737.60443"
+       id="text3474"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399"><tspan
+         sodipodi:role="line"
+         id="tspan3476"
+         x="-72.468422"
+         y="737.60443">14</tspan></text>
+    <text
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\mkpair.png"
+       sodipodi:linespacing="125%"
+       id="text3478"
+       y="636.0979"
+       x="-72.138428"
+       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Latin Modern Math;-inkscape-font-specification:Latin Modern Math"
+       xml:space="preserve"><tspan
+         y="636.0979"
+         x="-72.138428"
+         id="tspan3480"
+         sodipodi:role="line">15</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
      id="layer5"
-     inkscape:label="arrows">
+     inkscape:label="arrows"
+     style="display:inline">
     <path
        style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
        d="m 151.52288,452.33157 0,-91.69904"
        id="path3162"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cc" />
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path6084"
        d="m 151.52288,351.31631 94.80087,94.80087"
-       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline" />
+       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
        d="m 252.53814,351.31631 91.67587,93.46158"
        id="path6090"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cc" />
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path6092"
        d="m 353.5534,351.31631 94.80087,94.80087"
-       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline" />
+       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path6094"
        d="m 151.52288,250.30105 94.80087,94.80087"
-       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline" />
+       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
        d="m 252.53814,250.30105 94.80087,94.80087"
        id="path6096"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cc" />
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path6098"
        d="m 151.52288,149.28579 94.80087,94.80087"
-       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline" />
+       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path6100"
        d="M 252.53814,452.33157 154.6796,257.24129"
-       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline" />
+       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
        d="M 353.5534,452.33157 157.09238,159.45271"
        id="path6102"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cc" />
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
        d="m 884.89368,351.31631 94.8008,94.80087"
        id="path6680"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cc" />
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path6684"
        d="m 783.87838,250.30105 94.8009,94.80087"
-       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline" />
+       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
        d="m 682.86312,149.28579 94.80087,94.80087"
        id="path6686"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cc" />
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path6698"
        d="M 985.90888,452.33157 C 928.26958,300.59487 829.89468,209.1311 700.51412,155.58083"
-       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline" />
+       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\div.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path6836"
        d="m 1194.0003,452.33157 0,-192.41333"
-       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline" />
+       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path6840"
        d="m 1295.0156,351.31631 91.6758,93.46158"
-       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline" />
+       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
        d="m 1194.0003,250.30105 94.8009,94.80087"
        id="path6844"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cc" />
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path6852"
        d="M 1396.0308,452.33157 1197.929,57.454504"
-       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline" />
+       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
        d="m 1295.0157,149.28579 91.6758,93.46158"
        id="path6900"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cc" />
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path6902"
        d="m 1194.0004,48.270532 94.8009,94.800868"
-       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline" />
+       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path6904"
        d="m 1497.0461,351.31632 91.6758,93.46158"
-       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline" />
+       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
        d="m 1396.0308,250.30106 94.8009,94.80087"
        id="path6906"
        inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\sqrt.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path3618"
+       d="m 151.52288,928.04586 0,-91.69904"
+       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
+       d="m 151.52288,827.0306 94.80087,94.80087"
+       id="path3620"
+       inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
+       d="m 252.53814,928.04586 0,-91.69904"
+       id="path3636"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path3638"
+       d="M 252.53814,827.03059 157.73727,732.22972"
+       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
+       d="m 151.52288,726.01534 91.69904,0"
+       id="path3640"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path3642"
+       d="m 252.53814,726.01534 95.83822,193.95388"
+       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path3644"
+       d="m 353.5534,928.04586 0,-91.69904"
+       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
+       d="m 353.5534,827.03059 0,-91.69904"
+       id="path3646"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
+       d="M 353.5534,726.01534 159.59952,630.17712"
+       id="path3648"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path3650"
+       d="m 151.52288,625.00009 91.69904,0"
+       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
+       d="m 252.53814,625.00009 91.69904,0"
+       id="path3652"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
+       d="m 353.5534,625.00009 96.46957,296.98942"
+       id="path3654"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
+       d="m 454.56866,928.04586 0,-91.69904"
+       id="path3656"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
+    <path
+       inkscape:export-ydpi="374.80399"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path3658"
+       d="m 454.56866,827.03059 0,-91.69904"
+       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
+       d="m 454.56866,726.01534 0,-91.69904"
+       id="path3660"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="C:\documenti\università\anno 3\Tesi\RPP\Tesi\Immagini\cp.png"
+       inkscape:export-xdpi="374.80399"
+       inkscape:export-ydpi="374.80399" />
   </g>
 </svg>
