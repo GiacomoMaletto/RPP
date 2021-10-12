@@ -2087,26 +2087,26 @@ Again, we highlight the (minor) differences with $\rppcustep$:
 
 \noindent\begin{minipage}{.5\linewidth}
 \begin{align*}
-  \rppdivstep = & \rppId_1 \rppPa \rppIf[\rppSu, \rppId_1, \rppId_1] \rppCo \\
-                & \rpprewire{2, 0, 1} \rppCo \\
-                & \rppIf[\rppSu \rppPa \rppPr, \ \boldsymbol{\rppSu \rppCo \rppSu \rppCo \rppSw \rppPa \rppSu}, \ \rppId_1] \rppCo \\
-                & \rppSw \rppCo \rppIf[\rppPr, \rppId_1, \rppId_1] \rppCo \\
-                & \rppId_1 \rppCo \rppSw \\
+  \rppsqrtstep = & \rppId_1 \rppPa \rppIf[\rppSu, \rppId_1, \rppId_1] \rppCo \\
+                 & \rpprewire{2, 0, 1} \rppCo \\
+                 & \rppIf[\rppSu \rppPa \rppPr, \ \boldsymbol{\rppSu \rppCo \rppSu \rppCo \rppSw \rppPa \rppSu}, \ \rppId_1] \rppCo \\
+                 & \rppSw \rppCo \rppIf[\rppPr, \rppId_1, \rppId_1] \rppCo \\
+                 & \rppId_1 \rppCo \rppSw \\
   \\
-  \rppdiv =     & \rppIt[\rppdivstep] \\
+  \rppsqrt     = & \rppIt[\rppsqrtstep] \\
 \end{align*}
 \end{minipage}%
 \begin{minipage}{.5\linewidth}
 \[\begin{NiceMatrix}
-  n & \bloch{5-1}{\rppdiv} & n                      \\
-  0 &                      & r                      \\
-  0 &                      & 2 \floor{\sqrt{n}} - r \\
-  0 &                      & 0                      \\
-  0 &                      & \floor{\sqrt{n}}       \\
+  n & \bloch{5-1}{\rppsqrt} & n                      \\
+  0 &                       & r                      \\
+  0 &                       & 2 \floor{\sqrt{n}} - r \\
+  0 &                       & 0                      \\
+  0 &                       & \floor{\sqrt{n}}       \\
 \end{NiceMatrix}\]
 \end{minipage}
 
-where $\floor{\sqrt{n}}$ is the truncated square root and $r = n - \floor{\sqrt{n}}^2$ our "square-root remainder".
+where $\floor{\sqrt{n}}$ is the truncated square root and $r = n - \floor{\sqrt{n}}^2$ our "square root remainder".
 % The term $2 \floor{\sqrt{n}} - r$ could be cancelled out by adding $r$ and subtracting two times $\floor{\sqrt{n}}$,
 % but it'll come in hand soon so we leave it.
 
@@ -2221,7 +2221,7 @@ we perform a computation $\rppunpairifwd$ which gives us the result we need, alo
 The obvious next step would be to throw away the useless data and just keep the result,
 but in reversible computing we can't erase information.
 Instead, we store the result and then run the whole computation backwards:
-in this way, we get to where we started but with the result.
+in this way, we get to where we started but with our result.
 
 In general, reversible programs must always face the following problem: how to best manage information?
 Where do we put things we don't need?
