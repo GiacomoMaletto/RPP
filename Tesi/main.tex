@@ -57,6 +57,8 @@
 
 \theoremstyle{plain}
 \newtheorem{proposition}{Proposition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{claim}{Claim}
 
 % hyphenation
 \usepackage{hyphenat}
@@ -109,13 +111,22 @@
 \newcommand{\rppdivstep}{\mathsf{div_{step}}}
 \newcommand{\rppsqrt}{\mathsf{sqrt}}
 \newcommand{\rppsqrtstep}{\mathsf{sqrt_{step}}}
-\newcommand{\PRF}{\mathsf{PRF}}
 \newcommand{\rpprewire}[1]{\lfloor #1 \rceil}
 \newcommand{\rppmkpair}{\mathsf{mkpair}}
 \newcommand{\rppmkpairi}{\mathsf{mkpair_{input}}}
 \newcommand{\rppunpair}{\mathsf{unpair}}
 \newcommand{\rppunpairi}{\mathsf{unpair_{input}}}
 \newcommand{\rppunpairifwd}{\mathsf{unpair_{input, \rightarrow}}}
+
+\newcommand{\PRF}{\mathsf{PRF}}
+\newcommand{\prZero}{\mathtt{0}}
+\newcommand{\prSucc}{\mathtt{S}}
+\newcommand{\prPred}{\mathtt{P}}
+\newcommand{\prProj}[2]{\mathtt{P}^{#1}_{#2}} % P^n_i
+\newcommand{\prCom}[1]{\circ{[#1]}} % composition
+\newcommand{\prRec}[2]{\mathtt{R}_{#1,#2}} % recursion
+\newcommand{\pradd}{\mathtt{add}}
+\newcommand{\prack}{\mathtt{A}}
 
 % title
 \title{A Formal Verification of Reversible Primitive Permutations}
@@ -125,6 +136,8 @@
 \begin{document}
 
 \maketitle
+
+\tableofcontents
 
 \chapter{The definition}
 
@@ -152,7 +165,7 @@ Lastly, reversible computing is directly related to quantum computing, as each o
 In the article we decided to formalize, the authors focus on providing a functional model of reversible computation.
 They develop an inductively defined set of functions, called \textbf{Reversible Primitive Permutations} or \textbf{RPP},
 which are expressive enough to represent all Primitive Recursive Functions -
-that is to say, $\RPP$ is $\PRF$-complete (we talk about what this means in section ?).
+that is to say, $\RPP$ is $\PRF$-complete (we talk about what this means in section \ref{prfcompleteness}).
 Here is the definition that we will use:
 
 \newpage
@@ -197,7 +210,7 @@ The \textbf{swap} $\rppSw (x, y) = (y, x)$ belongs to $\RPP$.
 \end{NiceMatrix}\]
 
 \item
-If $f : \ZZ^n \to \ZZ^n$ and $g : \ZZ^n \to \ZZ^n$ belongs to $\RPP$,
+If $f : \ZZ^n \to \ZZ^n$ and $g : \ZZ^n \to \ZZ^n$ belong to $\RPP$,
 then the \textbf{series composition} $(f \rppCo g) : \ZZ^n \to \ZZ^n$ belongs to $\RPP$ and is such that:
 \[(f \rppCo g) (x_1, \dots, x_n) = g (f (x_1, \dots, x_n)) = (g \circ f) (x_1, \dots, x_n).\]
 We remark that $f \rppCo g$ means that $f$ is applied first, and then $g$, in opposition to the standard functional composition (denoted by $\circ$).
@@ -209,7 +222,7 @@ We remark that $f \rppCo g$ means that $f$ is applied first, and then $g$, in op
 
 \item
 
-If $f : \ZZ^n \to \ZZ^n$ and $g : \ZZ^m \to \ZZ^m$ belongs to $\RPP$,
+If $f : \ZZ^n \to \ZZ^n$ and $g : \ZZ^m \to \ZZ^m$ belong to $\RPP$,
 then the \textbf{parallel composition} $(f \rppPa g) : \ZZ^{n + m} \to \ZZ^{n + m} $ belongs to $\RPP$ and is such that:
 \[(f \rppPa g) (x_1, \dots, x_n, y_1, \dots, y_m) = (f (x_1, \dots, x_n), g (y_1, \dots, y_m)).\]
 \[\begin{NiceMatrix}[nullify-dots]
@@ -438,7 +451,7 @@ Now we will instead focus on the first and second points.
 You don't have to understand every detail of what will follow -
 a vague understanding of what's going on would be sufficient.
 The curious reader can run and play with most of the following snippets of code
-in the online editor \url{https://leanprover-community.github.io/lean-web-editor/}.
+in the online editor\footnote{\url{https://leanprover-community.github.io/lean-web-editor/}}.
 
 \paragraph{A simple example of a type}
 Data is defined using the \lstinline{inductive} keyword.
@@ -723,7 +736,7 @@ A possible way to define $\RPP$ functions in Lean is
 namely a function $\ZZ^n \to \ZZ^n$.
 \end{itemize}
 Note that this is not the only way in which this task can be accomplished;
-we will discuss other methods in section ?.
+we will discuss other methods in section \ref{alternatives}.
 
 We thus define the type $\RPP$ as follows:
 \begin{lstlisting}
@@ -926,7 +939,7 @@ As someone on the internet says,
 \begin{displayquote}
 Coq has this really powerful type system, but... don't use it.
 \end{displayquote}
-By extension, we also avoided them in Lean.
+By extension, we also avoided them in Lean, perhaps mistakingly.
 \item When defining the iterator $\rppIt[f] (x, x_1, \dots, x_n)$ it's not immediately clear what to do when $x < 0$.
 In our definition, nothing happens, as $f$ in general is applied $\downarrow x = 0$ times.
 In the original definition, $f$ is instead applied $| x |$ times - let's call this iterator $\rppIta$.
@@ -1496,11 +1509,11 @@ This is the statement:
 \begin{lstlisting}
 -- proposition 1 expressed with RPP composition,
 -- about the left inverse
-theorem proposition_1_co_l (f : RPP) (l : list ℤ) :
+theorem inv_co_l (f : RPP) (l : list ℤ) :
   ‹f ;; f⁻¹› l = l
 \end{lstlisting}
-We also need to prove \lstinline{proposition_1_co_r} about the right inverse \lstinline{‹f⁻¹ ;; f› l = l},
-but there's a clever way to derive this fact from \lstinline{proposition_1_co_l}
+We also need to prove \lstinline{inv_co_r} about the right inverse \lstinline{‹f⁻¹ ;; f› l = l},
+but there's a clever way to derive this fact from \lstinline{inv_co_l}
 and a lemma called \lstinline{inv_involute} which will be our first result about \lstinline{RPP} formalized in Lean:
 \begin{lstlisting}
 @[simp] lemma inv_involute (f : RPP) : (f⁻¹)⁻¹ = f :=
@@ -1516,12 +1529,12 @@ we rewrite it as
 \begin{lstlisting}
 ‹f⁻¹ ;; (f⁻¹)⁻¹› l = l
 \end{lstlisting}
-and then apply theorem \lstinline{proposition_1_co_l} with argument \lstinline{f⁻¹}.
+and then apply theorem \lstinline{inv_co_l} with argument \lstinline{f⁻¹}.
 
 We still have to prove that theorem, though.
 Let's follow in the footsteps of proposition \ref{rppinv} and begin by induction on f:
 \begin{lstlisting}
-theorem proposition_1_co_l (f : RPP) (l : list ℤ) :
+theorem inv_co_l (f : RPP) (l : list ℤ) :
   ‹f ;; f⁻¹› l = l :=
 begin
   induction f,
@@ -1753,7 +1766,7 @@ Well, that was rather prolix.
 
 The resulting proof, however, is not so large
 \begin{lstlisting}
-theorem proposition_1_co_l (f : RPP) (l : list ℤ) :
+theorem inv_co_l (f : RPP) (l : list ℤ) :
   ‹f ;; f⁻¹› l = l :=
 begin
   induction f generalizing l,
@@ -1774,7 +1787,7 @@ end
 \end{lstlisting}
 and by knowing some more tactics, it can be further shortened to
 \begin{lstlisting}
-theorem proposition_1_co_l (f : RPP) (l : list ℤ) :
+theorem inv_co_l (f : RPP) (l : list ℤ) :
   ‹f ;; f⁻¹› l = l :=
 begin
   induction f generalizing l; cases l with x l,
@@ -1789,7 +1802,7 @@ end
 We've succesfully proved a non-trivial result in Lean.
 It is possible to express it in a more convenient, \lstinline{simp}-friendly way, which will become useful later:
 \begin{lstlisting}
-@[simp] theorem proposition_1 (f : RPP) (l l' : list ℤ) :
+@[simp] theorem inv_iff (f : RPP) (l l' : list ℤ) :
   ‹f⁻¹› l = l' ↔ ‹f› l' = l
 \end{lstlisting}
 
@@ -1819,7 +1832,6 @@ Marking this theorem as \lstinline{@[simp]} would be a very bad idea,
 because the right-hand side is more complicated than the left one,
 so an infinite loop would occur.
 
-\newpage
 \section{A library of functions}
 
 In this section we show that many common functions have a $\RPP$ counterpart.
@@ -1960,7 +1972,7 @@ It turns out that it's indeed possible to express $\rppcustep$ in $\RPP$:
                  & \rppId_1 \rppPa \rppSw
 \end{align*}
 
-\makebox[1.1\textwidth][c]{$\begin{NiceMatrix}
+\makebox[\textwidth][c]{$\begin{NiceMatrix}
   \oloch{3-1}{\ y > 0} & x &                                                              & x & \bloch{3-1}{2 \\ 0 \\ 1} & 1 & \bloch{3-1}{\rppIf[\boldsymbol{\rppSu \rppPa \rppPr}, \ \rppSu \rppCo \rppSw, \ \rppId_1]} & 1     & \bloch{2-1}{\rppSw} & x + 1 & \bloch{2-1}{\rppIf[\boldsymbol{\rppPr}, \rppId_1, \rppId_1]} & x + 1 &                     & x + 1 \\
                        & y & \bloch{2-1}{\rppIf[\boldsymbol{\rppSu}, \rppId_1, \rppId_1]} & y &                          & x &                                                                                            & x + 1 &                     & 1     &                                                              & 0     & \bloch{2-1}{\rppSw} & y - 1 \\
                        & 0 &                                                              & 1 &                          & y &                                                                                            & y - 1 &                     & y - 1 &                                                              & y - 1 &                     & 0     \\
@@ -2282,7 +2294,7 @@ begin
   -- ⊢ ‹dec› (↑n :: x :: l) = ↑n :: (x - ↑n) :: l
   rw dec,
   -- ⊢ ‹inc⁻¹› (↑n :: x :: l) = ↑n :: (x - ↑n) :: l
-  rw proposition_1,
+  rw inv_iff,
   -- ⊢ ‹inc› (↑n :: (x - ↑n) :: l) = ↑n :: x :: l
   rw inc_def,
   -- ⊢ ↑n :: (x - ↑n + ↑n) :: l = ↑n :: x :: l
@@ -2337,12 +2349,177 @@ There's an initial set up, then it splits into two cases.
 In each, some hypothesis are added to aid \lstinline{simp} and \lstinline{ring},
 which are subsequently called to finish the job.
 
+Since we're interested in using the simplifier as much as possible,
+we've been careful stating our theorems.
+Another way to express \lstinline{inc_def} would've been
+\begin{lstlisting}
+@[simp] lemma inc_def (n : ℕ) (x : ℤ) (l : list ℤ) :
+  ‹inc› [n, x] = [n, x + n]
+\end{lstlisting}
+but this can be applied only when the input list is of length exactly 2;
+often we have something like \lstinline{‹inc› (n :: x ::l)} with \lstinline{l : list ℤ}.
+By theorem \lstinline{ev_split} we know that
+\begin{lstlisting}
+‹inc› (n :: x :: l) = ‹inc› [n, x] ++ l
+\end{lstlisting}
+but remember that we can't mark \lstinline{ev_split} as \lstinline{@[simp]} because
+that would lead to infinite loops.
+Thus, that formulation of the properties of \lstinline{inc} is not very \lstinline{simp}-friendly.
+By framing \lstinline{inc_def} as we did, this problem disappears.
+
 We restate that the purpose of Lean is not being an automatic theorem prover.
 However, it's nice when it can be used in that way.
 
-\section{PRF-completeness}
+\section{PRF-completeness} \label{prfcompleteness}
 
-\section{Alternative paths}
+We've just seen that the class of functions $\RPP$ is not quite as limited as it might seem at first sight,
+containing things like square roots and pairings.
+At this point we could ask ourselves - what exactly \textit{can} (or can't) we express in $\RPP$?
+Given a function, is there a quick way to tell if it's possible to include it in $\RPP$ or not?
+
+The answer is yes - in fact, $\RPP$ were created already with this question in mind.
+Specifically, they can be thought of as the reversible counterpart to another,
+more famous class of function: the \textit{Primitive Recursive Functions}.
+
+\begin{definition}[Primitive Recursive Functions]
+The class of \textbf{Primitive Recursive Functions} is the smallest subset of function $\NN^n \to \NN$ satisfying the following conditions:
+\begin{itemize}
+\item The \textbf{constant function} $\prZero(x) = 0$ belongs to $\PRF$.
+\item The \textbf{successor function} $\prSucc(x) = x+1$ belongs to $\PRF$.
+\item The $n$-ary \textbf{projection function} $\prProj{n}{i}(x_1, \dots, x_n) = x_i$ belongs to $\PRF$
+for all $n \in \NN$ and $1 \le i \le n$.
+\item If $f_1, \dots, f_m : \NN^n \to \NN$ and $g : \NN^m \to \NN$ belong to $\PRF$,
+then the \textbf{composition} $g \big( f_1(\vec{x}), \dots, f_m(\vec{x}) \big)$ belongs to $\PRF$.
+\item If $f:\NN^n \to \NN$ and $g:\NN^{n+2} \to \NN$ belong to $\PRF$,
+then the function obtained by \textbf{primitive recursion} $h:\NN^{n+1} \to \NN$ such that
+\begin{align*}
+  h(\vec{x}, 0)   = & f(\vec{x}) \\
+  h(\vec{x}, y+1) = & g \big( \vec{x}, y, h(\vec{x}, y) \big)
+\end{align*}
+belongs to $\PRF$.
+\end{itemize}
+\end{definition}
+
+Primitive recursion is a way to express iteration on the variable $y$,
+in a way somewhat similar to the \lstinline{Nat} induction principle \lstinline{Nat.rec} present in Lean:
+if we've defined $z=h(\vec{x},y)$ then we can define $h(\vec{x},y+1)$ as $g(\vec{x},y,z)$,
+which is something that only depends on the parameter $\vec{x}$, the iterator $y$ and the previously calculated value $z$.
+
+The importance of this class of functions lies in the simplicity of the definition,
+and the fact that most commonly used functions $\NN^n \to \NN$ belong to $\PRF$.
+
+For example here's our good friend $\pradd : \NN^2 \to \NN$:
+\begin{align*}
+  \pradd(x, 0)   = & \prProj{1}{1}(x) = x \\
+  \pradd(x, y+1) = & \prSucc \big( \prProj{3}{3} \big( x,y,\pradd(x,y) \big) \big) = \prSucc(\pradd(x,y)) = \pradd(x,y)+1
+\end{align*}
+which is obtained by primitive recursion using $\prProj{1}{1}$ and $\prSucc \circ \prProj{3}{3}$.
+
+Primitive recursive functions are a thoroughly studied object and we know many facts about them.
+For example, not all functions are primitive recursive, even if those functions are effectively computable:
+an example is given by the Ackermann function
+\begin{align*}
+  \prack(0, n)     \ = \ & n + 1 \\
+  \prack(m+1, 0)   \ = \ & \prack(m, 1) \\
+  \prack(m+1, n+1) \ = \ & \prack(m, \prack(m+1,n))
+\end{align*}
+We know that this can't possibly belong to $\PRF$ because there's a limit on how rapidly primitive recursive functions can grow,
+and $\prack$ exceeds this limit.
+Even small inputs lead to enormous outputs - for example, $\prack(4,2) = 2^{65536}-3$.
+
+Here we delineate the relationship between $\PRF$ and $\RPP$:
+
+\begin{theorem}[$\PRF$-completeness] \label{prftheorem}
+Let $F : \NN^k \to \NN$ belong to $\PRF$.
+Then, there exists $a \in \NN$ and $f : \ZZ^{1+k+a} \to \ZZ^{1+k+a}$ in $\RPP$ such that for all $z \in \ZZ$ and $x_1, \dots, x_k \in \NN$,
+\[\begin{NiceMatrix}[nullify-dots]
+  z      & \bloch{5-1}{f} & z + F(x_1, \dots, x_k) \\
+  x_1    &                & x_1                    \\
+  \Vdots &                & \Vdots                 \\
+  x_k    &                & x_k                    \\
+  0^a    &                & 0^a                    \\
+\end{NiceMatrix}\]
+where $0^a = (0, \dots, 0)$ is a tuple of length $a$.
+\end{theorem}
+
+\begin{claim}[$\PRF$-soundness] \label{prfclaim}
+Every $f \in \RPP$ has a representative inside $\PRF$ obtainable via the bijection which exists between $\ZZ$ and $\NN$.
+\end{claim}
+
+These two statements together mean that, in a sense, $\RPP$ and $\PRF$ are equivalent:
+anything expressible in $\PRF$ can also be encoded in $\RPP$ and vice versa.
+
+Theorem \ref{prftheorem} has been succesfully verified in Lean (and also Coq): we will focus on this in the following paragraph.
+On the other hand, claim \ref{prfclaim} is intuitively true for those familiar with $\PRF$ functions
+and annoying to write down precisely, so for the moment no energies have been spent trying to formalize it in a proof assistant.
+
+\paragraph{$\PRF$-completeness in Lean}
+
+As usual, there's more than one way that our result can be proven.
+We could come up with our definition of $\PRF$ in Lean,
+but actually in Mathlib there's already one present.
+By stating our theorem in terms of the already-defined $\PRF$,
+we "link" our object ($\RPP$ functions) with already established ones;
+building on top of what has been already done is both convenient and effective.
+
+Truth to be told, there are at least two notions of $\PRF$ in Mathlib.
+First the one that most closely resembles the definition we've given:
+\begin{lstlisting}
+inductive primrec' : ∀ {n}, (vector ℕ n → ℕ) → Prop
+| zero : @primrec' 0 (λ _, 0)
+| succ : @primrec' 1 (λ v, succ v.head)
+| nth {n} (i : fin n) : primrec' (λ v, v.nth i)
+| comp {m n f} (g : fin n → vector ℕ m → ℕ) :
+  primrec' f → (∀ i, primrec' (g i)) →
+  primrec' (λ a, f (of_fn (λ i, g i a)))
+| prec {n f g} : @primrec' n f → @primrec' (n+2) g →
+  primrec' (λ v : vector ℕ (n+1),
+    v.head.elim (f v.tail) (λ y IH, g (y ::ᵥ IH ::ᵥ v.tail)))
+\end{lstlisting}
+Notice the type: it's a function that takes as inputs a number \lstinline{n : ℕ},
+a function \lstinline{vector ℕ n → ℕ} and returns a proposition \lstinline{Prop} - in short, it's an \textbf{inductive proposition}.
+The meaning of this, is that we're defining inductively the statement "this is a primitive recursive function".
+For example, the third base case \lstinline{nth} tells us that the function \lstinline{(λ v, v.nth i)}
+which given a vector \lstinline{v} returns its \lstinline{i}-th element, is a primitive recursive function.
+This is stated by the fact \lstinline{primrec' (λ v, v.nth i)}, which is a proposition.
+The last case \lstinline{prec} takes as input the statements that functions \lstinline{f} and \lstinline{g} are primitive recursive,
+and declares that a more complicated function (given by primitive recursion of \lstinline{f} and \lstinline{g}) is also primitive recursive.
+
+Even if \lstinline{primrec'} matches our notion of $\PRF$, it's pretty complicated.
+Its power makes it a good definition if we want to prove that something is a primitive recursive function,
+but a bad one if instead we want to show a result about all $\PRF$.
+For that, it's better to use another definition:
+\begin{lstlisting}
+inductive primrec : (ℕ → ℕ) → Prop
+| zero : primrec (λ n, 0)
+| succ : primrec succ
+| left : primrec (λ n, n.unpair.1)
+| right : primrec (λ n, n.unpair.2)
+| pair {f g} : primrec f → primrec g →
+   primrec (λ n, mkpair (f n) (g n))
+| comp {f g} : primrec f → primrec g → primrec (λ n, f (g n))
+| prec {f g} : primrec f → primrec g →
+   primrec (unpaired (λ z n, n.elim (f z)
+    (λ (y IH : ℕ), g (nat.mkpair z (nat.mkpair y IH)))
+\end{lstlisting}
+At first sight, this looks like something totally different.
+It's still an inductive proposition, but takes as argument just unary functions \lstinline{ℕ → ℕ}, not of arbitrary arity.
+The first two cases \lstinline{zero} and \lstinline{succ} are straightforward but the third and fourth are somewhat alien -
+investigating further, we discover that the function \lstinline{unpair} is the $\rppunpair$ function introduced in the previous section!
+It's also present \lstinline{mkpair}, not only in the base case \lstinline{pair} but also in the primitive recursive case \lstinline{prec}.
+What's going on is that we use pairing functions to work with functions \lstinline{ℕ → ℕ} instead of \lstinline{n}-ary ones.
+Composition becomes a lot easier, and to express functions with higher arity we use \lstinline{pair} to "join" two values,
+which can then be retrieved using the functions \lstinline{left} and \lstinline{right}.
+
+The definition \lstinline{primrec} might seem weird, but to be honest, that's not something we have to worry about:
+in Mathlib it's already proven that \lstinline{primrec} and \lstinline{primrec'} are equivalent definitions - meaning,
+every \lstinline{primrec} is \lstinline{primrec'},
+and there's a certain sense in which every \lstinline{primrec'} can be encoded as a \lstinline{primrec}.
+
+At this point the choice is obvious: we have to prove that all $\PRF$ are expressable as $\RPP$,
+and showing that using \lstinline{primrec} is much simpler than with \lstinline{primrec'}.
+
+\section{Alternative paths} \label{alternatives}
 
 \chapter{Conclusions}
 

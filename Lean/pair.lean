@@ -7,7 +7,7 @@ open list
 
 namespace RPP
 
-def mkpair' :=
+def mkpairᵢ :=
   less ;;
   ⌊2, 0, 1⌉ ;;
   If (Id₁ ‖ square ;; Sw ;; Id₁ ‖ inc ;; Sw)
@@ -16,13 +16,13 @@ def mkpair' :=
   ⌊1, 2, 0⌉ ;;
   less⁻¹
 
-@[simp] lemma mkpair'_arity : mkpair'.arity = 5 := rfl
+@[simp] lemma mkpairᵢ_arity : mkpairᵢ.arity = 5 := rfl
 
-@[simp] lemma mkpair'_def (n m : ℕ) (l : list ℤ) :
-  ‹mkpair'› (n :: m :: 0 :: 0 :: 0 :: l) = n :: m :: 0 :: (nat.mkpair n m) :: 0 :: l :=
+@[simp] lemma mkpairᵢ_def (n m : ℕ) (l : list ℤ) :
+  ‹mkpairᵢ› (n :: m :: 0 :: 0 :: 0 :: l) = n :: m :: 0 :: (nat.mkpair n m) :: 0 :: l :=
 begin
   cases em (n < m) with h;
-  simp [mkpair', ev, nat.mkpair, rewire, *], ring
+  simp [mkpairᵢ, ev, nat.mkpair, rewire, *], ring
 end
 
 def sqrt_step :=
@@ -55,7 +55,7 @@ begin
   simp[sqrt_step, ev, rewire, *], split, ring, ring
 end
 
-def unpair'_fwd :=
+def unpairᵢ_fwd :=
   sqrt ;;
   ⌊0, 1, 4, 2, 3⌉ ;;
   Id 2 ‖ dec ;;
@@ -63,10 +63,10 @@ def unpair'_fwd :=
   Id 3 ‖ If Id₁ Id₁ Pr ;;
   ⌊0, 4, 1, 2, 3⌉
 
-@[simp] lemma unpair'_fwd_arity : unpair'_fwd.arity = 5 := rfl
+@[simp] lemma unpairᵢ_fwd_arity : unpairᵢ_fwd.arity = 5 := rfl
 
-@[simp] lemma unpair'_fwd_def (n : ℕ) (l : list ℤ) :
-  ‹unpair'_fwd› (n :: 0 :: 0 :: 0 :: 0 :: l) =
+@[simp] lemma unpairᵢ_fwd_def (n : ℕ) (l : list ℤ) :
+  ‹unpairᵢ_fwd› (n :: 0 :: 0 :: 0 :: 0 :: l) =
   n :: (ite (n - √n * √n < √n) (-1) 0) :: (n - √n * √n) :: √n :: (n - √n * √n - √n) :: l :=
 begin
   have h : (↑√n - (↑√n + ↑√n - (↑n - ↑√n * ↑√n)) : ℤ) = n - √n * √n - √n, by ring,
@@ -74,34 +74,35 @@ begin
 
   have h₂ : (n - √n * √n - √n : ℤ) < 0,
   by { simp, have H := nat.sqrt_le n, norm_cast, assumption },
-  simp [unpair'_fwd, ev, rewire, *],
+  simp [unpairᵢ_fwd, ev, rewire, *],
 
   have h₂ : (0 : ℤ) ≤ n - √n * √n - √n,
   by { simp, have H := nat.sqrt_le n, norm_cast, simp * at * },
-  simp [unpair'_fwd, ev, rewire, *]
+  simp [unpairᵢ_fwd, ev, rewire, *]
 end
 
-def unpair' :=
-  unpair'_fwd ;;
+def unpairᵢ :=
+  unpairᵢ_fwd ;;
   Id₁ ‖ If Id₁
-            (⌊0, 1, 3, 2, 4⌉ ;; Id₁ ‖ inc ‖ inc ;; ⌊0, 1, 3, 2, 4⌉)
-            (⌊0, 3, 1, 4, 2⌉ ;; inc ‖ inc ;; ⌊0, 2, 4, 1, 3⌉) ;;
-  unpair'_fwd⁻¹
+           (⌊0, 1, 3, 2, 4⌉ ;; Id₁ ‖ inc ‖ inc ;; ⌊0, 1, 3, 2, 4⌉)
+           (⌊0, 3, 1, 4, 2⌉ ;; inc ‖ inc ;; ⌊0, 2, 4, 1, 3⌉) ;;
+  unpairᵢ_fwd⁻¹
 
-@[simp] lemma unpair'_arity : unpair'.arity = 7 := rfl
+@[simp] lemma unpairᵢ_arity : unpairᵢ.arity = 7 := rfl
 
-@[simp] lemma unpair'_def (n : ℕ) (l : list ℤ) : 
-  ‹unpair'› (n :: 0 :: 0 :: 0 :: 0 :: 0 :: 0 :: l) =
+@[simp] lemma unpairᵢ_def (n : ℕ) (l : list ℤ) : 
+  ‹unpairᵢ› (n :: 0 :: 0 :: 0 :: 0 :: 0 :: 0 :: l) =
   n :: 0 :: 0 :: 0 :: 0 :: (nat.unpair n).1 :: (nat.unpair n).2 :: l :=
 begin
-  rw [unpair', nat.unpair], simp [ev],
+  rw [unpairᵢ, nat.unpair], simp [ev],
   have H := nat.sqrt_le n,
   cases em (n - √n * √n < √n) with h h,
   norm_cast, simp [ev, rewire, *],
-  have h₁ : √n ≤ n - √n * √n, by linarith, norm_cast, simp [ev, rewire, *]
+  have h₁ : √n ≤ n - √n * √n, by linarith,
+  norm_cast, simp [ev, rewire, *]
 end
 
-def mkpair := mkpair' ;; ⌊3, 2, 4, 5, 6, 0, 1⌉ ;; unpair'⁻¹
+def mkpair := mkpairᵢ ;; ⌊3, 2, 4, 5, 6, 0, 1⌉ ;; unpairᵢ⁻¹
 
 @[simp] lemma mkpair_arity : mkpair.arity = 7 := rfl
 

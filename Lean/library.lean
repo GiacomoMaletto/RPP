@@ -27,7 +27,7 @@ def inc := It Su
 
 @[simp] lemma inc_arity : inc.arity = 2 := rfl
 
-@[simp] lemma inc_def (n : ℕ) (x : ℤ) (l : list ℤ): ‹inc› (n :: x :: l) = n :: (x + n) :: l :=
+@[simp] lemma inc_def (n : ℕ) (x : ℤ) (l : list ℤ) : ‹inc› (n :: x :: l) = n :: (x + n) :: l :=
 begin
   rw [inc], simp [ev],
   induction n generalizing x, simp, simp [ev, *], ring
@@ -42,7 +42,7 @@ by simp[dec]
 
 def mul := It inc
 
-@[simp] lemma mul_def (n m : ℕ) (x : ℤ) (l : list ℤ):
+@[simp] lemma mul_def (n m : ℕ) (x : ℤ) (l : list ℤ) :
   ‹mul› (n :: m :: x :: l) = n :: m :: (x + n * m) :: l :=
 begin 
   simp [mul, ev], induction n with n hn,
@@ -52,7 +52,7 @@ end
 
 def square := Id₁ ‖ Sw ;; inc ;; mul ;; dec ;; Id₁ ‖ Sw
 
-@[simp] lemma square_def (n : ℕ) (x : ℤ) (l : list ℤ):
+@[simp] lemma square_def (n : ℕ) (x : ℤ) (l : list ℤ) :
   ‹square› (n :: x :: 0 :: l) = n :: (x + n * n) :: 0 :: l :=
 by simp [square, ev]
 

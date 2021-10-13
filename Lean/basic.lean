@@ -7,20 +7,20 @@ import tactic.omega
 open list
 
 inductive RPP
-| Id (n : ℕ)
-| Ne
-| Su
-| Pr
-| Sw
-| Co (f g : RPP)
-| Pa (f g : RPP)
-| It (f : RPP)
-| If (f g h : RPP)
+| Id (n : ℕ) : RPP
+| Ne : RPP
+| Su : RPP
+| Pr : RPP
+| Sw : RPP
+| Co (f g : RPP) : RPP
+| Pa (f g : RPP) : RPP
+| It (f : RPP) : RPP
+| If (f g h : RPP) : RPP
 
 namespace RPP
 
 infix `;;` : 50 := Co
-infix `‖` : 55 := Pa
+infix `‖` : 55 := Pa -- ‖ \Vert
 
 attribute [pp_nodot] It
 attribute [pp_nodot] If
@@ -36,7 +36,7 @@ attribute [pp_nodot] If
 | (It f)     := It (inv f)
 | (If f g h) := If (inv f) (inv g) (inv h)
 
-notation f `⁻¹` : 60 := inv f
+notation f `⁻¹` : 60 := inv f -- ⁻¹ \-1
 
 @[simp] lemma inv_involute (f : RPP) : (f⁻¹)⁻¹ = f :=
 by { induction f; simp * }
@@ -71,7 +71,7 @@ def ev : RPP → list ℤ → list ℤ
 | (If f g h) (-[1+ n] :: l)       := -[1+ n] :: ev h l
 | _          l                    := l
 
-notation `‹` f `›` : 50 := ev f
+notation `‹` f `›` : 50 := ev f -- ‹ \f › \fr
 
 @[simp] lemma ev_nil (f : RPP) : ‹f› [] = [] :=
 by { induction f; simp [ev, *] }
@@ -86,8 +86,8 @@ begin
   { cases x, cases x, all_goals {simp [ev, *]} }
 end
 
-lemma proposition_2 (f g f' g' : RPP) (l : list ℤ) : f.arity = g.arity →
-  ‹f ‖ f' ;; g ‖ g'› l = ‹(f ;; g) ‖ (f' ;; g')› l :=
+lemma pa_co_pa (f f' g g' : RPP) (l : list ℤ) : f.arity = f'.arity →
+  ‹f ‖ g ;; f' ‖ g'› l = ‹(f ;; f') ‖ (g ;; g')› l :=
 begin
   intro h,
   simp [ev], rw [←h, max_self], clear h,
@@ -100,32 +100,25 @@ begin
     all_goals {simp *} }
 end
 
-lemma co_if (f g h f' g' h' : RPP) (l : list ℤ) :
-  ‹If f g h ;; If f' g' h'› l = ‹If (f ;; f') (g ;; g') (h ;; h')› l :=
-begin
-  cases l with x l, refl,
-  cases x, cases x, all_goals {simp [ev, *]}
-end
-
-lemma proposition_1_co_l (f : RPP) (l : list ℤ) : ‹f ;; f⁻¹› l = l :=
+theorem inv_co_l (f : RPP) (l : list ℤ) : ‹f ;; f⁻¹› l = l :=
 begin
   induction f generalizing l; cases l with x l,
   any_goals {simp [ev, *], done},
-  { cases l with x l, refl, cases l with y l, refl, simp [ev] },
+  { cases l with y l, refl, simp [ev] },
   { simp [ev, *] at * },
-  { rw [inv, proposition_2], simp [ev, *] at *, rw ←arity_inv },
-  { simp [ev] at *, apply function.left_inverse.iterate, assumption },
-  { cases x, cases x, all_goals {simp [ev, *] at *} }
+  { rw [inv, pa_co_pa], simp [ev, *] at *, rw arity_inv },
+  { simp [ev] at *, apply function.left_inverse.iterate f_ih },
+  { rcases x with ⟨n, n⟩; simp [ev, *] at * }
 end
 
-lemma proposition_1_co_r (f : RPP) (l : list ℤ) : ‹f⁻¹ ;; f› l = l :=
-by { convert proposition_1_co_l (f⁻¹) l, rw inv_involute }
+lemma inv_co_r (f : RPP) (l : list ℤ) : ‹f⁻¹ ;; f› l = l :=
+by { convert inv_co_l (f⁻¹) l, rw inv_involute }
 
-@[simp] theorem proposition_1 (f : RPP) (l m : list ℤ) : ‹f⁻¹› l = m ↔ ‹f› m = l :=
+@[simp] theorem inv_iff (f : RPP) (l m : list ℤ) : ‹f⁻¹› l = m ↔ ‹f› m = l :=
 begin
   split; intro h; rw ←h,
-  conv_rhs {rw ←proposition_1_co_r f l}, refl,
-  conv_rhs {rw ←proposition_1_co_l f m}, refl,
+  conv_rhs {rw ←inv_co_r f l}, refl,
+  conv_rhs {rw ←inv_co_l f m}, refl,
 end
 
 lemma take_ev (f : RPP) (n : ℕ) (l : list ℤ) : f.arity ≤ n →
