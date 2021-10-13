@@ -80,6 +80,9 @@
 
 \newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
 
+\newcommand{\gl}{\text{\guillemotleft}}
+\newcommand{\gr}{\text{\guillemotright}}
+
 \newcommand{\RPP}{\mathsf{RPP}}
 \newcommand{\ORPP}{\mathsf{ORPP}}
 \newcommand{\rppf}{\mathsf{f}}
@@ -117,6 +120,9 @@
 \newcommand{\rppunpair}{\mathsf{unpair}}
 \newcommand{\rppunpairi}{\mathsf{unpair_{input}}}
 \newcommand{\rppunpairifwd}{\mathsf{unpair_{input, \rightarrow}}}
+\newcommand{\rppprecstep}{\mathsf{prec_{step}}}
+\newcommand{\rppprecfwd}{\mathsf{prec_{\rightarrow}}}
+\newcommand{\rppprec}{\mathsf{prec}}
 
 \newcommand{\PRF}{\mathsf{PRF}}
 \newcommand{\prZero}{\mathtt{0}}
@@ -124,9 +130,9 @@
 \newcommand{\prPred}{\mathtt{P}}
 \newcommand{\prProj}[2]{\mathtt{P}^{#1}_{#2}} % P^n_i
 \newcommand{\prCom}[1]{\circ{[#1]}} % composition
-\newcommand{\prRec}[2]{\mathtt{R}_{#1,#2}} % recursion
-\newcommand{\pradd}{\mathtt{add}}
-\newcommand{\prack}{\mathtt{A}}
+\newcommand{\prPrec}{\mathtt{PREC}}
+\newcommand{\pradd}{\mathtt{ADD}}
+\newcommand{\prack}{\mathtt{ACK}}
 
 % title
 \title{A Formal Verification of Reversible Primitive Permutations}
@@ -2093,7 +2099,7 @@ but whenever we reach $(x,0)$ we jump to $(0,x+2)$ and increase a counter by one
 
 The first jump is performed $1$ step from the starting position $(0,0)$; the next one is performed after $3$ steps, then $5$, $7$ etc.
 It's well known that for each $k$, the sum of the first $k$ odd numbers is $1 + 3 + \dots + (2k - 1) = k^2$,
-so when we reach the number $k^2$ we've performed $k$ jumps - hence, we calculated a square root.
+so when we reach the number $k^2$ we've performed $k$ jumps - hence, we calculated a square root (because $k = \sqrt{k^2}$).
 
 Again, we highlight the (minor) differences with $\rppcustep$:
 
@@ -2125,12 +2131,12 @@ where $\floor{\sqrt{n}}$ is the truncated square root and $r = n - \floor{\sqrt{
 \paragraph{Another pairing function}
 
 The Cantor pairing is not the only bijection $\NN^2 \to \NN$.
-Another one is $\rppmkpair$:
-\[\rppmkpair(x,y) = \begin{cases} y^2 + x & x < y \\ x^2 + x + y & \text{otherwise} \end{cases} \]
-which has inverse $\rppunpair = \big( \rppunpair_1, \rppunpair_2 \big) : \NN \to \NN^2$:
+Another one is $\rppmkpair$, which we will also denote with quotation marks $\gl \cdot, \cdot \gr$:
+\[\rppmkpair(x,y) = \gl x,y \gr = \begin{cases} y^2 + x & x < y \\ x^2 + x + y & \text{otherwise} \end{cases} \]
+with inverse $\rppunpair = \big( (\cdot)_1, (\cdot)_2 \big) : \NN \to \NN^2$:
 \begin{align*}
-  \rppunpair(x,y) = \begin{cases} \big( n - \floor{\sqrt{n}}^2, \floor{\sqrt{n}} \big)                    & n - \floor{\sqrt{n}}^2 < \floor{\sqrt{n}} \\
-                                  \big( \floor{\sqrt{n}}, n - \floor{\sqrt{n}}^2 - \floor{\sqrt{n}} \big) & \text{otherwise} \end{cases}
+  \rppunpair(n) = \big( (n)_1, (n)_2 \big) = \begin{cases} \big( n - \floor{\sqrt{n}}^2, \floor{\sqrt{n}} \big)                    & n - \floor{\sqrt{n}}^2 < \floor{\sqrt{n}} \\
+                                                           \big( \floor{\sqrt{n}}, n - \floor{\sqrt{n}}^2 - \floor{\sqrt{n}} \big) & \text{otherwise} \end{cases}
 \end{align*}
 
 We want to express $\rppmkpair$ as an $\RPP$ function, because we'll need it later.
@@ -2143,7 +2149,7 @@ and then combine them to "erase" the inputs and get the true $\rppmkpair$ and $\
 \end{figure}
 
 The definitions of $\rppmkpair$ and $\rppunpair$ only involve sums, subtractions, squares, comparisons between naturals and truncated square roots;
-we already know how to deal with all these, so the construction isn't particularly interesting.
+we already know how to deal with all of these, so the construction isn't particularly interesting.
 For reference, here's the definitions:
 
 \noindent\begin{minipage}{.5\linewidth}
@@ -2162,7 +2168,7 @@ For reference, here's the definitions:
   n & \bloch{5-1}{\rppmkpairi} & n                \\
   m &                           & m                \\
   0 &                           & 0                \\
-  0 &                           & \rppmkpair(n, m) \\
+  0 &                           & \gl n, m \gr \\
   0 &                           & 0                \\
 \end{NiceMatrix}\]
 \end{minipage}
@@ -2205,20 +2211,20 @@ where $s = -1 \ $ if $ \ n - \floor{\sqrt{n}}^2 < \floor{\sqrt{n}}$, and $s = 0$
   0 &                          & 0               \\
   0 &                          & 0               \\
   0 &                          & 0               \\
-  0 &                          & \rppunpair_1(n) \\
-  0 &                          & \rppunpair_2(n) \\
+  0 &                          & (n)_1 \\
+  0 &                          & (n)_2 \\
 \end{NiceMatrix}\]
 \end{minipage}
 
 \noindent\begin{minipage}{.5\linewidth}
 \begin{align*}
-\rppmkpair \ = \ & \rppmkpairi \rppCo \rpprewire{3, 2, 4, 5, 6, 0, 1} \rppCo \rppunpair_i^{-1} \\
+\rppmkpair \ = \ & \rppmkpairi \rppCo \rpprewire{3, 2, 4, 5, 6, 0, 1} \rppCo \rppunpairi^{-1} \\
 \rppunpair \ = \ & \rppmkpair^{-1} \\
 \end{align*}
 \end{minipage}%
 \begin{minipage}{.5\linewidth}
 \[\begin{NiceMatrix}
-  n & \bloch{7-1}{\rppmkpair} & \rppmkpair(n, m) \\
+  n & \bloch{7-1}{\rppmkpair} & \gl n, m \gr \\
   m &                         & 0                \\
   0 &                         & 0                \\
   0 &                         & 0                \\
@@ -2388,13 +2394,13 @@ The class of \textbf{Primitive Recursive Functions} is the smallest subset of fu
 \item The \textbf{successor function} $\prSucc(x) = x+1$ belongs to $\PRF$.
 \item The $n$-ary \textbf{projection function} $\prProj{n}{i}(x_1, \dots, x_n) = x_i$ belongs to $\PRF$
 for all $n \in \NN$ and $1 \le i \le n$.
-\item If $f_1, \dots, f_m : \NN^n \to \NN$ and $g : \NN^m \to \NN$ belong to $\PRF$,
-then the \textbf{composition} $g \big( f_1(\vec{x}), \dots, f_m(\vec{x}) \big)$ belongs to $\PRF$.
-\item If $f:\NN^n \to \NN$ and $g:\NN^{n+2} \to \NN$ belong to $\PRF$,
-then the function obtained by \textbf{primitive recursion} $h:\NN^{n+1} \to \NN$ such that
+\item If $F_1, \dots, F_m : \NN^n \to \NN$ and $G : \NN^m \to \NN$ belong to $\PRF$,
+then the \textbf{composition} $G \big( F_1(\boldsymbol{x}), \dots, F_m(\boldsymbol{x}) \big)$ belongs to $\PRF$.
+\item If $F:\NN^n \to \NN$ and $G:\NN^{n+2} \to \NN$ belong to $\PRF$,
+then the function obtained by \textbf{primitive recursion} $H=\prPrec[F,G]:\NN^{n+1} \to \NN$ such that
 \begin{align*}
-  h(\vec{x}, 0)   = & f(\vec{x}) \\
-  h(\vec{x}, y+1) = & g \big( \vec{x}, y, h(\vec{x}, y) \big)
+  H(\boldsymbol{x}, 0)   = & F(\boldsymbol{x}) \\
+  H(\boldsymbol{x}, y+1) = & G \big( \boldsymbol{x}, y, h(\boldsymbol{x}, y) \big)
 \end{align*}
 belongs to $\PRF$.
 \end{itemize}
@@ -2402,8 +2408,8 @@ belongs to $\PRF$.
 
 Primitive recursion is a way to express iteration on the variable $y$,
 in a way somewhat similar to the \lstinline{Nat} induction principle \lstinline{Nat.rec} present in Lean:
-if we've defined $z=h(\vec{x},y)$ then we can define $h(\vec{x},y+1)$ as $g(\vec{x},y,z)$,
-which is something that only depends on the parameter $\vec{x}$, the iterator $y$ and the previously calculated value $z$.
+if we've defined $z=H(\boldsymbol{x},y)$ then we can define $H(\boldsymbol{x},y+1)$ as $G(\boldsymbol{x},y,z)$,
+which is something that only depends on the parameter $\boldsymbol{x}$, the iterator $y$ and the previously calculated value $z$.
 
 The importance of this class of functions lies in the simplicity of the definition,
 and the fact that most commonly used functions $\NN^n \to \NN$ belong to $\PRF$.
@@ -2431,15 +2437,13 @@ Here we delineate the relationship between $\PRF$ and $\RPP$:
 
 \begin{theorem}[$\PRF$-completeness] \label{prftheorem}
 Let $F : \NN^k \to \NN$ belong to $\PRF$.
-Then, there exists $a \in \NN$ and $f : \ZZ^{1+k+a} \to \ZZ^{1+k+a}$ in $\RPP$ such that for all $z \in \ZZ$ and $x_1, \dots, x_k \in \NN$,
+Then, there exists $a \in \NN$ and $f : \ZZ^{1+k+a} \to \ZZ^{1+k+a}$ in $\RPP$ such that for all $z \in \ZZ$ and $\boldsymbol{x} \in \NN^k$,
 \[\begin{NiceMatrix}[nullify-dots]
-  z      & \bloch{5-1}{f} & z + F(x_1, \dots, x_k) \\
-  x_1    &                & x_1                    \\
-  \Vdots &                & \Vdots                 \\
-  x_k    &                & x_k                    \\
-  0^a    &                & 0^a                    \\
+  z              & \bloch{3-1}{f} & z + F(\boldsymbol{x}) \\
+  \boldsymbol{x} &                & \boldsymbol{x}        \\
+  \boldsymbol{0} &                & \boldsymbol{0}        \\
 \end{NiceMatrix}\]
-where $0^a = (0, \dots, 0)$ is a tuple of length $a$.
+where $\boldsymbol{0} = (0, \dots, 0)$ is a tuple of length $a$.
 \end{theorem}
 
 \begin{claim}[$\PRF$-soundness] \label{prfclaim}
@@ -2518,6 +2522,122 @@ and there's a certain sense in which every \lstinline{primrec'} can be encoded a
 
 At this point the choice is obvious: we have to prove that all $\PRF$ are expressable as $\RPP$,
 and showing that using \lstinline{primrec} is much simpler than with \lstinline{primrec'}.
+To state the theorem we first define the proposition \lstinline{encode F f} which means
+"\lstinline{F : ℕ → ℕ} can be encoded in \lstinline{RPP} through \lstinline{f}":
+\begin{lstlisting}
+def encode (F : ℕ → ℕ) (f : RPP) := ∀ (z : ℤ) (n : ℕ),
+  ‹f› (z :: n :: repeat 0 (f.arity-2)) =
+      (z + F n) :: n :: repeat 0 (f.arity-2)
+\end{lstlisting}
+Our main thesis becomes
+\begin{lstlisting}
+theorem completeness (F : ℕ → ℕ) :
+  nat.primrec F → ∃ f, encode F f
+\end{lstlisting}
+that is: for all \lstinline{F : ℕ → ℕ} such that \lstinline{primrec F},
+there exists \lstinline{f : RPP} which encode \lstinline{F}.
+
+% \noindent\begin{minipage}{.5\linewidth}
+% \begin{align*}
+% \rppprecstep[g] \ = \ & \rppId_2 \rppPa \rppmkpair \rppCo                               \\
+%                       & \rppId_1 \rppPa \rppmkpair \rppCo                               \\
+%                       & \rppId_1 \rppPa (\rppSw \rppCo g) \rppCo                        \\
+%                       & \rppId_2 \rppPa \rppunpair \rppCo                               \\
+%                       & \rppId_3 \rppPa \rppunpair \rppCo                               \\
+%                       & \rpprewire{2, 3, 1, 0, 4} \rppCo                                \\
+%                       & \rppId_1 \rppPa \rppSu \rppPa \rppId_1 \rppPa \rppmkpair \rppCo \\
+%                       & \rpprewire{3, 0, 1, 2}                                          \\
+% \end{align*}
+% \end{minipage}%
+% \begin{minipage}{.5\linewidth}
+% \[\begin{NiceMatrix}
+%   s                 & \bloch{5-1}{\rppprecstep[g]} & s'                   \\
+%   z                 &                              & z                    \\
+%   n                 &                              & n+1                  \\
+%   \prPrec[F,G](z,n) &                              & \prPrec[F,G](z, n+1) \\
+%   \boldsymbol{0}    &                              & \boldsymbol{0}       \\
+% \end{NiceMatrix}\]
+% \end{minipage}
+
+\begin{align*}
+\rppprecstep[g] \ = \ & \rppId_2 \rppPa \rppmkpair \rppCo                               \\
+                      & \rppId_1 \rppPa \rppmkpair \rppCo                               \\
+                      & \rppId_1 \rppPa (\rppSw \rppCo g) \rppCo                        \\
+                      & \rppId_2 \rppPa \rppunpair \rppCo                               \\
+                      & \rppId_3 \rppPa \rppunpair \rppCo                               \\
+                      & \rpprewire{2, 3, 1, 0, 4} \rppCo                                \\
+                      & \rppId_1 \rppPa \rppSu \rppPa \rppId_1 \rppPa \rppmkpair \rppCo \\
+                      & \rpprewire{3, 0, 1, 2}                                          \\
+\end{align*}
+
+\makebox[\textwidth][c]{\begin{NiceMatrixBlock}
+$\begin{array}{c}
+\begin{NiceMatrix}
+  s                 &                         &                         & s                                       &                     &                & s                                       \\
+  z                 &                         & \bloch{5-1}{\rppmkpair} & \gl z, \gl n, \prPrec[F,G](z,n) \gr \gr & \bloch{2-1}{\rppSw} & \bloch{5-1}{g} & \prPrec[F,G](z,n+1)                     \\
+  n                 & \bloch{4-1}{\rppmkpair} &                         & 0                                       &                     &                & \gl z, \gl n, \prPrec[F,G](z,n) \gr \gr \\
+  \prPrec[F,G](z,n) &                         &                         & 0                                       &                     &                & 0                                       \\
+  0                 &                         &                         & 0                                       &                     &                & 0                                       \\
+  \boldsymbol{0}    &                         &                         & \boldsymbol{0}                          &                     &                & \boldsymbol{0}                          \\
+\end{NiceMatrix}
+\\ \\
+\begin{NiceMatrix}
+  s                                       &                         &                         & s                   & \bloch{5-1}{2\\3\\1\\0\\4} & z                   \\
+  \prPrec[F,G](z,n+1)                     &                         &                         & \prPrec[F,G](z,n+1) &                            & n                   \\
+  \gl z, \gl n, \prPrec[F,G](z,n) \gr \gr & \bloch{3-1}{\rppunpair} &                         & z                   &                            & \prPrec[F,G](z,n+1) \\
+  0                                       &                         & \bloch{2-1}{\rppunpair} & n                   &                            & s                   \\
+  0                                       &                         &                         & \prPrec[F,G](z,n)   &                            & \prPrec[F,G](z,n)   \\
+  \boldsymbol{0}                          &                         &                         & \boldsymbol{0}      &                            & \boldsymbol{0}      \\
+\end{NiceMatrix}
+\\ \\
+\begin{NiceMatrix}
+  z                   &                         & z                   & \bloch{4-1}{3\\0\\1\\2} & s'                  \\
+  n                   & \bloch{1-1}{\rppSu}     & n + 1               &                         & z                   \\
+  \prPrec[F,G](z,n+1) &                         & \prPrec[F,G](z,n+1) &                         & n + 1               \\
+  s                   & \bloch{3-1}{\rppmkpair} & s'                  &                         & \prPrec[F,G](z,n+1) \\
+  \prPrec[F,G](z,n)   &                         & 0                   &                         & 0                   \\
+  \boldsymbol{0}      &                         & \boldsymbol{0}      &                         & \boldsymbol{0}      \\
+\end{NiceMatrix}
+\\ \\
+\end{array}$
+\end{NiceMatrixBlock}}
+
+\noindent\begin{minipage}{.5\linewidth}
+  \begin{align*}
+  \rppprecfwd[f,g] \ = \ & \rppId_1 \rppPa \rppunpair \rppCo             \\
+                         & \rpprewire{0, 2, 3, 1} \rppCo                 \\
+                         & \rppId_2 \rppPa f \rppCo                      \\
+                         & \rpprewire{0, 1, 4, 3, 5, 2} \rppCo           \\
+                         & \rppId_1 \rppPa \rppIt[\rppprecstep g] \rppCo \\
+                         & \rpprewire{5, 0}                              \\
+  \end{align*}
+  \end{minipage}%
+  \begin{minipage}{.5\linewidth}
+  \[\begin{NiceMatrix}
+    z                 & \bloch{7-1}{\rppprecfwd[f,g]} & \prPrec[F,G] \big( (n)_1, (n)_2 \big)  \\
+    n                 &                               & z                                      \\
+    0                 &                               & (n)_2                                  \\
+    0                 &                               & s                                      \\
+    0                 &                               & (n)_1                                  \\
+    0                 &                               & (n)_2                                  \\
+    \boldsymbol{0}    &                               & \boldsymbol{0}                         \\
+  \end{NiceMatrix}\]
+  \end{minipage}
+
+  \noindent\begin{minipage}{.5\linewidth}
+    \begin{align*}
+    \rppprec[f,g] \ = \ & \rppprecfwd[f,g] \rppCo \\
+                        & \rppinc \rppCo \\
+                        & \rppprecfwd[f,g]^{-1} \\
+    \end{align*}
+    \end{minipage}%
+    \begin{minipage}{.5\linewidth}
+    \[\begin{NiceMatrix}
+      z                 & \bloch{3-1}{\rppprec[f,g]} & z + \prPrec[F,G] \big( (n)_1, (n)_2 \big)  \\
+      n                 &                            & n                               \\
+      \boldsymbol{0}    &                            & \boldsymbol{0}                  \\
+    \end{NiceMatrix}\]
+    \end{minipage}
 
 \section{Alternative paths} \label{alternatives}
 
