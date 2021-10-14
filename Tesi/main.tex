@@ -130,7 +130,7 @@
 \newcommand{\prPred}{\mathtt{P}}
 \newcommand{\prProj}[2]{\mathtt{P}^{#1}_{#2}} % P^n_i
 \newcommand{\prCom}[1]{\circ{[#1]}} % composition
-\newcommand{\prPrec}{\mathtt{PREC}}
+\newcommand{\prPrec}{}
 \newcommand{\pradd}{\mathtt{ADD}}
 \newcommand{\prack}{\mathtt{ACK}}
 
@@ -2296,14 +2296,13 @@ The next proof is about \lstinline{dec := inc⁻¹}:
 lemma dec_def (n : ℕ) (x : ℤ) (l : list ℤ) :
   ‹dec› (n :: x :: l) = n :: (x - n) :: l :=
 begin
-  -- (the arrow ↑ denotes the cast ℕ → ℤ)
-  -- ⊢ ‹dec› (↑n :: x :: l) = ↑n :: (x - ↑n) :: l
+  -- ⊢ ‹dec› (n :: x :: l) = n :: (x - n) :: l
   rw dec,
-  -- ⊢ ‹inc⁻¹› (↑n :: x :: l) = ↑n :: (x - ↑n) :: l
+  -- ⊢ ‹inc⁻¹› (n :: x :: l) = n :: (x - n) :: l
   rw inv_iff,
-  -- ⊢ ‹inc› (↑n :: (x - ↑n) :: l) = ↑n :: x :: l
+  -- ⊢ ‹inc› (n :: (x - n) :: l) = n :: x :: l
   rw inc_def,
-  -- ⊢ ↑n :: (x - ↑n + ↑n) :: l = ↑n :: x :: l
+  -- ⊢ n :: (x - n + n) :: l = n :: x :: l
   simp,
   -- goals accomplished
 end
@@ -2397,7 +2396,7 @@ for all $n \in \NN$ and $1 \le i \le n$.
 \item If $F_1, \dots, F_m : \NN^n \to \NN$ and $G : \NN^m \to \NN$ belong to $\PRF$,
 then the \textbf{composition} $G \big( F_1(\boldsymbol{x}), \dots, F_m(\boldsymbol{x}) \big)$ belongs to $\PRF$.
 \item If $F:\NN^n \to \NN$ and $G:\NN^{n+2} \to \NN$ belong to $\PRF$,
-then the function obtained by \textbf{primitive recursion} $H=\prPrec[F,G]:\NN^{n+1} \to \NN$ such that
+then the function obtained by \textbf{primitive recursion} $H:\NN^{n+1} \to \NN$ such that
 \begin{align*}
   H(\boldsymbol{x}, 0)   = & F(\boldsymbol{x}) \\
   H(\boldsymbol{x}, y+1) = & G \big( \boldsymbol{x}, y, h(\boldsymbol{x}, y) \big)
@@ -2537,27 +2536,125 @@ theorem completeness (F : ℕ → ℕ) :
 that is: for all \lstinline{F : ℕ → ℕ} such that \lstinline{primrec F},
 there exists \lstinline{f : RPP} which encode \lstinline{F}.
 
-% \noindent\begin{minipage}{.5\linewidth}
-% \begin{align*}
-% \rppprecstep[g] \ = \ & \rppId_2 \rppPa \rppmkpair \rppCo                               \\
-%                       & \rppId_1 \rppPa \rppmkpair \rppCo                               \\
-%                       & \rppId_1 \rppPa (\rppSw \rppCo g) \rppCo                        \\
-%                       & \rppId_2 \rppPa \rppunpair \rppCo                               \\
-%                       & \rppId_3 \rppPa \rppunpair \rppCo                               \\
-%                       & \rpprewire{2, 3, 1, 0, 4} \rppCo                                \\
-%                       & \rppId_1 \rppPa \rppSu \rppPa \rppId_1 \rppPa \rppmkpair \rppCo \\
-%                       & \rpprewire{3, 0, 1, 2}                                          \\
-% \end{align*}
-% \end{minipage}%
-% \begin{minipage}{.5\linewidth}
-% \[\begin{NiceMatrix}
-%   s                 & \bloch{5-1}{\rppprecstep[g]} & s'                   \\
-%   z                 &                              & z                    \\
-%   n                 &                              & n+1                  \\
-%   \prPrec[F,G](z,n) &                              & \prPrec[F,G](z, n+1) \\
-%   \boldsymbol{0}    &                              & \boldsymbol{0}       \\
-% \end{NiceMatrix}\]
-% \end{minipage}
+To show this result we proceed by induction on the proposition \lstinline{nat.primrec F},
+generating 7 goals (one for each case in the definition of \lstinline{primrec}).
+Let's see the second one, involving \lstinline{primrec.succ}
+\begin{lstlisting}
+  case nat.primrec.succ
+  ⊢ ∃ (f : RPP), encode nat.succ f
+\end{lstlisting}
+By definition of \lstinline{encode},
+this means we have to find an \lstinline{f : RPP} such that
+\begin{lstlisting}
+‹f› (z :: n :: repeat 0 (f.arity - 2)) =
+(z + n.succ) :: n :: repeat 0 (f.arity - 2)
+\end{lstlisting}
+Our candidate is \lstinline{succ := Su ;; Sw ;; inc ;; Sw}, which has the following behaviour:
+\begin{lstlisting}
+lemma succ_def (z : ℤ) (n : ℕ) :
+  ‹succ› [z, n] = [z + n.succ, n] :=
+by { simp [succ, ev], ring }
+\end{lstlisting}
+which is just another way to rephrase \lstinline{encode nat.succ succ}.
+To present a witness of an existential proposition we use the tactics \lstinline{use}:
+\begin{lstlisting}
+use succ,
+-- ⊢ encode nat.succ succ
+exact succ_def,
+-- goals accomplished
+\end{lstlisting}
+
+We proceed like this for each case:
+we construct a suitable function \lstinline{f : RPP}
+and then prove \lstinline{encode F f} for the given \lstinline{F}.
+For the base cases this is something very simple; for the inductive cases more care is needed.
+
+To illustrate this, here's the case \lstinline{primrec.comp}:
+\begin{lstlisting}
+  G₁, G₂ : ℕ → ℕ
+  h₁ : nat.primrec G₁
+  h₂ : nat.primrec G₂
+  ih₁ : ∃ (f : RPP), encode G₁ f
+  ih₂ : ∃ (f : RPP), encode G₂ f
+  ⊢ ∃ (f : RPP), encode (λ (n : ℕ), G₁ (G₂ n)) f
+\end{lstlisting}
+We will ultimately solve this by proposing as witness the function \lstinline{pair f g : RPP},
+and then proving it's the right one through the lemma \lstinline{pair_def}.
+To guarantee its correct behaviour, the inductive hypotheses \lstinline{ih₁} and \lstinline{ih₂} are crucial.
+Let's study the first one: \lstinline{ih₁} can be broken down using the \lstinline{cases} tactics,
+giving us the hypothesis
+\begin{lstlisting}
+g₁ : RPP
+ih₁ : encode G₁ g₁
+\end{lstlisting}
+which means
+\begin{lstlisting}
+‹g₁› (z :: n :: repeat 0 (g₁.arity - 2)) =
+(z + G₁ n) :: n :: repeat 0 (g₁.arity - 2)
+\end{lstlisting}
+The problem with this hypothesis is that it requires us
+to have exactly \lstinline{g₁.arity - 2} trailing zeroes,
+so if there's actually more than that, \lstinline{simp} can't use the hypothesis.
+To solve this we strengthen our hypothesis to \lstinline{encode_le G₁ g₁}
+which works for any number of trailing zeroes greater than \lstinline{g₁.arity - 2}:
+\begin{lstlisting}
+-- encode_le G₁ g₁:
+∀ (a : ℕ), f.arity-2 ≤ a →
+‹g₁› (z :: n :: repeat 0 a) =
+(z + G₁ n) :: n :: repeat 0 a)
+\end{lstlisting}
+Actually, \lstinline{encode_le} is a lemma that states precisely
+the fact that we can indeed strenghten our hypotheses like this.
+
+We've solved a problem but created another one:
+usually in the goal the trailing zeroes look something like
+\begin{lstlisting}
+-- pair_fwd f g is an auxiliary function
+-- used in the definition of pair 
+repeat 0 ((pair_fwd f g).arity - 3)
+\end{lstlisting}
+and so to use \lstinline{encode_le G₁ g₁} we need to make sure that
+that number of zeroes is larger than \lstinline{f.arity-2}, i.e.
+\begin{lstlisting}
+f.arity-2 ≤ (pair_fwd f g).arity - 3
+\end{lstlisting}
+For this reason, we first prove a lemma which controls
+the arity of \lstinline{pair_fwd f g}:
+\begin{lstlisting}
+lemma pair_fwd_arity (f g : RPP) : ∃ a,
+  (pair_fwd f g).arity = a + 7 ∧
+  f.arity-2 ≤ a + 4 ∧
+  g.arity-2 ≤ a + 3
+\end{lstlisting}
+which is stated in an odd way using existentials to make it more \lstinline{simp}-friendly.
+After these preparations, the proof of \lstinline{pair_fwd_def}
+(and of \lstinline{pair_def}) consists of nothing more than
+an initial setup and then a call to the simplifier.
+
+\paragraph{}
+
+The most complicated - and the most interesting - case is the last one,
+about primitive recursion.
+Let's look at the definition again:
+\begin{lstlisting}
+prec {f g} : primrec f → primrec g →
+  primrec (unpaired (λ z n, n.elim (f z)
+    (λ (y IH : N), g (nat.mkpair z (nat.mkpair y IH)))
+\end{lstlisting}
+Given $F, G \in \PRF$ let's call $H$ the function given by \lstinline{primrec.prec}
+(which isn't just standard primitive recursion!).
+Let $\gl x, y \gr = \rppmkpair(x,y)$ and $\big( (n)_1, (n)_2 \big) = \rppunpair(n)$,
+then $H$ is given by
+\[ H(x) = [F, G]\big( (x)_1, (x)_2 \big) \]
+where we define $[F,G] : \NN^2 \to \NN$ as
+\begin{align*}
+  [F, G](z,0) \ = \ & F(z) \\
+  [F, G](z, n+1) \ = \ & G \big( \gl z, \gl n, \prPrec[F,G](z,n) \gr \gr \big)
+\end{align*}
+
+Let' assume that $f, g \in \RPP$ encode respectively $F, G \in PRF$, i.e.
+$f(z, n, \boldsymbol{0}) = (z+F(n), n, \boldsymbol{0})$ and $g(z, n, \boldsymbol{0}) = (z+G(n), n, \boldsymbol{0})$.
+Then, we simulate a single iteration of $[F, G]$ by $\rppprecstep[g] \in RPP$ given by
 
 \begin{align*}
 \rppprecstep[g] \ = \ & \rppId_2 \rppPa \rppmkpair \rppCo                               \\
@@ -2569,6 +2666,9 @@ there exists \lstinline{f : RPP} which encode \lstinline{F}.
                       & \rppId_1 \rppPa \rppSu \rppPa \rppId_1 \rppPa \rppmkpair \rppCo \\
                       & \rpprewire{3, 0, 1, 2}                                          \\
 \end{align*}
+
+Below is a diagram showing each step of the computations of $\rppprecstep[g]$.
+The variables $s, s' \in \NN$ are "junk" whose values we don't care about.
 
 \makebox[\textwidth][c]{\begin{NiceMatrixBlock}
 $\begin{array}{c}
@@ -2602,19 +2702,38 @@ $\begin{array}{c}
 \end{array}$
 \end{NiceMatrixBlock}}
 
+What's interesting about this function is that we use the functions \lstinline{mkpair} and \lstinline{unpair} for
+two completely different purposes:
+\begin{itemize}
+\item The first two calls to $\rppmkpair$ are just there to create the value $\gl z, \gl n, \prPrec[F,G](z,n) \gr \gr$,
+which is needed in order to calculate $[F,G](z,n+1)$, while the two $\rppunpair$ unwind the previous pairings.
+\item The last mkpair is instead our answer to the problem of how to store information in excess.
+Because we have a problem: there's a point in which both $[F,G](z,n+1)$ and $[F,G](z,n)$ are present at the same time.
+We're interested in going forward with the iteration, so we don't need $[F,G](z,n)$ anymore;
+but we can't just replace it with $0$ because that's not a reverisible action, and we also can't store each iteration $[F,G](z,0), [F,G](z,1), \dots$ in
+separate cells because there's a limited number of them.
+So instead, we put all our "junk" in the same cell using the pairing function:
+by calling $\rppmkpair$ with arguments $s$, $[F,G](n,z)$ we obtain in the first one a new junk value $s'$, but more importantly
+we free our second cell so that we have the same number of free cells as before the iteration.
+\end{itemize}
+
+After having defined $\rppprecstep[g]$ which performs a single step of the iteration,
+we use the iterator $\rppIt$ to get to the result we're interested in,
+and finally use Bennet's trick to retrieve the result and then revert everything back.
+
 \noindent\begin{minipage}{.5\linewidth}
   \begin{align*}
   \rppprecfwd[f,g] \ = \ & \rppId_1 \rppPa \rppunpair \rppCo             \\
                          & \rpprewire{0, 2, 3, 1} \rppCo                 \\
                          & \rppId_2 \rppPa f \rppCo                      \\
                          & \rpprewire{0, 1, 4, 3, 5, 2} \rppCo           \\
-                         & \rppId_1 \rppPa \rppIt[\rppprecstep g] \rppCo \\
+                         & \rppId_1 \rppPa \rppIt[\rppprecstep[g]] \rppCo \\
                          & \rpprewire{5, 0}                              \\
   \end{align*}
   \end{minipage}%
   \begin{minipage}{.5\linewidth}
   \[\begin{NiceMatrix}
-    z                 & \bloch{7-1}{\rppprecfwd[f,g]} & \prPrec[F,G] \big( (n)_1, (n)_2 \big)  \\
+    z                 & \bloch{7-1}{\rppprecfwd[f,g]} & H \big( (n)_1, (n)_2 \big)  \\
     n                 &                               & z                                      \\
     0                 &                               & (n)_2                                  \\
     0                 &                               & s                                      \\
@@ -2633,11 +2752,14 @@ $\begin{array}{c}
     \end{minipage}%
     \begin{minipage}{.5\linewidth}
     \[\begin{NiceMatrix}
-      z                 & \bloch{3-1}{\rppprec[f,g]} & z + \prPrec[F,G] \big( (n)_1, (n)_2 \big)  \\
+      z                 & \bloch{3-1}{\rppprec[f,g]} & z + H \big( (n)_1, (n)_2 \big)  \\
       n                 &                            & n                               \\
       \boldsymbol{0}    &                            & \boldsymbol{0}                  \\
     \end{NiceMatrix}\]
     \end{minipage}
+
+Proof-wise, we use techniques similar to the ones discussed in the \lstinline{primrec.comp} case.
+This conclude our discussion of the proof of \lstinline{completeness}.
 
 \section{Alternative paths} \label{alternatives}
 

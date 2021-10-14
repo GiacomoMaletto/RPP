@@ -202,3 +202,25 @@ Originally, $\rppIt f (x, x_1, \dots, x_n)$ applied the function $f$ to $(x_1, \
  
 
 In our definition, the iterator $\rppIt f (x, x_1, \dots, x_n)$ applies $f$ for $\downarrow x$ times to $(x_1, \dots, x_n)$.
+
+\noindent\begin{minipage}{.5\linewidth}
+\begin{align*}
+\rppprecstep[g] \ = \ & \rppId_2 \rppPa \rppmkpair \rppCo                               \\
+                      & \rppId_1 \rppPa \rppmkpair \rppCo                               \\
+                      & \rppId_1 \rppPa (\rppSw \rppCo g) \rppCo                        \\
+                      & \rppId_2 \rppPa \rppunpair \rppCo                               \\
+                      & \rppId_3 \rppPa \rppunpair \rppCo                               \\
+                      & \rpprewire{2, 3, 1, 0, 4} \rppCo                                \\
+                      & \rppId_1 \rppPa \rppSu \rppPa \rppId_1 \rppPa \rppmkpair \rppCo \\
+                      & \rpprewire{3, 0, 1, 2}                                          \\
+\end{align*}
+\end{minipage}%
+\begin{minipage}{.5\linewidth}
+\[\begin{NiceMatrix}
+  s                 & \bloch{5-1}{\rppprecstep[g]} & s'                   \\
+  z                 &                              & z                    \\
+  n                 &                              & n+1                  \\
+  \prPrec[F,G](z,n) &                              & \prPrec[F,G](z, n+1) \\
+  \boldsymbol{0}    &                              & \boldsymbol{0}       \\
+\end{NiceMatrix}\]
+\end{minipage}
