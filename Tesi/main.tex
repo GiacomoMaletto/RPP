@@ -65,7 +65,7 @@
 \hyphenation{pri-mi-tive}
 
 % other
-\usepackage[colorlinks=true]{hyperref}
+\usepackage[colorlinks=true, linkcolor=teal, urlcolor=blue,]{hyperref}
 \usepackage{csquotes}
 
 % macro
@@ -124,6 +124,10 @@
 \newcommand{\rppprecfwd}{\mathsf{prec_{\rightarrow}}}
 \newcommand{\rppprec}{\mathsf{prec}}
 \newcommand{\rppconvert}{\mathsf{convert}}
+\newcommand{\rppNu}{\mathsf{Nu}}
+\newcommand{\rppZe}{\mathsf{Ze}}
+\newcommand{\rppEz}{\mathsf{Ez}}
+\newcommand{\rppbin}{\mathsf{bin}}
 
 \newcommand{\PRF}{\mathsf{PRF}}
 \newcommand{\prZero}{\mathtt{0}}
@@ -142,9 +146,61 @@
 
 \begin{document}
 
-\maketitle
+% \maketitle
+
+\frontmatter
+
+\thispagestyle{empty}
+
+\centerline {\Large{\textsc{ UNIVERSIT\`A DEGLI STUDI DI TORINO}}}
+\vskip 20 pt
+
+\centerline {\Large{\textsc Dipartimento di Matematica `Giuseppe Peano'}}
+
+\vskip 20 pt
+
+\centerline {{\textsc Scuola di Scienze della Natura}}
+
+\vskip 20 pt
+
+\centerline {\Large{\textsc CORSO DI LAUREA IN MATEMATICA}}
+
+\vskip 60 pt
+
+
+\centerline {\includegraphics[width=5cm]{Immagini/logo.png}}
+
+
+\vskip 1.2cm
+
+\centerline {\normalsize {Tesi di Laurea Triennale}} 
+
+\vskip 0.7cm
+
+\centerline {\Large {\bf A FORMAL VERIFICATION}}
+
+\vskip 0.3cm
+
+\centerline {\Large {\bf OF REVERSIBLE PRIMITIVE PERMUTATIONS}}
+
+\vskip 1.4cm
+
+\noindent \textbf{Relatore:} Prof. Luca Roversi
+\hfill  {\textbf{Candidato:} Giacomo Maletto }
+
+\vskip 2.5cm
+
+\centerline{2021/2022}
+
+\mainmatter
 
 \tableofcontents
+
+\addcontentsline{toc}{chapter}{Introduction}
+\chapter*{Introduction}
+
+A \textbf{proof assistant} or \textbf{theorem prover} is a software designed to help with
+the development of formal proofs.
 
 \chapter{The definition}
 
@@ -1774,7 +1830,7 @@ Each of the sub-goals is solved using \lstinline{simp}.
 \paragraph{Wrapping it all up}
 Well, that was rather prolix.
 
-The resulting proof, however, is not so large
+The resulting proof, however, is not so large:
 \begin{lstlisting}
 theorem inv_co_l (f : RPP) (X : list ℤ) :
   ‹f ;; f⁻¹› X = X :=
@@ -1809,7 +1865,7 @@ begin
   { rcases x with ⟨n, n⟩; simp [ev, *] at * }
 end
 \end{lstlisting}
-We've succesfully proved a non-trivial result in Lean.
+We've succesfully proved a non-trivial result in Lean!
 It is possible to express it in a more convenient, \lstinline{simp}-friendly way, which will become useful later:
 \begin{lstlisting}
 @[simp] theorem inv_iff (f : RPP) (X Y : list ℤ) :
@@ -1982,7 +2038,7 @@ It turns out that it's indeed possible to express $\rppcustep$ in $\RPP$:
                  & \rppId_1 \rppPa \rppSw
 \end{align*}
 
-\makebox[\textwidth][c]{$\begin{NiceMatrix}
+\makebox[\textwidth][c]{${\small\begin{NiceMatrix}
   \oloch{3-1}{\ y > 0} & x &                                                              & x & \bloch{3-1}{2 \\ 0 \\ 1} & 1 & \bloch{3-1}{\rppIf[\boldsymbol{\rppSu \rppPa \rppPr}, \ \rppSu \rppCo \rppSw, \ \rppId_1]} & 1     & \bloch{2-1}{\rppSw} & x + 1 & \bloch{2-1}{\rppIf[\boldsymbol{\rppPr}, \rppId_1, \rppId_1]} & x + 1 &                     & x + 1 \\
                        & y & \bloch{2-1}{\rppIf[\boldsymbol{\rppSu}, \rppId_1, \rppId_1]} & y &                          & x &                                                                                            & x + 1 &                     & 1     &                                                              & 0     & \bloch{2-1}{\rppSw} & y - 1 \\
                        & 0 &                                                              & 1 &                          & y &                                                                                            & y - 1 &                     & y - 1 &                                                              & y - 1 &                     & 0     \\
@@ -1991,7 +2047,7 @@ It turns out that it's indeed possible to express $\rppcustep$ in $\RPP$:
                        & 0 & \bloch{2-1}{\rppIf[\rppSu, \boldsymbol{\rppId_1}, \rppId_1]} & 0 &                          & x &                                                                                            & 0     &                     & 0     &                                                              & 0     & \bloch{2-1}{\rppSw} & x + 1 \\
                        & 0 &                                                              & 0 &                          & 0 &                                                                                            & x + 1 &                     & x + 1 &                                                              & x + 1 &                     & 0     \\
 \\
-\end{NiceMatrix}$}
+\end{NiceMatrix}}$}
 
 Notice that we can't directly use $y$ as the condition for the selection $\rppIf$,
 because we also want to manipulate $y$ in those calculations.
@@ -2662,7 +2718,7 @@ where we define $\prPrec[F,G] : \NN^2 \to \NN$ as
 
 Let's assume that $f, g \in \RPP$ encode respectively $F, G \in \PRF$, i.e.
 $f(z, n, \boldsymbol{0}) = (z+F(n), n, \boldsymbol{0})$ and $g(z, n, \boldsymbol{0}) = (z+G(n), n, \boldsymbol{0})$.
-Then, we simulate a single iteration of $\prPrec[F,G]$ by $\rppprecstep[g] \in RPP$ given by
+Then, we simulate a single iteration of $\prPrec[F,G]$ by $\rppprecstep[g] \in \RPP$ given by
 
 \begin{align*}
 \rppprecstep[g] \ = \ & \rppId_2 \rppPa \rppmkpair \rppCo                               \\
@@ -2883,8 +2939,80 @@ This approach has been succesfully followed using another proof assistant called
 but it's noticeably more complicated than what has been presented in this thesis,
 and the author prefer not to speak of it again.
 
-\chapter{Conclusions}
+\chapter{Conclusion}
+
+Our efforts in providing a formal verification of the definition and properties of reversible primitive permutations have been succesful.
+We showed that it is possible to turn the contents of a traditional paper into a mechanical format -
+provided enough time and experience with proof assistants.
+Furthermore, the search for simpler and simpler terms in which to reframe our definitions and problems
+had a beneficial effect: many concepts about $\RPP$ functions have been refined -
+particularly, the construction of the Cantor pairing and the generality of the "path" algorithm,
+the relationship between different types of iterators,
+the usage of a lighter, simpler notation and the development of diagrams to visualize complicated functions step-by-step.
+We set up an environment in which it is easy to try out, develop and reason about new $\RPP$ functions,
+together with the possibility of proving facts about them in a semi-automated way.
 
 \section{Future work}
+
+In the future, a formalization of $\PRF$-soundness could be provided.
+But a more interesting direction is the exploration of possible extensions and generalization of reversible primitive permutations.
+
+For example, one idea (which is suggested by the presence of pairing functions) is to consider functions with
+different input and ouput arity - in other words, in which the number of available cells can grow and shrink during the computations.
+Currently, most functions require a large number of ancillae - that is, values set to $0$ before and after the computation -
+and if one is not careful in providing enough clear cells, computations can break.
+Having the possibility of creating and removing ancillae on the fly would solve this problem.
+In the formalization of $\PRF$-completeness we mention another problem,
+which is that excess information can only be stored "vertically", piling it through repeated use of pairing functions.
+This however is computationally ineffective, because the values created by pairing functions grow very rapidly.
+By varying the number of available cells another possibility would be open: storing information "horizontally",
+farther and farther away in memory.
+Lastly, flexible input and output arity could lead to a stronger class of functions which
+go beyond $\PRF$-soundness and let us express other functions.
+
+A possible way to do have varying arity is to extend $\RPP$ to a new class $\RPP_0$ with two new base functions:
+$\rppZe$, which adds in the first position a new cell initialized to $0$;
+and its inverse $\rppEz$, which removes the first cell if its value is set to $0$ (and otherwise leaves things unchanged).
+This destroys a nice properties of the original $\RPP$ functions,
+namely that the input and output arity of a reversible primitive permutation is completely characterized by its syntax
+and doesn't depend on the argument the function is applied to.
+Since our definition of parallel composition $\rppPa$ depends on this property, if we want to add $\rppZe$ and $\rppEz$
+we have to weaken parallel composition of two functions $f \rppPa g \in \RPP$ to a simple offset $n \rppPa f$
+where $n$ is a natural number which tells by how many positions the application of $f$ should be offset.
+In addition, the concept of an $n$-ary identity function doesn't make sense anymore
+since arity is not tracked, so we can weaken it to the notion of a $0$-ary function $\rppNu$.
+With these considerations, we can define an evaluation function
+\begin{lstlisting}
+def ev : RPP₀ → list ℤ → list ℤ
+| Nu         l                    := l
+| Ne         (x :: l)             := -x :: l
+| Su         (x :: l)             := (x + 1) :: l
+| Pr         (x :: l)             := (x - 1) :: l
+| Sw         (x :: y :: l)        := y :: x :: l
+| (f ;; g)   l                    := ev g (ev f l)
+| (n ‖ g)    l                    := take n l ++ ev g (drop n l)
+| (It f)     (x :: l)             := x :: ((ev f)^[↓x] l)
+| (If f g h) (0 :: l)             := 0 :: ev g l
+| (If f g h) (((n : ℕ) + 1) :: l) := (n + 1) :: ev f l
+| (If f g h) (-[1+ n] :: l)       := -[1+ n] :: ev h l
+| Ze         l                    := 0 :: l
+| Ez         (0 :: l)             := l
+| _          l                    := l
+\end{lstlisting}
+An example of a function which is now possible to define is \lstinline{bin : RPP₀} which
+given a value returns its binary-number representation.
+
+Other options include adding directly an arity-changing pairing function like the Cantor pairing,
+or euclidean division.
+
+\paragraph{}
+
+In our work, an effort has been made to develop a small, imperative programming language
+inspired by $\RPP$ with memory managed by dictionaries instead of tuples - but without much success.
+More effort could be put in this direction.
+
+Lastly, it could be interesting to study classes of functions which are partially reversible,
+meaning that even though not all functions have an inverse, nonetheless each one can be broken down
+in a "reversible" and "non-reversible" part.
 
 \end{document}
