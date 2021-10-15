@@ -123,6 +123,7 @@
 \newcommand{\rppprecstep}{\mathsf{prec_{step}}}
 \newcommand{\rppprecfwd}{\mathsf{prec_{\rightarrow}}}
 \newcommand{\rppprec}{\mathsf{prec}}
+\newcommand{\rppconvert}{\mathsf{convert}}
 
 \newcommand{\PRF}{\mathsf{PRF}}
 \newcommand{\prZero}{\mathtt{0}}
@@ -130,7 +131,7 @@
 \newcommand{\prPred}{\mathtt{P}}
 \newcommand{\prProj}[2]{\mathtt{P}^{#1}_{#2}} % P^n_i
 \newcommand{\prCom}[1]{\circ{[#1]}} % composition
-\newcommand{\prPrec}{}
+\newcommand{\prPrec}{\mathtt{R}}
 \newcommand{\pradd}{\mathtt{ADD}}
 \newcommand{\prack}{\mathtt{ACK}}
 
@@ -232,12 +233,12 @@ If $f : \ZZ^n \to \ZZ^n$ and $g : \ZZ^m \to \ZZ^m$ belong to $\RPP$,
 then the \textbf{parallel composition} $(f \rppPa g) : \ZZ^{n + m} \to \ZZ^{n + m} $ belongs to $\RPP$ and is such that:
 \[(f \rppPa g) (x_1, \dots, x_n, y_1, \dots, y_m) = (f (x_1, \dots, x_n), g (y_1, \dots, y_m)).\]
 \[\begin{NiceMatrix}[nullify-dots]
-  x_1    & \bloch{6-1}{f \rppPa g} & w_1    & \Block{6-1}{=} & x_1    & \bloch{3-1}{f} & w_1    \\
+  x_1    & \bloch{6-1}{f \rppPa g} & z_1    & \Block{6-1}{=} & x_1    & \bloch{3-1}{f} & z_1    \\
   \Vdots &                         & \Vdots &                & \Vdots &                & \Vdots \\
-  x_n    &                         & w_n    &                & x_n    &                & w_n    \\
-  y_1    &                         & z_1    &                & y_1    & \bloch{3-1}{g} & z_1    \\
+  x_n    &                         & z_n    &                & x_n    &                & z_n    \\
+  y_1    &                         & w_1    &                & y_1    & \bloch{3-1}{g} & w_1    \\
   \Vdots &                         & \Vdots &                & \Vdots &                & \Vdots \\
-  y_m    &                         & z_m    &                & y_m    &                & z_m    \\
+  y_m    &                         & w_m    &                & y_m    &                & w_m    \\
 \end{NiceMatrix}\]
 
 \item
@@ -653,9 +654,9 @@ while the other elements are the \textit{tail}.
 \begin{lstlisting}
 #reduce tail [4, 5, 7, 2, 5] -- [5, 7, 2, 5]
 \end{lstlisting}
-Given \lstinline{n : ℕ} and \lstinline{l : list ℕ} we can obtain a new list
-\lstinline{cons n l} (also written as \lstinline{n :: l}) such that
-\lstinline{head (n :: l) = n} and \lstinline{head (n :: l) = l}
+Given \lstinline{n : ℕ} and \lstinline{X : list ℕ} we can obtain a new list
+\lstinline{cons n X} (also written as \lstinline{n :: X}) such that
+\lstinline{head (n :: X) = n} and \lstinline{head (n :: X) = X}
 \begin{lstlisting}
 #reduce cons 2 [4, 5, 7, 2, 5] -- [2, 4, 5, 7, 2, 5]
 #reduce 2 :: [4, 5, 7, 2, 5]   -- alternative notation  
@@ -703,7 +704,7 @@ which returns the number of elements of a list:
 \begin{lstlisting}
 def length {α : Type*} : list α → ℕ
 | []       := 0
-| (a :: l) := length l + 1
+| (a :: X) := length X + 1
 \end{lstlisting}
 Note that we can use \lstinline|{α : Type*}| to refer to a generic type \lstinline{α}.
 If instead we had stuck to \lstinline{list_nat}, \lstinline{list_int}...
@@ -824,19 +825,19 @@ RPP → list ℤ → list ℤ.
 Here's how we do it:
 \begin{lstlisting}
 def ev : RPP → list ℤ → list ℤ
-| (Id n)     l                    := l
-| Ne         (x :: l)             := -x :: l
-| Su         (x :: l)             := (x + 1) :: l
-| Pr         (x :: l)             := (x - 1) :: l
-| Sw         (x :: y :: l)        := y :: x :: l
-| (f ;; g)   l                    := ev g (ev f l)
-| (f ‖ g)    l                    := ev f (take f.arity l) ++
-                                     ev g (drop f.arity l)
-| (It f)     (x :: l)             := x :: ((ev f)^[↓x] l)
-| (If f g h) (0 :: l)             := 0 :: ev g l
-| (If f g h) (((n : ℕ) + 1) :: l) := (n + 1) :: ev f l
-| (If f g h) (-[1+ n] :: l)       := -[1+ n] :: ev h l
-| _          l                    := l
+| (Id n)     X                    := X
+| Ne         (x :: X)             := -x :: X
+| Su         (x :: X)             := (x + 1) :: X
+| Pr         (x :: X)             := (x - 1) :: X
+| Sw         (x :: y :: X)        := y :: x :: X
+| (f ;; g)   X                    := ev g (ev f X)
+| (f ‖ g)    X                    := ev f (take f.arity X) ++
+                                     ev g (drop f.arity X)
+| (It f)     (x :: X)             := x :: ((ev f)^[↓x] X)
+| (If f g h) (0 :: X)             := 0 :: ev g X
+| (If f g h) (((n : ℕ) + 1) :: X) := (n + 1) :: ev f X
+| (If f g h) (-[1+ n] :: X)       := -[1+ n] :: ev h X
+| _          X                    := X
 
 notation `‹` f `›` := ev f -- ‹ \f › \fr
 \end{lstlisting}
@@ -844,22 +845,22 @@ We will write \lstinline{‹f›} to mean the function of type \lstinline{list �
 
 Here's a case-by-case analysis:
 \begin{itemize}
-\item \lstinline{‹Id n› l} is the original list \lstinline{l}, unchanged.
-\item \lstinline{‹Ne› (x :: l)} reduces to \lstinline{-x :: l}, which is same list but with the head of opposite sign.
-\item \lstinline{‹Su› (x :: l)} reduces to the same list but with the head incremented by one.
-\item \lstinline{‹Pr› (x :: l)} reduces to the same list but with the head decremented by one.
-\item \lstinline{‹Sw› (x :: y :: l)} reduces to the same list but with the first two elements swapped.
-\item \lstinline{‹f ;; g› l} successively applies \lstinline{‹f›} and \lstinline{‹g›} to the list.
-\item \lstinline{‹f ‖ g› l} applies \lstinline{‹f›} to the first \lstinline{f.arity} elements of the list,
+\item \lstinline{‹Id n› X} is the original list \lstinline{X}, unchanged.
+\item \lstinline{‹Ne› (x :: X)} reduces to \lstinline{-x :: X}, which is same list but with the head of opposite sign.
+\item \lstinline{‹Su› (x :: X)} reduces to the same list but with the head incremented by one.
+\item \lstinline{‹Pr› (x :: X)} reduces to the same list but with the head decremented by one.
+\item \lstinline{‹Sw› (x :: y :: X)} reduces to the same list but with the first two elements swapped.
+\item \lstinline{‹f ;; g› X} successively applies \lstinline{‹f›} and \lstinline{‹g›} to the list.
+\item \lstinline{‹f ‖ g› X} applies \lstinline{‹f›} to the first \lstinline{f.arity} elements of the list,
 applies \lstinline{‹g›} to the remaining elements of the list,
 and then joins the two parts through \lstinline{append} (which is the \lstinline{(++)} operator).
-\item \lstinline{‹It f› (x :: l)} leaves the head unchanged and applies \lstinline{‹f›} to the tail \lstinline{↓x} times,
+\item \lstinline{‹It f› (x :: X)} leaves the head unchanged and applies \lstinline{‹f›} to the tail \lstinline{↓x} times,
 where \lstinline{↓x} is defined as in definition \ref{rppdef}.
-\item \lstinline{‹If f g h› (0 :: l)} leaves the head unchanged and applies \lstinline{‹g›} to the tail.
-\item \lstinline{‹If f g h› (((n : ℕ) + 1) :: l)} is the case where the head is a positive number
+\item \lstinline{‹If f g h› (0 :: X)} leaves the head unchanged and applies \lstinline{‹g›} to the tail.
+\item \lstinline{‹If f g h› (((n : ℕ) + 1) :: X)} is the case where the head is a positive number
 (a natural number plus \lstinline{1}),
 and as such leaves the head unchanged and applies \lstinline{‹f›} to the tail.
-\item \lstinline{‹If f g h› (-[1+ n] :: l)} is the case where the head is a negative number,
+\item \lstinline{‹If f g h› (-[1+ n] :: X)} is the case where the head is a negative number,
 and as such leaves the head unchanged and applies \lstinline{‹h›} to the tail.
 \item In all cases not considered (for example, applying \lstinline{‹Ne›} to an empty list) the whole list remains unchanged. 
 \end{itemize}
@@ -883,7 +884,7 @@ If it's too short, unspecified things will happen, we don't care.
 If it's too long, only the first \lstinline{f.arity} items are utilized and affected,
 and this is guaranteed by theorem \lstinline{ev_split} which we will prove in Lean.
 So, when we apply \lstinline{RPP} functions to a list, we'll have to make sure that
-\lstinline{f.arity ≤ l.length}.
+\lstinline{f.arity ≤ X.length}.
 
 \paragraph{The \lstinline{inverse} function}
 It's not hard to convert our proposition \ref{rppinv} into a function definition:
@@ -1466,6 +1467,9 @@ begin
   simp, -- goals accomplished
 end  
 \end{lstlisting}
+the \lstinline{simp} tactic can be used to simplify the goal,
+but more often it's used to completely solve it.\footnote{The authors of Mathlib discourages
+"non-terminal \lstinline{simp}s", which are uses of the simplifier which doesn't solve the goal.}
 We can mark with \lstinline{@[simp]} theorems which have an equality or a bi-implication as thesis.
 Notice that we put \lstinline{@[simp]} besides theorems that we want to be later utilized by \lstinline{simp},
 not in theorems where we want to use the tactic \lstinline{simp}.
@@ -1503,11 +1507,11 @@ each $f \in \RPP$ admits an inverse $f^{-1} \in \RPP$.
 This result was discussed in proposition \ref{rppinv},
 and we already constructed the function \lstinline{inv : RPP → RPP} which given an \lstinline{RPP} returns its syntactical inverse.
 What remains to be done is to show that this \textit{really} provides the inverse function,
-i.e. that \lstinline{‹f ;; f⁻¹› l = ‹f⁻¹ ;; f› l = l} for all \lstinline{f : RPP} and \lstinline{l : list ℤ}.
+i.e. that \lstinline{‹f ;; f⁻¹› X = ‹f⁻¹ ;; f› X = X} for all \lstinline{f : RPP} and \lstinline{X : list ℤ}.
 
 To be honest, we could settle for something easier:
-since we decided that we don't really care about what happens when \lstinline{l.length < f.arity},
-we could put \lstinline{f.arity ≤ l.length} as an hypothesis, making our theorem slightly weaker.
+since we decided that we don't really care about what happens when \lstinline{X.length < f.arity},
+we could put \lstinline{f.arity ≤ X.length} as an hypothesis, making our theorem slightly weaker.
 However, we will not do this, because it'd mean that at each use of the theorem we'd have to supply that hypothesis;
 and because the way in which we defined \lstinline{RPP} allows us to state the result in full generality.
 
@@ -1515,10 +1519,10 @@ This is the statement:
 \begin{lstlisting}
 -- proposition 1 expressed with RPP composition,
 -- about the left inverse
-theorem inv_co_l (f : RPP) (l : list ℤ) :
-  ‹f ;; f⁻¹› l = l
+theorem inv_co_l (f : RPP) (X : list ℤ) :
+  ‹f ;; f⁻¹› X = X
 \end{lstlisting}
-We also need to prove \lstinline{inv_co_r} about the right inverse \lstinline{‹f⁻¹ ;; f› l = l},
+We also need to prove \lstinline{inv_co_r} about the right inverse \lstinline{‹f⁻¹ ;; f› X = X},
 but there's a clever way to derive this fact from \lstinline{inv_co_l}
 and a lemma called \lstinline{inv_involute} which will be our first result about \lstinline{RPP} formalized in Lean:
 \begin{lstlisting}
@@ -1529,19 +1533,19 @@ by { induction f; simp * } -- by { ... } is equivalent to
 We mark this lemma with \lstinline{@[simp]} because it is an equality where the right-hand side is strictly simpler than the left-hand side.
 Using this fact, to prove that
 \begin{lstlisting}
-‹f⁻¹ ;; f› l = l
+‹f⁻¹ ;; f› X = X
 \end{lstlisting}
 we rewrite it as
 \begin{lstlisting}
-‹f⁻¹ ;; (f⁻¹)⁻¹› l = l
+‹f⁻¹ ;; (f⁻¹)⁻¹› X = X
 \end{lstlisting}
 and then apply theorem \lstinline{inv_co_l} with argument \lstinline{f⁻¹}.
 
 We still have to prove that theorem, though.
 Let's follow in the footsteps of proposition \ref{rppinv} and begin by induction on f:
 \begin{lstlisting}
-theorem inv_co_l (f : RPP) (l : list ℤ) :
-  ‹f ;; f⁻¹› l = l :=
+theorem inv_co_l (f : RPP) (X : list ℤ) :
+  ‹f ;; f⁻¹› X = X :=
 begin
   induction f,
 end
@@ -1560,13 +1564,13 @@ begin
   {  }, -- putting the cursor between the curly braces shows
         --   1 goal
         --   case RPP.Id
-        --   l : list ℤ
+        --   X : list ℤ
         --   n : ℕ
-        --   ⊢ ‹Id n;;Id n⁻¹› l = l
+        --   ⊢ ‹Id n;;Id n⁻¹› X = X
 end
 \end{lstlisting}
 We're in luck: by definition of \lstinline{ev} and \lstinline{inv},
-\lstinline{‹Id n;;Id n⁻¹› l} is definitionally equivalent to \lstinline{l},
+\lstinline{‹Id n;;Id n⁻¹› X} is definitionally equivalent to \lstinline{X},
 so \lstinline{refl} solves the goal
 \begin{lstlisting}
   { refl, }, -- goals accomplished
@@ -1576,26 +1580,26 @@ Now we just have 8 left.
 Here's the second one:
 \begin{lstlisting}
   case RPP.Ne
-  l: list ℤ
-  ⊢ ‹Ne;;Ne⁻¹› l = l
+  X : list ℤ
+  ⊢ ‹Ne;;Ne⁻¹› X = X
 \end{lstlisting}
 Sadly, just shoving in \lstinline{refl} like before doesn't do much good.
 We should proceed by cases:
 \begin{itemize}
-\item The simplest case is when \lstinline{l} is the empty list \lstinline{[]}.
-When this happens, the definitional equality \lstinline{‹Ne› (x :: l) = -x :: l} doesn't apply because \lstinline{l} is not of the form \lstinline{x :: l'}.
+\item The simplest case is when \lstinline{X} is the empty list \lstinline{[]}.
+When this happens, the definitional equality \lstinline{‹Ne› (x :: X) = -x :: X} doesn't apply because \lstinline{X} is not of the form \lstinline{x :: X'}.
 Instead, we fall back to the last case considered in the definition of \lstinline{ev}, that is: the whole list remains unchanged.
 As a consequence, by \lstinline{refl} we get that
 \begin{lstlisting}
-‹Ne;;Ne⁻¹› l = ‹Ne⁻¹› (‹Ne› []) = [] = l.
+‹Ne;;Ne⁻¹› X = ‹Ne⁻¹› (‹Ne› []) = [] = X.
 \end{lstlisting}
 
-\item If \lstinline{l} is not the empty list, i.e. \lstinline{l = x :: l'} for some \lstinline{x : ℤ} and \lstinline{l' : list ℤ},
+\item If \lstinline{X} is not the empty list, i.e. \lstinline{X = x :: X'} for some \lstinline{x : ℤ} and \lstinline{X' : list ℤ},
 then by our definitions
 \begin{lstlisting}
-‹Ne;;Ne⁻¹› l = ‹Ne⁻¹› (‹Ne› (x :: l')) = ‹Ne⁻¹› (-x :: l')
-             = ‹Ne› (-x :: l') = -(-x) :: l'
-             = x :: l' = l
+‹Ne;;Ne⁻¹› X = ‹Ne⁻¹› (‹Ne› (x :: X')) = ‹Ne⁻¹› (-x :: X')
+             = ‹Ne› (-x :: X') = -(-x) :: X'
+             = x :: X' = X
 \end{lstlisting}
 The tactic \lstinline{refl} would \textit{almost} solve this,
 but doesn't because \lstinline{-(-x)} is not definitionally equivalent to \lstinline{x}.
@@ -1614,13 +1618,13 @@ but we \textbf{do not} do the same for \lstinline{ev}, because it's a considerab
 which also depends on the list that the \lstinline{RPP} function is applied to.
 When we want \lstinline{simp} to simplify \lstinline{ev} (like in this case), we will explictly write \lstinline{simp [ev]}.
 \end{itemize}
-How do we consider separately the cases when \lstinline{l} is of the form \lstinline{x :: l'} or \lstinline{[]}?
+How do we consider separately the cases when \lstinline{X} is of the form \lstinline{x :: X'} or \lstinline{[]}?
 By using the tactics
 \lstinline{cases}:\footnote{Deep down, \lstinline{cases} is just an alternative to \lstinline{induction} that doesn't generate inductive hypotheses.}
 \begin{lstlisting}
-{ cases l with x l', -- splits into 2 goals
-  refl,              -- case when l = []
-  simp [ev],         -- case when l = x :: l'
+{ cases X with x X', -- splits into 2 goals
+  refl,              -- case when X = []
+  simp [ev],         -- case when X = x :: X'
                      -- goals accomplished
 },
 \end{lstlisting}
@@ -1632,30 +1636,30 @@ The cases \lstinline{Su}, \lstinline{Pr}, \lstinline{Sw} are very similar and we
 After those we get \lstinline{Co}:
 \begin{lstlisting}
   case RPP.Co
-  l : list ℤ
+  X : list ℤ
   f g : RPP
-  hf : ‹f;;f⁻¹› l = l
-  hg : ‹g;;g⁻¹› l = l
-  ⊢ ‹f;;g;;(f;;g)⁻¹› l = l
+  hf : ‹f;;f⁻¹› X = X
+  hg : ‹g;;g⁻¹› X = X
+  ⊢ ‹f;;g;;(f;;g)⁻¹› X = X
 \end{lstlisting}
 Rather than jumping straight to Lean,
 it's very often helpful to sketch proofs on pen and paper, to get an idea of how to proceed:
 \begin{lstlisting}
-‹f;;g;;(f;;g)⁻¹› l = ‹f⁻¹› (‹g⁻¹› (‹g› (‹f› l)))
-                   = ‹f⁻¹› (‹g;;g⁻¹› (‹f› l))
-             (!!!) = ‹f⁻¹› (‹f› l)
-                   = ‹f;;f⁻¹› l
-                   = l
+‹f;;g;;(f;;g)⁻¹› X = ‹f⁻¹› (‹g⁻¹› (‹g› (‹f› X)))
+                   = ‹f⁻¹› (‹g;;g⁻¹› (‹f› X))
+             (!!!) = ‹f⁻¹› (‹f› X)
+                   = ‹f;;f⁻¹› X
+                   = X
 \end{lstlisting}
 There's something worrying:
 we can't apply step \lstinline{(!!!)} because the inductive hypothesis \lstinline{hg} is too weak,
-it works only if the applied list is precisely \lstinline{l}, while in this case it is \lstinline{‹f› l}.
+it works only if the applied list is precisely \lstinline{X}, while in this case it is \lstinline{‹f› X}.
 The proper induction hypothesis would be something like this:
 \begin{lstlisting}
-∀ (l : list ℤ), ‹g;;g⁻¹› l = l
+∀ (X : list ℤ), ‹g;;g⁻¹› X = X
 \end{lstlisting}
 and Lean provides a functionality precisely for these instances:
-at the beginning of the proof, it's sufficient to substitute \lstinline{induction f} with \lstinline{induction f generalizing l}.
+at the beginning of the proof, it's sufficient to substitute \lstinline{induction f} with \lstinline{induction f generalizing X}.
 
 After this is done, the \lstinline{simp} tactics makes short work of the goal:
 \begin{lstlisting}
@@ -1670,29 +1674,29 @@ After this is done, the \lstinline{simp} tactics makes short work of the goal:
 Parallel composition turns out to be the the most troublesome case.
 \begin{lstlisting}
   case RPP.Pa
-  l : list ℤ
+  X : list ℤ
   f g : RPP
-  hf : ‹f;;f⁻¹› l = l
-  hg : ‹g;;g⁻¹› l = l
-  ⊢ ‹f‖g;;(f‖g)⁻¹› l = l
+  hf : ‹f;;f⁻¹› X = X
+  hg : ‹g;;g⁻¹› X = X
+  ⊢ ‹f‖g;;(f‖g)⁻¹› X = X
 \end{lstlisting}
 This is what we'd like to do:
 \begin{lstlisting}
-‹f‖g;;(f‖g)⁻¹› l = ‹f‖g;;f⁻¹‖g⁻¹› l
-           (!!!) = ‹(f;;f⁻¹)‖(g;;g⁻¹)› l
-                 = ‹f;;f⁻¹› (take f.arity l) ++
-                   ‹g;;g⁻¹› (drop f.arity l)
-                 = take f.arity l ++ drop f.arity l
-                 = l
+‹f‖g;;(f‖g)⁻¹› X = ‹f‖g;;f⁻¹‖g⁻¹› X
+           (!!!) = ‹(f;;f⁻¹)‖(g;;g⁻¹)› X
+                 = ‹f;;f⁻¹› (take f.arity X) ++
+                   ‹g;;g⁻¹› (drop f.arity X)
+                 = take f.arity X ++ drop f.arity X
+                 = X
 \end{lstlisting}
 The tactic \lstinline{simp} is able to take care of each step, except for \lstinline{(!!!)},
 which is not obvious at all and must be proven:
 \begin{lstlisting}
-lemma pa_co_pa (f f' g g' : RPP) (l : list ℤ) :
+lemma pa_co_pa (f f' g g' : RPP) (X : list ℤ) :
   f.arity = f'.arity →
-  ‹f ‖ g ;; f' ‖ g'› l = ‹(f ;; f') ‖ (g ;; g')› l
+  ‹f ‖ g ;; f' ‖ g'› X = ‹(f ;; f') ‖ (g ;; g')› X
 \end{lstlisting}
-The proof of this fact is rather tedious, partly because there are no hypotheses on the length of the list \lstinline{l},
+The proof of this fact is rather tedious, partly because there are no hypotheses on the length of the list \lstinline{X},
 so multiple cases have to be considered.
 
 There is, however, the hypothesis \lstinline{f.arity = f'.arity}, without which the lemma is false.
@@ -1713,32 +1717,32 @@ This is the \lstinline{It} case:
 \begin{lstlisting}
   case RPP.It
   f: RPP
-  hf : ∀ (l : list ℤ), ‹f;;f⁻¹› l = l
-  l : list ℤ
-  ⊢ ‹It f;;It f⁻¹› l = l
+  hf : ∀ (X : list ℤ), ‹f;;f⁻¹› X = X
+  X : list ℤ
+  ⊢ ‹It f;;It f⁻¹› X = X
 \end{lstlisting}
-Let's start by using \lstinline{cases l} to split the proof:
+Let's start by using \lstinline{cases X} to split the proof:
 \begin{lstlisting}
   case list.nil RPP.It
   f: RPP
-  hf : ∀ (l : list ℤ), ‹f;;f⁻¹› l = l
+  hf : ∀ (X : list ℤ), ‹f;;f⁻¹› X = X
   ⊢ ‹It f;;It f⁻¹› [] = []
 
   case list.cons RPP.It
   f: RPP
-  hf : ∀ (l : list ℤ), ‹f;;f⁻¹› l = l
+  hf : ∀ (X : list ℤ), ‹f;;f⁻¹› X = X
   x : ℤ
-  l' : list ℤ
-  ⊢ ‹It f;;It f⁻¹› (x :: l') = x :: l'
+  X' : list ℤ
+  ⊢ ‹It f;;It f⁻¹› (x :: X') = x :: X'
 \end{lstlisting}
 The first case is trivially solvable using \lstinline{refl}.
 In the second one, running \lstinline{simp} turns the goal state into
 \begin{lstlisting}
   f: RPP
   x : ℤ
-  l' : list ℤ
-  hf : ∀ (l : list ℤ), ‹f⁻¹› (‹f› l) = l
-  ⊢ ‹f⁻¹›^[↓x] (‹f›^[↓x] l') = l'
+  X' : list ℤ
+  hf : ∀ (X : list ℤ), ‹f⁻¹› (‹f› X) = X
+  ⊢ ‹f⁻¹›^[↓x] (‹f›^[↓x] X') = X'
 \end{lstlisting}
 The notation \lstinline{‹f›^[↓x]} means "\lstinline{‹f›} applied \lstinline{↓x} times".
 Our objective is essentially "given that \lstinline{‹f⁻¹›} is the left inverse of \lstinline{‹f›} (hypothesis \lstinline{hf}),
@@ -1763,7 +1767,7 @@ most basic facts are already present, so we can concentrate on more specific mat
 
 Finally, the \lstinline{If} case is not that hard,
 we just split it into many sub-cases:
-\lstinline{l} is equal to \lstinline{[]} or \lstinline{x :: l'} with \lstinline{x : ℤ} and \lstinline{l' : list ℤ},
+\lstinline{X} is equal to \lstinline{[]} or \lstinline{x :: X'} with \lstinline{x : ℤ} and \lstinline{X' : list ℤ},
 and \lstinline{x} is either \lstinline{0}, a positive or a negative number.
 Each of the sub-goals is solved using \lstinline{simp}.
 
@@ -1772,33 +1776,33 @@ Well, that was rather prolix.
 
 The resulting proof, however, is not so large
 \begin{lstlisting}
-theorem inv_co_l (f : RPP) (l : list ℤ) :
-  ‹f ;; f⁻¹› l = l :=
+theorem inv_co_l (f : RPP) (X : list ℤ) :
+  ‹f ;; f⁻¹› X = X :=
 begin
-  induction f generalizing l,
+  induction f generalizing X,
   { refl, },
-  { cases l with x l', refl, simp [ev], },
-  { cases l with x l', refl, simp [ev], },
-  { cases l with x l', refl, simp [ev], },
-  { cases l with x l', refl,
-    cases l' with y l'', refl, refl, },
+  { cases X with x X', refl, simp [ev], },
+  { cases X with x X', refl, simp [ev], },
+  { cases X with x X', refl, simp [ev], },
+  { cases X with x X', refl,
+    cases X' with y X'', refl, refl, },
   { simp [ev, *] at *, },
   { rw [inv, pa_co_pa], simp [ev, *] at *, rw arity_inv, },
-  { cases l with x l', refl, simp [ev] at *,
-    exact function.left_inverse.iterate f_ih (↓x) l', },
-  { cases l with x l', refl,
+  { cases X with x X', refl, simp [ev] at *,
+    exact function.left_inverse.iterate f_ih (↓x) X', },
+  { cases X with x X', refl,
     cases x, cases x,
     simp [ev, *] at *, simp [ev, *] at *, simp [ev, *] at *, },
 end
 \end{lstlisting}
 and by knowing some more tactics, it can be further shortened to
 \begin{lstlisting}
-theorem inv_co_l (f : RPP) (l : list ℤ) :
-  ‹f ;; f⁻¹› l = l :=
+theorem inv_co_l (f : RPP) (X : list ℤ) :
+  ‹f ;; f⁻¹› X = X :=
 begin
-  induction f generalizing l; cases l with x l,
+  induction f generalizing X; cases X with x X,
   any_goals {simp [ev, *], done},
-  { cases l with y l, refl, simp [ev] },
+  { cases X with y X, refl, simp [ev] },
   { simp [ev, *] at * },
   { rw [inv, pa_co_pa], simp [ev, *] at *, rw arity_inv },
   { simp [ev] at *, apply function.left_inverse.iterate f_ih },
@@ -1808,8 +1812,8 @@ end
 We've succesfully proved a non-trivial result in Lean.
 It is possible to express it in a more convenient, \lstinline{simp}-friendly way, which will become useful later:
 \begin{lstlisting}
-@[simp] theorem inv_iff (f : RPP) (l l' : list ℤ) :
-  ‹f⁻¹› l = l' ↔ ‹f› l' = l
+@[simp] theorem inv_iff (f : RPP) (X Y : list ℤ) :
+  ‹f⁻¹› X = Y ↔ ‹f› Y = X
 \end{lstlisting}
 
 It's natural to compare the Lean proof to "the \LaTeX\space one" given in proposition \ref{rppinv}.
@@ -1824,15 +1828,15 @@ and what we will hopefully see in the future of mathematics is a joyful collabor
 We state just two more general results:
 the first is that \lstinline{RPP} functions don't alter the length of a list:
 \begin{lstlisting}
-@[simp] lemma ev_length (f : RPP) (l : list ℤ) :
-  (‹f› l).length = l.length
+@[simp] lemma ev_length (f : RPP) (X : list ℤ) :
+  (‹f› X).length = X.length
 \end{lstlisting}
-The second is that applying \lstinline{‹f›} to a list \lstinline{l}
-is equivalent to applying \lstinline{‹f›} to the first \lstinline{f.arity} elements of \lstinline{l}
+The second is that applying \lstinline{‹f›} to a list \lstinline{X}
+is equivalent to applying \lstinline{‹f›} to the first \lstinline{f.arity} elements of \lstinline{X}
 and then appending the remaining ones, like this:
 \begin{lstlisting}
-theorem ev_split (f : RPP) (l : list ℤ) :
-  ‹f› l = ‹f› (take f.arity l) ++ drop f.arity l
+theorem ev_split (f : RPP) (X : list ℤ) :
+  ‹f› X = ‹f› (take f.arity X) ++ drop f.arity X
 \end{lstlisting}
 Marking this theorem as \lstinline{@[simp]} would be a very bad idea,
 because the right-hand side is more complicated than the left one,
@@ -2268,8 +2272,8 @@ linked only by our commitment to avoid mistakes in any of the two.
 
 Instead, in Lean we can define \lstinline{square} and then write on the following line
 \begin{lstlisting}
-@[simp] lemma square_def (n : ℕ) (x : ℤ) (l : list ℤ) :
-  ‹square› (n :: x :: 0 :: l) = n :: (x + n * n) :: 0 :: l :=
+@[simp] lemma square_def (n : ℕ) (x : ℤ) (X : list ℤ) :
+  ‹square› (n :: x :: 0 :: X) = n :: (x + n * n) :: 0 :: X :=
 by simp [square, ev]
 \end{lstlisting}
 and if there's a typo in the definition, or a hole in the argumentation,
@@ -2281,8 +2285,8 @@ we'll already have the theorem about \lstinline{square} at our disposal.
 
 As an example let's see some of these theorems:
 \begin{lstlisting}
-@[simp] lemma inc_def (n : ℕ) (x : ℤ) (l : list ℤ) :
-  ‹inc› (n :: x :: l) = n :: (x + n) :: l :=
+@[simp] lemma inc_def (n : ℕ) (x : ℤ) (X : list ℤ) :
+  ‹inc› (n :: x :: X) = n :: (x + n) :: X :=
 begin
   rw [inc], simp [ev],
   -- ring is used to solve automatically simple equations 
@@ -2293,16 +2297,16 @@ The proof is by induction on \lstinline{n} and it's nothing remarkable.
 What's interesting is that we mark this lemma as \lstinline{@[simp]}.
 The next proof is about \lstinline{dec := inc⁻¹}:
 \begin{lstlisting}
-lemma dec_def (n : ℕ) (x : ℤ) (l : list ℤ) :
-  ‹dec› (n :: x :: l) = n :: (x - n) :: l :=
+lemma dec_def (n : ℕ) (x : ℤ) (X : list ℤ) :
+  ‹dec› (n :: x :: X) = n :: (x - n) :: X :=
 begin
-  -- ⊢ ‹dec› (n :: x :: l) = n :: (x - n) :: l
+  -- ⊢ ‹dec› (n :: x :: X) = n :: (x - n) :: X
   rw dec,
-  -- ⊢ ‹inc⁻¹› (n :: x :: l) = n :: (x - n) :: l
+  -- ⊢ ‹inc⁻¹› (n :: x :: X) = n :: (x - n) :: X
   rw inv_iff,
-  -- ⊢ ‹inc› (n :: (x - n) :: l) = n :: x :: l
+  -- ⊢ ‹inc› (n :: (x - n) :: X) = n :: x :: X
   rw inc_def,
-  -- ⊢ n :: (x - n + n) :: l = n :: x :: l
+  -- ⊢ n :: (x - n + n) :: X = n :: x :: X
   simp,
   -- goals accomplished
 end
@@ -2310,8 +2314,8 @@ end
 We made good use of our lemma \lstinline{inc_def}.
 However, since we marked it as \lstinline{simp}, the proof can be greatly shortened:
 \begin{lstlisting}
-@[simp] lemma dec_def (n : ℕ) (x : ℤ) (l : list ℤ) :
-  ‹dec› (n :: x :: l) = n :: (x - n) :: l :=
+@[simp] lemma dec_def (n : ℕ) (x : ℤ) (X : list ℤ) :
+  ‹dec› (n :: x :: X) = n :: (x - n) :: X :=
 by simp[dec]
 \end{lstlisting}
 and in turn we mark \lstinline{dec_def} as \lstinline{@[simp]},
@@ -2321,10 +2325,10 @@ Indeed, each one of these theorems can be proven with (relatively) little effort
 by first setting things up right and then unleashing the simplifier.
 As an example, here's \lstinline{sqrt_def}:
 \begin{lstlisting}
-@[simp] lemma sqrt_def (n : ℕ) (l : list ℤ) :
-  ‹sqrt› (n :: 0 :: 0 :: 0 :: 0 :: l) =
+@[simp] lemma sqrt_def (n : ℕ) (X : list ℤ) :
+  ‹sqrt› (n :: 0 :: 0 :: 0 :: 0 :: X) =
   n :: (n - √n * √n) :: (√n + √n - (n - √n * √n))
-    :: 0 :: √n :: l :=
+    :: 0 :: √n :: X :=
 begin
   -- initial set up
   simp [sqrt, ev],
@@ -2358,14 +2362,14 @@ Since we're interested in using the simplifier as much as possible,
 we've been careful stating our theorems.
 Another way to express \lstinline{inc_def} would've been
 \begin{lstlisting}
-@[simp] lemma inc_def (n : ℕ) (x : ℤ) (l : list ℤ) :
+@[simp] lemma inc_def (n : ℕ) (x : ℤ) (X : list ℤ) :
   ‹inc› [n, x] = [n, x + n]
 \end{lstlisting}
 but this can be applied only when the input list is of length exactly 2;
-often we have something like \lstinline{‹inc› (n :: x ::l)} with \lstinline{l : list ℤ}.
+often we have something like \lstinline{‹inc› (n :: x ::X)} with \lstinline{X : list ℤ}.
 By theorem \lstinline{ev_split} we know that
 \begin{lstlisting}
-‹inc› (n :: x :: l) = ‹inc› [n, x] ++ l
+‹inc› (n :: x :: X) = ‹inc› [n, x] ++ X
 \end{lstlisting}
 but remember that we can't mark \lstinline{ev_split} as \lstinline{@[simp]} because
 that would lead to infinite loops.
@@ -2451,19 +2455,20 @@ Every $f \in \RPP$ has a representative inside $\PRF$ obtainable via the bijecti
 
 These two statements together mean that, in a sense, $\RPP$ and $\PRF$ are equivalent:
 anything expressible in $\PRF$ can also be encoded in $\RPP$ and vice versa.
+So, no matter how hard we try, we'll never be able to implement something like $\prack$ in $\RPP$.
 
 Theorem \ref{prftheorem} has been succesfully verified in Lean (and also Coq): we will focus on this in the following paragraph.
 On the other hand, claim \ref{prfclaim} is intuitively true for those familiar with $\PRF$ functions
-and annoying to write down precisely, so for the moment no energies have been spent trying to formalize it in a proof assistant.
+and annoying to write down precisely, so for the moment no energies have been spent in trying to formalize it in a proof assistant.
 
 \paragraph{$\PRF$-completeness in Lean}
 
-As usual, there's more than one way that our result can be proven.
+As usual, there's more than one way in which our result can be proven.
 We could come up with our definition of $\PRF$ in Lean,
 but actually in Mathlib there's already one present.
 By stating our theorem in terms of the already-defined $\PRF$,
 we "link" our object ($\RPP$ functions) with already established ones;
-building on top of what has been already done is both convenient and effective.
+building on top of what has already been done is both convenient and effective.
 
 Truth to be told, there are at least two notions of $\PRF$ in Mathlib.
 First the one that most closely resembles the definition we've given:
@@ -2480,7 +2485,9 @@ inductive primrec' : ∀ {n}, (vector ℕ n → ℕ) → Prop
     v.head.elim (f v.tail) (λ y IH, g (y ::ᵥ IH ::ᵥ v.tail)))
 \end{lstlisting}
 Notice the type: it's a function that takes as inputs a number \lstinline{n : ℕ},
-a function \lstinline{vector ℕ n → ℕ} and returns a proposition \lstinline{Prop} - in short, it's an \textbf{inductive proposition}.
+a function \lstinline{vector ℕ n → ℕ} and returns a proposition \lstinline{Prop} -
+in short, it's an \textbf{inductive proposition}.\footnote{We could've used the same approach with $\RPP$, inductively defining the proposition
+"this is a reversible primitive permutation". We haven't explored this alternative.}
 The meaning of this, is that we're defining inductively the statement "this is a primitive recursive function".
 For example, the third base case \lstinline{nth} tells us that the function \lstinline{(λ v, v.nth i)}
 which given a vector \lstinline{v} returns its \lstinline{i}-th element, is a primitive recursive function.
@@ -2490,7 +2497,7 @@ and declares that a more complicated function (given by primitive recursion of \
 
 Even if \lstinline{primrec'} matches our notion of $\PRF$, it's pretty complicated.
 Its power makes it a good definition if we want to prove that something is a primitive recursive function,
-but a bad one if instead we want to show a result about all $\PRF$.
+but a bad one if instead we want to show a result about $\PRF$.
 For that, it's better to use another definition:
 \begin{lstlisting}
 inductive primrec : (ℕ → ℕ) → Prop
@@ -2508,7 +2515,7 @@ inductive primrec : (ℕ → ℕ) → Prop
 At first sight, this looks like something totally different.
 It's still an inductive proposition, but takes as argument just unary functions \lstinline{ℕ → ℕ}, not of arbitrary arity.
 The first two cases \lstinline{zero} and \lstinline{succ} are straightforward but the third and fourth are somewhat alien -
-investigating further, we discover that the function \lstinline{unpair} is the $\rppunpair$ function introduced in the previous section!
+investigating further, we discover that \lstinline{unpair} is the $\rppunpair$ function introduced in the previous section!
 It's also present \lstinline{mkpair}, not only in the base case \lstinline{pair} but also in the primitive recursive case \lstinline{prec}.
 What's going on is that we use pairing functions to work with functions \lstinline{ℕ → ℕ} instead of \lstinline{n}-ary ones.
 Composition becomes a lot easier, and to express functions with higher arity we use \lstinline{pair} to "join" two values,
@@ -2531,14 +2538,14 @@ def encode (F : ℕ → ℕ) (f : RPP) := ∀ (z : ℤ) (n : ℕ),
 Our main thesis becomes
 \begin{lstlisting}
 theorem completeness (F : ℕ → ℕ) :
-  nat.primrec F → ∃ f, encode F f
+  nat.primrec F → ∃ f : RPP, encode F f
 \end{lstlisting}
 that is: for all \lstinline{F : ℕ → ℕ} such that \lstinline{primrec F},
 there exists \lstinline{f : RPP} which encode \lstinline{F}.
 
 To show this result we proceed by induction on the proposition \lstinline{nat.primrec F},
 generating 7 goals (one for each case in the definition of \lstinline{primrec}).
-Let's see the second one, involving \lstinline{primrec.succ}
+Let's see the second one, involving \lstinline{primrec.succ}:
 \begin{lstlisting}
   case nat.primrec.succ
   ⊢ ∃ (f : RPP), encode nat.succ f
@@ -2558,6 +2565,7 @@ by { simp [succ, ev], ring }
 which is just another way to rephrase \lstinline{encode nat.succ succ}.
 To present a witness of an existential proposition we use the tactics \lstinline{use}:
 \begin{lstlisting}
+-- ⊢ ∃ (f : RPP), encode nat.succ f
 use succ,
 -- ⊢ encode nat.succ succ
 exact succ_def,
@@ -2645,16 +2653,16 @@ Given $F, G \in \PRF$ let's call $H$ the function given by \lstinline{primrec.pr
 (which isn't just standard primitive recursion!).
 Let $\gl x, y \gr = \rppmkpair(x,y)$ and $\big( (n)_1, (n)_2 \big) = \rppunpair(n)$,
 then $H$ is given by
-\[ H(x) = [F, G]\big( (x)_1, (x)_2 \big) \]
-where we define $[F,G] : \NN^2 \to \NN$ as
+\[ H(x) = \prPrec[F,G]\big( (x)_1, (x)_2 \big) \]
+where we define $\prPrec[F,G] : \NN^2 \to \NN$ as
 \begin{align*}
-  [F, G](z,0) \ = \ & F(z) \\
-  [F, G](z, n+1) \ = \ & G \big( \gl z, \gl n, \prPrec[F,G](z,n) \gr \gr \big)
+  \prPrec[F,G](z,0) \ = \ & F(z) \\
+  \prPrec[F,G](z, n+1) \ = \ & G \big( \gl z, \gl n, \prPrec[F,G](z,n) \gr \gr \big)
 \end{align*}
 
-Let' assume that $f, g \in \RPP$ encode respectively $F, G \in PRF$, i.e.
+Let's assume that $f, g \in \RPP$ encode respectively $F, G \in \PRF$, i.e.
 $f(z, n, \boldsymbol{0}) = (z+F(n), n, \boldsymbol{0})$ and $g(z, n, \boldsymbol{0}) = (z+G(n), n, \boldsymbol{0})$.
-Then, we simulate a single iteration of $[F, G]$ by $\rppprecstep[g] \in RPP$ given by
+Then, we simulate a single iteration of $\prPrec[F,G]$ by $\rppprecstep[g] \in RPP$ given by
 
 \begin{align*}
 \rppprecstep[g] \ = \ & \rppId_2 \rppPa \rppmkpair \rppCo                               \\
@@ -2702,18 +2710,20 @@ $\begin{array}{c}
 \end{array}$
 \end{NiceMatrixBlock}}
 
-What's interesting about this function is that we use the functions \lstinline{mkpair} and \lstinline{unpair} for
+What's interesting about this procedure is that we use the function \lstinline{mkpair} for
 two completely different purposes:
 \begin{itemize}
-\item The first two calls to $\rppmkpair$ are just there to create the value $\gl z, \gl n, \prPrec[F,G](z,n) \gr \gr$,
-which is needed in order to calculate $[F,G](z,n+1)$, while the two $\rppunpair$ unwind the previous pairings.
-\item The last mkpair is instead our answer to the problem of how to store information in excess.
-Because we have a problem: there's a point in which both $[F,G](z,n+1)$ and $[F,G](z,n)$ are present at the same time.
-We're interested in going forward with the iteration, so we don't need $[F,G](z,n)$ anymore;
-but we can't just replace it with $0$ because that's not a reverisible action, and we also can't store each iteration $[F,G](z,0), [F,G](z,1), \dots$ in
+\item The first two calls to $\rppmkpair$ are just there to create the value
+\[ \gl z, \gl n, \prPrec[F,G](z,n) \gr \gr \]
+which is needed in order to calculate $\prPrec[F,G](z,n+1)$, while the two $\rppunpair$ unwind the previous pairings.
+\item The last $\rppmkpair$ is instead our answer to the problem of how to store information in excess.
+Because we have a problem: there's a point in which both $\prPrec[F,G](z,n+1)$ and $\prPrec[F,G](z,n)$ are present at the same time.
+We're interested in going forward with the iteration, so we don't need $\prPrec[F,G](z,n)$ anymore;
+but we can't just replace it with $0$ because that's not a reversible action,
+and we also can't store each iteration $\prPrec[F,G](z,0)$, $\prPrec[F,G](z,1)$, $\dots$ in
 separate cells because there's a limited number of them.
 So instead, we put all our "junk" in the same cell using the pairing function:
-by calling $\rppmkpair$ with arguments $s$, $[F,G](n,z)$ we obtain in the first one a new junk value $s'$, but more importantly
+by calling $\rppmkpair$ with arguments $s$, $\prPrec[F,G](n,z)$ we obtain in the first cell a new junk value $s'$, but more importantly
 we free our second cell so that we have the same number of free cells as before the iteration.
 \end{itemize}
 
@@ -2733,12 +2743,12 @@ and finally use Bennet's trick to retrieve the result and then revert everything
   \end{minipage}%
   \begin{minipage}{.5\linewidth}
   \[\begin{NiceMatrix}
-    z                 & \bloch{7-1}{\rppprecfwd[f,g]} & H \big( (n)_1, (n)_2 \big)  \\
-    n                 &                               & z                                      \\
-    0                 &                               & (n)_2                                  \\
+    z                 & \bloch{7-1}{\rppprecfwd[f,g]} & H (x)  \\
+    x                 &                               & z                                      \\
+    0                 &                               & (x)_2                                  \\
     0                 &                               & s                                      \\
-    0                 &                               & (n)_1                                  \\
-    0                 &                               & (n)_2                                  \\
+    0                 &                               & (x)_1                                  \\
+    0                 &                               & (x)_2                                  \\
     \boldsymbol{0}    &                               & \boldsymbol{0}                         \\
   \end{NiceMatrix}\]
   \end{minipage}
@@ -2752,16 +2762,126 @@ and finally use Bennet's trick to retrieve the result and then revert everything
     \end{minipage}%
     \begin{minipage}{.5\linewidth}
     \[\begin{NiceMatrix}
-      z                 & \bloch{3-1}{\rppprec[f,g]} & z + H \big( (n)_1, (n)_2 \big)  \\
-      n                 &                            & n                               \\
+      z                 & \bloch{3-1}{\rppprec[f,g]} & z + H (x)  \\
+      x                 &                            & x                               \\
       \boldsymbol{0}    &                            & \boldsymbol{0}                  \\
     \end{NiceMatrix}\]
     \end{minipage}
 
 Proof-wise, we use techniques similar to the ones discussed in the \lstinline{primrec.comp} case.
-This conclude our discussion of the proof of \lstinline{completeness}.
+This concludes our discussion of the proof of \lstinline{completeness}.
 
+\newpage
 \section{Alternative paths} \label{alternatives}
+
+There's a number of different ways in which we could have (or actually have) achieved our goals -
+more specifically, we present an alternative approach to define $\RPP$ in Lean, and another way to express and
+prove $\PRF$-completeness.
+
+\paragraph{The relational approach}
+
+In our discussion of the formalization of $\RPP$ in Lean,
+we immediately assumed we'd end up with a class of concrete functions
+which mimics the ones given definition \ref{rppdef};
+that means that giving input \lstinline{X} to a function \lstinline{f} and getting ouput \lstinline{Y}
+is expressed as
+\begin{lstlisting}
+‹f› X = Y
+\end{lstlisting}
+but we could also see it as a \textbf{relation} between two tuples \lstinline{X}, \lstinline{Y} and a function \lstinline{f},
+\begin{lstlisting}
+X ⇐[f]⇒ Y
+\end{lstlisting}
+which says "\lstinline{X} through \lstinline{f} becomes \lstinline{Y}" - a proposition.
+For example, if we know that \lstinline{X ⇐[f]⇒ Y} and \lstinline{Y ⇐[g]⇒ Z} then it follows that
+\lstinline{X ⇐[f ;; g]⇒ Z} by definition of composition.
+This suggests that the relation \lstinline{X ⇐[f]⇒ Y} (or \lstinline{rel f X Y}) should be an inductively defined proposition.
+Here's a way to do it:
+\begin{lstlisting}[basicstyle=\small]
+inductive rel : RPP → list ℤ → list ℤ → Prop
+| id : ∀ {n X}, length X = n → rel (Id n) X X
+| ne : ∀ x, rel Ne [x] [-x]
+| su : ∀ x, rel Su [x] [x.succ]
+| pr : ∀ x, rel Pr [x] [x.pred]
+| sw : ∀ x y, rel Sw [x, y] [y, x]
+| co : ∀ {f g X Y Z},
+    rel f X Y → rel g Y Z →
+    rel (f ;; g) X Z
+| pa : ∀ {f g X₁ X₂ Y₁ Y₂},
+    rel f X₁ Y₁ → rel g X₂ Y₂ →
+    rel (f ‖ g) (X₁ ++ X₂) (Y₁ ++ Y₂)
+| itz : ∀ {f X}, length X = arity f →
+    rel (It f) (0 :: X) (0 :: X)
+| itp : ∀ {f x X Y Z}, rel f Y Z →
+    rel (It f) (x :: X) (x :: Y) →
+    rel (It f) (x.succ :: X) (x.succ :: Z)
+| itn : ∀ {f x X Y Z}, rel f Z Y →
+    rel (It f) (x :: X) (x :: Y) →
+    rel (It f) (x.pred :: X) (x.pred :: Z)
+| ifp : ∀ {f g h x X Y₁ Y₂ Y₃},
+    rel f X Y₁ → rel g X Y₂ → rel h X Y₃ →
+    x > 0 → rel (If f g h) (x :: X) (x :: Y₁)
+| ifz : ∀ {f g h X Y₁ Y₂ Y₃},
+    rel f X Y₁ → rel g X Y₂ → rel h X Y₃ →
+    rel (If f g h) (0 :: X) (0 :: Y₂)
+| ifn : ∀ {f g h x X Y₁ Y₂ Y₃},
+    rel f X Y₁ → rel g X Y₂ → rel h X Y₃ →
+    x < 0 → rel (If f g h) (x :: X) (x :: Y₃)
+
+notation X `⇐[` f `]⇒` Y := rel f X Y
+
+#check rel.sw -- ∀ (x y : ℤ), [x, y]⇐[Sw]⇒[y, x]
+\end{lstlisting}
+To give an idea of what this means, notice that what we said earlier about composition is
+expressed in the \lstinline{rel.co} case: if \lstinline{rel f X Y} and \lstinline{rel g Y Z} hold true then
+\lstinline{rel (f ;; g) X Z} also does.
+
+Here's what a proof which uses this definition looks like:
+\begin{lstlisting}
+def inc := It Su
+
+lemma inc_def (n : ℕ) (x : ℤ) :
+  [n, x] ⇐[inc]⇒ [n, x+n] :=
+begin
+  -- just showing it's something provable
+  rw inc, induction n with n hn,
+  simp [rel.itz],
+  refine rel.itp _ hn,
+  rw [int.coe_nat_succ, ←add_assoc],
+  apply rel.su
+end
+\end{lstlisting}
+
+Why should one use this approach?
+The big advantage over using something like our function \lstinline{ev} is that
+instead of a class of functions, we could have a class of \textit{programs} which might not terminate (for example an infinite loop),
+and because every function in Lean must terminate we'd not be able to work with those programs by formalizing them as functions.
+But there'd be no problem if instead we switched to the relational approach:
+there could well be inputs \lstinline{X} and programs \lstinline{P} such that there's no \lstinline{Y}
+such that \lstinline{X ⇐[P]⇒ Y}, no big deal.
+
+However, with $\RPP$ we don't really have this problem, because there are no "functions which do not terminate".
+Furthermore, using functions makes it possible to do explicit computations, and most importantly,
+we can often prove things directly by definitional equality and the \lstinline{simp} tactic,
+which is something that cannot be achieved with the relational approach.
+
+\paragraph{The function $\rppconvert$}
+
+We formalized $\RPP$ as an inductive type \lstinline{RPP} (the type of $\RPP$-sentences)
+together with a function \lstinline{ev : RPP → list ℤ → list ℤ}
+which gives to each \lstinline{f : RPP} its interpretation as a function \lstinline{list ℤ → list ℤ}.
+
+Something similar can be done with $\PRF$: we can define the inductive type \lstinline{PRF}
+with elements $\PRF$-sentences, together with a function \lstinline{EV : PRF → list ℕ → ℕ}.
+
+In this way, $\PRF$-completeness can be expressed in another way:
+we can provide a function \lstinline{convert : PRF → RPP} which given \lstinline{F : PRF}
+returns \lstinline{f = convert F : RPP} such that \lstinline{f} is an encoding of \lstinline{F} in the sense
+given in theorem \ref{prftheorem}.
+
+This approach has been succesfully followed using another proof assistant called Coq,
+but it's noticeably more complicated than what has been presented in this thesis,
+and the author prefer not to speak of it again.
 
 \chapter{Conclusions}
 

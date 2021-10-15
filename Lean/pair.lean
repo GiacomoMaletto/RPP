@@ -18,8 +18,8 @@ def mkpairᵢ :=
 
 @[simp] lemma mkpairᵢ_arity : mkpairᵢ.arity = 5 := rfl
 
-@[simp] lemma mkpairᵢ_def (n m : ℕ) (l : list ℤ) :
-  ‹mkpairᵢ› (n :: m :: 0 :: 0 :: 0 :: l) = n :: m :: 0 :: (nat.mkpair n m) :: 0 :: l :=
+@[simp] lemma mkpairᵢ_def (n m : ℕ) (X : list ℤ) :
+  ‹mkpairᵢ› (n :: m :: 0 :: 0 :: 0 :: X) = n :: m :: 0 :: (nat.mkpair n m) :: 0 :: X :=
 begin
   cases em (n < m) with h;
   simp [mkpairᵢ, ev, nat.mkpair, rewire, *], ring
@@ -36,9 +36,9 @@ def sqrt := It sqrt_step
 
 local prefix `√` : 70 := nat.sqrt
 
-@[simp] lemma sqrt_def (n : ℕ) (l : list ℤ) :
-  ‹sqrt› (n :: 0 :: 0 :: 0 :: 0 :: l) =
-  n :: (n - √n * √n) :: (√n + √n - (n - √n * √n)) :: 0 :: √n :: l :=
+@[simp] lemma sqrt_def (n : ℕ) (X : list ℤ) :
+  ‹sqrt› (n :: 0 :: 0 :: 0 :: 0 :: X) =
+  n :: (n - √n * √n) :: (√n + √n - (n - √n * √n)) :: 0 :: √n :: X :=
 begin
   simp [sqrt, ev],
   induction n with n hn,
@@ -65,9 +65,9 @@ def unpairᵢ_fwd :=
 
 @[simp] lemma unpairᵢ_fwd_arity : unpairᵢ_fwd.arity = 5 := rfl
 
-@[simp] lemma unpairᵢ_fwd_def (n : ℕ) (l : list ℤ) :
-  ‹unpairᵢ_fwd› (n :: 0 :: 0 :: 0 :: 0 :: l) =
-  n :: (ite (n - √n * √n < √n) (-1) 0) :: (n - √n * √n) :: √n :: (n - √n * √n - √n) :: l :=
+@[simp] lemma unpairᵢ_fwd_def (n : ℕ) (X : list ℤ) :
+  ‹unpairᵢ_fwd› (n :: 0 :: 0 :: 0 :: 0 :: X) =
+  n :: (ite (n - √n * √n < √n) (-1) 0) :: (n - √n * √n) :: √n :: (n - √n * √n - √n) :: X :=
 begin
   have h : (↑√n - (↑√n + ↑√n - (↑n - ↑√n * ↑√n)) : ℤ) = n - √n * √n - √n, by ring,
   cases em (n - √n * √n < √n) with h₁ h₁,
@@ -90,9 +90,9 @@ def unpairᵢ :=
 
 @[simp] lemma unpairᵢ_arity : unpairᵢ.arity = 7 := rfl
 
-@[simp] lemma unpairᵢ_def (n : ℕ) (l : list ℤ) : 
-  ‹unpairᵢ› (n :: 0 :: 0 :: 0 :: 0 :: 0 :: 0 :: l) =
-  n :: 0 :: 0 :: 0 :: 0 :: (nat.unpair n).1 :: (nat.unpair n).2 :: l :=
+@[simp] lemma unpairᵢ_def (n : ℕ) (X : list ℤ) : 
+  ‹unpairᵢ› (n :: 0 :: 0 :: 0 :: 0 :: 0 :: 0 :: X) =
+  n :: 0 :: 0 :: 0 :: 0 :: (nat.unpair n).1 :: (nat.unpair n).2 :: X :=
 begin
   rw [unpairᵢ, nat.unpair], simp [ev],
   have H := nat.sqrt_le n,
@@ -106,18 +106,18 @@ def mkpair := mkpairᵢ ;; ⌊3, 2, 4, 5, 6, 0, 1⌉ ;; unpairᵢ⁻¹
 
 @[simp] lemma mkpair_arity : mkpair.arity = 7 := rfl
 
-@[simp] theorem mkpair_def (n m : ℕ) (l : list ℤ) :
-  ‹mkpair› (n :: m :: 0 :: 0 :: 0 :: 0 :: 0 :: l) =
-  (nat.mkpair n m) :: 0 :: 0 :: 0 :: 0 :: 0:: 0 :: l :=
+@[simp] theorem mkpair_def (n m : ℕ) (X : list ℤ) :
+  ‹mkpair› (n :: m :: 0 :: 0 :: 0 :: 0 :: 0 :: X) =
+  (nat.mkpair n m) :: 0 :: 0 :: 0 :: 0 :: 0:: 0 :: X :=
 by simp [mkpair, ev, rewire]
 
 def unpair := mkpair⁻¹
 
 @[simp] lemma unpair_arity : unpair.arity = 7 := rfl
 
-@[simp] theorem unpair_def (n : ℕ) (l : list ℤ) :
-  ‹unpair› (n :: 0 :: 0 :: 0 :: 0 :: 0 :: 0 :: l) =
-  (nat.unpair n).1 :: (nat.unpair n).2 :: 0 :: 0 :: 0 :: 0 :: 0 :: l :=
+@[simp] theorem unpair_def (n : ℕ) (X : list ℤ) :
+  ‹unpair› (n :: 0 :: 0 :: 0 :: 0 :: 0 :: 0 :: X) =
+  (nat.unpair n).1 :: (nat.unpair n).2 :: 0 :: 0 :: 0 :: 0 :: 0 :: X :=
 by simp [unpair]
 
 end RPP

@@ -12,22 +12,22 @@ namespace RPP
 
 @[simp] def call_list : list ℕ → RPP
 | []       := Id 0
-| (i :: l) := call i ;; call_list l
+| (i :: X) := call i ;; call_list X
 
 @[simp] def prepare : list ℕ → list ℕ
 | []       := []
-| (i :: l) := (i + (l.filter (λ j, i < j)).length) :: prepare l
+| (i :: X) := (i + (X.filter (λ j, i < j)).length) :: prepare X
 
-def rewire (l : list ℕ) : RPP := call_list (reverse (prepare l))
+def rewire (X : list ℕ) : RPP := call_list (reverse (prepare X))
 
 -- ⌊ \lf ⌉ \rc
-notation `⌊` l:(foldr `, ` (h t, list.cons h t) list.nil `⌉`) := rewire l
+notation `⌊` X:(foldr `, ` (h t, list.cons h t) list.nil `⌉`) := rewire X
 
 def inc := It Su
 
 @[simp] lemma inc_arity : inc.arity = 2 := rfl
 
-@[simp] lemma inc_def (n : ℕ) (x : ℤ) (l : list ℤ) : ‹inc› (n :: x :: l) = n :: (x + n) :: l :=
+@[simp] lemma inc_def (n : ℕ) (x : ℤ) (X : list ℤ) : ‹inc› (n :: x :: X) = n :: (x + n) :: X :=
 begin
   rw [inc], simp [ev],
   induction n generalizing x, simp, simp [ev, *], ring
@@ -37,13 +37,13 @@ def dec := inc⁻¹
 
 @[simp] lemma dec_arity : dec.arity = 2 := rfl
 
-@[simp] lemma dec_def (n : ℕ) (x : ℤ) (l : list ℤ) : ‹dec› (n :: x :: l) = n :: (x - n) :: l :=
+@[simp] lemma dec_def (n : ℕ) (x : ℤ) (X : list ℤ) : ‹dec› (n :: x :: X) = n :: (x - n) :: X :=
 by simp[dec]
 
 def mul := It inc
 
-@[simp] lemma mul_def (n m : ℕ) (x : ℤ) (l : list ℤ) :
-  ‹mul› (n :: m :: x :: l) = n :: m :: (x + n * m) :: l :=
+@[simp] lemma mul_def (n m : ℕ) (x : ℤ) (X : list ℤ) :
+  ‹mul› (n :: m :: x :: X) = n :: m :: (x + n * m) :: X :=
 begin 
   simp [mul, ev], induction n with n hn,
   simp,
@@ -52,16 +52,16 @@ end
 
 def square := Id₁ ‖ Sw ;; inc ;; mul ;; dec ;; Id₁ ‖ Sw
 
-@[simp] lemma square_def (n : ℕ) (x : ℤ) (l : list ℤ) :
-  ‹square› (n :: x :: 0 :: l) = n :: (x + n * n) :: 0 :: l :=
+@[simp] lemma square_def (n : ℕ) (x : ℤ) (X : list ℤ) :
+  ‹square› (n :: x :: 0 :: X) = n :: (x + n * n) :: 0 :: X :=
 by simp [square, ev]
 
 def less := dec ;; Id₁ ‖ If Su Id₁ Id₁ ;; inc
 
 @[simp] lemma less_arity : less.arity = 3 := rfl
 
-@[simp] lemma if_gtz (f g h : RPP) (x : ℤ) (l : list ℤ) (H : 0 < x) :
-  ‹If f g h› (x :: l) = x :: ‹f› l :=
+@[simp] lemma if_gtz (f g h : RPP) (x : ℤ) (X : list ℤ) (H : 0 < x) :
+  ‹If f g h› (x :: X) = x :: ‹f› X :=
 begin
   cases x, cases x,
   simp at H, contradiction,
@@ -69,8 +69,8 @@ begin
   simp at H, contradiction
 end
 
-@[simp] lemma if_ltz (f g h : RPP) (x : ℤ) (l : list ℤ) (H : x < 0) :
-  ‹If f g h› (x :: l) = x :: ‹h› l :=
+@[simp] lemma if_ltz (f g h : RPP) (x : ℤ) (X : list ℤ) (H : x < 0) :
+  ‹If f g h› (x :: X) = x :: ‹h› X :=
 begin
   cases x, cases x,
   simp at H, contradiction,
@@ -78,8 +78,8 @@ begin
   refl
 end
 
-@[simp] lemma if_gez (f g : RPP) (x : ℤ) (l : list ℤ) (H : 0 ≤ x) :
-  ‹If f f g› (x :: l) = x :: ‹f› l :=
+@[simp] lemma if_gez (f g : RPP) (x : ℤ) (X : list ℤ) (H : 0 ≤ x) :
+  ‹If f f g› (x :: X) = x :: ‹f› X :=
 begin
   cases x, cases x,
   refl,
@@ -87,8 +87,8 @@ begin
   simp at H, contradiction
 end
 
-@[simp] lemma less_def (n m : ℕ) (l : list ℤ) :
-  ‹less› (n :: m :: 0 :: l) = n :: m :: (ite (n < m) 1 0) :: l :=
+@[simp] lemma less_def (n m : ℕ) (X : list ℤ) :
+  ‹less› (n :: m :: 0 :: X) = n :: m :: (ite (n < m) 1 0) :: X :=
 begin
   have h : (m : ℤ) - n < 0 ∨ (m : ℤ) - n = 0 ∨ (0 : ℤ) < m - n := trichotomous ((m : ℤ) - n) 0,
   rcases h with h | h | h,
