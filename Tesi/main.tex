@@ -65,7 +65,7 @@
 \hyphenation{pri-mi-tive}
 
 % other
-\usepackage[colorlinks=true, linkcolor=teal, urlcolor=blue,]{hyperref}
+\usepackage[colorlinks=true, linkcolor=teal, urlcolor=blue, citecolor=cyan]{hyperref}
 \usepackage{csquotes}
 
 % macro
@@ -206,7 +206,7 @@ the development of formal proofs.
 
 \section{Reversible computing}
 
-Reversible computing is a model of computation in which every process can be run backwards.
+Reversible computing is a model of computation in which every process can be run backwards \cite{aaronson17lipics}.
 Simply put, in a reversible setting any program takes inputs and gives outputs (like usual), but can also go the other way around:
 provided the output it can reconstruct the input.
 In a mathematical sense, every function is expected to be invertible.
@@ -225,7 +225,7 @@ Lastly, reversible computing is directly related to quantum computing, as each o
 
 \section{Reversible Primitive Permutations}
 
-In the article we decided to formalize, the authors focus on providing a functional model of reversible computation.
+In the article we decided to formalize \cite{PAOLINI2020218}, the authors focus on providing a functional model of reversible computation.
 They develop an inductively defined set of functions, called \textbf{Reversible Primitive Permutations} or \textbf{RPP},
 which are expressive enough to represent all Primitive Recursive Functions -
 that is to say, $\RPP$ is $\PRF$-complete (we talk about what this means in section \ref{prfcompleteness}).
@@ -373,7 +373,7 @@ Instead, we can define a function $\rppinc$ in $\RPP$ which, given $n \in \NN$ a
   x &                      & x + n \\
 \end{NiceMatrix}\]
 If $n$ is negative the output is just $(n, x)$.
-The fact that the above diagram is only valid for $n \in \NN$ might bother some of you;
+The fact that the above diagram is only valid for $n \in \NN$ might bother some readers;
 we'll explain later why it is so, and how we can also make it work for $n \in \ZZ$.
 
 For now let's focus on the output: we don't just have $x + n$ but also $n$, and indeed,
@@ -398,7 +398,7 @@ This means that we apply the successor function $\rppSu$ to the value $x$, for $
 If $n \in \NN$ then $\downarrow n = n$, so we effectively add $n$ to the value $x$.
 If instead $n$ is negative then $\downarrow n = 0$ and nothing changes.
 
-Can you guess how $\rppdec$ is defined?
+Can the reader guess how $\rppdec$ is defined?
 \newpage
 In a very similar manner, using the predecessor function:
 \[\rppdec = \rppIt[\rppPr]\]
@@ -440,9 +440,9 @@ Given $n \in \NN$ and $x \in \ZZ$ we have
 so we add the result $n \cdot n$ to a variable $x$;
 we also require an additional value initialized to 0.
 We will make frequent use of variables initially set to 0 and which come back to 0 after the calculation;
-these are traditionally called \textbf{ancillary arguments} or \textbf{ancillaes}, from the latin term used to describe female house slaves in ancient Rome.
+these are traditionally called \textbf{ancillary arguments} or \textbf{ancillaes}, from the latin term used to describe female house slaves in ancient Rome \cite{aaronson17lipics}.
 
-You might be wondering what would happen if $n < 0$ or the ancilla was different from $0$.
+The reader might be wondering what would happen if $n < 0$ or the ancilla was different from $0$.
 The truth is, we don't really care.
 We will often specify the behaviour of these functions given some initial values,
 and we won't need to know what happens for different initial values because we'll never use those functions in other ways.
@@ -497,10 +497,6 @@ and that's just one of many similarities between functions and proofs.
 \section{First steps with Lean}
 
 In this section we take a look at some of Lean's basic features.
-You don't have to understand every detail -
-just enough to have a vague sense of what it's like to define stuff in Lean.
-
-\paragraph{}
 
 In Lean we primarily do three things:
 \begin{enumerate}
@@ -511,14 +507,16 @@ In Lean we primarily do three things:
 What sets Lean apart from your average functional programming language (like Haskell) is the third item on the list.
 Now we will instead focus on the first and second points.
 
-You don't have to understand every detail of what will follow -
+The reader isn't expected to understand every detail of what will follow -
 a vague understanding of what's going on would be sufficient.
-The curious reader can run and play with most of the following snippets of code
-in the online editor\footnote{\url{https://leanprover-community.github.io/lean-web-editor/}}.
+Most of the following snippets of code can be run and played with
+in the online editor\footnote{\url{https://leanprover-community.github.io/lean-web-editor/}.},
+while those pertaining $\RPP$ require more set-up\footnote{The code can be found at \url{https://github.com/GiacomoMaletto/RPP/tree/main/Lean},
+and uses Mathlib \cite{aaronson17lipics}.}.
 
 \paragraph{A simple example of a type}
 Data is defined using the \lstinline{inductive} keyword.
-Here is the typical example of data structure:
+Here is the typical example of data structure \cite{aaronson17lipics}:
 \begin{lstlisting}
 inductive weekday : Type
 | monday : weekday
@@ -555,7 +553,7 @@ This basic notion can lead to some contradictory statements, like the famous Rus
 and if one is not careful in defining types of types, the same thing could happen with type theory.
 But in fact, type theory was invented in the beginning of the 20th century by Bertrand Russell precisely to avoid Russell's paradox.
 The approach used in Lean is to define a cumulative hierarchy of universes \lstinline{Type : Type 1 : Type 2 ...},
-so that it's impossible to invoke objects like "the type of all types" or a type having itself as an element.}.
+so that it's impossible to invoke objects like "the type of all types" or a type having itself as an element. \cite{CarneiroMaster}}.
 Lean's type system is very expressive, and makes it possible to work with complex math in Lean.
 
 We can define functions over the type \lstinline{weekday} -
@@ -582,7 +580,7 @@ This function is defined by cases:
 if we have \lstinline{monday}, output \lstinline{tuesday},
 if we have \lstinline{tuesday}, output \lstinline{wednesday}, and so on.
 
-(Almost) every expression - like \lstinline{next (next thursday)} or \lstinline{3 * 5 + 2} -
+(Almost \cite{CarneiroMaster}) every expression - like \lstinline{next (next thursday)} or \lstinline{3 * 5 + 2} -
 have a corresponding \textit{reduced form} (respectively \lstinline{saturday} and \lstinline{17})
 which can be displayed using the \lstinline{#reduce} command,
 and is obtained by repeatedly applying functions to their arguments, until the full computation is carried out.
@@ -598,9 +596,9 @@ because it would mean that the first argument to \lstinline{next} is the functio
 This leads to no ambiguity and often helps reducing clutter.
 
 \paragraph{An example of an inductive type}
-Right now you could be wondering why we used the keyword \lstinline{inductive} to define \lstinline{weekday},
+Right now the reader could be wondering why we used the keyword \lstinline{inductive} to define \lstinline{weekday},
 when there's \textit{clearly} no induction going on at all in its construction.
-First of all, it depends on what you mean by induction; but it is true that that was a particularly simple case.
+First of all, it depends on what is meant by induction; but it is true that that was a particularly simple case.
 As an example of a more overtly inductive object, we can define the natural numbers like this:
 \begin{lstlisting}
 inductive Nat : Type
@@ -640,7 +638,7 @@ def Add : Nat → Nat → Nat
 \end{lstlisting}
 It may have struck you that the type of \lstinline{Add} is not \lstinline{Nat × Nat → Nat}
 but instead \lstinline{Nat → Nat → Nat}.
-This is known as currying, and it's not as strange as it might look like at first.
+This is known as currying \cite{aaronson17lipics}, and it's not as strange as it might look like at first.
 Consider this: we can think of \lstinline{Add} as a function which takes a pair \lstinline{(m,n) : Nat × Nat} and outputs \lstinline{Add m n : Nat},
 as is standard in mathematics.
 But we can also think of it as a function which takes just \lstinline{m : Nat} and outputs the function \lstinline{Add m : Nat → Nat},
@@ -993,21 +991,21 @@ There's a reason we tried to avoid dependent types wherever possible
 at least in Coq (which is another proof assistants we used at the beginning of the project)
 working with dependent types is often painful, because Coq doesn't recognize that certain types are the same.
 For example, elements of \lstinline{RPP (n + 1)} and \lstinline{RPP (1 + n)} cannot be compared even though it is (demonstrably!) true that
-\lstinline{n + 1 = 1 + n}. To get around this, it's possible to use something called John Major's Equality
+\lstinline{n + 1 = 1 + n}. To get around this, it's possible to use something called John Major's Equality \cite{cpdtbook}
 to state the equality of two objects with seemingly different types,
 but this involves the invocation of an additional axiom and is in general annoying to use.
 Other ways to deal with the problem exist,
 but our choice ended up being avoiding dependent types completely.
 As someone on the internet says,
 \begin{displayquote}
-Coq has this really powerful type system, but... don't use it.
+Coq has this really powerful type system, but... don't use it. \cite{dougdad}
 \end{displayquote}
 By extension, we also avoided them in Lean, perhaps mistakingly.
 \item When defining the iterator $\rppIt[f] (x, x_1, \dots, x_n)$ it's not immediately clear what to do when $x < 0$.
 In our definition, nothing happens, as $f$ in general is applied $\downarrow x = 0$ times.
 In the original definition, $f$ is instead applied $| x |$ times - let's call this iterator $\rppIta$.
 
-Reversibility gifts us with a third option: if $x < 0$,
+Reversibility gifts us with a third option \cite{matos03tcs}: if $x < 0$,
 we can apply $f$ a negative amount of times - or in other words, we can apply $f^{-1}$ for $- x$ times.
 Let's call this iterator $\rppItr$.
 Its usage leads to more natural definitions:
@@ -1479,7 +1477,7 @@ For many, being able to generate automatically new theorems and new math is the 
 Certainly Lean has value even before such a feat is accomplished,
 but where automation is already available it would be a waste not to use it.
 
-A simple tool which helps tremendously with theorem proving is the \lstinline{simp} tactic.
+A simple tool which helps tremendously with theorem proving is the \lstinline{simp} tactic \cite{simplean}.
 It automaticaly tries to apply already known theorems in order to simplify a given expression.
 We illustrate this with an example:
 \begin{lstlisting}
@@ -1935,7 +1933,7 @@ For reference, here's a summary of already defined functions:
 \end{NiceMatrix}\]
 
 \paragraph{Rewiring permutations}
-We call a function a \textit{rewiring permutation} if it only results in a finite permutation of the positions of its arguments.
+We call a function a \textit{rewiring permutation} if it only results in a finite permutation of the positions of its arguments \cite{PAOLINI2020218}.
 It should be clear that any rewiring permutation can be expressed in $\RPP$
 by a suitable combination of the identity $\rppId_n$, parallel composition $\rppPa$, swap $\rppSw$ and series composition $\rppCo$.
 
@@ -2191,7 +2189,7 @@ where $\floor{\sqrt{n}}$ is the truncated square root and $r = n - \floor{\sqrt{
 \paragraph{Another pairing function}
 
 The Cantor pairing is not the only bijection $\NN^2 \to \NN$.
-Another one is $\rppmkpair$, which we will also denote with quotation marks $\gl \cdot, \cdot \gr$:
+Another one is $\rppmkpair$ \cite{Carneiro19}, which we will also denote with quotation marks $\gl \cdot, \cdot \gr$:
 \[\rppmkpair(x,y) = \gl x,y \gr = \begin{cases} y^2 + x & x < y \\ x^2 + x + y & \text{otherwise} \end{cases} \]
 with inverse $\rppunpair = \big( (\cdot)_1, (\cdot)_2 \big) : \NN \to \NN^2$:
 \begin{align*}
@@ -2294,7 +2292,7 @@ where $s = -1 \ $ if $ \ n - \floor{\sqrt{n}}^2 < \floor{\sqrt{n}}$, and $s = 0$
 \end{NiceMatrix}\]
 \end{minipage}
 
-With $\rppunpairi$ we make use of \textit{Bennet's trick}:
+With $\rppunpairi$ we make use of \textit{Bennet's trick} \cite{perumalla2013chc}:
 we perform a computation $\rppunpairifwd$ which gives us the result we need, alongside some other useless data.
 The obvious next step would be to throw away the useless data and just keep the result,
 but in reversible computing we can't erase information.
@@ -2444,7 +2442,7 @@ Given a function, is there a quick way to tell if it's possible to include it in
 
 The answer is yes - in fact, $\RPP$ were created already with this question in mind.
 Specifically, they can be thought of as the reversible counterpart to another,
-more famous class of function: the \textit{Primitive Recursive Functions}.
+more famous class of function: the \textit{Primitive Recursive Functions} \cite{odifreddi1989book}.
 
 \begin{definition}[Primitive Recursive Functions]
 The class of \textbf{Primitive Recursive Functions} is the smallest subset of function $\NN^n \to \NN$ satisfying the following conditions:
@@ -2526,7 +2524,7 @@ By stating our theorem in terms of the already-defined $\PRF$,
 we "link" our object ($\RPP$ functions) with already established ones;
 building on top of what has already been done is both convenient and effective.
 
-Truth to be told, there are at least two notions of $\PRF$ in Mathlib.
+Truth to be told, there are at least two notions of $\PRF$ in Mathlib \cite{Carneiro19}.
 First the one that most closely resembles the definition we've given:
 \begin{lstlisting}
 inductive primrec' : ∀ {n}, (vector ℕ n → ℕ) → Prop
@@ -2844,7 +2842,7 @@ is expressed as
 \begin{lstlisting}
 ‹f› X = Y
 \end{lstlisting}
-but we could also see it as a \textbf{relation} between two tuples \lstinline{X}, \lstinline{Y} and a function \lstinline{f},
+but we could also see it as a \textbf{relation} \cite{aaronson17lipics} between tuples \lstinline{X}, \lstinline{Y} and function \lstinline{f},
 \begin{lstlisting}
 X ⇐[f]⇒ Y
 \end{lstlisting}
@@ -3011,8 +3009,14 @@ In our work, an effort has been made to develop a small, imperative programming 
 inspired by $\RPP$ with memory managed by dictionaries instead of tuples - but without much success.
 More effort could be put in this direction.
 
-Lastly, it could be interesting to study classes of functions which are partially reversible,
+Lastly, it could be interesting to study classes of functions which are "partially reversible",
 meaning that even though not all functions have an inverse, nonetheless each one can be broken down
 in a "reversible" and "non-reversible" part.
 
+%%%%%%%%%%%%%%%%%%%%%%
+\bibliographystyle{abbrv}
+%\bibliographystyle{myrefs}
+%\bibliographystyle{alphaurl}
+%\bibliographystyle{rsl}
+\bibliography{bibliography}
 \end{document}
