@@ -77,6 +77,7 @@
 
 \newcommand{\NN}{\mathbb{N}}
 \newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\RR}{\mathbb{R}}
 
 \newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
 
@@ -199,14 +200,87 @@
 \addcontentsline{toc}{chapter}{Introduction}
 \chapter*{Introduction}
 
-A \textbf{proof assistant} or \textbf{theorem prover} is a software designed to help with
+A peg puzzle can be an interesting toy for toddlers.
+It usually consists of some wooden shapes which have to be
+positioned in the appropriate hole - those shapes can look like animals, people or letters of the alphabet, for example.
+If you have a dog block in your hand and you try to put it over the cat hole,
+it's just not going to work. The pieces don't fit, it's \textit{physically impossible} to make it happen,
+there's a mechanical barrier preventing it.
+
+Mathematicians often like to pretend that they too are surrounded by mechanical barriers.
+If a function is defined as $f : \NN \to \RR$ it's wrong to consider $f(-1)$,
+by the inequalities $a < b$ and $a < c$ it doesn't follow in general that $b < c$,
+if we write $2 + 2 = 5$ and consider this a correct equation over the natural numbers then we have made a mistake.
+But it's not like the sheet of paper bursts into flames when such things are written on it -
+so how do we know that there's something wrong?
+
+By a complex process of recollection of past experiences, recognition of patterns,
+discussion and exchange of ideas with others, and many other elements.
+It's a very indirect process.
+
+Not that there's anything necessarily wrong with this;
+it can be argued that in mathematics, it's not the barriers that we put around us the important thing,
+but rather what those barriers reveal and make us see more clearly.
+Take group axioms (associativity, existence of the identity...): we don't really care about the axioms per se,
+but rather what concepts they encapsulate and what emerges from those rules.
+It's still possible to arrive at an important and insightful conclusion even if the path taken
+is full of imprecisions, unjustified claims and even some mistakes:
+who says that those mistakes might not turn into something new (for example, taking the square root of $-1$)?
+
+Still, it's hard to deny that there's something inherently mechanical about mathematics.
+Much of the development of math of the late 19th and 20th century is devoted to an effort to
+cast everything in a solid ground. The current belief is that pretty much all mathematics can rest on Zermelo–Fraenkel set theory
+with the axiom choice, and that's a respectable intellectual position.
+But the discipline keeps on being something nebulous, which exists in books and blackboards and the minds of people,
+and sheets of paper still don't burn when we write down $2 + 2 = 5$; it's still something \textit{handcrafted}, a product of artisans.
+\newpage
+An alternative to this might be proof assistants.
+
+A \textit{proof assistant} (or \textit{theorem prover}) is a computer software designed to help with
 the development of formal proofs.
+What this means, is that we can write down definitions, theorems and proofs about any sort of math on the computer,
+and if there's something wrong it immediately lets us know.
+The imaginary barriers that we previously constructed in our minds become
+real, mechanical barriers - it becomes \textit{physically impossible} to put $-1$ as argument in $f : \NN \to \RR$,
+or to provide an erroneous step inside a proof.
+
+As a consequence, proof assistants give us (almost) absolute certainty about the things we write down on them,
+which trace back directly to the "axioms" of the system in use.
+Note that they do \textbf{not} automatically come up with proofs and concepts
+(even if there's a lot of interest and work being put in this direction) but rather,
+they offer us an environment in which our mathematical ideas can live in a very clear and precise form.
+
+Systems like these run the risk of being far too pedantic and unwieldy to use,
+but the recent development of large libraries of math in proof assistants such as Mizar, HOL, Coq and Lean
+together with new landmark results (like the recent success of Peter Scholze's "liquid tensor experiment" \cite{quanta})
+show us that they're getting better, and that it might be an interesting time to start using them.
+
+\paragraph{}
+
+In this thesis we wish to explore this new, fascinating field.
+Our playground will be \textit{reversible computing} - specifically, a class of functions
+called recursive primitive permutations. We will present them alongside a promising, relatively new theorem prover
+called Lean (together with its extensive and rapidly-growing community library, Mathlib),
+in order to show the relationship between mathematical concepts and their computer formalization.
+
+
+% a box full of variously shaped holes,
+% together with some 
+% 
+% 
+% A \textbf{proof assistant} or \textbf{theorem prover} 
+% the development of formal proofs.
+% These proofs can be about the correctness of algorithms and software,
+% certifying that everything works correctly; or they can just be about pure math.
 
 \chapter{The definition}
 
+In this chapter we introduce mathematically the class of reversible primitive permutations
+and then formalize their definition in Lean.
+
 \section{Reversible computing}
 
-Reversible computing is a model of computation in which every process can be run backwards \cite{aaronson17lipics}.
+Reversible computing is a model of computation in which every process can be run backwards \cite{Morita17}\cite{perumalla2013chc}.
 Simply put, in a reversible setting any program takes inputs and gives outputs (like usual), but can also go the other way around:
 provided the output it can reconstruct the input.
 In a mathematical sense, every function is expected to be invertible.
@@ -512,11 +586,11 @@ a vague understanding of what's going on would be sufficient.
 Most of the following snippets of code can be run and played with
 in the online editor\footnote{\url{https://leanprover-community.github.io/lean-web-editor/}.},
 while those pertaining $\RPP$ require more set-up\footnote{The code can be found at \url{https://github.com/GiacomoMaletto/RPP/tree/main/Lean},
-and uses Mathlib \cite{aaronson17lipics}.}.
+and uses Mathlib \cite{mathlib}.}.
 
 \paragraph{A simple example of a type}
 Data is defined using the \lstinline{inductive} keyword.
-Here is the typical example of data structure \cite{aaronson17lipics}:
+Here is the typical example of data structure \cite{theoremprovinglean}:
 \begin{lstlisting}
 inductive weekday : Type
 | monday : weekday
@@ -638,7 +712,7 @@ def Add : Nat → Nat → Nat
 \end{lstlisting}
 It may have struck you that the type of \lstinline{Add} is not \lstinline{Nat × Nat → Nat}
 but instead \lstinline{Nat → Nat → Nat}.
-This is known as currying \cite{aaronson17lipics}, and it's not as strange as it might look like at first.
+This is known as \textit{currying}, and it's not as strange as it might look like at first.
 Consider this: we can think of \lstinline{Add} as a function which takes a pair \lstinline{(m,n) : Nat × Nat} and outputs \lstinline{Add m n : Nat},
 as is standard in mathematics.
 But we can also think of it as a function which takes just \lstinline{m : Nat} and outputs the function \lstinline{Add m : Nat → Nat},
@@ -1523,7 +1597,7 @@ end
 \end{lstlisting}
 the \lstinline{simp} tactic can be used to simplify the goal,
 but more often it's used to completely solve it.\footnote{The authors of Mathlib discourages
-"non-terminal \lstinline{simp}s", which are uses of the simplifier which doesn't solve the goal \cite{aaronson17lipics}.}
+"non-terminal \lstinline{simp}s", which are uses of the simplifier which doesn't solve the goal \cite{mathlibsimp}.}
 We can mark with \lstinline{@[simp]} theorems which have an equality or a bi-implication as thesis.
 Notice that we put \lstinline{@[simp]} besides theorems that we want to be later utilized by \lstinline{simp},
 not in theorems where we want to use the tactic \lstinline{simp}.
@@ -2842,7 +2916,7 @@ is expressed as
 \begin{lstlisting}
 ‹f› X = Y
 \end{lstlisting}
-but we could also see it as a \textbf{relation} \cite{aaronson17lipics} between tuples \lstinline{X}, \lstinline{Y} and function \lstinline{f},
+but we could also see it as a \textbf{relation} \cite{Pierce:SF1} between tuples \lstinline{X}, \lstinline{Y} and function \lstinline{f},
 \begin{lstlisting}
 X ⇐[f]⇒ Y
 \end{lstlisting}
@@ -2950,7 +3024,7 @@ the usage of a lighter, simpler notation and the development of diagrams to visu
 We set up an environment in which it is easy to try out, develop and reason about new $\RPP$ functions,
 together with the possibility of proving facts about them in a semi-automated way.
 
-\section{Future work}
+\section{Future work on RPP}
 
 In the future, a formalization of $\PRF$-soundness could be provided.
 But a more interesting direction is the exploration of possible extensions and generalization of reversible primitive permutations.
@@ -2960,11 +3034,13 @@ different input and ouput arity - in other words, in which the number of availab
 Currently, most functions require a large number of ancillae - that is, values set to $0$ before and after the computation -
 and if one is not careful in providing enough clear cells, computations can break.
 Having the possibility of creating and removing ancillae on the fly would solve this problem.
+
 In the formalization of $\PRF$-completeness we mention another problem,
-which is that excess information can only be stored "vertically", piling it through repeated use of pairing functions.
+which is that information in excess can only be stored "vertically", piling it through repeated use of pairing functions.
 This however is computationally ineffective, because the values created by pairing functions grow very rapidly.
 By varying the number of available cells another possibility would be open: storing information "horizontally",
 farther and farther away in memory.
+
 Lastly, flexible input and output arity could lead to a stronger class of functions which
 go beyond $\PRF$-soundness and let us express other functions.
 
@@ -3015,8 +3091,5 @@ in a "reversible" and "non-reversible" part.
 
 %%%%%%%%%%%%%%%%%%%%%%
 \bibliographystyle{abbrv}
-%\bibliographystyle{myrefs}
-%\bibliographystyle{alphaurl}
-%\bibliographystyle{rsl}
 \bibliography{bibliography}
 \end{document}
