@@ -440,7 +440,7 @@ Given $n \in \NN$ and $x \in \ZZ$ we have
 so we add the result $n \cdot n$ to a variable $x$;
 we also require an additional value initialized to 0.
 We will make frequent use of variables initially set to 0 and which come back to 0 after the calculation;
-these are traditionally called \textbf{ancillary arguments} or \textbf{ancillaes}, from the latin term used to describe female house slaves in ancient Rome \cite{aaronson17lipics}.
+these are traditionally called \textbf{ancillary arguments} or \textbf{ancillaes}, from the latin term used to describe female house slaves in ancient Rome.
 
 The reader might be wondering what would happen if $n < 0$ or the ancilla was different from $0$.
 The truth is, we don't really care.
@@ -1477,7 +1477,7 @@ For many, being able to generate automatically new theorems and new math is the 
 Certainly Lean has value even before such a feat is accomplished,
 but where automation is already available it would be a waste not to use it.
 
-A simple tool which helps tremendously with theorem proving is the \lstinline{simp} tactic \cite{simplean}.
+A simple tool which helps tremendously with theorem proving is the \lstinline{simp} tactic.
 It automaticaly tries to apply already known theorems in order to simplify a given expression.
 We illustrate this with an example:
 \begin{lstlisting}
@@ -1523,7 +1523,7 @@ end
 \end{lstlisting}
 the \lstinline{simp} tactic can be used to simplify the goal,
 but more often it's used to completely solve it.\footnote{The authors of Mathlib discourages
-"non-terminal \lstinline{simp}s", which are uses of the simplifier which doesn't solve the goal.}
+"non-terminal \lstinline{simp}s", which are uses of the simplifier which doesn't solve the goal \cite{aaronson17lipics}.}
 We can mark with \lstinline{@[simp]} theorems which have an equality or a bi-implication as thesis.
 Notice that we put \lstinline{@[simp]} besides theorems that we want to be later utilized by \lstinline{simp},
 not in theorems where we want to use the tactic \lstinline{simp}.
