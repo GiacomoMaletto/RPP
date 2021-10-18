@@ -1,5 +1,5 @@
 % base
-\documentclass{book}
+\documentclass[oneside]{book}
 
 % characters
 \usepackage[T1]{fontenc}
@@ -195,8 +195,22 @@
 
 \mainmatter
 
+\thispagestyle{empty}
+\section*{Abstract}
+
+Proof assistants are computer programs designed to help with
+the development of formal proofs.
+In this thesis we explore this topic using the Lean theorem prover,
+and by formalizing an article \cite{PAOLINI2020218} on reversible computing -
+specifically, about a class of invertible computable functions called Recursive Primitive Permutations
+which are expressive enough to encode the whole class of Primitive Recursive Functions.
+In doing so, many aspects of the original paper are re-elaborated and simplified,
+like the definition, the construction of the Cantor pairing and the proof of $\PRF$-completeness.
+
+\thispagestyle{empty}
 \tableofcontents
 
+\pagenumbering{arabic}
 \addcontentsline{toc}{chapter}{Introduction}
 \chapter*{Introduction}
 
@@ -565,7 +579,7 @@ Notice that in this way, if we try to calculate $\rppinc^{-1}$ we really do get 
 Since $\RPP$ is inductively defined, any proposition involving $\RPP$ functions can be proven using induction.
 Not only that, but any function which has for an argument a generic $\RPP$ can be defined recursively,
 and indeed we can also see $(\cdot)^{-1}:\RPP \to \RPP$ as a recursive function.
-Now that we delve into the Lean theorem prover we will see that induction and recursion can be seen as really the same thing,
+In section \ref{curry} we will see that induction and recursion can be seen as really the same thing,
 and that's just one of many similarities between functions and proofs.
 
 \section{First steps with Lean}
@@ -588,7 +602,7 @@ in the online editor\footnote{\url{https://leanprover-community.github.io/lean-w
 while those pertaining $\RPP$ require more set-up\footnote{The code can be found at \url{https://github.com/GiacomoMaletto/RPP/tree/main/Lean},
 and uses Mathlib \cite{mathlib}.}.
 
-\paragraph{A simple example of a type}
+\paragraph{A simple example of type}
 Data is defined using the \lstinline{inductive} keyword.
 Here is the typical example of data structure \cite{theoremprovinglean}:
 \begin{lstlisting}
@@ -667,9 +681,9 @@ Languages like Lean follow a different convention: the arguments are simply writ
 So in our case, what we would write as $\mathsf{next(next(thursday))}$ is instead written \lstinline{next (next thursday)}
 (writing \lstinline{next next thursday} would be wrong
 because it would mean that the first argument to \lstinline{next} is the function \lstinline{next} itself, not \lstinline{next thursday}).
-This leads to no ambiguity and often helps reducing clutter.
+This doesn't lead to ambiguity and often helps reducing clutter.
 
-\paragraph{An example of an inductive type}
+\paragraph{An example of inductive type}
 Right now the reader could be wondering why we used the keyword \lstinline{inductive} to define \lstinline{weekday},
 when there's \textit{clearly} no induction going on at all in its construction.
 First of all, it depends on what is meant by induction; but it is true that that was a particularly simple case.
@@ -728,7 +742,9 @@ all functions are single variable, it's just that some return other functions.
 Functions belonging to $\RPP$ have $\ZZ^n$ as their domain and codomain,
 so we need a way to represent and work with integer tuples.
 
-The good news is that integers are already defined in Lean.
+The good news is that integers are already defined in Lean\footnote{Deciding how to define something like the integers in
+a proof assistant is not so obvious - there are many equivalent ways,
+but some are more convenient than others. For a comparison see \cite{ints}}.
 Here is their definition:
 \begin{lstlisting}
 inductive int : Type
@@ -1234,7 +1250,7 @@ end
 \end{lstlisting}
 something surprising happens:
 \begin{lstlisting}
-invalid apply tactic, failed to unify
+  invalid apply tactic, failed to unify
     O+n = n
   with
     ?m_2 = ?m_2
@@ -1379,7 +1395,7 @@ So, we've now learned some basics about theorem proving in Lean,
 but we don't know anything yet about what proofs \textit{are} and how they fit in the general scheme of things.
 There is a lot to be learned.
 
-\section{Curry-Howard correspondence}
+\section{Curry-Howard correspondence} \label{curry}
 
 The following section is not necessary to understand the rest of the thesis,
 so the busy reader can skip it.
@@ -2820,8 +2836,8 @@ $\begin{array}{c}
 \begin{NiceMatrix}
   s                                       &                         &                         & s                   & \bloch{5-1}{2\\3\\1\\0\\4} & z                   \\
   \prPrec[F,G](z,n+1)                     &                         &                         & \prPrec[F,G](z,n+1) &                            & n                   \\
-  \gl z, \gl n, \prPrec[F,G](z,n) \gr \gr & \bloch{3-1}{\rppunpair} &                         & z                   &                            & \prPrec[F,G](z,n+1) \\
-  0                                       &                         & \bloch{2-1}{\rppunpair} & n                   &                            & s                   \\
+  \gl z, \gl n, \prPrec[F,G](z,n) \gr \gr & \bloch{4-1}{\rppunpair} &                         & z                   &                            & \prPrec[F,G](z,n+1) \\
+  0                                       &                         & \bloch{3-1}{\rppunpair} & n                   &                            & s                   \\
   0                                       &                         &                         & \prPrec[F,G](z,n)   &                            & \prPrec[F,G](z,n)   \\
   \boldsymbol{0}                          &                         &                         & \boldsymbol{0}      &                            & \boldsymbol{0}      \\
 \end{NiceMatrix}
