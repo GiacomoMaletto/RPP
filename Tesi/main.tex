@@ -145,6 +145,7 @@
 \author{Giacomo Maletto}
 \date{}
 
+
 \begin{document}
 
 % \maketitle
@@ -191,11 +192,8 @@
 
 \vskip 2.5cm
 
-\centerline{2021/2022}
+\centerline{2020/2021}
 
-\mainmatter
-
-\thispagestyle{empty}
 \section*{Abstract}
 
 Proof assistants are computer programs designed to help with
@@ -207,12 +205,16 @@ which are expressive enough to encode the whole class of Primitive Recursive Fun
 In doing so, many aspects of the original paper are re-elaborated and simplified,
 like the definition, the construction of the Cantor pairing and the proof of $\PRF$-completeness.
 
-\thispagestyle{empty}
 \tableofcontents
 
-\pagenumbering{arabic}
-\addcontentsline{toc}{chapter}{Introduction}
+\mainmatter
+
+\newpage
+
 \chapter*{Introduction}
+\markboth{Introduction}{INTRODUCTION}
+\addcontentsline{toc}{chapter}{Introduction}
+
 
 A peg puzzle can be an interesting toy for toddlers.
 It usually consists of some wooden shapes which have to be
