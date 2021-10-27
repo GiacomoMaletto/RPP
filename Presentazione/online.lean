@@ -25,6 +25,12 @@ infix `‖` : 55 := Pa
 attribute [pp_nodot] It
 attribute [pp_nodot] If
 
+
+
+def t := Sw ;; (Ne ‖ Su)
+
+
+
 @[simp] def inv : RPP → RPP
 | (Id n)     := Id n
 | Ne         := Ne
@@ -38,10 +44,10 @@ attribute [pp_nodot] If
 
 notation f `⁻¹` : 60 := inv f
 
-#reduce ((Id 3)⁻¹)⁻¹
-#reduce Ne⁻¹
-#reduce Su⁻¹
-#reduce (Sw ;; (Ne ‖ Su))⁻¹
+
+#reduce t⁻¹
+#reduce (Su⁻¹)⁻¹
+
 
 example (f : RPP) : (f⁻¹)⁻¹ = f :=
 begin
@@ -93,6 +99,15 @@ def ev : RPP → list ℤ → list ℤ
 | _          X                    := X
 
 notation `‹` f `›` : 50 := ev f
+
+
+
+#eval ‹t› [3,0]
+
+example (x y : ℤ) : ‹t› [x, y] = [-y, x+1] :=
+by refl
+
+
 
 @[simp] lemma ev_nil (f : RPP) : ‹f› [] = [] :=
 by { induction f; simp [ev, *] }
@@ -154,16 +169,7 @@ end RPP
 open RPP
 
 
-def f := Sw ;; (Ne ‖ Su)
 
-#check f
-
-#reduce f⁻¹
-
-#eval ‹f› [0,3]
-
-example (x y : ℤ) : ‹f› [x, y] = [-y, x+1] :=
-by refl
 
 
 
