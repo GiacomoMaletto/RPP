@@ -200,7 +200,7 @@ Proof assistants are computer programs designed to help with
 the development of formal proofs.
 In this thesis we explore this topic using the Lean theorem prover,
 and by formalizing an article \cite{PAOLINI2020218} on reversible computing -
-specifically, about a class of invertible computable functions called Recursive Primitive Permutations
+specifically, about a class of invertible computable functions called Reversible Primitive Permutations
 which are expressive enough to encode the whole class of Primitive Recursive Functions.
 In doing so, many aspects of the original paper are re-elaborated and simplified,
 like the definition, the construction of the Cantor pairing and the proof of $\PRF$-completeness.
@@ -275,7 +275,7 @@ show us that they're getting better, and that it might be an interesting time to
 
 In this thesis we wish to explore this new, fascinating field.
 Our playground will be \textit{reversible computing} - specifically, a class of functions
-called recursive primitive permutations. We will present them alongside a promising, relatively new theorem prover
+called Reversible Primitive Permutations. We will present them alongside a promising, relatively new theorem prover
 called Lean (together with its extensive and rapidly-growing community library, Mathlib),
 in order to show the relationship between mathematical concepts and their computer formalization.
 
@@ -1341,11 +1341,12 @@ end
 \end{lstlisting}
 Again, using \lstinline{refl} doesn't work, so we use induction.
 We have a choice: using induction on \lstinline{n} or \lstinline{m};
-note that doing induction on one or the other is not the same,
+note that in general doing induction on one or the other is not the same,
 because \lstinline{n} and \lstinline{m} have asymmetric roles in the definition of \lstinline{Add}.
 In particular, the second argument gets "broken down" at each step
 (since \lstinline{n + m.S = (n + m).S}) while the first argument doesn't change.
-Thus, in this case the best choice is induction on \lstinline{m}.
+In this case however it doesn't make a substantial difference;
+we choose to do induction on \lstinline{m} as it's slightly more convenient.
 \begin{lstlisting}
 lemma plus_comm (n m : Nat) : n + m = m + n :=
 begin
@@ -1896,13 +1897,13 @@ prove that \lstinline{‹f⁻¹›^[↓x]} is the left inverse of \lstinline{‹
 
 This fact is true in general and luckily, it's a result already present in Mathlib:
 \begin{lstlisting}
-theorem left_inverse.iterate {g : α → α}
-  (hg : left_inverse g f) (n : ℕ) :
-  left_inverse (g^[n]) (f^[n])
+theorem function.left_inverse.iterate {g : α → α}
+  (hg : function.left_inverse g f) (n : ℕ) :
+  function.left_inverse (g^[n]) (f^[n])
 \end{lstlisting}
-where \lstinline{left_inverse} is a proposition defined like this:
+where \lstinline{function.left_inverse} is a proposition defined like this:
 \begin{lstlisting}
-def left_inverse (g : β → α) (f : α → β) : Prop :=
+def function.left_inverse (g : β → α) (f : α → β) : Prop :=
   ∀ x, g (f x) = x
 \end{lstlisting}
 so applying \lstinline{function.left_inverse.iterate} solves our goal.
@@ -2090,7 +2091,7 @@ What's special about this function is that it's a bijection between $\NN^2$ and 
 (\textit{maybe} the only polynomial to be so\footnote{It's currently an open question
 whether there are other polynomials which are bijection $\NN^2 \to \NN$.}).
 We can imagine it to be an enumeration of the square grid $\NN^2$,
-which assignes to each coordinate $(x,y)$ a unique number $\rppcp(x,y)$:
+which assigns to each coordinate $(x,y)$ a unique number $\rppcp(x,y)$:
 
 \begin{figure}[H]
   \centering
