@@ -12,28 +12,19 @@
 \newtheorem{fact}{Fact}[section]
 \usepackage{latexsym}
 \usepackage{cmll}
+\usepackage{xspace}
 
 % graphics
 \usepackage{mathdots}
 \usepackage{nicematrix}
 \setcounter{MaxMatrixCols}{20}
 \usepackage{rotating}
-%\definecolor{lblue}{rgb}{.80, .90, .95}
-%\definecolor{lorange}{rgb}{1, .85, .60}
 
-%\usepackage{color}
-
-
-%\usepackage[dvipsnames]{xcolor}
 \usepackage{xcolor}
-
 \definecolor{keywordcolor}{rgb}{0.7, 0.1, 0.1} % red
 \definecolor{commentcolor}{rgb}{0.4, 0.4, 0.4} % grey
 \definecolor{symbolcolor}{rgb}{0.0, 0.1, 0.6}  % blue
 \definecolor{sortcolor}{rgb}{0.1, 0.5, 0.1}    % green
-
-
-
 \definecolor{aawhite}{rgb}{0.97,0.97,0.97}
 \definecolor{awhite}{rgb}{0.90,0.90,0.90}
 \definecolor{lgreen}{rgb}{0.94,1.0,0.98}
@@ -42,7 +33,9 @@
 \definecolor{lgreen}{rgb}{0.94,1.0,0.98}
 \definecolor{bgreen}{rgb}{0.00,0.50,0.25}
 \definecolor{dblue}{rgb}{0.0,0.1,0.6}
-\definecolor{lblue}{rgb}{0.8,0.8,1.0}
+\definecolor{lorange}{rgb}{1, .85, .60}
+\definecolor{lblue}{rgb}{.80, .90, .95}
+%\definecolor{lblue}{rgb}{0.8,0.8,1.0}
 \definecolor{mixed}{rgb}{0.0,0.3,0.3}
 \definecolor{dred}{rgb}{0.6,0.2,0.0}
 \definecolor{sred}{rgb}{0.7,0.2,0.0}
@@ -164,34 +157,53 @@
 %\newcommand{\vj}[1]{\lstinline[language=java,style=java-style]+#1+}
 %%% lstlisting stop definitions
 
+% Macros
+\newcommand{\RPP}{\textsf{RPP}\xspace}
+\newcommand{\UPRF}{\textsf{uPRF}\xspace}
+\newcommand{\PRF}{\textsf{PRF}\xspace}
+\newcommand{\CPP}{\textsf{C++}\xspace}
+\newcommand{\LEAN}{\textsf{LEAN 3}\xspace}
+\newcommand{\LEANFour}{\textsf{LEAN 4}\xspace}
+
+
 \begin{document}
-\title{Splitting recursion schemes into reversible and classical interacting threads}
+\title{A formal certification that Reversible Primitive Permutations are Primitive-recursive complete}
 
-\author{Armando B. Matos\inst{1} \and
-	Luca Paolini\inst{2}\orcidID{0000-0002-4126-0170} \and
-	Luca Roversi\inst{2}\orcidID{0000-0002-1871-6109}}
-%
-\authorrunning{A. Matos, L. Paolini, L. Roversi}
+\author{Giacomo Maletto\inst{1} \and
+	    Luca Roversi\inst{2}\orcidID{0000-0002-1871-6109}}
 
-\institute{Universidade do Porto, Departamento de Ciência de Computadores -- Portugal\\
-	\email{armandobcm@yahoo.com}\\
+\authorrunning{G. Maletto, L. Roversi}
+
+\institute{
+    Università degli Studi di Torino, Dipartimento di Matematica  -- Italy\\
+	\email{giacomo.maletto@edu.unito.it}\\
 	\and
 	Università degli Studi di Torino, Dipartimento di Informatica -- Italy\\
-	\email{\{luca.paolini,luca.roversi\}@unito.it}}
+	\email{luca.roversi@unito.it}}
 
 \maketitle
 \begin{abstract}
-Given a simple recursive function, we show how to extract from it a reversible and an classical iterative part. Those parts can synchronously cooperate under a Producer/Consumer pattern in order to implement the original recursive function. The reversible producer is meant to run on reversible hardware. We also discuss how to extend the extraction to a more general compilation scheme.
 \end{abstract}
 
-%\input{introduction}
-%\input{driving-idea}
-%\input{from-recursion-to-iteration}
-%\input{conclusion}
+\section{Introduction}
 
+\subsection{Contributions}
+\begin{itemize}
+    \item Very strong confidence that \RPP is \PRF-complete, based on a fully detailed algorithmic translation.
+    \item A simplified translation from \PRF to \RPP, as compared to the original one in \cite{DBLP:journals/tcs/PaoliniPR20} which is based on the formalization of \UPRF available in \LEAN library.
+    \item Identification of a programming pattern common to interesting algorithms, one of which, the Cantor pairing, lies at the core of the translation from \PRF to \RPP.
+    \item Concrete examples of reversible programming that, besides their formal certification, can be exported into a programming language as real and efficient as \CPP, as soon as \LEANFour will be delivered.
+\end{itemize}
+
+\subsection{Related work}
+\cite{paoliniTYPES2015}
+
+\section{Conclusion and developments}
+
+%------------------
 \bibliographystyle{abbrv}
 \bibliography{bib-minimal}
 
 %\appendix
-%\input{producer-consumer}
+
 \end{document}
