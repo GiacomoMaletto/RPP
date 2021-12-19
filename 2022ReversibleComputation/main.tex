@@ -1,0 +1,197 @@
+\documentclass[runningheads]{llncs}
+
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\newcommand*{\qeda}{\hfill\ensuremath{\blacksquare}}%
+\newcommand*{\qedb}{\hfill\ensuremath{\square}}%
+\newtheorem{fact}{Fact}[section]
+\usepackage{latexsym}
+\usepackage{cmll}
+
+% graphics
+\usepackage{mathdots}
+\usepackage{nicematrix}
+\setcounter{MaxMatrixCols}{20}
+\usepackage{rotating}
+%\definecolor{lblue}{rgb}{.80, .90, .95}
+%\definecolor{lorange}{rgb}{1, .85, .60}
+
+%\usepackage{color}
+
+
+%\usepackage[dvipsnames]{xcolor}
+\usepackage{xcolor}
+
+\definecolor{keywordcolor}{rgb}{0.7, 0.1, 0.1} % red
+\definecolor{commentcolor}{rgb}{0.4, 0.4, 0.4} % grey
+\definecolor{symbolcolor}{rgb}{0.0, 0.1, 0.6}  % blue
+\definecolor{sortcolor}{rgb}{0.1, 0.5, 0.1}    % green
+
+
+
+\definecolor{aawhite}{rgb}{0.97,0.97,0.97}
+\definecolor{awhite}{rgb}{0.90,0.90,0.90}
+\definecolor{lgreen}{rgb}{0.94,1.0,0.98}
+\definecolor{dgreen}{rgb}{0.0,0.3,0.1}
+\definecolor{sgreen}{rgb}{0.0,0.7,0.3}
+\definecolor{lgreen}{rgb}{0.94,1.0,0.98}
+\definecolor{bgreen}{rgb}{0.00,0.50,0.25}
+\definecolor{dblue}{rgb}{0.0,0.1,0.6}
+\definecolor{lblue}{rgb}{0.8,0.8,1.0}
+\definecolor{mixed}{rgb}{0.0,0.3,0.3}
+\definecolor{dred}{rgb}{0.6,0.2,0.0}
+\definecolor{sred}{rgb}{0.7,0.2,0.0}
+\definecolor{ddred}{rgb}{0.3,0.1,0.0}
+\definecolor{turq}{rgb}{0.28,0.82,0.80}
+\definecolor{lyellow}{rgb}{1.00,0.97,0.94}
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.96,0.96,0.96}
+
+\usepackage{graphicx}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=sred,
+    filecolor=magenta,
+    urlcolor=cyan,
+    citecolor=sgreen,
+    bookmarks=true,
+}
+
+
+% code
+\usepackage{listings}
+\def\lstlanguagefiles{lstlean.tex}
+\lstset{language=lean}
+\usepackage{float}
+
+
+%\usepackage{listings}
+%\renewcommand{\verb}{\lstinline}
+%% Yarel related definitions
+%\input{yarel-lst.tex}
+%\lstdefinestyle{yarel-style}{
+%	backgroundcolor=\color{backcolour},
+%	commentstyle=\color{codegreen},
+%	keywordstyle=\color{magenta},
+%	numberstyle=\tiny\color{codegray},
+%	stringstyle=\color{codepurple},
+%	%	basicstyle=\fontsize{9}{13}\selectfont\ttfamily,
+%	basicstyle=\ttfamily\footnotesize,
+%	breakatwhitespace=false,
+%	breaklines=true,
+%	captionpos=b,
+%	keepspaces=true,
+%	numbers=left,
+%	numbersep=5pt,
+%	showspaces=false,
+%	showstringspaces=false,
+%	showtabs=false,
+%	tabsize=2
+%}
+%\lstset{
+%	language={yarel},
+%%	basicstyle=\fontsize{9}{13}\selectfont\ttfamily,
+%	basicstyle=\small\ttfamily, % Global Code Style
+%	captionpos=b, % Position of the Caption (t for top, b for bottom)
+%	extendedchars=true, % Allows 256 instead of 128 ASCII characters
+%	tabsize=2, % number of spaces indented when discovering a tab
+%	columns=fixed, % make all characters equal width
+%	keepspaces=true, % does not ignore spaces to fit width, convert tabs to spaces
+%	showstringspaces=false, % lets spaces in strings appear as real spaces
+%	breaklines=true, % wrap lines if they don't fit
+%	frame=trbl, % draw a frame at the top, right, left and bottom of the listing
+%	frameround=tttt, % make the frame round at all four corners
+%	framesep=4pt, % quarter circle size of the round corners
+%	numbers=left, % show line numbers at the left
+%	numberstyle=\tiny\ttfamily, % style of the line numbers
+%	commentstyle=\color{yarelGreen}, % style of comments
+%	keywordstyle=\color{mymauve}, % style of keywords
+%	%	stringstyle=\color{yarelBlue}, % style of strings
+%	identifierstyle=\color{dblue},
+%	stringstyle=\color{orange},
+%	backgroundcolor=\color{gray!5},
+%	mathescape=true,
+%	sensitive=false, % keywords are not case-sensitive
+%}
+%\newcommand{\verby}[1]{\lstinline[language=yarel,style=yarel-style]+#1+}
+%% JAVA related definitions
+%\input{java-lst.tex}
+%\lstdefinestyle{java-style}{
+%	backgroundcolor=\color{backcolour},
+%	commentstyle=\color{codegreen},
+%	keywordstyle=\color{magenta},
+%	numberstyle=\tiny\color{codegray},
+%	stringstyle=\color{codepurple},
+%	basicstyle=\fontsize{9}{13}\selectfont\ttfamily,
+%%	basicstyle=\ttfamily\footnotesize,
+%	breakatwhitespace=false,
+%	breaklines=true,
+%	captionpos=b,
+%	keepspaces=true,
+%	numbers=left,
+%	numbersep=5pt,
+%	showspaces=false,
+%	showstringspaces=false,
+%	showtabs=false,
+%	tabsize=2
+%}
+%\lstset{
+%	language={java},
+%	morekeywords={cached,case,default,extension,false,import,JAVA,WORKFLOWSLOT,let,new,null,private,create,switch,this,true,reexport,around,if,then,else, def, val, var, private, class, static, return, as, instanceof, for, override, boolean},
+%	morekeywords=[2]{filter, toList, last, head},
+%	keywordstyle=[2]\color{eclipseOrange}\textit,
+%	morekeywords=[3]{FAST, NORMAL, IN, PROVIDED},
+%	keywordstyle=[3]\color{eclipseBlue}\textsl,
+%	morekeywords=[4]{},          % <-- Your keywords here (w/ orange)
+%	keywordstyle=[4]\color{eclipseOrange},
+%	morecomment=[l]{//},
+%	morecomment=[s]{/*}{*/},
+%	morestring=[b]",
+%}
+%\newcommand{\verbj}[1]{\lstinline[language=java,style=java-style]+#1+}
+%\newcommand{\vj}[1]{\lstinline[language=java,style=java-style]+#1+}
+%%% lstlisting stop definitions
+
+\begin{document}
+\title{Splitting recursion schemes into reversible and classical interacting threads}
+
+\author{Armando B. Matos\inst{1} \and
+	Luca Paolini\inst{2}\orcidID{0000-0002-4126-0170} \and
+	Luca Roversi\inst{2}\orcidID{0000-0002-1871-6109}}
+%
+\authorrunning{A. Matos, L. Paolini, L. Roversi}
+
+\institute{Universidade do Porto, Departamento de Ciência de Computadores -- Portugal\\
+	\email{armandobcm@yahoo.com}\\
+	\and
+	Università degli Studi di Torino, Dipartimento di Informatica -- Italy\\
+	\email{\{luca.paolini,luca.roversi\}@unito.it}}
+
+\maketitle
+\begin{abstract}
+Given a simple recursive function, we show how to extract from it a reversible and an classical iterative part. Those parts can synchronously cooperate under a Producer/Consumer pattern in order to implement the original recursive function. The reversible producer is meant to run on reversible hardware. We also discuss how to extend the extraction to a more general compilation scheme.
+\end{abstract}
+
+%\input{introduction}
+%\input{driving-idea}
+%\input{from-recursion-to-iteration}
+%\input{conclusion}
+
+\bibliographystyle{abbrv}
+\bibliography{bib-minimal}
+
+%\appendix
+%\input{producer-consumer}
+\end{document}
