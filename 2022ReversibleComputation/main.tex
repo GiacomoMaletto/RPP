@@ -3,10 +3,19 @@
 \usepackage[utf8x]{inputenc}
 \usepackage[T1]{fontenc}
 
+
+% Text organization
+\usepackage{comment}
+\usepackage{csquotes}
+\usepackage{caption} % subfigures
+\usepackage{subcaption}
+
+
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{stmaryrd}
+\SetSymbolFont{stmry}{bold}{U}{stmry}{m}{n}
 \newcommand*{\qeda}{\hfill\ensuremath{\blacksquare}}%
 \newcommand*{\qedb}{\hfill\ensuremath{\square}}%
 \newtheorem{fact}{Fact}[section]
@@ -67,7 +76,9 @@
 \def\lstlanguagefiles{lstlean.tex}
 \lstset{language=lean}
 \usepackage{float}
-
+\floatstyle{boxed}
+\restylefloat{table}
+\restylefloat{figure}
 
 %\usepackage{listings}
 %\renewcommand{\verb}{\lstinline}
@@ -156,21 +167,28 @@
 %\newcommand{\vj}[1]{\lstinline[language=java,style=java-style]+#1+}
 %%% lstlisting stop definitions
 
+
+\input{Giacomo_macros}
 % Macros
 \newcommand{\RPP}{\textsf{RPP}\xspace}
 \newcommand{\UPRF}{\textsf{UPRF}\xspace}
 \newcommand{\PRF}{\textsf{PRF}\xspace}
+\newcommand{\PR}{\textsf{PR}\xspace}
 \newcommand{\CPP}{\textsf{C}\xspace}
-\newcommand{\LEAN}{\textsf{LEAN 3}\xspace}
-\newcommand{\LEANFour}{\textsf{LEAN 4}\xspace}
+\newcommand{\LEAN}{\textsf{LEAN}\xspace}
+\newcommand{\LEANFour}{\textsf{LEAN4}\xspace}
+\newcommand{\RPRF}{\textsf{R}\PRF\xspace} % reversible primitive
+\newcommand{\JMF}{\textsf{RI}\xspace} % Jacopini Mentrasti
+\newcommand{\Janus}{\textsf{Janus}\xspace}
+\newcommand{\Matita}{\textsf{Matita}\xspace}
+\newcommand{\SRL}{\textsf{SRL}\xspace}
 \newcommand{\Nat}{\mathbb{N}}
 \newcommand{\Int}{\mathbb{Z}}
-\newcommand{\RPRF}{\mathsf{R}\PRF} % reversible primitive
-\newcommand{\JMF}{\mathcal{RI}} % Jacopini Mentrasti
 
 
 \begin{document}
-\title{A formal certification that Reversible Primitive Permutations are Primitive-recursive complete}
+%\title{A formal certification that Reversible Primitive Permutations are Primitive-recursive complete}
+\title{Certifying algorithms and relevant properties of  Reversible Primitive Permutations with \LEAN}
 
 \author{Giacomo Maletto\inst{1} \and
 	    Luca Roversi\inst{2}\orcidID{0000-0002-1871-6109}}
@@ -186,218 +204,505 @@
 
 \maketitle
 \begin{abstract}
+%TODO
 \end{abstract}
 
 %=====================
 \section{Introduction}
 \label{section:Introduction}
 
-Mainstream models of computations focus on one of the two possible directions of computation.
-We typically think how to model
-the way the computation evolves from inputs to outputs while
-we (reasonably) overlook the behavior in the opposite direction, from outputs to inputs.
-Generally speaking, models of computations are neither backward deterministic nor reversible.
+A consequence of the studies aimed at answering a question posed by Maxwell on the validity of the laws underlying thermodynamics was to recognize the role that the concept of ``reversible computation'' can play to that purpose.
 
-For a very rough intuition about what reversible computation deals with, we start by an example.
-Let us think about our favorite programming language and think of implementing the
-addition between two natural numbers
-$ m $ and $ n $. Very likely --- of course without absolute certainty --- we
-shall end up with some procedure \texttt{sum} which takes two arguments and which yields their sum.
-For example, \texttt{sum}($ 3 $,$ 2 $) would yield $ 5 $.
-What if we think of asking for the values $ m $ and $ n $ such that \texttt{sum}($ m $,$ n $) = $ 5 $?
-If we had implemented \texttt{sum} in a prolog-like language, then we could exploit its
-non deterministic evaluation mechanism to list all the pairs $ (0,5), (1,4), (2,3), (3,2), (4,1) $ and
-$ (5,0) $ every of which would well be a correct instance of ($ m, n $).
-In a reversible setting we would obtain
-exactly the pair we started from. I.e., the computation would be backward deterministic.
-The interest for the backward determinism arose in the sixties of the last century,
-studying the thermodynamics of computation and the connections between information theory, computability and entropy.
-Since then, the interest for the reversible computing has slowly but incessantly grown.
+Once coined the concept, it has been apparent that the reversible computation constitutes the context in which to frame relevant aspects in areas of the computer science that span from reversible hardware design that can offer a greener foot-print, as compared to classical hardware, to unconventional computational models --- we think to quantum or bio-inspired ones, for example ---, passing through parallel computation and the synchronization issues that it rises, or debuggers that help tracing back to the origin of a bug, or the consistent transactions roll-back in data-base management systems, just to name some. The book \cite{perumalla2013chc} is a comprehensive introduction to the subject which can be complemented and integrated by the books \cite{DBLP:books/daglib/0025734}, focused on the low-level aspects of reversible computing, i.e. those ones concerning the realization of reversible hardware, and
+\cite{DBLP:series/eatcs/Morita17}, focused on how reversible computational models like Reversible Turing Machines (RTM) and Reversible Cellular Automata (RCA) can be considered universal and how to prove that they enjoy such a property.
 
-A forcefully non-exhaustive list of references follows.
-Reversible Turing machines are defined in \cite{axelsen11lncs,bennett73ibm,jacopini90siam,lecerf63} while
-\cite{axelsen11lncs,axelsen16acta,jacopini89tcs,li1996royal}
-study some of their computational theoretic properties.
-Many research efforts have been focused on  boolean functions and cellular
-automata as models of the reversible
-computation \cite{Morita2008101,toffoli80lncs}.
-Moreover, some research focused on reversible programming languages \cite{DBLP:conf/popl/JamesS12,yokoyama08acm}.
-Of course, the interest to build a comprehensive knowledge about reversible computation is wider than
-the mere interest for its computational theoretic aspects.
-The book \cite{perumalla2013chc} is a comprehensive
-introduction to the subject. It spans from low-power-consumption reversible hardware to emerging alternative computational
-models like quantum  \cite{guerriniMM15,zorzi14mscs} or bio-inspired \cite{giannini2015tcs} of which reversibility is one the unavoidable building blocks.
+This work focuses on the \emph{functional model} \RPP of reversible computations \cite{PAOLINI2020218}.
+\RPP stands for (the class of) Reversible Primitive Permutations which can be seen as a possible counterpart of \PRF, the class of Primitive Recursive functions \cite{rogers1967theory,soare1987book}, but in the context of the reversible computational models.
 
-\paragraph{Goal}
-The focus of this work is on a \emph{functional model} of reversible computation.
-Specifically, we look for a  sufficiently expressive  class of recursive permutations able to represent all
-Primitive Recursive Functions ($ \PRF $) \cite{rogers1967theory,soare1987book}
-whose relevance is sometimes traced to the slogan
-``programs which terminate but do not belong to $ \PRF $ are rarely of practical interest.''
+We recall that \RPP, in analogy with \PRF, is defined as the small class built on some given basic reversible function, which is closed under suitable composition schemes.
 
-
-We aim at formalizing a language that we identify as Reversible Primitive Permutations ($ \RPP $) and which
-retains the more interesting aspects of $\PRF$.
-In analogy to $ \PRF $, our goal is to get a functional characterization of computability
--- but in a reversible setting, of course --- because functions are handier in order to compose
-algorithms. Other models, like, for example, Turing machines-oriented ones are
-more convincing from an implementation view-point.
-The ability to represent Cantor pairing \cite{rosenberg2009book} is one of the main properties that
-the functional characterization we are looking for must satisfy.
-With Cantor pairing available it is possible to express all interesting total properties about the
-traces\footnote{Kleene's $T_n$ predicate, Kleene's normal form theorem and technical tools related to them \cite{cutland1980book,odifreddi1989book,soare1987book}.}
-of Turing machines, reversible or not.
-The other must-have property of our functional characterization is closure under inversion, which is something
-very natural to ask for in a class of permutations and of reversible computing models.
-
-Our quest is challenging because various negative results could have played  against it.
-First of all, we remark that the class of all (total) recursive permutations
-cannot be effectively enumerated (see \cite[Exercise 4-6, p.55]{rogers1967theory}).
-In \cite{koz1972ail} a constructive generation of all the recursive permutations is given starting
-from primitive recursive permutations. Since no enumeration exists for the latter, none can exist for the former.
-Worst, the class of primitive recursive permutations is not closed under inversion \cite{kuznecov50sssr,PaoliniPiccoloRoversiICTCS2015,soare1987book}.
-Since the above negative results hold also for the class of elementary permutations
-\cite{cannonito1969jsl,kalimullin03permutations,koz1974ail}, there is no
-hope to find any effective description neither of the class of recursive
-permutations nor of the classes of primitive recursive permutations and of elementary permutations.
-
-
-\paragraph{Comparison with the known literature}
-Our quest to identify the reversible  analogous of $ \PRF $  must be throughly related to the following works.
+The very functional nature of the elements in \RPP is at the base of reasonably accessible proofs of the following properties:
 \begin{itemize}
-    \item
-    The programming language $ \mathsf{SRL} $  restricts $ \mathsf{LOOP} $, a language
-    for programming $\PRF$ functions \cite{meyer1967acm}.
-    Matos introduces $ \mathsf{SRL} $ and some of its variants in \cite{matos03tcs}.
-    He is the first using $ \Int $ --- the natural numbers with sign --- as the ground type for
-    classes of reversible functions.
-    We share the choice with him.
-    The work \cite{matos03tcs} focuses on the algebraic aspects of his languages and its relations with
-    matrix groups.
+\item \RPP is \PRF-complete, i.e. every function $ f $ in \PRF has a counterpart $ \hat{f} $ in \RPP that simulates $ f $ \cite{DBLP:journals/tcs/PaoliniPR20};
 
-    %\todo{Questions 1 and 2, Reviewer 1}
-    The study of the classes of functions that $ \mathsf{SRL} $ variants can identify
-    is part of Matos' work.
-    Variants of $\mathsf{SRL}$ are complete with respect to reversible boolean circuits \cite{matos2016notes}.
-    Proving that some given variant of $\mathsf{SRL}$ is $ \mathsf{PRF} $-complete,
-    i.e. that it represents all the functions in $ \mathsf{PRF} $, naturally ends up with the quest
-    to encode the ``test for 0'' like in the proof that $ \mathsf{LOOP} $ and $ \mathsf{PRF} $ are equivalent \cite{meyer1967acm}.
-    We \emph{conjecture} that no variant of Matos' languages exists able to simulate a conditional
-    control on the flow of execution that, instead, $ \RPP $ contains by definition.
-    Of course, proving the conjecture false, would promote $\mathsf{SRL}$ to be (in a reasonable sense) the minimal reversible and
-    $ \mathsf{PRF} $-complete language.
+\item \RPP can be naturally extended to become Turing-complete \cite{Paolini2018NGC} by means of a composition scheme analogous to the one that extends \PRF to the Turing-complete class \PR (Primitive Recursive functions);
 
-    \item The precursor of this work is \cite{PaoliniPiccoloRoversiICTCS2015}. It introduces the class of functions $ \RPRF $ which is closed by inversion and is $\PRF$-complete.
-    The completeness of $ \RPRF $ relies on \emph{built-in} Cantor pairings.
-    In this paper we show that we can get rid of \emph{built-in} Cantor pairings inside $ \RPP $.
-    With no \emph{built-in} pairing operators at hand the design of $ \RPP $ relies on operators which are more fine-grained as compared
-    to the ones used for the definition of $ \RPRF $.
-    This orients the programming style to enjoy a couple of interesting features.
-    Inside $ \RPP $ it is natural avoiding to save the entire history of a calculation within a single argument, i.e. into a single ancilla.
-    This allows to clean the garbage at the end of the simulation of any $ f\in\PRF $, something which is reminiscent of the simulation
-    of Turing machines devised in \cite{bennett1989siamjc}.
-
-    \item
-    Finally we discuss \cite{jacopini89tcs}.
-    It introduces the class of reversible functions $ \JMF $ which is as expressive as Kleene's
-    partial recursive functions \cite{cutland1980book,odifreddi1989book}.
-    Therefore, the focus of \cite{jacopini89tcs} is on partial reversible functions while ours  is on total ones.
-    The expressiveness of $ \JMF $ is clearly stronger than the one of  $ \RPP $.
-    However, we see $ \JMF $ as less abstract than $ \RPP $ for two reasons.
-    On one side, the primitive functions of $ \JMF $ relies on a given specific binary representation of natural numbers.
-    On the other, it is not evident that $ \JMF $ is the extension of a total sub-class
-    analogous to $ \RPP $ which should ideally correspond to $ \PRF $, but in a reversible setting.
+\item in \cite{MatosRC2020}, \RPP is proven equivalent  to the reversible programming language \SRL \cite{matos03tcs}, which implies that the fix-point problem for \RPP is undecidable \cite{2318_1734164MatosPaoliniRoversiTCSICTCS18}.
 \end{itemize}
 
+The motivation to write this work is to bring evidence that expressing reversible computations by means of recursively defined computational models, like the class \RPP, \emph{naturally} offers the possibility to certify the correctness of reversible algorithms, and, mainly, of properties that rely on them, by using some proof-assistant.
+
+We recall that proof-assistants supply an integrated environment to formalize data-types, to implement algorithms that work on those data-types, to formalize specifications of the implementations, and to prove in full detail that those implementation match their specifications.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\paragraph{Contents}
-We propose a formalism that identifies a class of functions which we call Reversible Primitive Permutations
-($ \RPP $) and which is strictly included in the set of permutations.
-Section~\ref{section:The class RPP of Reversible Primitive Permutations} defines $ \RPP $ in analogy
-with the definition of $ \PRF $, I.e. $ \RPP $ is the closure of composition schemes on basic functions.
-
-The functions of $ \RPP $ have identical arity and co-arity and take
-$ \Int $ --- and not only $ \Nat $ --- as their
-domain because $ \Nat $ is not a group. So, $ \RPP $ is sufficiently abstract
-to avoid any reference to any specific
-encoding of numbers and strongly connects our work to Matos' one \cite{matos03tcs}.
-
-For example, in $ \RPP $ we can define a \texttt{sum} that given the two integers $ m $ and $ n $
-yields $ m+n $ and $ n $. Let us represent \texttt{sum} as:
-\begin{align}
-    \label{align:sum example}
-    \arraycolsep=1.4pt
-    \begin{array}{rcl}
-        \left. {\scriptsize \begin{array}{r} m    \\ n \end{array}} \right[
-        & \texttt{sum} &
-        \left] {\scriptsize \begin{array}{l} m + n\\ n \end{array} } \right.
-    \end{array}
-    \enspace .
-\end{align}
-The implementation of \texttt{sum} inside $ \RPP $ exploits an iteration scheme that iterates $ n $
-times the successor, starting on the initial value $ m $ of the first input.
-$ \RPP $ implies the existence of a (meta and) \emph{effective} procedure which produces
-the inverse $ rprInv{f}\in\RPP $ of every given $ f\in\RPP $.
-I.e., :
-\begin{align}
-    \label{align:diff example}
-    \arraycolsep=1.4pt
-    \begin{array}{rcl}
-        \left. {\scriptsize \begin{array}{r} p    \\ n \end{array}} \right[
-        & rprInv{\texttt{sum}}
-        &
-        \left] {\scriptsize \begin{array}{l} p - n\\ n \end{array} } \right.
-    \end{array}
-\end{align}
-belongs to $ \RPP $ and it ``undoes'' \texttt{sum} by iterating $ n $ times
-the predecessor on $ p $. So if $ p = m + n $, then $ p - n = m + n - n = m$.
-We remark we could have internalized the operation that yields the inverse of a
-function inside $\RPP$ like in \cite{matos03tcs}. We do not internalize it
-to avoid mutually recursive definitions in $ \RPP $.
-
-Concerning the \emph{expressiveness}, $ \RPP $ is closed under inversion and it is both $ \PRF $-complete and $ \PRF $-sound.
-Completeness is the really relevant property between the two because this means that
-$ \RPP $ subsumes the class $ \PRF $.
-This result is in  Section~\ref{section:Completeness of RPP}. It requires quite a lot
-of preliminary work that one can find in Sections~\ref{section:Generalizations inside RPP},
-\ref{section:A library of functions in TRRF} and~\ref{section:Cantor pairing}
-and whose goal is to encode a bounded minimalization and Cantor pairing.
-The embedding relies on various key aspects of reversible computing. The principal
-ones are:  (i) the use of ancillary variables to clone information
-and (ii) the compositional programming under the pattern that Bennett's trick dictates
-(cf. Section~\ref{section:Some recursion theoretic side effects of RPP}.)
-
-
-
-
 \subsection{Contributions}
+Roughly, we show how to express \RPP and its evaluation mechanism inside the proof-assistant \LEAN \cite{Lean3}. On one side we are able to certify the correctness of every reversible function that we write in \RPP with respect to a given specification. On the other, we certify the correctness of the main result in \cite{DBLP:journals/tcs/PaoliniPR20} which states that \RPP is \PRF-complete. In more detail:
 \begin{itemize}
-    \item We give a strong guarantee that \RPP is \PRF-complete.
-    Relying on the correctness of existing proofs between the classes \PRF and \UPRF, using the proof-assistant \LEAN, we prove that every function in \UPRF can be represented and simulated by a suitable function in \RPP.
+    \item we give a strong guarantee that \RPP is \PRF-complete.
+    Relying on the correctness of existing proofs between the classes \PRF and \UPRF. i.e. the class of \emph{Unary} Primitive recursive Functions, we formally show in full detail that every function of \UPRF can be represented and simulated by a suitable function in \RPP, using the proof-assistant \LEAN.
 
-    Despite we work out the proof in full details, besides fixing some small bugs, we also conceptually and technically simplify the original proof in  \cite{DBLP:journals/tcs/PaoliniPR20}.
+    Despite the proof is fully detailed, besides fixing some small bugs, we also conceptually and technically simplify the original \PRF-completeness proof of \RPP in \cite{DBLP:journals/tcs/PaoliniPR20}.
 
-    \item On one side the simplification is a consequence of the representation of \UPRF available as a \LEAN library. On the other, and more remarkably, it consists of a complete reworking, as compared to \cite{DBLP:journals/tcs/PaoliniPR20}, of the Cantor Pairing \cite{???} as a function of \RPP. We recall that Cantor Pairing is an isomorphism $ \mathbb{N}\times\mathbb{N} \simeq \mathbb{N} $. We use Cantor Pairing  as a stack that allows us to correctly manage the computation of a recursive scheme of \UPRF by means of a reversible computation of an element in \RPP.
+    \item on one side the simplification is a consequence of the representation of \UPRF available as a \LEAN library. On the other, and more remarkably, it consists of a complete reworking, as compared to \cite{DBLP:journals/tcs/PaoliniPR20}, of the Cantor Pairing \cite{Cantor1878,DBLP:journals/corr/Szudzik17} as a function of \RPP. We recall that Cantor Pairing is an isomorphism $ \mathbb{N}\times\mathbb{N} \simeq \mathbb{N} $. Cantor Pairing works as a stack that allows us to correctly manage the computation of a recursive scheme of \UPRF by means of a reversible computation of an element in \RPP.
 
-    \item The \RPP function that we introduce to implement Cantor Pairing is a specific instance of a more general pattern that allows to uniquely associate pairs of $ \mathbb{N}\times\mathbb{N}$ to single element of $ \mathbb{N}$. This means that we are able to show further isomorphims  $ \mathbb{N}\times\mathbb{N}\simeq \mathbb{N}$ in \RPP by just modifying a core element in the definition the Cantor Pairing.
+    \item we show that the \RPP function that we define to implement Cantor Pairing is a specific instance of a more general pattern that allows us to uniquely associate pairs of $ \mathbb{N}\times\mathbb{N}$ to single element of $ \mathbb{N}$. This means that we are able to show further isomorphims  $ \mathbb{N}\times\mathbb{N}\simeq \mathbb{N}$ in \RPP by just modifying a core element in the definition the Cantor Pairing.
 
     \item The side-effect of the whole work is twofold:
     \begin{itemize}
-        \item We supply concrete and not always immediate examples of reversible programming in \LEAN. This has a value per se, because programming reversible algorithms is not as much wide-spread as iterative, or recursive, programming in classical programming formalisms.
-        \item \LEANFour will be delivered in the near future. \LEANFour will come with the possibility to export its source code as efficient \CPP code \cite{2021-LEAN4-MouraUllrich}. The migration from \LEAN to \LEANFour will allow us to export our reversible algorithms as efficient extensions of \LEANFour, or as standalone, and possibly reversible, applications written in \CPP.
+        \item we supply concrete and not always immediate examples of reversible programming in \LEAN. This has a value per se, because programming reversible algorithms is not as much wide-spread as iterative, or recursive, programming in classical programming formalisms.
+        \item it will be obvious to migrate our work to \LEANFour which will be delivered in the near future. \LEANFour exports its source code as efficient \CPP code \cite{2021-LEAN4-MouraUllrich}. So, we shall be able to export our reversible algorithms as efficient extensions of \LEANFour, or as standalone, and possibly reversible, \CPP applications.
     \end{itemize}
 \end{itemize}
 
 %---------------------
 \subsection{Related work}
+\begin{itemize}
+\item
+At our knowledge, works that relate algorithms implemented by means of a formalism that can express reversible computations do not abound. In fact, we are aware of \cite{paoliniTYPES2015} which certifies a full abstraction result between operational and a denotational semantics for the imperative reversible programming language \Janus \cite[Section 8.3.3]{perumalla2013chc}. The certification is worked out in the proof-assistant \Matita \cite{Asperti2007}, whose type-system is very close to the one \LEAN is based on.
+
+\item
+An early proposal to express reversible computations in a functional formalism is \cite{jacopini89tcs}. It introduces the class \JMF of reversible functions which is as expressive as Kleene's
+Partial Recursive functions \cite{cutland1980book,odifreddi1989book}.
+%Therefore, the focus of \cite{jacopini89tcs} is on partial reversible functions while ours  is on total ones.
+%The expressiveness of
+\JMF is clearly stronger class than \RPP, but we see \JMF as less abstract than \RPP for two reasons: (i) the primitive functions of \JMF depend on a given specific binary representation of natural numbers; (ii) unlike \RPP, which corresponds to \PRF, but in a reversible setting, it is not evident that \JMF is the extension of a total sub-class analogous to \RPP.
+\end{itemize}
 
 %---------------------
-\subsection{Road map}
+\subsection{Contents}
+This work illustrates the relevant parts of the BSc Thesis \cite{MalettoBSc2021} which comes with \cite{MalettoRPPLEAN2021}, a fully developed \LEAN project that certifies algorithms and properties of \RPP.
 
+Section~\ref{section:Reversible Primitive Permutations} recalls the class \RPP by commenting on the main design aspects that characterize its definition inside \LEAN.
+Section~\ref{section:Unary Primitive Recursive Functions} recalls the main aspects of \UPRF, paying particular attention to the computational behavior of its recursion scheme that, forcefully, has to take a single argument.
+Section~\ref{section:The UPRF-completeness of RPP} illustrates the points that characterize the porting of the original \RPP  \PRF-complete inside \LEAN.
+Section~\ref{section:Why LEAN and not other proof assistant?} briefly discusses the reasons to choose \LEAN instead of essentially equivalent proof-assistants.
+Section~\ref{section:Conclusion and developments} concludes the work with possible pointers to future work.
 
 %=====================
 \section{Reversible Primitive Permutations (\RPP) }
 \label{section:Reversible Primitive Permutations}
+
+\begin{figure}
+    \centering
+        \begin{lstlisting}
+        inductive RPP : Type
+        -- Base functions
+        | Id (n : ℕ) : RPP -- Identity
+        | Ne : RPP         -- Sign-change
+        | Su : RPP         -- Successor
+        | Pr : RPP         -- Predecessor
+        | Sw : RPP         -- Transposition
+        -- Inductively defined functions
+        | Co (f g : RPP) : RPP   -- Parallel composition
+        | Pa (f g : RPP) : RPP   -- Series composition
+        | It (f : RPP) : RPP     -- Finite iteration
+        | If (f g h : RPP) : RPP -- Selection
+        infix `‖`  : 55 := Pa -- Notation for the Parallel composition
+        infix `;;` : 50 := Co -- Notation for the Series composition
+        \end{lstlisting}
+    \caption{The class \RPP as a data-type \lstinline|RPP| in \LEAN.}
+    \label{fig:RPP-LEAN}
+\end{figure}
+
+We use the data-type \lstinline|RPP| in Figure~\ref{fig:RPP-LEAN}, as defined in \LEAN, to recall from \cite{PAOLINI2020218} that the class \RPP is the smallest class of functions
+that contains five base functions, named as in the definition, and all the functions that we can generate by the composition schemes whose name is next to the corresponding clause. For ease of use and readability the two last lines in Figure~\ref{fig:RPP-LEAN} introduce infix notations for series and parallel compositions.
+
+\begin{example}[A first legal term of type {\normalfont \lstinline|RPP|}]
+\label{example:A first legal term of type RPP}
+In \lstinline|RPP| we can write
+\lstinline|(Id 1‖Sw);;(It Su)‖Id 1);;(Id 1‖If Su (Id 1) Pr)|. We shall tend to represent terms of \lstinline|RPP| by diagrams:
+\[
+\begin{NiceMatrix}
+x_0&\bloch{1-1}{\mbox{\lstinline|Id 1|}}&y_0&\bloch{2-1}{\mbox{\lstinline|It  Su|}}&w_0&\bloch{1-1}{\mbox{\lstinline|Id 1|}}&z_0
+\\
+x_1&\bloch{2-1}{\mbox{\lstinline|Sw|}}&y_1& &w_1&\bloch{2-1}{\mbox{\lstinline|If inc (Is 1) dec|}}&z_1
+\\
+x_2&&y_2&\bloch{1-1}{\mbox{\lstinline|Id 1|}}&w_2&
+&z_2
+\end{NiceMatrix}
+\enspace .
+\]
+The term we have just defined is a series composition of three parallel compositions. The first parallel composition is between a ``single wire'' \lstinline|It 1| and the transposition \lstinline|Sw|.
+The second parallel composition is between the finite iteration of
+the successor \lstinline|Su| and a single wire.
+The third parallel composition is between a single wire and a selection among \lstinline|Su|, \lstinline|Id 1| and the predecessor \lstinline|Pr|. We remark that \LEAN forces to use functional notation. So, \lstinline|It Su|, for example, is the \emph{application} of the unary constructor \lstinline|It| to the nullary constructor \lstinline|Su| that takes no arguments.
+\qeda
+\end{example}
+
+\begin{figure}
+\centering
+\begin{lstlisting}
+def arity : RPP → ℕ
+  | (Id n)     := n
+  | Ne         := 1
+  | Su         := 1
+  | Pr         := 1
+  | Sw         := 2
+  | (f ‖ g)    := f.arity + g.arity
+  | (f ;; g)   := max f.arity g.arity
+  | (It f)     := 1 + f.arity
+  | (If f g h) := 1 + max (max f.arity g.arity) h.arity
+\end{lstlisting}
+\caption{Arity of every \lstinline|f: RPP|.}
+\label{fig:RPP-arity}
+\end{figure}
+
+The function in Figure~\ref{fig:RPP-arity} extracts the arity of any \lstinline|f:RPP| from the structure of \lstinline|f|, once fixed the arities of the base functions.
+
+\begin{remark}[Multiple wires are base functions]
+\label{remark:Multiple wires are base functions}
+Every finite set of \lstinline|n| parallel wires, represented by \lstinline|Id n|, or
+$
+\begin{NiceMatrix}
+    x_0&\bloch{1-1}{\mbox{\lstinline|Id 1|}}&y_0
+    \\
+    &\vdots&
+    \\
+    x_{n-1}&\bloch{1-1}{\mbox{\lstinline|Id 1|}}&y_{n-1}
+\end{NiceMatrix}
+$, is a base function with arity \lstinline|n|.
+\qeda
+\end{remark}
+
+\begin{figure}
+\begin{lstlisting}
+def inv : RPP → RPP
+  | (Id n)     := Id n -- self-dual
+  | Ne         := Ne   -- self-dual
+  | Su         := Pr
+  | Pr         := Su
+  | Sw         := Sw   -- self-dual
+  | (f ‖ g)    := inv f ‖ inv g
+  | (f ;; g)   := inv g ;; inv f
+  | (It f)     := It (inv f)
+  | (If f g h) := If (inv f) (inv g) (inv h)
+notation f `⁻¹` := inv f
+\end{lstlisting}
+\caption{Inverse of every \lstinline|f:RPP|.}
+\label{fig:RPP-inv}
+\end{figure}
+
+For any given \lstinline|f:RPP|, the function \lstinline|inv| in Figure~\ref{fig:RPP-inv} builds an element with type \lstinline|RPP| that, as we can see, we denote \lstinline|f⁻¹|. The definition of \lstinline|inv| let the successor \lstinline|Su| be inverse of the predecessor \lstinline|Pr| and every other base function self-dual.
+moreover, the \lstinline|inv|ersion distributes obviously over finite iteration \lstinline|It|, selection \lstinline|If| and parallel composition \lstinline|‖|, while it requires to exchange the order of the arguments before distributing over the series composition \lstinline|;;|.
+
+\begin{figure}
+\begin{lstlisting}
+def ev : RPP → list ℤ → list ℤ
+| (Id n)     X                    := X
+| Ne         (x :: X)             := -x :: X
+| Su         (x :: X)             := (x + 1) :: X
+| Pr         (x :: X)             := (x - 1) :: X
+| Sw         (x :: y :: X)        := y :: x :: X
+| (f ;; g)   X                    := ev g (ev f X)
+| (f ‖ g)    X         := ev f (take f.arity X) ++ ev g (drop f.arity X)
+| (It f)     (x :: X)             := x :: ((ev f)^[↓x] X)
+| (If f g h) (0 :: X)             := 0 :: ev g X
+| (If f g h) (((n : ℕ) + 1) :: X) := (n + 1) :: ev f X
+| (If f g h) (-[1+ n] :: X)       := -[1+ n] :: ev h X
+| _          X                    := X
+notation `‹` f `›` := ev f -- ‹ \f ›
+\end{lstlisting}
+\caption{Operational semantics of elements in \lstinline|RPP|.}
+\label{fig:RPP-ev}
+\end{figure}
+
+Clearly the notation suggests that \lstinline|f⁻¹| is the inverse of \lstinline|f|. We can prove this statement once given the operational semantics as in Figure~\ref{fig:RPP-ev}.
+
+
+For example, given three functions \lstinline|f, g, h:RPP|, we can obtain \lstinline|If f g h:RPP|
+\begin{lstlisting}
+    f: RPP
+    x : ℤ
+    X' : list ℤ
+    hf : ∀ (X : list ℤ), ‹f⁻¹› (‹f› X) = X
+    ⊢ ‹f⁻¹›^[↓x] (‹f›^[↓x] X') = X'
+\end{lstlisting}
+
+
+
+
+
+
+\section{The definition in Lean}
+
+\paragraph{Syntax and semantics}
+Let's now ask ourselves: how can we define in a satisfactory way the class of functions $\RPP$ in Lean,
+using just types and functions?
+We'd like to be able to do proofs by induction over $\RPP$, like in proposition \ref{rppinv}, so we'll need to define an inductive type.
+
+The key is thinking about $\RPP$ not as a class of functions, but as a small programming language.
+In this sense, we can write down "programs" like our square function
+\[(\rppId_1 \rppPa \rppSw) \rppCo \rppinc \rppCo \rppmul \rppCo \rppdec \rppCo (\rppId_1 \rppPa \rppSw)\]
+but we should not view it only as a function belonging to $\ZZ^3 \to \ZZ^3$,
+but also as the sentence
+"$(\rppId_1 \rppPa \rppSw) \rppCo \rppinc \rppCo \rppmul \rppCo \rppdec \rppCo (\rppId_1 \rppPa \rppSw)$"
+which can then be interpreted as the mathematical function belonging to $\ZZ^3 \to \ZZ^3$.
+
+We thus separate between the \textit{syntax} and the \textit{semantics} of our language.
+\begin{itemize}
+    \item The syntax are the rules which governs how to assemble well-structured sentences.
+    For example, the selection symbol $\rppIf$ should be followed by three other $\RPP$ functions;
+    if we write $\rppIf[\rppSu, \rppPr] \rppCo \rppNe$ we get a non-valid sentence.
+    \item The semantics is the meaning we give to (well-structured) sentences -
+    in our case, they are intepreted as functions $\ZZ^n \to \ZZ^n$.
+\end{itemize}
+
+A possible way to define $\RPP$ functions in Lean is
+\begin{itemize}
+    \item define the type $\RPP$ which has for elements syntactically-correct sentences of $\RPP$
+    \item define a function $\mathsf{evaluate} : \RPP \to (\ZZ^n \to \ZZ^n)$ which assigns to each $\RPP$-sentence its intended meaning,
+    namely a function $\ZZ^n \to \ZZ^n$.
+\end{itemize}
+Note that this is not the only way in which this task can be accomplished;
+we will discuss other methods in section \ref{alternatives}.
+
+We thus define the type $\RPP$ as follows:
+\begin{lstlisting}
+    inductive RPP : Type
+    | Id (n : ℕ) : RPP
+    | Ne : RPP
+    | Su : RPP
+    | Pr : RPP
+    | Sw : RPP
+    | Co (f g : RPP) : RPP
+    | Pa (f g : RPP) : RPP
+    | It (f : RPP) : RPP
+    | If (f g h : RPP) : RPP
+\end{lstlisting}
+and also introduce custom notation:
+\begin{lstlisting}
+    -- the numbers 50 and 55 denote the precedence -
+    -- simply put, Ne ;; Su ‖ Pr is intepreted as
+    -- Ne ;; (Su ‖ Pr), not (Ne ;; Su) ‖ Pr
+    infix `;;` : 50 := Co
+    infix `‖` : 55 := Pa -- \Vert ‖
+\end{lstlisting}
+so it's now possible to write expressions like
+\begin{lstlisting}
+    #check It Su ;; (Id 2 ‖ If Sw Pr Su) -- RPP
+\end{lstlisting}
+Remember that by remark \ref{different_arity}, it makes sense to consider the series composition of functions of different arity,
+as long as we give them the meaning specified in the remark.
+
+Talking about arity, how do we deal with it?
+In order to define $\mathsf{evaluate}$ and give meaning to $\RPP$,
+we must be able to define a concept of arity,
+otherwise we'll have trouble with parallel composition of two functions \lstinline{f ‖ g} -
+the arity of \lstinline{f} must be known,
+otherwise it's impossible to tell what to apply \lstinline{g} to.
+
+Luckily, we can reconstruct the arity of an \lstinline{RPP} just by looking at its symbolic representation:
+\begin{lstlisting}
+    def arity : RPP → ℕ
+    | (Id n)     := n
+    | Ne         := 1
+    | Su         := 1
+    | Pr         := 1
+    | Sw         := 2
+    | (f ;; g)   := max f.arity g.arity
+    | (f ‖ g)    := f.arity + g.arity
+    | (It f)     := f.arity + 1
+    | (If f g h) := max (max f.arity g.arity) h.arity + 1
+\end{lstlisting}
+Note that \lstinline{f.arity} is the same as \lstinline{(arity f)}.
+This is a recursive function:
+there are 5 base cases and in the other 4 the value of \lstinline{arity} is reconstructed from smaller sub-terms.
+
+It's now possible to define some \lstinline{RPP}-sentences in Lean
+\begin{lstlisting}
+    def Id₁ := Id 1 -- ₁ \1
+    def inc := It Su
+    def dec := It Pr
+    def mul := It inc
+    def square := Id₁ ‖ Sw ;; inc ;; mul ;; dec ;; Id₁ ‖ Sw
+\end{lstlisting}
+and it's even possible to calculate their arity
+\begin{lstlisting}
+    #reduce square.arity -- outputs "3"
+\end{lstlisting}
+but we haven't yet given their meaning as functions.
+
+\paragraph{The \lstinline{ev} function}
+We are now ready to define \lstinline{evaluate} (\lstinline{ev} for short).
+The function $\mathsf{ev}$ should take $\RPP$-sentences and return functions $\ZZ^n \to \ZZ^n$,
+so in Lean we will define it as a function of type
+\begin{lstlisting}
+    RPP → (list ℤ → list ℤ)
+\end{lstlisting}
+which in Lean is the same as
+\begin{lstlisting}
+    RPP → list ℤ → list ℤ.
+\end{lstlisting}
+Here's how we do it:
+\begin{lstlisting}
+    def ev : RPP → list ℤ → list ℤ
+    | (Id n)     X                    := X
+    | Ne         (x :: X)             := -x :: X
+    | Su         (x :: X)             := (x + 1) :: X
+    | Pr         (x :: X)             := (x - 1) :: X
+    | Sw         (x :: y :: X)        := y :: x :: X
+    | (f ;; g)   X                    := ev g (ev f X)
+    | (f ‖ g)    X                    := ev f (take f.arity X) ++
+    ev g (drop f.arity X)
+    | (It f)     (x :: X)             := x :: ((ev f)^[↓x] X)
+    | (If f g h) (0 :: X)             := 0 :: ev g X
+    | (If f g h) (((n : ℕ) + 1) :: X) := (n + 1) :: ev f X
+    | (If f g h) (-[1+ n] :: X)       := -[1+ n] :: ev h X
+    | _          X                    := X
+
+    notation `‹` f `›` := ev f -- ‹ \f › \fr
+\end{lstlisting}
+We will write \lstinline{‹f›} to mean the function of type \lstinline{list ℤ → list ℤ} given by \lstinline{ev f}.
+
+Here's a case-by-case analysis:
+\begin{itemize}
+    \item \lstinline{‹Id n› X} is the original list \lstinline{X}, unchanged.
+    \item \lstinline{‹Ne› (x :: X)} reduces to \lstinline{-x :: X}, which is same list but with the head of opposite sign.
+    \item \lstinline{‹Su› (x :: X)} reduces to the same list but with the head incremented by one.
+    \item \lstinline{‹Pr› (x :: X)} reduces to the same list but with the head decremented by one.
+    \item \lstinline{‹Sw› (x :: y :: X)} reduces to the same list but with the first two elements swapped.
+    \item \lstinline{‹f ;; g› X} successively applies \lstinline{‹f›} and \lstinline{‹g›} to the list.
+    \item \lstinline{‹f ‖ g› X} applies \lstinline{‹f›} to the first \lstinline{f.arity} elements of the list,
+    applies \lstinline{‹g›} to the remaining elements of the list,
+    and then joins the two parts through \lstinline{append} (which is the \lstinline{(++)} operator).
+    \item \lstinline{‹It f› (x :: X)} leaves the head unchanged and applies \lstinline{‹f›} to the tail \lstinline{↓x} times,
+    where \lstinline{↓x} is defined as in definition \ref{rppdef}.
+    \item \lstinline{‹If f g h› (0 :: X)} leaves the head unchanged and applies \lstinline{‹g›} to the tail.
+    \item \lstinline{‹If f g h› (((n : ℕ) + 1) :: X)} is the case where the head is a positive number
+    (a natural number plus \lstinline{1}),
+    and as such leaves the head unchanged and applies \lstinline{‹f›} to the tail.
+    \item \lstinline{‹If f g h› (-[1+ n] :: X)} is the case where the head is a negative number,
+    and as such leaves the head unchanged and applies \lstinline{‹h›} to the tail.
+    \item In all cases not considered (for example, applying \lstinline{‹Ne›} to an empty list) the whole list remains unchanged.
+\end{itemize}
+
+The reader is invited to compare this definition with the one given in definition \ref{rppdef}.
+
+Let's see some examples:
+\begin{lstlisting}
+    #check ‹It Su ;; (Id₁ ‖ If Sw Pr Su)› -- list ℤ → list ℤ
+    -- #eval is similar to #reduce
+    -- but in this case gives more readable output
+    #eval ‹inc› [3, 4] -- [3, 7]
+    #eval ‹square› [19, 0, 0] -- [19, 361, 0]
+\end{lstlisting}
+It magically works. We finally have our definition formalized in Lean.
+
+It is worth noting that even though lists supplied to \lstinline{‹f›} are supposed to have length equal to \lstinline{f.arity},
+this is never enforced.
+So we are free to apply \lstinline{‹f›} to a list which is too short or too long.
+If it's too short, unspecified things will happen, we don't care.
+If it's too long, only the first \lstinline{f.arity} items are utilized and affected,
+and this is guaranteed by theorem \lstinline{ev_split} which we will prove in Lean.
+So, when we apply \lstinline{RPP} functions to a list, we'll have to make sure that
+\lstinline{f.arity ≤ X.length}.
+
+\paragraph{The \lstinline{inverse} function}
+It's not hard to convert our proposition \ref{rppinv} into a function definition:
+\lstinline{inv : RPP → RPP} which given \lstinline{f : RPP} returns its inverse.
+\begin{lstlisting}
+    def inv : RPP → RPP
+    | (Id n)     := Id n
+    | Ne         := Ne
+    | Su         := Pr
+    | Pr         := Su
+    | Sw         := Sw
+    | (f ;; g)   := inv g ;; inv f
+    | (f ‖ g)    := inv f ‖ inv g
+    | (It f)     := It (inv f)
+    | (If f g h) := If (inv f) (inv g) (inv h)
+
+    notation f `⁻¹` := inv f -- ⁻¹ \-1
+\end{lstlisting}
+Now it's possible to define \lstinline{dec} simply as \lstinline{inc⁻¹}.
+
+We will also prove in Lean that \lstinline{f⁻¹} really is the inverse (in the functional sense) of \lstinline{f},
+but it will require some work.
+
+
+
+\subsection{How \lstinline|RPP| differs from original \RPP}
+The definition of \lstinline{RPP} functions we've given differs quite a bit from the original one.
+Every change has been made in the name of simplicity:
+theorem proving in Lean is hard enough,
+we don't need to make it harder by choosing inconvenient definitions.
+Below is a list of changes, not only for completeness' sake but also to illustrate the kind of reasoning which goes on
+when formalizing definitions in Lean.
+\begin{itemize}
+    \item In the original definition,
+    in the iterator $\rppIt$ and selection $\rppIf$ the last element of the tuple is checked,
+    not the first one (the head).
+    It was more convenient to work with the first element because of the definition of lists:
+    it's much easier to consider a list's head and tail than its last element and the elements before the last.
+    \item We have defined $\rppId_n$ as a $n$-ary function, while originally it was just unary.
+    Having a $n$-ary identity function is very useful,
+    because we can use parallel composition as in remark \ref{different_arity},
+    and also because we have the possibility of having a $0$-ary function, which is not useless in some cases.
+    \item The original $\RPP$ functions are defined as the union $\cup_{n \in \NN}\RPP^n$
+    where $\RPP^n$ are the $n$-ary $\RPP$ functions.
+    A similar decision could've been made in Lean by definining \lstinline{RPP n} as a dependent type
+    with parameter \lstinline{n : ℕ},
+    but it turned out that it was possible to calculate the arity of an \lstinline{RPP} simply by looking at
+    the corresponding \lstinline{RPP}-sentence, which is what we did when we defined the function \lstinline{arity}.
+    This rendered superfluous using dependent types and separating \lstinline{RPP} based on their arity.
+
+    There's a reason we tried to avoid dependent types wherever possible
+    (which also led to the use of \lstinline{list}s instead of \lstinline{vector}s):
+    at least in Coq (which is another proof assistants we used at the beginning of the project)
+    working with dependent types is often painful, because Coq doesn't recognize that certain types are the same.
+    For example, elements of \lstinline{RPP (n + 1)} and \lstinline{RPP (1 + n)} cannot be compared even though it is (demonstrably!) true that
+    \lstinline{n + 1 = 1 + n}. To get around this, it's possible to use something called John Major's Equality \cite{cpdtbook}
+    to state the equality of two objects with seemingly different types,
+    but this involves the invocation of an additional axiom and is in general annoying to use.
+    Other ways to deal with the problem exist,
+    but our choice ended up being avoiding dependent types completely.
+    As someone on the internet says,
+    \begin{displayquote}
+        Coq has this really powerful type system, but... don't use it. \cite{dougdad}
+    \end{displayquote}
+    By extension, we also avoided them in Lean, perhaps mistakingly.
+    \item When defining the iterator $\rppIt[f] (x, x_1, \dots, x_n)$ it's not immediately clear what to do when $x < 0$.
+    In our definition, nothing happens, as $f$ in general is applied $\downarrow x = 0$ times.
+    In the original definition, $f$ is instead applied $| x |$ times - let's call this iterator $\rppIta$.
+
+    Reversibility gifts us with a third option \cite{matos03tcs}: if $x < 0$,
+    we can apply $f$ a negative amount of times - or in other words, we can apply $f^{-1}$ for $- x$ times.
+    Let's call this iterator $\rppItr$.
+    Its usage leads to more natural definitions:
+    for example, our function $\rppinc (n, x) = \rppIt[\rppSu] (n, x)$ returns $(n, x+n)$ only if $n \ge 0$.
+    If instead we use $\rppItr$, suddenly $\rppItr[\rppSu] (n, x) = (n, x + n)$ for all values of $n \in \ZZ$.
+
+    So why didn't we use $\rppItr$?
+    Because our $\rppIt$ is the most versatile option:
+    we can define both $\rppIta$ and $\rppItr$ in terms of $\rppIt$,
+    by using the fact that $\rppIt$ doesn't do anything when the first argument is negative:
+    \begin{align*}
+        \rppIta[f] = \rppIt[f] \rppCo \rppNe \rppCo \rppIt[f] \rppCo \rppNe \\
+        \rppItr[f] = \rppIt[f] \rppCo \rppNe \rppCo \rppIt[f^{-1}] \rppCo \rppNe
+    \end{align*}
+    For example, in the case of $\rppIta[f](x,x_1,\cdots,x_n)$, if $x \ge 0$ then the first $\rppIt$ applies $f$ for $x$ times,
+    then $x$ changes sign and becomes $-x$ with $\rppNe$, then the second $\rppIt$ doesn't do anything because $- x < 0$,
+    and finally $-x$ changes sign again to $x$; if instead $x < 0$, only the second $\rppIt$ does something.
+
+    Another reason to prefer $\rppIt$ over $\rppItr$ is that in the definition of \lstinline{ev},
+    using $\rppItr$ it's hard to convince Lean (or Coq) that the function terminates (that is, it doesn't run on an infinite loop).
+    Since every function in Lean must terminate (otherwise there would be consistency issues), Lean rejects the definition.
+    There are ways to get around this - but once again we follow the path of least resistance and just get on with $\rppIt$.
+\end{itemize}
+
+After seeing all these changes you might ask yourself - is this still the original $\RPP$?
+What's the point of formalizing a definition in Lean if in the process we change the definition completely?
+
+We think that yes, we can still identify what we've constructed as the original functions,
+because in a way, the \textit{essence} of what $\RPP$ is has not been altered:
+a class of functions which is reversible by construction and that is $\PRF$-complete.
+We shouldn't view definitions as something unchanging and rigid, especially in rapidly evolving fields.
+Definitions should be molded and modified to fit our needs,
+because that's why we created them in the first place.
+
+
+
+
 
 %=====================
 \section{Unary Primitive Recursive Functions (\UPRF) }
@@ -405,7 +710,19 @@ and (ii) the compositional programming under the pattern that Bennett's trick di
 
 %=====================
 \section{The \UPRF-completeness of \RPP}
-\label:{section:The UPRF-completeness of RPP}
+\label{section:The UPRF-completeness of RPP}
+
+\begin{itemize}
+    \item
+The ability to represent Cantor pairing \cite{rosenberg2009book} is one of the main properties that
+the functional characterization we are looking for must satisfy.
+With Cantor pairing available it is possible to express all interesting total properties about the
+traces\footnote{Kleene's $T_n$ predicate, Kleene's normal form theorem and technical tools related to them \cite{cutland1980book,odifreddi1989book,soare1987book}.}
+of Turing machines, reversible or not.
+\item
+The other must-have property of our functional characterization is closure under inversion, which is something
+very natural to ask for in a class of permutations and of reversible computing models.
+\end{itemize}
 
 %=====================
 \section{Why \LEAN and not other proof assistant?}
