@@ -211,15 +211,16 @@
 \section{Introduction}
 \label{section:Introduction}
 
-A consequence of the studies aimed at answering a question posed by Maxwell on the validity of the laws underlying thermodynamics was to recognize the role that the concept of ``reversible computation'' can play to that purpose.
+The studies aimed at answering a question posed by Maxwell on the validity of the laws underlying thermodynamics recognized the fundamental role that Reversible Computation can play to that purpose.
 
-Once coined the concept, it has been apparent that the reversible computation constitutes the context in which to frame relevant aspects in areas of the computer science that span from reversible hardware design that can offer a greener foot-print, as compared to classical hardware, to unconventional computational models --- we think to quantum or bio-inspired ones, for example ---, passing through parallel computation and the synchronization issues that it rises, or debuggers that help tracing back to the origin of a bug, or the consistent transactions roll-back in data-base management systems, just to name some. The book \cite{perumalla2013chc} is a comprehensive introduction to the subject which can be complemented and integrated by the books \cite{DBLP:books/daglib/0025734}, focused on the low-level aspects of reversible computing, i.e. those ones concerning the realization of reversible hardware, and
+Once identified, it has been apparent that the Reversible Computation constitutes the context in which to frame relevant aspects in areas of the computer science that span from reversible hardware design that can offer a greener foot-print, as compared to classical hardware, to unconventional computational models --- we think to quantum or bio-inspired ones, for example ---, passing through parallel computation and the synchronization issues that it rises, or debuggers that help tracing back to the origin of a bug, or the consistent transactions roll-back in data-base management systems, just to name some. The book \cite{perumalla2013chc} is a comprehensive introduction to the subject which can be complemented and integrated by the books \cite{DBLP:books/daglib/0025734}, focused on the low-level aspects of reversible computing, i.e. those ones concerning the realization of reversible hardware, and
 \cite{DBLP:series/eatcs/Morita17}, focused on how reversible computational models like Reversible Turing Machines (RTM) and Reversible Cellular Automata (RCA) can be considered universal and how to prove that they enjoy such a property.
 
-This work focuses on the \emph{functional model} \RPP of reversible computations \cite{PAOLINI2020218}.
-\RPP stands for (the class of) Reversible Primitive Permutations which can be seen as a possible counterpart of \PRF, the class of Primitive Recursive functions \cite{rogers1967theory,soare1987book}, but in the context of the reversible computational models.
+This work focuses on the \emph{functional model} \RPP of Reversible Computation \cite{PAOLINI2020218}.
+\RPP stands for (the class of) Reversible Primitive Permutations which can be seen as a possible counterpart of \PRF, the class of Primitive Recursive functions \cite{rogers1967theory,soare1987book}, but, as told, in the context of models for Reversible Computation.
 
-We recall that \RPP, in analogy with \PRF, is defined as the small class built on some given basic reversible function, which is closed under suitable composition schemes.
+We recall that \RPP, in analogy with \PRF, is defined as the small class built on some given basic reversible function,
+and which is closed under suitable composition schemes.
 
 The very functional nature of the elements in \RPP is at the base of reasonably accessible proofs of the following properties:
 \begin{itemize}
@@ -227,10 +228,10 @@ The very functional nature of the elements in \RPP is at the base of reasonably 
 
 \item \RPP can be naturally extended to become Turing-complete \cite{Paolini2018NGC} by means of a composition scheme analogous to the one that extends \PRF to the Turing-complete class \PR (Primitive Recursive functions);
 
-\item in \cite{MatosRC2020}, \RPP is proven equivalent  to the reversible programming language \SRL \cite{matos03tcs}, which implies that the fix-point problem for \RPP is undecidable \cite{2318_1734164MatosPaoliniRoversiTCSICTCS18}.
+\item in \cite{MatosRC2020}, \RPP is proven equivalent  to the reversible programming language \SRL \cite{matos03tcs}, from we get taht the fix-point problem for \RPP is undecidable \cite{2318_1734164MatosPaoliniRoversiTCSICTCS18}.
 \end{itemize}
 
-The motivation to write this work is to bring evidence that expressing reversible computations by means of recursively defined computational models, like the class \RPP, \emph{naturally} offers the possibility to certify the correctness of reversible algorithms, and, mainly, of properties that rely on them, by using some proof-assistant.
+The motivation to write this work is to bring evidence that expressing Reversible Computation by means of recursively defined computational models, like the class \RPP, \emph{naturally} offers the possibility to certify the correctness, or other interesting properties we might be interested to, of reversible algorithms, by means of some proof-assistant.
 
 We recall that proof-assistants supply an integrated environment to formalize data-types, to implement algorithms that work on those data-types, to formalize specifications of the implementations, and to prove in full detail that those implementation match their specifications.
 
@@ -239,11 +240,19 @@ We recall that proof-assistants supply an integrated environment to formalize da
 Roughly, we show how to express \RPP and its evaluation mechanism inside the proof-assistant \LEAN \cite{Lean3}. On one side we are able to certify the correctness of every reversible function that we write in \RPP with respect to a given specification. On the other, we certify the correctness of the main result in \cite{DBLP:journals/tcs/PaoliniPR20} which states that \RPP is \PRF-complete. In more detail:
 \begin{itemize}
     \item we give a strong guarantee that \RPP is \PRF-complete.
-    Relying on the correctness of existing proofs between the classes \PRF and \UPRF. i.e. the class of \emph{Unary} Primitive recursive Functions, we formally show in full detail that every function of \UPRF can be represented and simulated by a suitable function in \RPP, using the proof-assistant \LEAN.
+    Relying on existing proofs that the classes \PRF and \UPRF --- the class of \emph{Unary} Primitive recursive Functions ---, are equivalent, inside the proof-assistant \LEAN, we prove that, for every function $ f $ of \UPRF, a function in \RPP exists that represents and simulates $ f $.
 
-    Despite the proof is fully detailed, besides fixing some small bugs, we also conceptually and technically simplify the original \PRF-completeness proof of \RPP in \cite{DBLP:journals/tcs/PaoliniPR20}.
+    Despite the proof is fully detailed, besides fixing some small bugs, we also conceptually and technically simplify the original \PRF-completeness proof of \RPP in \cite{DBLP:journals/tcs/PaoliniPR20};
 
-    \item on one side the simplification is a consequence of the representation of \UPRF available as a \LEAN library. On the other, and more remarkably, it consists of a complete reworking, as compared to \cite{DBLP:journals/tcs/PaoliniPR20}, of the Cantor Pairing \cite{Cantor1878,DBLP:journals/corr/Szudzik17} as a function of \RPP. We recall that Cantor Pairing is an isomorphism $ \mathbb{N}\times\mathbb{N} \simeq \mathbb{N} $. Cantor Pairing works as a stack that allows us to correctly manage the computation of a recursive scheme of \UPRF by means of a reversible computation of an element in \RPP.
+    \item on one side the simplification is a consequence of the representation of \UPRF available as a \LEAN library. On the other, and more remarkably, it is characterized by the two following aspects:
+    \begin{itemize}
+        \item it introduces a more primitive finite iteration scheme which is expressive enough to encode the finite iteration schemes that both \RPP and \SRL are originally endowed with;
+        \item it completely reworks the algorithm that implements the Cantor Pairing \cite{Cantor1878,DBLP:journals/corr/Szudzik17} in \RPP, as compared to \cite{DBLP:journals/tcs/PaoliniPR20}.
+
+        We recall that Cantor Pairing is an isomorphism $ \mathbb{N}\times\mathbb{N} \simeq \mathbb{N} $. Inside the proof of \PRF-completeness, Cantor Pairing works as a stack; it allows us to correctly manage the computation of a recursive scheme of \UPRF by means of a reversible computation of an element in \RPP.
+    \end{itemize}
+
+%    \item on one side the simplification is a consequence of the representation of \UPRF available as a \LEAN library. On the other, and more remarkably, it consists of a complete reworking, as compared to \cite{DBLP:journals/tcs/PaoliniPR20}, of the Cantor Pairing \cite{Cantor1878,DBLP:journals/corr/Szudzik17} as a function of \RPP. We recall that Cantor Pairing is an isomorphism $ \mathbb{N}\times\mathbb{N} \simeq \mathbb{N} $. Inside the proof of \PRF-completeness, Cantor Pairing works as a stack; it allows us to correctly manage the computation of a recursive scheme of \UPRF by means of a reversible computation of an element in \RPP.
 
     \item we show that the \RPP function that we define to implement Cantor Pairing is a specific instance of a more general pattern that allows us to uniquely associate pairs of $ \mathbb{N}\times\mathbb{N}$ to single element of $ \mathbb{N}$. This means that we are able to show further isomorphims  $ \mathbb{N}\times\mathbb{N}\simeq \mathbb{N}$ in \RPP by just modifying a core element in the definition the Cantor Pairing.
 
@@ -258,14 +267,14 @@ Roughly, we show how to express \RPP and its evaluation mechanism inside the pro
 \subsection{Related work}
 \begin{itemize}
 \item
-At our knowledge, works that relate algorithms implemented by means of a formalism that can express reversible computations do not abound. In fact, we are aware of \cite{paoliniTYPES2015} which certifies a full abstraction result between operational and a denotational semantics for the imperative reversible programming language \Janus \cite[Section 8.3.3]{perumalla2013chc}. The certification is worked out in the proof-assistant \Matita \cite{Asperti2007}, whose type-system is very close to the one \LEAN is based on.
+At our knowledge, works that relate algorithms implemented by means of a formalism that can express reversible computations do not abound. In fact, we are aware of \cite{paoliniTYPES2015} which certifies a full abstraction result between operational and a denotational semantics for the imperative reversible programming language \Janus \cite[Section 8.3.3]{perumalla2013chc}. The certification of \cite{paoliniTYPES2015} is worked out in the proof-assistant \Matita \cite{Asperti2007}, whose type-system is very close to the one \LEAN is based on.
 
 \item
 An early proposal to express reversible computations in a functional formalism is \cite{jacopini89tcs}. It introduces the class \JMF of reversible functions which is as expressive as Kleene's
 Partial Recursive functions \cite{cutland1980book,odifreddi1989book}.
 %Therefore, the focus of \cite{jacopini89tcs} is on partial reversible functions while ours  is on total ones.
 %The expressiveness of
-\JMF is clearly stronger class than \RPP, but we see \JMF as less abstract than \RPP for two reasons: (i) the primitive functions of \JMF depend on a given specific binary representation of natural numbers; (ii) unlike \RPP, which corresponds to \PRF, but in a reversible setting, it is not evident that \JMF is the extension of a total sub-class analogous to \RPP.
+\JMF is clearly a stronger class than \RPP, but we see \JMF as less abstract than \RPP for two reasons: (i) the primitive functions of \JMF depend on a given specific binary representation of natural numbers; (ii) unlike \RPP, which corresponds to \PRF, but in a reversible setting, tu us it is not evident that \JMF is the natural extension of a total sub-class analogous to \RPP.
 \end{itemize}
 
 %---------------------
