@@ -28,7 +28,7 @@
 \usepackage{nicematrix}
 \setcounter{MaxMatrixCols}{20}
 \usepackage{rotating}
-
+\usepackage{tikz}
 \usepackage{xcolor}
 \definecolor{keywordcolor}{rgb}{0.7, 0.1, 0.1} % red
 \definecolor{commentcolor}{rgb}{0.4, 0.4, 0.4} % grey
@@ -533,6 +533,151 @@ The definition of \lstinline|RPP| of \LEAN is really very close to the original 
 %=====================
 \section{Some certified algorithms inside \LEAN}
 \label{section:Some certified algorithms inside LEAN}
+
+\begin{figure}
+\begin{subfigure}{.225\textwidth}
+\centering
+\begin{tikzpicture}[scale=0.3]
+    % grid
+    \draw[dashed,fill=gray,opacity=.5]  (0,0) grid (4,4);
+    % labels
+    \foreach \x in {1,...,4} { \node [anchor=north] at (\x,0) {\x}; }
+    \foreach \y in {1,...,4} { \node [anchor=east] at (0,\y) {\y}; }
+    \node [anchor=north east] at (0,0) {0};
+    % vertices
+    \foreach \x in {0,...,4} {
+        \foreach \y in {0,...,4} {
+            \node at (\x,\y) [circle,inner sep=0pt,minimum size=3pt,fill=gray,opacity=.3] {};
+        }
+    }
+    % path
+    \draw [->,red] (0,0) -- (0,1);
+    \draw [->,red] (0,1) -- (1,0);
+    \draw [->,red] (1,0) -- (0,2);
+    \draw [->,red] (0,2) -- (1,1);
+    \draw [->,red] (1,1) -- (2,0);
+    \draw [->,red] (2,0) -- (0,3);
+    \draw [->,red] (0,3) -- (1,2);
+    \draw [->,red] (1,2) -- (2,1);
+    \draw [->,red] (2,1) -- (3,0);
+    \draw [->,red] (3,0) -- (0,4);
+    \draw [->,red] (0,4) -- (1,3);
+    \draw [->,red] (1,3) -- (2,2);
+    \draw [->,red] (2,2) -- (3,1);
+    \draw [->,red] (3,1) -- (4,0);
+\end{tikzpicture}
+\caption{sfigure1}
+\label{sfig:1}
+\end{subfigure}
+\hfill
+\begin{subfigure}{.225\textwidth}
+\centering
+\begin{tikzpicture}[scale=0.3]
+    % grid
+    \draw[dashed,fill=gray,opacity=.3]  (0,0) grid (4,4);
+    % labels
+    \foreach \x in {1,...,4} { \node [anchor=north] at (\x,0) {\x}; }
+    \foreach \y in {1,...,4} { \node [anchor=east] at (0,\y) {\y}; }
+    \node [anchor=north east] at (0,0) {0};
+    % vertices
+    \foreach \x in {0,...,4} {
+        \foreach \y in {0,...,4} {
+            \node at (\x,\y) [circle,inner sep=0pt,minimum size=3pt,fill=gray,opacity=.3] {};
+        }
+    }
+    % path
+\draw [->,red] (4,0) to [bend right=30] (0,4);
+\draw [->,red] (0,4) -- (1,3);
+\draw [->,red] (1,3) -- (2,2);
+\draw [->,red] (2,2) -- (3,1);
+\draw [->,red] (3,1) -- (4,0);
+\end{tikzpicture}
+\caption{sfigure2}
+\label{sfig:2}
+\end{subfigure}
+\hfill
+\begin{subfigure}{.225\textwidth}
+\centering
+\begin{tikzpicture}[scale=0.3]
+    % grid
+    \draw[dashed,fill=gray,opacity=.5]  (0,0) grid (4,4);
+    % labels
+    \foreach \x in {1,...,4} { \node [anchor=north] at (\x,0) {\x}; }
+    \foreach \y in {1,...,4} { \node [anchor=east] at (0,\y) {\y}; }
+    \node [anchor=north east] at (0,0) {0};
+    % vertices
+    \foreach \x in {0,...,4} {
+        \foreach \y in {0,...,4} {
+            \node at (\x,\y) [circle,inner sep=0pt,minimum size=3pt,fill=gray,opacity=.3] {};
+        }
+    }
+    % path
+\draw [->,red] (0,0) -- (0,2);
+\draw [->,red] (0,2) -- (1,1);
+\draw [->,red] (1,1) -- (2,0);
+\draw [->,red] (2,0) -- (0,4);
+\draw [->,red] (0,4) -- (1,3);
+\draw [->,red] (1,3) -- (1,3);
+\draw [->,red] (1,3) -- (2,2);
+\draw [->,red] (2,2) -- (3,1);
+\draw [->,red] (3,1) -- (4,0);
+\end{tikzpicture}
+\caption{sfigure3}
+\label{sfig:3}
+\end{subfigure}
+\hfill
+\begin{subfigure}{.225\textwidth}
+\centering
+    \begin{tikzpicture}[scale=0.3]
+        % grid
+        \draw[dashed,fill=gray,opacity=.5]  (0,0) grid (4,4);
+        % labels
+        \foreach \x in {1,...,4} { \node [anchor=north] at (\x,0) {\x}; }
+        \foreach \y in {1,...,4} { \node [anchor=east] at (0,\y) {\y}; }
+        \node [anchor=north east] at (0,0) {0};
+        % vertices
+        \foreach \x in {0,...,4} {
+            \foreach \y in {0,...,4} {
+                \node at (\x,\y) [circle,inner sep=0pt,minimum size=3pt,fill=gray,opacity=.3] {};
+            }
+        }
+        % path
+\draw [->,red] (0,0) -- (0,1);
+\draw [->,red] (0,1) -- (1,0);
+\draw [->,red] (1,0) -- (1,1);
+\draw [->,red] (1,1) -- (0,2);
+\draw [->,red] (0,2) -- (1,2);
+\draw [->,red] (1,2) -- (2,0);
+\draw [->,red] (2,0) -- (2,1);
+\draw [->,red] (2,1) -- (2,2);
+\draw [->,red] (2,2) -- (0,3);
+\draw [->,red] (0,3) -- (1,3);
+\draw [->,red] (1,3) -- (2,3);
+\draw [->,red] (2,3) -- (3,0);
+\draw [->,red] (3,0) -- (3,1);
+\draw [->,red] (3,1) -- (3,2);
+\draw [->,red] (3,2) -- (3,3);
+\draw [->,red] (3,3) -- (0,4);
+\draw [->,red] (0,4) -- (1,4);
+\draw [->,red] (1,4) -- (2,4);
+\draw [->,red] (2,4) -- (3,4);
+\draw [->,red] (3,4) -- (4,0);
+\draw [->,red] (4,0) -- (4,1);
+\draw [->,red] (4,1) -- (4,2);
+\draw [->,red] (4,2) -- (4,3);
+\draw [->,red] (4,3) -- (4,4);
+    \end{tikzpicture}
+    \caption{sfigure4}
+    \label{sfig:4}
+\end{subfigure}
+\caption{figure}
+\label{fig:}
+\end{figure}
+
+
+
+
+
 
 %=====================
 \section{Unary Primitive Recursive Functions (\UPRF) }
