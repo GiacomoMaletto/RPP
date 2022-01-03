@@ -1,0 +1,71 @@
+% macro
+% \newcommand{\svdots}{\scriptscriptstyle \boldsymbol \vdots}
+\newcommand{\perm}[1]{\scriptstyle \left\rmoustache #1 \right\rmoustache}
+\newcommand{\bloch}[2]{\Block[draw=white,fill=lblue,line-width=.5mm,rounded-corners]{#1}{#2}} % https://en.wikipedia.org/wiki/Ernest_Bloch
+\newcommand{\oloch}[2]{\Block[draw=white,fill=lorange,line-width=.5mm,rounded-corners]{#1}{#2}}
+\newcommand{\conv}[1]{\overbracket[.5pt][1pt]{\underbracket[.5pt][1pt]{#1}}}
+
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\RR}{\mathbb{R}}
+
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+
+\newcommand{\gl}{\text{\guillemotleft}}
+\newcommand{\gr}{\text{\guillemotright}}
+
+
+\newcommand{\ORPP}{\mathsf{ORPP}}
+\newcommand{\rppf}{\mathsf{f}}
+\newcommand{\rppg}{\mathsf{g}}
+\newcommand{\rpph}{\mathsf{h}}
+\newcommand{\rppId}{\mathsf{Id}}
+\newcommand{\rppNe}{\mathsf{Ne}}
+\newcommand{\rppSu}{\mathsf{Su}}
+\newcommand{\rppPr}{\mathsf{Pr}}
+\newcommand{\rppSw}{\mathsf{Sw}}
+\newcommand{\rppCo}{\fatsemi}
+\newcommand{\rppPa}{\Vert}
+\newcommand{\rppIt}{\mathsf{It}}
+\newcommand{\rppIta}{\mathsf{Ita}}
+\newcommand{\rppItr}{\mathsf{Itr}}
+\newcommand{\rppIf}{\mathsf{If}}
+\newcommand{\rppinc}{\mathsf{inc}}
+\newcommand{\rppdec}{\mathsf{dec}}
+\newcommand{\rppmul}{\mathsf{mul}}
+\newcommand{\rppsquare}{\mathsf{square}}
+\newcommand{\rppless}{\mathsf{less}}
+\newcommand{\rppcp}{\mathsf{cp}}
+\newcommand{\rppcpi}{\mathsf{cp_{input}}}
+\newcommand{\rpptr}{\mathsf{tr}}
+\newcommand{\rppcu}{\mathsf{cu}}
+\newcommand{\rppcui}{\mathsf{cu_{input}}}
+\newcommand{\rppcustep}{\mathsf{cu_{step}}}
+\newcommand{\rppdiv}{\mathsf{div}}
+\newcommand{\rppdivstep}{\mathsf{div_{step}}}
+\newcommand{\rppsqrt}{\mathsf{sqrt}}
+\newcommand{\rppsqrtstep}{\mathsf{sqrt_{step}}}
+\newcommand{\rpprewire}[1]{\lfloor #1 \rceil}
+\newcommand{\rppmkpair}{\mathsf{mkpair}}
+\newcommand{\rppmkpairi}{\mathsf{mkpair_{input}}}
+\newcommand{\rppunpair}{\mathsf{unpair}}
+\newcommand{\rppunpairi}{\mathsf{unpair_{input}}}
+\newcommand{\rppunpairifwd}{\mathsf{unpair_{input, \rightarrow}}}
+\newcommand{\rppprecstep}{\mathsf{prec_{step}}}
+\newcommand{\rppprecfwd}{\mathsf{prec_{\rightarrow}}}
+\newcommand{\rppprec}{\mathsf{prec}}
+\newcommand{\rppconvert}{\mathsf{convert}}
+\newcommand{\rppNu}{\mathsf{Nu}}
+\newcommand{\rppZe}{\mathsf{Ze}}
+\newcommand{\rppEz}{\mathsf{Ez}}
+\newcommand{\rppbin}{\mathsf{bin}}
+
+
+\newcommand{\prZero}{\mathtt{0}}
+\newcommand{\prSucc}{\mathtt{S}}
+\newcommand{\prPred}{\mathtt{P}}
+\newcommand{\prProj}[2]{\mathtt{P}^{#1}_{#2}} % P^n_i
+\newcommand{\prCom}[1]{\circ{[#1]}} % composition
+\newcommand{\prPrec}{\mathtt{R}}
+\newcommand{\pradd}{\mathtt{ADD}}
+\newcommand{\prack}{\mathtt{ACK}}
