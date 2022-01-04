@@ -175,8 +175,9 @@
 \newcommand{\PRF}{\textsf{PRF}\xspace}
 \newcommand{\PR}{\textsf{PR}\xspace}
 \newcommand{\CPP}{\textsf{C}\xspace}
-\newcommand{\LEAN}{\textsf{LEAN}\xspace}
-\newcommand{\LEANFour}{\textsf{LEAN4}\xspace}
+\newcommand{\MATHLIB}{\textsf{mathlib}\xspace}
+\newcommand{\LEAN}{\textsf{Lean}\xspace}
+\newcommand{\LEANFour}{\textsf{Lean 4}\xspace}
 \newcommand{\RPRF}{\textsf{R}\PRF\xspace} % reversible primitive
 \newcommand{\JMF}{\textsf{RI}\xspace} % Jacopini Mentrasti
 \newcommand{\Janus}{\textsf{Janus}\xspace}
@@ -188,7 +189,8 @@
 
 \begin{document}
 %\title{A formal certification that Reversible Primitive Permutations are Primitive-recursive complete}
-\title{Certifying algorithms and relevant properties of  Reversible Primitive Permutations with \LEAN}
+\title{Certifying algorithms and relevant properties of Reversible Primitive Permutations with \LEAN}
+\titlerunning{Certifying \RPP properties with \LEAN}
 
 \author{Giacomo Maletto\inst{1} \and
 	    Luca Roversi\inst{2}\orcidID{0000-0002-1871-6109}}
@@ -212,12 +214,12 @@
 \label{section:Introduction}
 Studies focused on questions posed by Maxwell, regarding the sensibility of the principles which Thermodynamics is based on, recognized the fundamental role that Reversible Computation can play to that purpose.
 
-Once identified, it has been apparent that Reversible Computation constitutes the context in which to frame relevant aspects in areas of the computer science; they can span from reversible hardware design which can offer a greener foot-print, as compared to classical hardware, to unconventional computational models --- we think to quantum or bio-inspired ones, for example ---, passing through parallel computation and the synchronization issues that it rises, or debuggers that help tracing back to the origin of a bug, or the consistent transactions roll-back in data-base management systems, just to name some. The book \cite{perumalla2013chc} is a comprehensive introduction to the subject; the book \cite{DBLP:books/daglib/0025734}, focused on the low-level aspects of Reversible Computation, concerning the realization of reversible hardware, and
-\cite{DBLP:series/eatcs/Morita17}, focused on how models of Reversible Computation like Reversible Turing Machines (RTM), and Reversible Cellular Automata (RCA) can be considered universal and how to prove that they enjoy such a property, can be complement and integrate \cite{perumalla2013chc}.
+Once identified, it has been apparent that Reversible Computation constitutes the context in which to frame relevant aspects in areas of Computer Science; they can span from reversible hardware design which can offer a greener foot-print, as compared to classical hardware, to unconventional computational models --- we think to quantum or bio-inspired ones, for example ---, passing through parallel computation and the synchronization issues that it rises, or debuggers that help tracing back to the origin of a bug, or the consistent transactions roll-back in data-base management systems, just to name some. The book \cite{perumalla2013chc} is a comprehensive introduction to the subject; the book \cite{DBLP:books/daglib/0025734}, focused on the low-level aspects of Reversible Computation, concerning the realization of reversible hardware, and
+\cite{DBLP:series/eatcs/Morita17}, focused on how models of Reversible Computation like Reversible Turing Machines (RTM), and Reversible Cellular Automata (RCA) can be considered universal and how to prove that they enjoy such a property, can be considered complementary and integrate \cite{perumalla2013chc}.
 
 This work focuses on the \emph{functional model} \RPP \cite{DBLP:journals/tcs/PaoliniPR20} of Reversible Computation.
-\RPP stands for (the class of) Reversible Primitive Permutations which can be seen as a possible reversible counterpart of \PRF, the class of Primitive Recursive functions \cite{rogers1967theory}.
-We recall that \RPP, in analogy with \PRF, is defined as the small class built on some given basic reversible function,
+\RPP stands for (the class of) Reversible Primitive Permutations, which can be seen as a possible reversible counterpart of \PRF, the class of Primitive Recursive functions \cite{rogers1967theory}.
+We recall that \RPP, in analogy with \PRF, is defined as the smallest class built on some given basic reversible function,
 and which is closed under suitable composition schemes.
 
 The very functional nature of the elements in \RPP is at the base of reasonably accessible proofs of the following properties:
@@ -238,7 +240,7 @@ Roughly, we show how to express \RPP and its evaluation mechanism inside the pro
 \begin{itemize}
     \item we give a strong guarantee that \RPP is \PRF-complete.
     Relying on existing proofs that the classes \PRF and \UPRF --- the class of \emph{Unary} Primitive recursive Functions ---, are equivalent, inside the proof-assistant \LEAN, we prove that, for every function $ f $ of \UPRF, a function in \RPP exists that represents and simulates $ f $.
-    Despite the proof is fully detailed, besides fixing some small bugs, we also conceptually and technically simplify the original \PRF-completeness proof of \RPP in \cite{DBLP:journals/tcs/PaoliniPR20};
+    A part from fixing some small bugs, we provide a \PRF-completeness proof of \RPP \cite{DBLP:journals/tcs/PaoliniPR20} which is fully detailed, conceptually, and technically simpler;
 
     \item on one side the simplification is a consequence of the representation of \UPRF available as a \LEAN library. On the other, and more remarkably,  the two following aspects characterize the simplifications:
     \begin{itemize}
@@ -247,7 +249,7 @@ Roughly, we show how to express \RPP and its evaluation mechanism inside the pro
         We recall that Cantor Pairing is an isomorphism $ \mathbb{N}\times\mathbb{N} \simeq \mathbb{N} $. Inside the proof of \PRF-completeness, Cantor Pairing works as a stack; it allows us to correctly manage the computation of a recursive scheme of \UPRF by means of an element in \RPP.
     \end{itemize}
 
-    \item we show that the \RPP function that we define to implement Cantor Pairing is one possible instance of a more general pattern that allows us to uniquely associate pairs of $ \mathbb{N}\times\mathbb{N}$ to a single element of $ \mathbb{N}$. This means that we are able to show further isomorphims  $ \mathbb{N}\times\mathbb{N}\simeq \mathbb{N}$ in \RPP by just modifying a core of Cantor Pairing.
+    \item we show that the \RPP function that we define to implement Cantor Pairing is one possible instance of a more general pattern that allows us to uniquely associate pairs of $ \mathbb{N}\times\mathbb{N}$ to a single element of $ \mathbb{N}$. This means that we are able to show further isomorphism $ \mathbb{N}\times\mathbb{N}\simeq \mathbb{N}$ in \RPP by just modifying a core of Cantor Pairing.
 \end{itemize}
 
 %---------------------
@@ -262,7 +264,7 @@ This work illustrates the relevant parts of the BSc Thesis \cite{MalettoBSc2021}
 Section~\ref{section:Reversible Primitive Permutations} recalls the class \RPP by commenting on the main design aspects that characterize its definition inside \LEAN.
 Section~\ref{section:Some certified algorithms inside LEAN} defines and proves correct new reversible algorithms central to prove that \RPP is \PRF-complete.
 Section~\ref{section:Unary Primitive Recursive Functions} recalls the main aspects of \UPRF, with particular attention to the computational behavior of its recursion scheme.
-Section~\ref{section:The UPRF-completeness of RPP} illustrates the points that characterize the porting of the original \RPP \PRF-complete inside \LEAN.
+Section~\ref{section:The UPRF-completeness of RPP} illustrates the points that characterize the porting of the original proof that \RPP is \PRF-complete to \LEAN.
 Section~\ref{section:Conclusion and developments} underlies further more general contribution of the work, a reason why we choose \LEAN,  and natural developments.
 
 %=====================
@@ -292,7 +294,7 @@ Section~\ref{section:Conclusion and developments} underlies further more general
 \end{figure}
 
 We use the data-type \lstinline|RPP| in Figure~\ref{fig:RPP-LEAN}, as defined in \LEAN, to recall from \cite{DBLP:journals/tcs/PaoliniPR20} that the class \RPP is the smallest class of functions
-that contains five base functions, named as in the definition, and all the functions that we can generate by the composition schemes whose name is next to the corresponding clause in Figure~\ref{fig:RPP-LEAN}. For ease of use and readability the two last lines in Figure~\ref{fig:RPP-LEAN} introduce infix notations for series and parallel compositions.
+that contains five base functions, named as in the definition, and all the functions that we can generate by the composition schemes whose name is next to the corresponding clause in Figure~\ref{fig:RPP-LEAN}. For ease of use and readability the  last two lines in Figure~\ref{fig:RPP-LEAN} introduce infix notations for series and parallel compositions.
 
 \begin{example}[A  term of type {\normalfont \lstinline|RPP|}]
 \label{example:A first legal term of type RPP}
@@ -319,16 +321,16 @@ The third parallel composition is between a single wire and a selection among \l
 \begin{figure}
 \centering
 \begin{lstlisting}
-def arity : RPP → ℕ
-  | (Id n)     := n
-  | Ne         := 1
-  | Su         := 1
-  | Pr         := 1
-  | Sw         := 2
-  | (f ‖ g)    := f.arity + g.arity
-  | (f ;; g)   := max f.arity g.arity
-  | (It f)     := 1 + f.arity
-  | (If f g h) := 1 + max (max f.arity g.arity) h.arity
+      def arity : RPP → ℕ
+        | (Id n)     := n
+        | Ne         := 1
+        | Su         := 1
+        | Pr         := 1
+        | Sw         := 2
+        | (f ‖ g)    := f.arity + g.arity
+        | (f ;; g)   := max f.arity g.arity
+        | (It f)     := 1 + f.arity
+        | (If f g h) := 1 + max (max f.arity g.arity) h.arity
 \end{lstlisting}
 \caption{Arity of every \lstinline|f: RPP|.}
 \label{fig:RPP-arity}
@@ -336,29 +338,37 @@ def arity : RPP → ℕ
 
 The function in Figure~\ref{fig:RPP-arity} computes the arity of any \lstinline|f:RPP| from the structure of \lstinline|f|, once fixed the arities of the base functions.
 
-\begin{remark}[Multiple wires are base functions]
-\label{remark:Multiple wires are base functions}
-Every finite set of \lstinline|n| parallel wires
-$
-\begin{NiceMatrix}
-    x_0&\bloch{1-1}{\mbox{\lstinline|Id 1|}}&y_0
-    \\
-    &\vdots&
-    \\
-    x_{n-1}&\bloch{1-1}{\mbox{\lstinline|Id 1|}}&y_{n-1}
-\end{NiceMatrix}
-$, written \lstinline|Id n|, and represented as
-$
-\begin{NiceMatrix}
-    x_0&\bloch{3-1}{\mbox{\lstinline|Id n|}}&y_0
-    \\
-    \vdots&&\vdots
-    \\
-    x_{n-1}&&y_{n-1}
-\end{NiceMatrix}
-$, \emph{is a base} function with arity \lstinline|n|.
-\qeda
-\end{remark}
+\begin{figure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        $\begin{NiceMatrix}
+            x_0&\bloch{1-1}{\mbox{\lstinline|Id 1|}}&y_0
+            \\
+            &\vdots&
+            \\
+            x_{n-1}&\bloch{1-1}{\mbox{\lstinline|Id 1|}}&y_{n-1}
+        \end{NiceMatrix}$
+        \caption{\lstinline|n| unary identities of \RPP in parallel.}
+        \label{fig:Id 1 || .. || Id 1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{.45\textwidth}
+        \centering
+        $ \begin{NiceMatrix}
+            x_0&\bloch{3-1}{\mbox{\lstinline|Id n|}}&y_0
+            \\
+            \vdots&&\vdots
+            \\
+            x_{n-1}&&y_{n-1}
+        \end{NiceMatrix} $
+        \caption{Single \lstinline|n|-ary identity \lstinline|RPP|.}
+        \label{fig:Id n}
+    \end{subfigure}
+    \caption{\lstinline|n|-ary identities are base functions of \lstinline|RPP|.}
+    \label{fig:multiple-wires}
+\end{figure}
+
+As remarked also in Figure~\ref{fig:multiple-wires}, \lstinline|RPP| considers \lstinline|n|-ary identities \lstinline|Id n| as primitive, unlike original \RPP, where \lstinline|Id n| can be obtained by composing in \lstinline|n| unary identities \lstinline|Id|.
 
 \begin{figure}
 \begin{lstlisting}
@@ -411,15 +421,14 @@ Let us give a look at the clauses in Figure~\ref{fig:RPP-ev}.
 \lstinline|Sw| is the transposition that switches the first two elements of its argument.
 The series composition \lstinline|f;;g| first applies \lstinline|f| and then
 \lstinline|g|.
-The parallel composition \lstinline|f‖g| splits the arguments into two parts, the ``topmost'' one \lstinline|take f.arity X| with as many elements as the arity of \lstinline|f|, the ``lowermost'' one \lstinline|drop g.arity X| with as many elements as the arity of \lstinline|g|, and concatenates by the append \lstinline|++| the two resulting lists. The finite iteration
+The parallel composition \lstinline|f‖g| splits \lstinline|X| into two parts. The ``topmost'' one \lstinline|take f.arity X| has as many elements as the arity of \lstinline|f|; the ``lowermost'' one \lstinline|drop f.arity X| contains the part of \lstinline|X| that can supply the arguments to \lstinline|g|. Finally, it concatenates the two resulting lists by the append \lstinline|++|. The finite iteration
 \lstinline|It f| iterates \lstinline|f| as many times as the value of the head \lstinline|x| of the argument, if \lstinline|x| contains a non negative value; otherwise it is the identity on the whole \lstinline|x::X|. This behavior is the meaning of \lstinline|(ev f)^[↓x]|.
 The selection \lstinline|If f g h| chooses one among \lstinline|f|, \lstinline|g|, and \lstinline|h|, depending on the argument head \lstinline|x|: it is \lstinline|g| with \lstinline|x = 0|, it is \lstinline|f| with \lstinline|x > 0|, and \lstinline|h| with \lstinline|x < 0|.
 The last line of Figure~\ref{fig:RPP-ev} sets a handy notation for \lstinline|ev|.
 
 \begin{remark}[We keep the definition of {\normalfont \lstinline|ev|}  simple]
 \label{remark:We keep the definition of ev simple}
-Our definition of \lstinline|ev| implies that, for any \lstinline|f:RPP|, we can freely apply \lstinline|f| to any \lstinline|X:list ℤ| even when \lstinline|X.length < f.arity|; in that case \lstinline|f X| is \lstinline|X|.
-This might sounds odd, but, as we shall see, it simplifies the proofs of must-have properties of \lstinline|RPP|.
+Our definition of \lstinline|ev| implies that, for any \lstinline|f:RPP|, we can freely apply \lstinline|f| to any \lstinline|X:list ℤ| even when \lstinline|X.length < f.arity|; in that case \lstinline|f X| has an unspecified behavior. This might sounds odd, but it simplifies the proofs of must-have properties of \lstinline|RPP|.
 \qeda
 \end{remark}
 
@@ -465,7 +474,7 @@ Proving \lstinline|lemma arity_inv|, i.e. that the arity of a function does not 
 \qedb
 
 \paragraph{Iteration.} Let \lstinline|f| be \lstinline|It|.
-In this case, the most complex goal to prove is \lstinline|‹It f;;It f⁻¹› x::X = x::X| which reduces to \lstinline|‹f⁻¹›^[↓x] (‹f›^[↓x] X') = X'|, where, we recall, the notation \lstinline{‹f›^[↓x]} means ``\lstinline{‹f›} applied \lstinline{x} times, if \lstinline|x| is positive''. Luckily this last statement is both formalized as \lstinline|function.left_inverse (g^[n]) (f^[n])|, and proven as part of \LEAN library, where \lstinline{function.left_inverse} is the proposition \lstinline|∀ (g: β → α) (f: α → β) (x: α), g(f x) = x : Prop|, with \lstinline|α|, and \lstinline|β| generic types.
+In this case, the most complex goal to prove is \lstinline|‹It f;;It f⁻¹› x::X = x::X| which reduces to \lstinline|‹f⁻¹›^[↓x] (‹f›^[↓x] X') = X'|, where, we recall, the notation \lstinline{‹f›^[↓x]} means ``\lstinline{‹f›} applied \lstinline{x} times, if \lstinline|x| is positive''. Luckily this last statement is both formalized as \lstinline|function.left_inverse (g^[n]) (f^[n])|, and proven in the library \MATHLIB of \LEAN, where \lstinline{function.left_inverse} is the proposition \lstinline|∀ (g: β → α) (f: α → β) (x: α), g(f x) = x : Prop|, with \lstinline|α|, and \lstinline|β| generic types.
 \qedb
 
 \vspace{\baselineskip}
@@ -524,10 +533,10 @@ The definition of \lstinline|RPP| of \LEAN is really very close to the original 
     \begin{example}[How does \eqref{align:It ItR} work?]
     \label{example:How align:It ItR works}
     Whenever \lstinline|x > 0|, the leftmost \lstinline|It f| in \eqref{align:It ItR} iterates \lstinline|f|, while the rightmost one does nothing because \lstinline|Ne| in the middle negates \lstinline|x|.
-    On the contrary, if \lstinline|x < 0|, the leftmost \lstinline|It f| does nothing and the iteration is performed by the righmost iteration, because \lstinline|Ne| in the middle negates \lstinline|x|. In both cases, the last \lstinline|Ne| restores \lstinline|x| to its intial sign. But this is the behaviour of \lstinline|ItR| as we wanted. \qeda
+    On the contrary, if \lstinline|x < 0|, the leftmost \lstinline|It f| does nothing and the iteration is performed by the righmost iteration, because \lstinline|Ne| in the middle negates \lstinline|x|. In both cases, the last \lstinline|Ne| restores \lstinline|x| to its initial sign. But this is the behaviour of \lstinline|ItR| as we wanted. \qeda
     \end{example}
 
-    Last, but not least, to convince \LEAN that \lstinline|It| terminates, it is much simpler than to convince it about the termiantion of \lstinline|ItR| or \lstinline|for|.
+    Last, but not least, to convince \LEAN that \lstinline|It| terminates, it is much simpler than to convince it about the termination of \lstinline|ItR| or \lstinline|for|.
 \end{itemize}
 
 %=====================
@@ -673,9 +682,6 @@ The definition of \lstinline|RPP| of \LEAN is really very close to the original 
 \caption{figure}
 \label{fig:}
 \end{figure}
-
-
-
 
 
 
