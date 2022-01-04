@@ -239,10 +239,10 @@ We recall that proof-assistants supply an integrated environment to formalize da
 Roughly, we show how to express \RPP and its evaluation mechanism inside the proof-assistant \LEAN \cite{Lean3}. On one side we are able to certify the correctness of every reversible function that we write in \RPP with respect to a given specification. On the other, we certify the correctness of the main result in \cite{DBLP:journals/tcs/PaoliniPR20} which states that \RPP is \PRF-complete. In more detail:
 \begin{itemize}
     \item we give a strong guarantee that \RPP is \PRF-complete.
-    Relying on existing proofs that the classes \PRF and \UPRF --- the class of \emph{Unary} Primitive recursive Functions ---, are equivalent, inside the proof-assistant \LEAN, we prove that, for every function $ f $ of \UPRF, a function in \RPP exists that represents and simulates $ f $.
-    A part from fixing some small bugs, we provide a \PRF-completeness proof of \RPP \cite{DBLP:journals/tcs/PaoliniPR20} which is fully detailed, conceptually, and technically simpler;
+    Relying on existing proofs that the classes \PRF and \UPRF --- the class of \emph{Unary} Primitive recursive Functions ---, are equivalent, using the library \MATHLIB of the proof-assistant \LEAN, we prove that, for every function $ f $ of \UPRF, a function in \RPP exists that represents and simulates $ f $.
+    Apart from fixing some small bugs, we provide a \PRF-completeness proof of \RPP \cite{DBLP:journals/tcs/PaoliniPR20} which is fully detailed, conceptually, and technically simpler;
 
-    \item on one side the simplification is a consequence of the representation of \UPRF available as a \LEAN library. On the other, and more remarkably,  the two following aspects characterize the simplifications:
+    \item on one side the simplification is a consequence of the representation of \UPRF available inside \MATHLIB. On the other, and more remarkably,  the two following aspects characterize the simplifications:
     \begin{itemize}
         \item we introduce a finite iteration scheme which is more primitive, but expressive enough to encode the finite iteration schemes originally in both \RPP and \SRL;
         \item we completely rework and simplify the algorithm that implements Cantor Pairing \cite{Cantor1878,DBLP:journals/corr/Szudzik17} in \RPP \cite{DBLP:journals/tcs/PaoliniPR20}.
@@ -428,7 +428,7 @@ The last line of Figure~\ref{fig:RPP-ev} sets a handy notation for \lstinline|ev
 
 \begin{remark}[We keep the definition of {\normalfont \lstinline|ev|}  simple]
 \label{remark:We keep the definition of ev simple}
-Our definition of \lstinline|ev| implies that, for any \lstinline|f:RPP|, we can freely apply \lstinline|f| to any \lstinline|X:list ℤ| even when \lstinline|X.length < f.arity|; in that case \lstinline|f X| has an unspecified behavior. This might sounds odd, but it simplifies the proofs of must-have properties of \lstinline|RPP|.
+Our definition of \lstinline|ev| implies that, for any \lstinline|f:RPP|, we can freely apply \lstinline|f| to any \lstinline|X:list ℤ| even when \lstinline|X.length < f.arity|; in that case \lstinline|f X| has an unspecified behavior. This might sound odd, but it simplifies the proofs of must-have properties of \lstinline|RPP|.
 \qeda
 \end{remark}
 
