@@ -2146,7 +2146,7 @@ We get around this limitation by using an ancillary variable initially set to $0
 which assumes value $1$ or $0$ depending on whether $y>0$ or $y=0$,
 and is then set back to $0$ using a variable that we know is positive or equal to zero depending on the case considered.
 
-At this point we can define \lstinline{cuᵢ} like so:
+At this point we can define $\rppcui$ like so:
 
 \noindent\begin{minipage}{.5\linewidth}
 \[ \rppcui = \rppIt[\rppcustep] \]
@@ -2185,7 +2185,7 @@ The function in the other direction is less intricate to define ($\rppcpi$ also 
   0 &                      & 0     &                     & \sum_{i=1}^{x + y} i &                      &                      & \sum_{i=1}^{x + y} i &                      &                      &                     & 0                        &                & 0           \\
 \\
 \end{NiceMatrix}$}
-We can combine \lstinline{cpᵢ} and \lstinline{cuᵢ} to get rid of the input values they both leave behind:
+We can combine $\rppcpi$ and $\rppcui$ to get rid of the input values they both leave behind:
 \begin{align*}
 \rppcp & = \rppcpi \rppCo \rpprewire{2, 0, 1} \rppCo \rppcui^{-1} \\
 \rppcu & = \rppcp^{-1}
@@ -2658,6 +2658,7 @@ inductive primrec : (ℕ → ℕ) → Prop
 | prec {f g} : primrec f → primrec g →
    primrec (unpaired (λ z n, n.elim (f z)
     (λ (y IH : ℕ), g (nat.mkpair z (nat.mkpair y IH)))
+    n))
 \end{lstlisting}
 At first sight, this looks like something totally different.
 It's still an inductive proposition, but takes as argument just unary functions \lstinline{ℕ → ℕ}, not of arbitrary arity.
@@ -2795,6 +2796,7 @@ Let's look at the definition again:
 prec {f g} : primrec f → primrec g →
   primrec (unpaired (λ z n, n.elim (f z)
     (λ (y IH : N), g (nat.mkpair z (nat.mkpair y IH)))
+    n))
 \end{lstlisting}
 Given $F, G \in \PRF$ let's call $H$ the function given by \lstinline{primrec.prec}
 (which isn't just standard primitive recursion!).
