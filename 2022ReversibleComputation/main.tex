@@ -231,7 +231,7 @@ The very functional nature of the elements in \RPP is at the base of reasonably 
 \item According to \cite{MatosRC2020}, \RPP and the reversible programming language \SRL \cite{matos03tcs} are equivalent, so the fix-point problem is undecidable for \RPP as well \cite{2318_1734164MatosPaoliniRoversiTCSICTCS18}.
 \end{itemize}
 
-The motivation to write this work is to bring evidence that expressing Reversible Computation by means of recursively defined computational models, like the class \RPP, \emph{naturally} offers the possibility to certify the correctness, or other interesting properties we might be interested to, of reversible algorithms, by means of some proof-assistant.
+The motivation to write this work is to bring evidence that expressing Reversible Computation by means of recursively defined computational models, like the class \RPP, \emph{naturally} offers the possibility to certify the correctness, or other interesting properties, of reversible algorithms, by means of some proof-assistant.
 We recall that proof-assistants supply an integrated environment to formalize data-types, to implement algorithms that work on those data-types, to formalize specifications of the implementations, and to prove in full detail that those implementation match their specifications, increasing their dependability.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -242,11 +242,11 @@ Roughly, we show how to express \RPP and its evaluation mechanism inside the pro
     Relying on existing proofs that the classes \PRF and \UPRF --- the class of \emph{Unary} Primitive recursive Functions ---, are equivalent, inside the proof-assistant \LEAN, we prove that, for every function $ f $ of \UPRF, a function in \RPP exists that represents and simulates $ f $.
     A part from fixing some small bugs, we provide a \PRF-completeness proof of \RPP \cite{DBLP:journals/tcs/PaoliniPR20} which is fully detailed, conceptually, and technically simpler;
 
-    \item on one side the simplification is a consequence of the representation of \UPRF available as a \LEAN library. On the other, and more remarkably,  the two following aspects characterize the simplifications:
+    \item on one side the simplification is a consequence of the representation of \UPRF in \MATHLIB \LEAN library. On the other, and more remarkably,  the two following aspects characterize the simplifications:
     \begin{itemize}
-        \item we introduce a finite iteration scheme which is more primitive, but expressive enough to encode the finite iteration schemes originally in both \RPP and \SRL;
+        \item we introduce a finite reversible iteration scheme which is more primitive, but expressive enough to encode the finite reversible iteration schemes originally in \RPP, and \SRL;
         \item we completely rework and simplify the algorithm that implements Cantor Pairing \cite{Cantor1878,DBLP:journals/corr/Szudzik17} in \RPP \cite{DBLP:journals/tcs/PaoliniPR20}.
-        We recall that Cantor Pairing is an isomorphism $ \mathbb{N}\times\mathbb{N} \simeq \mathbb{N} $. Inside the proof of \PRF-completeness, Cantor Pairing works as a stack; it allows us to correctly manage the computation of a recursive scheme of \UPRF by means of an element in \RPP.
+        We recall that Cantor Pairing is an isomorphism $ \mathbb{N}\times\mathbb{N} \simeq \mathbb{N} $. Inside the original proof of \PRF-completeness, Cantor Pairing works as a stack in order to correctly manage the computation of a recursive scheme of \UPRF by means of an element in \RPP. The \PRF-completeness that we develop in \LEAN does not rely on Cantor Pairing, but on an isomorphism $ \mathbb{N}\times\mathbb{N} \simeq \mathbb{N} $ in \MATHLIB \LEAN library.
     \end{itemize}
 
     \item we show that the \RPP function that we define to implement Cantor Pairing is one possible instance of a more general pattern that allows us to uniquely associate pairs of $ \mathbb{N}\times\mathbb{N}$ to a single element of $ \mathbb{N}$. This means that we are able to show further isomorphism $ \mathbb{N}\times\mathbb{N}\simeq \mathbb{N}$ in \RPP by just modifying a core of Cantor Pairing.
@@ -262,7 +262,7 @@ An early proposal to express reversible computations in a functional formalism i
 \paragraph{Contents.}
 This work illustrates the relevant parts of the BSc Thesis \cite{MalettoBSc2021} which comes with \cite{MalettoRPPLEAN2021}, a \LEAN project that certifies algorithms and properties of \RPP.
 Section~\ref{section:Reversible Primitive Permutations} recalls the class \RPP by commenting on the main design aspects that characterize its definition inside \LEAN.
-Section~\ref{section:Some certified algorithms inside LEAN} defines and proves correct new reversible algorithms central to prove that \RPP is \PRF-complete.
+Section~\ref{section:RPP algorithms} defines and proves correct new reversible algorithms central to prove that \RPP is \PRF-complete.
 Section~\ref{section:Unary Primitive Recursive Functions} recalls the main aspects of \UPRF, with particular attention to the computational behavior of its recursion scheme.
 Section~\ref{section:The UPRF-completeness of RPP} illustrates the points that characterize the porting of the original proof that \RPP is \PRF-complete to \LEAN.
 Section~\ref{section:Conclusion and developments} underlies further more general contribution of the work, a reason why we choose \LEAN,  and natural developments.
@@ -311,12 +311,29 @@ x_2&&y_2&\bloch{1-1}{\mbox{\lstinline|Id 1|}}&w_2&
 \end{NiceMatrix}
 \enspace .
 \]
-The term we have just defined is a series composition of three parallel compositions. The first parallel composition is between a ``single wire'' \lstinline|Id 1| and the transposition \lstinline|Sw|.
-The second parallel composition is between the finite iteration of
-the successor \lstinline|Su| and a single wire.
-The third parallel composition is between a single wire and a selection among \lstinline|Su|, \lstinline|Id 1| and the predecessor \lstinline|Pr|. Since \LEAN forces to use functional notation, \lstinline|It Su|, for example, is the \emph{application} of the unary constructor \lstinline|It| to the nullary constructor \lstinline|Su| that takes no arguments.
+The term we have just defined is a series composition of three parallel compositions.
+We comment the structure of the first one, the others being similar. It is a parallel composition between a ``single wire'' \lstinline|Id 1| and the transposition \lstinline|Sw|.
 \qeda
 \end{example}
+
+\begin{remark}[``Weakening'' algorithms of {\normalfont \lstinline|RPP|}]
+\label{remark:Weakening algorithms of RPP}
+We shall typically adopt the most economical way to write elements in \lstinline|RPP|; we shall drop parallel compositions between any \lstinline|Id m|, and any \lstinline|f:RPP| such that \lstinline|f<>Id n|, for some \lstinline|m|, \lstinline|n|. The term and the diagram in \textit{Example}~\ref{example:A first legal term of type RPP} become
+\lstinline|Sw;;It Su;;If Su (Id 1) Pr| and:
+\[
+\begin{NiceMatrix}
+    x_0&&y_0&\bloch{2-1}{\mbox{\lstinline|It  Su|}}&w_0&&z_0
+    \\
+    x_1&\bloch{2-1}{\mbox{\lstinline|Sw|}}&y_1& &w_1&\bloch{2-1}{\mbox{\lstinline|If Su (Id 1) Pr|}}&z_1
+    \\
+    x_2&&y_2&&w_2&
+    &z_2
+\end{NiceMatrix}
+\enspace .
+\]
+\textit{Remark}~\ref{remark:We keep the definition of ev simple} shall explain why this is possible.
+\qeda
+\end{remark}
 
 \begin{figure}
 \centering
@@ -368,21 +385,21 @@ The function in Figure~\ref{fig:RPP-arity} computes the arity of any \lstinline|
     \label{fig:multiple-wires}
 \end{figure}
 
-As remarked also in Figure~\ref{fig:multiple-wires}, \lstinline|RPP| considers \lstinline|n|-ary identities \lstinline|Id n| as primitive, unlike original \RPP, where \lstinline|Id n| can be obtained by composing in \lstinline|n| unary identities \lstinline|Id|.
+Figure~\ref{fig:multiple-wires}, remarks that \lstinline|RPP| considers \lstinline|n|-ary identities \lstinline|Id n| as primitive; in original \RPP \lstinline|Id n| is the parallel composition of \lstinline|n| unary identities.
 
 \begin{figure}
 \begin{lstlisting}
-def inv : RPP → RPP
-  | (Id n)     := Id n -- self-dual
-  | Ne         := Ne   -- self-dual
-  | Su         := Pr
-  | Pr         := Su
-  | Sw         := Sw   -- self-dual
-  | (f ‖ g)    := inv f ‖ inv g
-  | (f ;; g)   := inv g ;; inv f
-  | (It f)     := It (inv f)
-  | (If f g h) := If (inv f) (inv g) (inv h)
-notation f `⁻¹` := inv f
+    def inv : RPP → RPP
+      | (Id n)     := Id n -- self-dual
+      | Ne         := Ne   -- self-dual
+      | Su         := Pr
+      | Pr         := Su
+      | Sw         := Sw   -- self-dual
+      | (f ‖ g)    := inv f ‖ inv g
+      | (f ;; g)   := inv g ;; inv f
+      | (It f)     := It (inv f)
+      | (If f g h) := If (inv f) (inv g) (inv h)
+    notation f `⁻¹` := inv f
 \end{lstlisting}
 \caption{Inverse \lstinline|inv f| of every \lstinline|f:RPP|.}
 \label{fig:RPP-inv}
@@ -413,7 +430,7 @@ notation `‹` f `›` := ev f -- ‹ \f ›
 \end{figure}
 
 \paragraph{Operational semantics of {\normalfont \lstinline|RPP|}.}
-The function \lstinline|ev| in Figure~\ref{fig:RPP-ev} interprets an element of \lstinline|RPP| as a function from a list of integers to a list of integers. Originally, in \cite{DBLP:journals/tcs/PaoliniPR20}, \RPP is a class of functions with type $ \ZZ^n \longrightarrow \ZZ^n $. We use \lstinline|list ℤ| in place of tuples of \lstinline|ℤ| to exploit the rich \LEAN library of properties on lists to save quite a large amount of formalization work.
+The function \lstinline|ev| in Figure~\ref{fig:RPP-ev} interprets an element of \lstinline|RPP| as a function from a list of integers to a list of integers. Originally, in \cite{DBLP:journals/tcs/PaoliniPR20}, \RPP is a class of functions with type $ \ZZ^n \rightarrow \ZZ^n $. We use \lstinline|list ℤ| in place of tuples of \lstinline|ℤ| to exploit the rich \LEAN library of properties on lists to save quite a large amount of formalization work.
 
 Let us give a look at the clauses in Figure~\ref{fig:RPP-ev}.
 \lstinline|Id n| leaves the input list \lstinline|X| untouched.
@@ -429,11 +446,20 @@ The last line of Figure~\ref{fig:RPP-ev} sets a handy notation for \lstinline|ev
 \begin{remark}[We keep the definition of {\normalfont \lstinline|ev|}  simple]
 \label{remark:We keep the definition of ev simple}
 Our definition of \lstinline|ev| implies that, for any \lstinline|f:RPP|, we can freely apply \lstinline|f| to any \lstinline|X:list ℤ| even when \lstinline|X.length < f.arity|; in that case \lstinline|f X| has an unspecified behavior. This might sounds odd, but it simplifies the proofs of must-have properties of \lstinline|RPP|.
+%This is possible because we can prove:
+%\begin{lstlisting}
+%    lemma ev_length (f: RPP) (X: list ℤ): (‹f› X).length = X.length
+%    theorem ev_split (f: RPP) (X: list ℤ):
+%    ‹f› X = ‹f›(take f.arity X) ++ drop f.arity X .
+%\end{lstlisting}
+%\lstinline|lemma ev_length| says that \lstinline|RPP| functions preserve the argument length.
+%One of the most complex property to prove correct, i.e. \lstinline|theorem ev_split|, says that we can apply any \lstinline|‹f›| to \emph{any} \lstinline|X| with at least as many elements as \lstinline|arity f|.
 \qeda
 \end{remark}
 
 %======================
-\subsection{Both {\normalfont \lstinline|inv f|} and {\normalfont \lstinline|f|} are each other inverse}
+\subsection{The functions {\normalfont \lstinline|inv f|} and {\normalfont \lstinline|f|} are each other inverse}
+The proof of
 Once defined \lstinline|inv| in Figure~\ref{fig:RPP-inv} and \lstinline|ev| in Figure~\ref{fig:RPP-ev} we can prove both:
 \begin{lstlisting}
     theorem inv_co_l (f : RPP) (X : list ℤ) : ‹f ;; f⁻¹› X = X
@@ -474,7 +500,7 @@ Proving \lstinline|lemma arity_inv|, i.e. that the arity of a function does not 
 \qedb
 
 \paragraph{Iteration.} Let \lstinline|f| be \lstinline|It|.
-In this case, the most complex goal to prove is \lstinline|‹It f;;It f⁻¹› x::X = x::X| which reduces to \lstinline|‹f⁻¹›^[↓x] (‹f›^[↓x] X') = X'|, where, we recall, the notation \lstinline{‹f›^[↓x]} means ``\lstinline{‹f›} applied \lstinline{x} times, if \lstinline|x| is positive''. Luckily this last statement is both formalized as \lstinline|function.left_inverse (g^[n]) (f^[n])|, and proven in the library \MATHLIB of \LEAN, where \lstinline{function.left_inverse} is the proposition \lstinline|∀ (g: β → α) (f: α → β) (x: α), g(f x) = x : Prop|, with \lstinline|α|, and \lstinline|β| generic types.
+In this case, the most complex goal to prove is \lstinline|‹It f;;It f⁻¹› x::X = x::X| which reduces to \lstinline|‹f⁻¹›^[↓x] (‹f›^[↓x] X') = X'|, where, we recall, the notation \lstinline|‹f›^[↓x]| means ``\lstinline|‹f›| applied \lstinline|x| times, if \lstinline|x| is positive''. Luckily this last statement is both formalized as \lstinline|function.left_inverse (g^[n]) (f^[n])|, and proven in the library \MATHLIB of \LEAN, where \lstinline|function.left_inverse| is the proposition \lstinline|∀ (g: β → α) (f: α → β) (x: α), g(f x) = x : Prop|, with \lstinline|α|, and \lstinline|β| generic types.
 \qedb
 
 \vspace{\baselineskip}
@@ -498,21 +524,21 @@ A less general, but semantically more appropriate versions of  \lstinline|inv_co
     theorem inv_co_r (f : RPP) (X : list ℤ) :
                 f.arity ≤ X.length → ‹f⁻¹ ;; f› X = X
 \end{lstlisting}
-because, recalling Remark~\ref{remark:We keep the definition of ev simple}, \lstinline|f X| makes sense when \lstinline{f.arity ≤ X.length}.
-Fortunately, the way we defined \lstinline{RPP} allows us to state \lstinline|inv_co_l| or \lstinline|inv_co_r| in full generality
+because, recalling \textit{Remark}~\ref{remark:We keep the definition of ev simple}, \lstinline|f X| makes sense when \lstinline|f.arity ≤ X.length|.
+Fortunately, the way we defined \lstinline|RPP| allows us to state \lstinline|inv_co_l| or \lstinline|inv_co_r| in full generality
 with no reference to \lstinline|f.arity ≤ X.length|.
 \qeda
 \end{remark}
 
 %======================
 \subsection{How {\normalfont \lstinline|RPP|} differs from original {\normalfont \RPP}}
-The definition of \lstinline|RPP| of \LEAN is really very close to the original \lstinline{RPP}, but not identical. The goal is to simplify the overall task of formalization and certification. The brief list of changes follows.
+The definition of \lstinline|RPP| of \LEAN is really very close to the original \lstinline|RPP|, but not identical. The goal is to simplify the overall task of formalization and certification. The brief list of changes follows.
 \begin{itemize}
     \item As already outlined, \lstinline|It| and \lstinline|If| use the head of the input list to iterate or choose, because \LEAN pattern matching makes it obvious to take the head of a list. On the contrary, both iteration and selection of \RPP were driven by the value of the last element in the input tuple.
 
     \item \lstinline|Id n|, for any \lstinline|n:ℕ|, is primitive in \lstinline|RPP| and derived in \RPP. In some cases it is useful to have \lstinline|Id 0| available.
 
-    \item Using \lstinline|list ℤ → list ℤ| as the domain of the function that interpets any given element \lstinline|f:RPP| avoids to let the type of \lstinline|f:RPP| depend on the arity of \lstinline|f|. To know the arity of \lstinline|f| it is enough to invoke \lstinline|arity f|. Finally, we observe that getting rid of a dependent type like, say, \lstinline|RPP n|, allows us to escape situations in which we would need to prove that \lstinline{RPP (n+1)} and \lstinline{RPP (1+n)} are the same type.
+    \item Using \lstinline|list ℤ → list ℤ| as the domain of the function that interpets any given element \lstinline|f:RPP| avoids to let the type of \lstinline|f:RPP| depend on the arity of \lstinline|f|. To know the arity of \lstinline|f| it is enough to invoke \lstinline|arity f|. Finally, we observe that getting rid of a dependent type like, say, \lstinline|RPP n|, allows us to escape situations in which we would need to prove that \lstinline|RPP (n+1)| and \lstinline|RPP (1+n)| are the same type.
 
     \item The finite iterator \lstinline|It f (x::t): list ℤ| subsumes the finite iterators \lstinline|ItR| in \RPP, and \lstinline|for| in \SRL.
 
@@ -533,18 +559,85 @@ The definition of \lstinline|RPP| of \LEAN is really very close to the original 
     \begin{example}[How does \eqref{align:It ItR} work?]
     \label{example:How align:It ItR works}
     Whenever \lstinline|x > 0|, the leftmost \lstinline|It f| in \eqref{align:It ItR} iterates \lstinline|f|, while the rightmost one does nothing because \lstinline|Ne| in the middle negates \lstinline|x|.
-    On the contrary, if \lstinline|x < 0|, the leftmost \lstinline|It f| does nothing and the iteration is performed by the righmost iteration, because \lstinline|Ne| in the middle negates \lstinline|x|. In both cases, the last \lstinline|Ne| restores \lstinline|x| to its initial sign. But this is the behaviour of \lstinline|ItR| as we wanted. \qeda
+    On the contrary, if \lstinline|x < 0|, the leftmost \lstinline|It f| does nothing and the iteration is performed by the rightmost iteration, because \lstinline|Ne| in the middle negates \lstinline|x|. In both cases, the last \lstinline|Ne| restores \lstinline|x| to its initial sign. But this is the behavior of \lstinline|ItR|, as we wanted. \qeda
     \end{example}
 
     Last, but not least, to convince \LEAN that \lstinline|It| terminates, it is much simpler than to convince it about the termination of \lstinline|ItR| or \lstinline|for|.
 \end{itemize}
 
 %=====================
-\section{Some certified algorithms inside \LEAN}
-\label{section:Some certified algorithms inside LEAN}
+\section{{\normalfont \lstinline|RPP|} algorithms central to our proofs}
+\label{section:RPP algorithms}
 
 \begin{figure}
-\begin{subfigure}{.225\textwidth}
+\begin{subfigure}{.275\textwidth}
+\centering
+$\begin{NiceMatrix}
+    n & \bloch{2-1}{\mbox{\lstinline|It Su|}} & n     \\
+    x &                      & x + n \\
+ \end{NiceMatrix}$
+\caption{Increment \lstinline|inc|}
+\label{sfig:inc}
+\end{subfigure}
+\hfill
+\begin{subfigure}{.275\textwidth}
+\centering
+$ \begin{NiceMatrix}
+    n & \bloch{2-1}{\mbox{\lstinline|It Pr|}} & n     \\
+    x &                      & x - n \\
+  \end{NiceMatrix} $
+\caption{Decrement \lstinline|dec|}
+\label{sfig:dec}
+\end{subfigure}
+\hfill
+\begin{subfigure}{.275\textwidth}
+\centering
+$ \begin{NiceMatrix}
+    n & \bloch{3-1}{\mbox{\lstinline|It inc|}} & n             \\
+    m &                     & m             \\
+    x &                     & x + n \cdot m \\
+  \end{NiceMatrix} $
+\caption{Multiplication \lstinline|mul|}
+\label{sfig:mul}
+\end{subfigure}
+\\
+\begin{subfigure}{.6\textwidth}
+\centering
+$\begin{NiceMatrix}
+    n &  \bloch{1-1}{\mbox{\lstinline|Id 1|}}  & n & \bloch{2-1}{\mbox{\lstinline|inc|}} & n & \bloch{3-1}{\mbox{\lstinline|mul|}} & n             & \bloch{2-1}{\mbox{\lstinline|dec|}} & n             & \bloch{1-1}{\mbox{\lstinline|Id 1|}}   & n
+    \\
+    x & \bloch{2-1}{\mbox{\lstinline|Sw|}} & 0 &   & n &                      & n             &                      & 0             & \bloch{2-1}{\mbox{\lstinline|Sw|}} & x + n \cdot n
+    \\
+    0 &                     & x &   & x &                      & x + n \cdot n &   \      & x + n \cdot n &                     & 0
+\end{NiceMatrix}$
+\caption{\lstinline|square|}
+\label{fig:square}
+\end{subfigure}
+\hfill
+\begin{subfigure}{.325\textwidth}
+    \centering
+    $\begin{NiceMatrix}
+        x_0 & \bloch{6-1}{\rpprewire{i_0 \ldots i_n}} & x_{i_0} \\
+      \cdot &                                & \vdots  \\
+      \cdot &                                & x_{i_n} \\
+      \cdot &                                & x_{j_1} \\
+      \cdot &                                & \vdots  \\
+        x_m &                                & x_{j_{m-n}}
+    \end{NiceMatrix}$
+    \caption{Rewiring $ \rpprewire{i_0 \ldots i_n} $}
+    \label{fig:rewiring}
+\end{subfigure}
+\caption{Some useful functions of \lstinline|RPP|}
+\label{fig:standard functions}
+\end{figure}
+
+Figure~\ref{fig:standard functions} recalls definition and behavior of some \lstinline|RPP| functions. Rewiring $ \rpprewire{i_0 \ldots i_n} $ is worth commenting. Let us assume $\{ i_0, \dots, i_n \} \subseteq \{ 0, \dots, m \}$, and
+let $\{ j_1, \dots, j_{m-n} \}$ be $\{ 0, \dots, m \} \setminus \{ i_0, \dots, i_n \}$, i.e. the set of remaining indices, ordered such that $j_k < j_{k+1}$.
+By definition,
+$\rpprewire{i_0, \dots, i_n} (x_0, \dots, x_m) = (x_{i_0}, \dots, x_{i_n}, x_{j_1}, \dots, x_{j_{m-n}})$, i.e. rewiring brings every input with index in $ \{ i_0, \dots, i_n \} $ before all the remaining inputs, by preserving order.
+
+\begin{figure}
+\begin{subfigure}{.3\textwidth}
 \centering
 \begin{tikzpicture}[scale=0.3]
     % grid
@@ -579,7 +672,7 @@ The definition of \lstinline|RPP| of \LEAN is really very close to the original 
 \label{sfig:1}
 \end{subfigure}
 \hfill
-\begin{subfigure}{.225\textwidth}
+\begin{subfigure}{.3\textwidth}
 \centering
 \begin{tikzpicture}[scale=0.3]
     % grid
@@ -605,7 +698,7 @@ The definition of \lstinline|RPP| of \LEAN is really very close to the original 
 \label{sfig:2}
 \end{subfigure}
 \hfill
-\begin{subfigure}{.225\textwidth}
+\begin{subfigure}{.3\textwidth}
 \centering
 \begin{tikzpicture}[scale=0.3]
     % grid
@@ -634,56 +727,205 @@ The definition of \lstinline|RPP| of \LEAN is really very close to the original 
 \caption{sfigure3}
 \label{sfig:3}
 \end{subfigure}
-\hfill
-\begin{subfigure}{.225\textwidth}
-\centering
-    \begin{tikzpicture}[scale=0.3]
-        % grid
-        \draw[dashed,fill=gray,opacity=.5]  (0,0) grid (4,4);
-        % labels
-        \foreach \x in {1,...,4} { \node [anchor=north] at (\x,0) {\x}; }
-        \foreach \y in {1,...,4} { \node [anchor=east] at (0,\y) {\y}; }
-        \node [anchor=north east] at (0,0) {0};
-        % vertices
-        \foreach \x in {0,...,4} {
-            \foreach \y in {0,...,4} {
-                \node at (\x,\y) [circle,inner sep=0pt,minimum size=3pt,fill=gray,opacity=.3] {};
-            }
-        }
-        % path
-\draw [->,red] (0,0) -- (0,1);
-\draw [->,red] (0,1) -- (1,0);
-\draw [->,red] (1,0) -- (1,1);
-\draw [->,red] (1,1) -- (0,2);
-\draw [->,red] (0,2) -- (1,2);
-\draw [->,red] (1,2) -- (2,0);
-\draw [->,red] (2,0) -- (2,1);
-\draw [->,red] (2,1) -- (2,2);
-\draw [->,red] (2,2) -- (0,3);
-\draw [->,red] (0,3) -- (1,3);
-\draw [->,red] (1,3) -- (2,3);
-\draw [->,red] (2,3) -- (3,0);
-\draw [->,red] (3,0) -- (3,1);
-\draw [->,red] (3,1) -- (3,2);
-\draw [->,red] (3,2) -- (3,3);
-\draw [->,red] (3,3) -- (0,4);
-\draw [->,red] (0,4) -- (1,4);
-\draw [->,red] (1,4) -- (2,4);
-\draw [->,red] (2,4) -- (3,4);
-\draw [->,red] (3,4) -- (4,0);
-\draw [->,red] (4,0) -- (4,1);
-\draw [->,red] (4,1) -- (4,2);
-\draw [->,red] (4,2) -- (4,3);
-\draw [->,red] (4,3) -- (4,4);
-    \end{tikzpicture}
-    \caption{sfigure4}
-    \label{sfig:4}
-\end{subfigure}
 \caption{figure}
 \label{fig:}
 \end{figure}
 
+Here we learn that division, Cantor unpairing and the square root function are (almost) the same thing.
 
+We define the \textbf{Cantor pairing} as the function $\rppcp : \NN^2 \to \NN$ such that
+\[ \rppcp(x,y)= \sum_{i=1}^{x+y}i + x = \frac{(x + y)(x + y + 1)}{2} + x.\]
+What's special about this function is that it's a bijection between $\NN^2$ and $\NN$
+(\textit{maybe} the only polynomial to be so\footnote{It's currently an open question
+    whether there are other polynomials which are bijection $\NN^2 \to \NN$.}).
+We can imagine it to be an enumeration of the square grid $\NN^2$,
+which assigns to each coordinate $(x,y)$ a unique number $\rppcp(x,y)$:
+
+%\begin{figure}[H]
+%    \centering
+%%    \includegraphics[width=15em]{Immagini/cp.png}
+%\end{figure}
+
+But also as a "path" taken on the same grid, which traverses each point exactly once:
+
+%\begin{figure}[H]
+%    \centering
+%%    \includegraphics[width=15em]{Immagini/cammino.png}
+%\end{figure}
+
+Naturally, being bijective means that there exists an inverse function $\rppcu = \big( \rppcu_1, \rppcu_2 \big) : \NN \to \NN^2$,
+called the \textbf{Cantor unpairing}, which is usually expressed as
+\[ \rppcu(n) = \left( n - \frac{i(1+i)}{2}, \frac{i(3+i)}{2} - n \right) \]
+where $i = \left\lfloor \frac{\sqrt{8n + 1} - 1}{2} \right\rfloor $.
+We want to implement $\rppcu$ inside $\RPP$, but there's a more natural way to define it than this.
+
+Instead of thinking about $\rppcu$ analytically, let us imagine it again as a path in $\NN^2$:
+we start at position $(0, 0)$ and successively apply a series of steps,
+moving to $(x+1,y-1)$ if $y > 0$ or to $(0, x+1)$ if $y = 0$.
+If we're able to find $\rppcustep \in \RPP$ such that
+\[ \rppcustep(x,y) = \begin{cases} (x+1,y-1) &  y > 0 \\
+    (0, x+1) &   y = 0 \end{cases} \]
+then we can define $\rppcui = \rppIt[\rppcustep]$, so that $\rppcui(n, 0, 0)$ applies $n$ steps in the path, and reaches $\big( n, \rppcu_1(n), \rppcu_2(n) \big)$
+(the subscript $\mathsf{_{input}}$ is motivated by the fact that we keep the input $n$).
+
+It turns out that it's indeed possible to express $\rppcustep$ in $\RPP$:
+\begin{align*}
+    \rppcustep \ = \ & \rppId_1 \rppPa \rppIf[\rppSu, \rppId_1, \rppId_1] \rppCo \\
+    & \rpprewire{2, 0, 1} \rppCo \\
+    & \rppIf[\rppSu \rppPa \rppPr , \ \rppSu \rppCo \rppSw, \ \rppId_1] \rppCo \\
+    & \rppSw \rppCo \rppIf[\rppPr, \rppId_1, \rppId_1] \rppCo \\
+    & \rppId_1 \rppPa \rppSw
+\end{align*}
+
+\makebox[\textwidth][c]{${\small\begin{NiceMatrix}
+            \oloch{3-1}{\ y > 0} & x &                                                              & x & \bloch{3-1}{2 \\ 0 \\ 1} & 1 & \bloch{3-1}{\rppIf[\boldsymbol{\rppSu \rppPa \rppPr}, \ \rppSu \rppCo \rppSw, \ \rppId_1]} & 1     & \bloch{2-1}{\rppSw} & x + 1 & \bloch{2-1}{\rppIf[\boldsymbol{\rppPr}, \rppId_1, \rppId_1]} & x + 1 &                     & x + 1 \\
+            & y & \bloch{2-1}{\rppIf[\boldsymbol{\rppSu}, \rppId_1, \rppId_1]} & y &                          & x &                                                                                            & x + 1 &                     & 1     &                                                              & 0     & \bloch{2-1}{\rppSw} & y - 1 \\
+            & 0 &                                                              & 1 &                          & y &                                                                                            & y - 1 &                     & y - 1 &                                                              & y - 1 &                     & 0     \\
+            \\
+            \oloch{3-1}{\ y = 0} & x &                                                              & x & \bloch{3-1}{2 \\ 0 \\ 1} & 0 & \bloch{3-1}{\rppIf[\rppSu \rppPa \rppPr, \ \boldsymbol{\rppSu \rppCo \rppSw}, \ \rppId_1]} & 0     & \bloch{2-1}{\rppSw} & 0     & \bloch{2-1}{\rppIf[\rppPr, \boldsymbol{\rppId_1}, \rppId_1]} & 0     &                     & 0     \\
+            & 0 & \bloch{2-1}{\rppIf[\rppSu, \boldsymbol{\rppId_1}, \rppId_1]} & 0 &                          & x &                                                                                            & 0     &                     & 0     &                                                              & 0     & \bloch{2-1}{\rppSw} & x + 1 \\
+            & 0 &                                                              & 0 &                          & 0 &                                                                                            & x + 1 &                     & x + 1 &                                                              & x + 1 &                     & 0     \\
+            \\
+    \end{NiceMatrix}}$}
+
+Notice that we can't directly use $y$ as the condition for the selection $\rppIf$,
+because we also want to manipulate $y$ in those calculations.
+We get around this limitation by using an ancillary variable initially set to $0$,
+which assumes value $1$ or $0$ depending on whether $y>0$ or $y=0$,
+and is then set back to $0$ using a variable that we know is positive or equal to zero depending on the case considered.
+
+At this point we can define \lstinline{cuᵢ} like so:
+
+\noindent\begin{minipage}{.5\linewidth}
+    \[ \rppcui = \rppIt[\rppcustep] \]
+\end{minipage}%
+\begin{minipage}{.5\linewidth}
+    \[\begin{NiceMatrix}
+        n & \bloch{4-1}{\rppcui} & n           \\
+        0 &                      & \rppcu_1(n) \\
+        0 &                      & \rppcu_2(n) \\
+        0 &                      & 0           \\
+    \end{NiceMatrix}\]
+\end{minipage}
+
+The function in the other direction is less intricate to define ($\rppcpi$ also keeps the input around, hence the subscript) :
+
+\noindent\begin{minipage}{.5\linewidth}
+    \[ \rpptr = \rppIt[\rppSu \rppCo \rppinc] \]
+\end{minipage}%
+\begin{minipage}{.5\linewidth}
+    \[\begin{NiceMatrix}
+        x & \bloch{3-1}{\rpptr} & x \\
+        0 &                     & x \\
+        0 &                     & \sum_{i=1}^x i \\
+    \end{NiceMatrix}\]
+\end{minipage}
+
+\begin{align*}
+    \rppcpi = & \rppinc \rppCo \rppId_1 \rppPa \rpptr \rppCo \\
+    & \rppId_1 \rppPa \rppdec \rppCo \rppdec \rppCo \\
+    & \rpprewire{0, 3, 1} \rppCo \rppinc \rppCo \rppId_1 \rppPa \rppSw
+\end{align*}
+\makebox[\textwidth][c]{$\begin{NiceMatrix}
+        x & \bloch{2-1}{\rppinc} & x     &                     & x                    &                      & \bloch{2-1}{\rppdec} & x                    & \bloch{4-1}{0\\3\\1} & \bloch{2-1}{\rppinc} &                     & x                        & \Block{4-1}{=} & x           \\
+        y &                      & x + y & \bloch{3-1}{\rpptr} & x + y                & \bloch{2-1}{\rppdec} &                      & y                    &                      &                      & \bloch{2-1}{\rppSw} & y                        &                & y           \\
+        0 &                      & 0     &                     & x + y                &                      &                      & 0                    &                      &                      &                     & \sum_{i=1}^{x + y} i + x &                & \rppcp(x,y) \\
+        0 &                      & 0     &                     & \sum_{i=1}^{x + y} i &                      &                      & \sum_{i=1}^{x + y} i &                      &                      &                     & 0                        &                & 0           \\
+        \\
+    \end{NiceMatrix}$}
+We can combine \lstinline{cpᵢ} and \lstinline{cuᵢ} to get rid of the input values they both leave behind:
+\begin{align*}
+    \rppcp & = \rppcpi \rppCo \rpprewire{2, 0, 1} \rppCo \rppcui^{-1} \\
+    \rppcu & = \rppcp^{-1}
+\end{align*}
+\[\begin{NiceMatrix}
+    x & \bloch{4-1}{\rppcpi} & x           & \bloch{3-1}{2\\0\\1} & \rppcp(x,y) & \bloch{4-1}{\rppcui^{-1}} & \rppcp(x,y) \\
+    y &                       & y           &                      & x           &                            & 0           \\
+    0 &                       & \rppcp(x,y) &                      & y           &                            & 0           \\
+    0 &                       & 0           &                      & 0           &                            & 0           \\
+\end{NiceMatrix}\]
+This is very powerful: we succesfully defined a function which stores data from two positions to just one.
+We will discuss pairings at greater lengths in the next paragraphs; for now, let us focus on the technique we used.
+In defining the function $\rppcui$ we framed it as a "path" in a two-dimensional grid.
+By slightly tweaking $\rppcustep$ we can trace out other paths which helps us solve new problems.
+
+For example, let us imagine starting on coordinates $(0,n)$ and moving each turn in direction $(+1,-1)$ (like before)
+but now when we reach $(n,0)$, instead of jumping to $(0,n+1)$ we land again on $(0,n)$, looping in the same diagonal forever:
+
+%\begin{figure}[H]
+%    \centering
+%%    \includegraphics[width=15em]{Immagini/div.png}
+%\end{figure}
+
+If we call $\rppdivstep$ the function which performs one step of this diagram, by iterating it with $\rppIt[\rppdivstep]$
+we've essentially found a way to do modular arithmetic: since it takes $n+1$ steps to get to where we started,
+if we perform $m$ steps the $x$ coordinate will be such that $x \equiv m \pmod{n+1}$ and $0 \le x \le n$.
+Furthermore, if we increase a counter by one each time we land on $(0,n)$ we can calculate integer division.
+The differences between such a $\rppdivstep$ and $\rppcustep$ are minimal (highlighted in bold):
+
+\noindent\begin{minipage}{.5\linewidth}
+    \begin{align*}
+        \rppdivstep \ = \ & \rppId_1 \rppPa \rppIf[\rppSu, \rppId_1, \rppId_1] \rppCo \\
+        & \rpprewire{2, 0, 1} \rppCo \\
+        & \rppIf[\rppSu \rppPa \rppPr, \ \boldsymbol{\rppSw \rppPa \rppSu}, \ \rppId_1] \rppCo \\
+        & \rppSw \rppCo \rppIf[\rppPr, \rppId_1, \rppId_1] \rppCo \\
+        & \rppId_1 \rppCo \rppSw \\
+        \\
+        \rppdiv =     & \rppIt[\rppdivstep] \\
+    \end{align*}
+\end{minipage}%
+\begin{minipage}{.5\linewidth}
+    \[\begin{NiceMatrix}
+        m & \bloch{5-1}{\rppdiv} & m         \\
+        0 &                      & r         \\
+        n &                      & n + 1 - r \\
+        0 &                      & 0         \\
+        0 &                      & q         \\
+    \end{NiceMatrix}\]
+\end{minipage}
+where $m = q(n + 1) + r$ is the division with remainder of $m$ by $n+1$.
+
+Lastly, there's a way in which we can express the truncated square root function $\left\lfloor \sqrt{n} \right\rfloor$ in $\RPP$.
+Of course, the square root is not an invertible function, like division - and like division,
+we can get a "remainder" which is the difference $n - \left\lfloor \sqrt{n} \right\rfloor^2$.
+We get $\rppsqrtstep$ by tweaking $\rppcustep$ a little - we start off at $(0,0)$ again,
+but whenever we reach $(x,0)$ we jump to $(0,x+2)$ and increase a counter by one:
+
+\begin{figure}[H]
+    \centering
+%    \includegraphics[width=18em]{Immagini/sqrt.png}
+\end{figure}
+
+The first jump is performed $1$ step from the starting position $(0,0)$; the next one is performed after $3$ steps, then $5$, $7$ etc.
+It's well known that for each $k$, the sum of the first $k$ odd numbers is $1 + 3 + \dots + (2k - 1) = k^2$,
+so when we reach the number $k^2$ we've performed $k$ jumps - hence, we calculated a square root (because $k = \sqrt{k^2}$).
+
+Again, we highlight the (minor) differences with $\rppcustep$:
+
+\noindent\begin{minipage}{.5\linewidth}
+    \begin{align*}
+        \rppsqrtstep = & \rppId_1 \rppPa \rppIf[\rppSu, \rppId_1, \rppId_1] \rppCo \\
+        & \rpprewire{2, 0, 1} \rppCo \\
+        & \rppIf[\rppSu \rppPa \rppPr, \ \boldsymbol{\rppSu \rppCo \rppSu \rppCo \rppSw \rppPa \rppSu}, \ \rppId_1] \rppCo \\
+        & \rppSw \rppCo \rppIf[\rppPr, \rppId_1, \rppId_1] \rppCo \\
+        & \rppId_1 \rppCo \rppSw \\
+        \\
+        \rppsqrt     = & \rppIt[\rppsqrtstep] \\
+    \end{align*}
+\end{minipage}%
+\begin{minipage}{.5\linewidth}
+    \[\begin{NiceMatrix}
+        n & \bloch{5-1}{\rppsqrt} & n                      \\
+        0 &                       & r                      \\
+        0 &                       & 2 \floor{\sqrt{n}} - r \\
+        0 &                       & 0                      \\
+        0 &                       & \floor{\sqrt{n}}       \\
+    \end{NiceMatrix}\]
+\end{minipage}
+
+where $\floor{\sqrt{n}}$ is the truncated square root and $r = n - \floor{\sqrt{n}}^2$ our "square root remainder".
+% The term $2 \floor{\sqrt{n}} - r$ could be cancelled out by adding $r$ and subtracting two times $\floor{\sqrt{n}}$,
+% but it'll come in hand soon so we leave it.
 
 %=====================
 \section{Unary Primitive Recursive Functions (\UPRF) }
@@ -692,6 +934,56 @@ The definition of \lstinline|RPP| of \LEAN is really very close to the original 
 %=====================
 \section{The \UPRF-completeness of \RPP}
 \label{section:The UPRF-completeness of RPP}
+
+\begin{figure}
+    \begin{subfigure}{.225\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=0.3]
+            % grid
+            \draw[dashed,fill=gray,opacity=.5]  (0,0) grid (4,4);
+            % labels
+            \foreach \x in {1,...,4} { \node [anchor=north] at (\x,0) {\x}; }
+            \foreach \y in {1,...,4} { \node [anchor=east] at (0,\y) {\y}; }
+            \node [anchor=north east] at (0,0) {0};
+            % vertices
+            \foreach \x in {0,...,4} {
+                \foreach \y in {0,...,4} {
+                    \node at (\x,\y) [circle,inner sep=0pt,minimum size=3pt,fill=gray,opacity=.3] {};
+                }
+            }
+            % path
+            \draw [->,red] (0,0) -- (0,1);
+            \draw [->,red] (0,1) -- (1,0);
+            \draw [->,red] (1,0) -- (1,1);
+            \draw [->,red] (1,1) -- (0,2);
+            \draw [->,red] (0,2) -- (1,2);
+            \draw [->,red] (1,2) -- (2,0);
+            \draw [->,red] (2,0) -- (2,1);
+            \draw [->,red] (2,1) -- (2,2);
+            \draw [->,red] (2,2) -- (0,3);
+            \draw [->,red] (0,3) -- (1,3);
+            \draw [->,red] (1,3) -- (2,3);
+            \draw [->,red] (2,3) -- (3,0);
+            \draw [->,red] (3,0) -- (3,1);
+            \draw [->,red] (3,1) -- (3,2);
+            \draw [->,red] (3,2) -- (3,3);
+            \draw [->,red] (3,3) -- (0,4);
+            \draw [->,red] (0,4) -- (1,4);
+            \draw [->,red] (1,4) -- (2,4);
+            \draw [->,red] (2,4) -- (3,4);
+            \draw [->,red] (3,4) -- (4,0);
+            \draw [->,red] (4,0) -- (4,1);
+            \draw [->,red] (4,1) -- (4,2);
+            \draw [->,red] (4,2) -- (4,3);
+            \draw [->,red] (4,3) -- (4,4);
+        \end{tikzpicture}
+        \caption{sfigure4}
+        \label{sfig:4}
+    \end{subfigure}
+    \caption{figure}
+    \label{fig:mkpair}
+\end{figure}
+
 
 %=====================
 \section{Conclusion and developments}
