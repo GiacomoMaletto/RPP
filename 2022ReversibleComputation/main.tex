@@ -185,6 +185,8 @@
 \newcommand{\SRL}{\textsf{SRL}\xspace}
 \newcommand{\Nat}{\mathbb{N}}
 \newcommand{\Int}{\mathbb{Z}}
+\newcommand{\yb}{\textcolor{blue}{y}}
+\newcommand{\yr}{\textcolor{red}{y}}
 
 
 \begin{document}
@@ -299,7 +301,7 @@ that contains five base functions, named as in the definition, and all the funct
 \begin{example}[A  term of type {\normalfont \lstinline|RPP|}]
 \label{example:A first legal term of type RPP}
 In \lstinline|RPP| we can write
-\lstinline|(Id 1‖Sw);;(It Su)‖(Id 1);;(Id 1‖If Su (Id 1) Pr)| which we can also represent as a diagram:
+\lstinline|(Id 1‖Sw);;(It Su)‖(Id 1);;(Id 1‖If Su (Id 1) Pr)| which we can also represent as a diagram whose inputs are the names to the left of the blocks, and outputs to the right:
 \[
 \begin{NiceMatrix}
 x_0&\bloch{1-1}{\mbox{\lstinline|Id 1|}}&y_0&\bloch{2-1}{\mbox{\lstinline|It  Su|}}&w_0&\bloch{1-1}{\mbox{\lstinline|Id 1|}}&z_0
@@ -319,7 +321,7 @@ We comment the structure of the first one, the others being similar. It is a par
 \begin{remark}[``Weakening'' algorithms of {\normalfont \lstinline|RPP|}]
 \label{remark:Weakening algorithms of RPP}
 We shall typically adopt the most economical way to write elements in \lstinline|RPP|; we shall drop parallel compositions between any \lstinline|Id m|, and any \lstinline|f:RPP| such that \lstinline|f<>Id n|, for some \lstinline|m|, \lstinline|n|. The term and the diagram in \textit{Example}~\ref{example:A first legal term of type RPP} become
-\lstinline|Sw;;It Su;;If Su (Id 1) Pr| and:
+\lstinline|Sw;;(It Su);;(If Su (Id 1) Pr)| and:
 \[
 \begin{NiceMatrix}
     x_0&&y_0&\bloch{2-1}{\mbox{\lstinline|It  Su|}}&w_0&&z_0
@@ -570,7 +572,7 @@ The definition of \lstinline|RPP| of \LEAN is really very close to the original 
 \label{section:RPP algorithms}
 
 \begin{figure}
-\begin{subfigure}{.275\textwidth}
+\begin{subfigure}{.225\textwidth}
 \centering
 $\begin{NiceMatrix}
     n & \bloch{2-1}{\mbox{\lstinline|It Su|}} & n     \\
@@ -580,7 +582,7 @@ $\begin{NiceMatrix}
 \label{sfig:inc}
 \end{subfigure}
 \hfill
-\begin{subfigure}{.275\textwidth}
+\begin{subfigure}{.225\textwidth}
 \centering
 $ \begin{NiceMatrix}
     n & \bloch{2-1}{\mbox{\lstinline|It Pr|}} & n     \\
@@ -590,7 +592,7 @@ $ \begin{NiceMatrix}
 \label{sfig:dec}
 \end{subfigure}
 \hfill
-\begin{subfigure}{.275\textwidth}
+\begin{subfigure}{.325\textwidth}
 \centering
 $ \begin{NiceMatrix}
     n & \bloch{3-1}{\mbox{\lstinline|It inc|}} & n             \\
@@ -617,7 +619,7 @@ $\begin{NiceMatrix}
 \begin{subfigure}{.325\textwidth}
     \centering
     $\begin{NiceMatrix}
-        x_0 & \bloch{6-1}{\rpprewire{i_0 \ldots i_n}} & x_{i_0} \\
+        x_0 & \bloch{6-1}{\rpprewire{i_0, \ldots, i_n}} & x_{i_0} \\
       \cdot &                                & \vdots  \\
       \cdot &                                & x_{i_n} \\
       \cdot &                                & x_{j_1} \\
@@ -631,13 +633,40 @@ $\begin{NiceMatrix}
 \label{fig:standard functions}
 \end{figure}
 
-Figure~\ref{fig:standard functions} recalls definition and behavior of some \lstinline|RPP| functions. Rewiring $ \rpprewire{i_0 \ldots i_n} $ is worth commenting. Let us assume $\{ i_0, \dots, i_n \} \subseteq \{ 0, \dots, m \}$, and
-let $\{ j_1, \dots, j_{m-n} \}$ be $\{ 0, \dots, m \} \setminus \{ i_0, \dots, i_n \}$, i.e. the set of remaining indices, ordered such that $j_k < j_{k+1}$.
-By definition,
-$\rpprewire{i_0, \dots, i_n} (x_0, \dots, x_m) = (x_{i_0}, \dots, x_{i_n}, x_{j_1}, \dots, x_{j_{m-n}})$, i.e. rewiring brings every input with index in $ \{ i_0, \dots, i_n \} $ before all the remaining inputs, by preserving order.
+Figure~\ref{fig:standard functions} recalls definition and behavior of some \lstinline|RPP| functions already in \cite{DBLP:journals/tcs/PaoliniPR20}. It is worth commenting $ \rpprewire{i_0 \ldots i_n} $  Rewiring. Let $\{ i_0, \dots, i_n \} \subseteq \{ 0, \dots, m \}$; let $\{ j_1, \dots, j_{m-n} \}$ be $\{ 0, \dots, m \} \setminus \{ i_0, \dots, i_n \}$, i.e. the set of remaining indices, ordered such that $j_k < j_{k+1}$.
+By definition, $\rpprewire{i_0, \dots, i_n} (x_0, \dots, x_m) = (x_{i_0}, \dots, x_{i_n},$ $x_{j_1}, \dots, x_{j_{m-n}})$, i.e. rewiring brings every input with index in $ \{ i_0, \dots, i_n \} $ before all the remaining inputs, by preserving order.
 
 \begin{figure}
-\begin{subfigure}{.3\textwidth}
+%    \centering
+    \scalebox{.85}{
+        $\begin{NiceMatrix}
+            & a_0 && b_0 & \bloch{3-1}{\rpprewire{2,0,1}} & c_0 & \bloch{3-1}{\mbox{\lstinline|If(Su‖Pr)[_](Id 1)|}}& d_0 & \bloch{2-1}{
+                 \mbox{\lstinline|Sw|}
+%                \rppSw
+            } & e_0 & \bloch{2-1}{
+                \mbox{\lstinline|If(Pr)(Id 1)(Id 1)|}
+%                \rppIf[\boldsymbol{\rppPr}, \rppId_1, \rppId_1]
+                } & f_0 && g_0
+            \\
+            & a_1 & \bloch{2-1}{
+                \mbox{\lstinline|If(Su)(Id 1)(Id 1)|}
+%                \rppIf[\boldsymbol{\rppSu}, \rppId_1, \rppId_1]
+            } & b_1 &&c_1&& d_1 & & e_1     &&f_1     & \bloch{2-1}{
+                \mbox{\lstinline|Sw|}
+%            \rppSw
+        } & g_1
+            \\
+            & a_2&&b_2&&c_2&& d_2 && e_2 && f_2 && g_2
+        \end{NiceMatrix}$
+       }
+    \caption{Algorithm scheme \lstinline|step[_]|. The algorithm we can obtain from it depends on how we fill the hole \lstinline|[_]|.}
+    \label{fig:function scheme step}
+\end{figure}
+
+Figure~\ref{fig:function scheme step} identifies the new scheme of algorithm \lstinline|step[_]|. Depending on how we fill the hole \lstinline|[_]| we obtain step functions to iterate in order to draw paths into $ \NN^2 $. The names listed in the diagram are just place holder, currently.
+
+\begin{figure}
+\begin{subfigure}{.225\textwidth}
 \centering
 \begin{tikzpicture}[scale=0.3]
     % grid
@@ -668,11 +697,11 @@ $\rpprewire{i_0, \dots, i_n} (x_0, \dots, x_m) = (x_{i_0}, \dots, x_{i_n}, x_{j_
     \draw [->,red] (2,2) -- (3,1);
     \draw [->,red] (3,1) -- (4,0);
 \end{tikzpicture}
-\caption{sfigure1}
-\label{sfig:1}
+\caption{Cantor.}
+\label{sfig:cantor as a path}
 \end{subfigure}
 \hfill
-\begin{subfigure}{.3\textwidth}
+\begin{subfigure}{.225\textwidth}
 \centering
 \begin{tikzpicture}[scale=0.3]
     % grid
@@ -694,11 +723,11 @@ $\rpprewire{i_0, \dots, i_n} (x_0, \dots, x_m) = (x_{i_0}, \dots, x_{i_n}, x_{j_
 \draw [->,red] (2,2) -- (3,1);
 \draw [->,red] (3,1) -- (4,0);
 \end{tikzpicture}
-\caption{sfigure2}
-\label{sfig:2}
+\caption{Quot./Rem.}
+\label{sfig:Quot./Rem.}
 \end{subfigure}
 \hfill
-\begin{subfigure}{.3\textwidth}
+\begin{subfigure}{.225\textwidth}
 \centering
 \begin{tikzpicture}[scale=0.3]
     % grid
@@ -724,208 +753,260 @@ $\rpprewire{i_0, \dots, i_n} (x_0, \dots, x_m) = (x_{i_0}, \dots, x_{i_n}, x_{j_
 \draw [->,red] (2,2) -- (3,1);
 \draw [->,red] (3,1) -- (4,0);
 \end{tikzpicture}
-\caption{sfigure3}
-\label{sfig:3}
+\caption{Square root.}
+\label{sfig:Square root}
 \end{subfigure}
-\caption{figure}
-\label{fig:}
-\end{figure}
-
-Here we learn that division, Cantor unpairing and the square root function are (almost) the same thing.
-
-We define the \textbf{Cantor pairing} as the function $\rppcp : \NN^2 \to \NN$ such that
-\[ \rppcp(x,y)= \sum_{i=1}^{x+y}i + x = \frac{(x + y)(x + y + 1)}{2} + x.\]
-What's special about this function is that it's a bijection between $\NN^2$ and $\NN$
-(\textit{maybe} the only polynomial to be so\footnote{It's currently an open question
-    whether there are other polynomials which are bijection $\NN^2 \to \NN$.}).
-We can imagine it to be an enumeration of the square grid $\NN^2$,
-which assigns to each coordinate $(x,y)$ a unique number $\rppcp(x,y)$:
-
-%\begin{figure}[H]
-%    \centering
-%%    \includegraphics[width=15em]{Immagini/cp.png}
-%\end{figure}
-
-But also as a "path" taken on the same grid, which traverses each point exactly once:
-
-%\begin{figure}[H]
-%    \centering
-%%    \includegraphics[width=15em]{Immagini/cammino.png}
-%\end{figure}
-
-Naturally, being bijective means that there exists an inverse function $\rppcu = \big( \rppcu_1, \rppcu_2 \big) : \NN \to \NN^2$,
-called the \textbf{Cantor unpairing}, which is usually expressed as
-\[ \rppcu(n) = \left( n - \frac{i(1+i)}{2}, \frac{i(3+i)}{2} - n \right) \]
-where $i = \left\lfloor \frac{\sqrt{8n + 1} - 1}{2} \right\rfloor $.
-We want to implement $\rppcu$ inside $\RPP$, but there's a more natural way to define it than this.
-
-Instead of thinking about $\rppcu$ analytically, let us imagine it again as a path in $\NN^2$:
-we start at position $(0, 0)$ and successively apply a series of steps,
-moving to $(x+1,y-1)$ if $y > 0$ or to $(0, x+1)$ if $y = 0$.
-If we're able to find $\rppcustep \in \RPP$ such that
-\[ \rppcustep(x,y) = \begin{cases} (x+1,y-1) &  y > 0 \\
-    (0, x+1) &   y = 0 \end{cases} \]
-then we can define $\rppcui = \rppIt[\rppcustep]$, so that $\rppcui(n, 0, 0)$ applies $n$ steps in the path, and reaches $\big( n, \rppcu_1(n), \rppcu_2(n) \big)$
-(the subscript $\mathsf{_{input}}$ is motivated by the fact that we keep the input $n$).
-
-It turns out that it's indeed possible to express $\rppcustep$ in $\RPP$:
-\begin{align*}
-    \rppcustep \ = \ & \rppId_1 \rppPa \rppIf[\rppSu, \rppId_1, \rppId_1] \rppCo \\
-    & \rpprewire{2, 0, 1} \rppCo \\
-    & \rppIf[\rppSu \rppPa \rppPr , \ \rppSu \rppCo \rppSw, \ \rppId_1] \rppCo \\
-    & \rppSw \rppCo \rppIf[\rppPr, \rppId_1, \rppId_1] \rppCo \\
-    & \rppId_1 \rppPa \rppSw
-\end{align*}
-
-\makebox[\textwidth][c]{${\small\begin{NiceMatrix}
-            \oloch{3-1}{\ y > 0} & x &                                                              & x & \bloch{3-1}{2 \\ 0 \\ 1} & 1 & \bloch{3-1}{\rppIf[\boldsymbol{\rppSu \rppPa \rppPr}, \ \rppSu \rppCo \rppSw, \ \rppId_1]} & 1     & \bloch{2-1}{\rppSw} & x + 1 & \bloch{2-1}{\rppIf[\boldsymbol{\rppPr}, \rppId_1, \rppId_1]} & x + 1 &                     & x + 1 \\
-            & y & \bloch{2-1}{\rppIf[\boldsymbol{\rppSu}, \rppId_1, \rppId_1]} & y &                          & x &                                                                                            & x + 1 &                     & 1     &                                                              & 0     & \bloch{2-1}{\rppSw} & y - 1 \\
-            & 0 &                                                              & 1 &                          & y &                                                                                            & y - 1 &                     & y - 1 &                                                              & y - 1 &                     & 0     \\
-            \\
-            \oloch{3-1}{\ y = 0} & x &                                                              & x & \bloch{3-1}{2 \\ 0 \\ 1} & 0 & \bloch{3-1}{\rppIf[\rppSu \rppPa \rppPr, \ \boldsymbol{\rppSu \rppCo \rppSw}, \ \rppId_1]} & 0     & \bloch{2-1}{\rppSw} & 0     & \bloch{2-1}{\rppIf[\rppPr, \boldsymbol{\rppId_1}, \rppId_1]} & 0     &                     & 0     \\
-            & 0 & \bloch{2-1}{\rppIf[\rppSu, \boldsymbol{\rppId_1}, \rppId_1]} & 0 &                          & x &                                                                                            & 0     &                     & 0     &                                                              & 0     & \bloch{2-1}{\rppSw} & x + 1 \\
-            & 0 &                                                              & 0 &                          & 0 &                                                                                            & x + 1 &                     & x + 1 &                                                              & x + 1 &                     & 0     \\
-            \\
-    \end{NiceMatrix}}$}
-
-Notice that we can't directly use $y$ as the condition for the selection $\rppIf$,
-because we also want to manipulate $y$ in those calculations.
-We get around this limitation by using an ancillary variable initially set to $0$,
-which assumes value $1$ or $0$ depending on whether $y>0$ or $y=0$,
-and is then set back to $0$ using a variable that we know is positive or equal to zero depending on the case considered.
-
-At this point we can define \lstinline{cuᵢ} like so:
-
-\noindent\begin{minipage}{.5\linewidth}
-    \[ \rppcui = \rppIt[\rppcustep] \]
-\end{minipage}%
-\begin{minipage}{.5\linewidth}
-    \[\begin{NiceMatrix}
-        n & \bloch{4-1}{\rppcui} & n           \\
-        0 &                      & \rppcu_1(n) \\
-        0 &                      & \rppcu_2(n) \\
-        0 &                      & 0           \\
-    \end{NiceMatrix}\]
-\end{minipage}
-
-The function in the other direction is less intricate to define ($\rppcpi$ also keeps the input around, hence the subscript) :
-
-\noindent\begin{minipage}{.5\linewidth}
-    \[ \rpptr = \rppIt[\rppSu \rppCo \rppinc] \]
-\end{minipage}%
-\begin{minipage}{.5\linewidth}
-    \[\begin{NiceMatrix}
-        x & \bloch{3-1}{\rpptr} & x \\
-        0 &                     & x \\
-        0 &                     & \sum_{i=1}^x i \\
-    \end{NiceMatrix}\]
-\end{minipage}
-
-\begin{align*}
-    \rppcpi = & \rppinc \rppCo \rppId_1 \rppPa \rpptr \rppCo \\
-    & \rppId_1 \rppPa \rppdec \rppCo \rppdec \rppCo \\
-    & \rpprewire{0, 3, 1} \rppCo \rppinc \rppCo \rppId_1 \rppPa \rppSw
-\end{align*}
-\makebox[\textwidth][c]{$\begin{NiceMatrix}
-        x & \bloch{2-1}{\rppinc} & x     &                     & x                    &                      & \bloch{2-1}{\rppdec} & x                    & \bloch{4-1}{0\\3\\1} & \bloch{2-1}{\rppinc} &                     & x                        & \Block{4-1}{=} & x           \\
-        y &                      & x + y & \bloch{3-1}{\rpptr} & x + y                & \bloch{2-1}{\rppdec} &                      & y                    &                      &                      & \bloch{2-1}{\rppSw} & y                        &                & y           \\
-        0 &                      & 0     &                     & x + y                &                      &                      & 0                    &                      &                      &                     & \sum_{i=1}^{x + y} i + x &                & \rppcp(x,y) \\
-        0 &                      & 0     &                     & \sum_{i=1}^{x + y} i &                      &                      & \sum_{i=1}^{x + y} i &                      &                      &                     & 0                        &                & 0           \\
-        \\
-    \end{NiceMatrix}$}
-We can combine \lstinline{cpᵢ} and \lstinline{cuᵢ} to get rid of the input values they both leave behind:
-\begin{align*}
-    \rppcp & = \rppcpi \rppCo \rpprewire{2, 0, 1} \rppCo \rppcui^{-1} \\
-    \rppcu & = \rppcp^{-1}
-\end{align*}
-\[\begin{NiceMatrix}
-    x & \bloch{4-1}{\rppcpi} & x           & \bloch{3-1}{2\\0\\1} & \rppcp(x,y) & \bloch{4-1}{\rppcui^{-1}} & \rppcp(x,y) \\
-    y &                       & y           &                      & x           &                            & 0           \\
-    0 &                       & \rppcp(x,y) &                      & y           &                            & 0           \\
-    0 &                       & 0           &                      & 0           &                            & 0           \\
-\end{NiceMatrix}\]
-This is very powerful: we succesfully defined a function which stores data from two positions to just one.
-We will discuss pairings at greater lengths in the next paragraphs; for now, let us focus on the technique we used.
-In defining the function $\rppcui$ we framed it as a "path" in a two-dimensional grid.
-By slightly tweaking $\rppcustep$ we can trace out other paths which helps us solve new problems.
-
-For example, let us imagine starting on coordinates $(0,n)$ and moving each turn in direction $(+1,-1)$ (like before)
-but now when we reach $(n,0)$, instead of jumping to $(0,n+1)$ we land again on $(0,n)$, looping in the same diagonal forever:
-
-%\begin{figure}[H]
-%    \centering
-%%    \includegraphics[width=15em]{Immagini/div.png}
-%\end{figure}
-
-If we call $\rppdivstep$ the function which performs one step of this diagram, by iterating it with $\rppIt[\rppdivstep]$
-we've essentially found a way to do modular arithmetic: since it takes $n+1$ steps to get to where we started,
-if we perform $m$ steps the $x$ coordinate will be such that $x \equiv m \pmod{n+1}$ and $0 \le x \le n$.
-Furthermore, if we increase a counter by one each time we land on $(0,n)$ we can calculate integer division.
-The differences between such a $\rppdivstep$ and $\rppcustep$ are minimal (highlighted in bold):
-
-\noindent\begin{minipage}{.5\linewidth}
-    \begin{align*}
-        \rppdivstep \ = \ & \rppId_1 \rppPa \rppIf[\rppSu, \rppId_1, \rppId_1] \rppCo \\
-        & \rpprewire{2, 0, 1} \rppCo \\
-        & \rppIf[\rppSu \rppPa \rppPr, \ \boldsymbol{\rppSw \rppPa \rppSu}, \ \rppId_1] \rppCo \\
-        & \rppSw \rppCo \rppIf[\rppPr, \rppId_1, \rppId_1] \rppCo \\
-        & \rppId_1 \rppCo \rppSw \\
-        \\
-        \rppdiv =     & \rppIt[\rppdivstep] \\
-    \end{align*}
-\end{minipage}%
-\begin{minipage}{.5\linewidth}
-    \[\begin{NiceMatrix}
-        m & \bloch{5-1}{\rppdiv} & m         \\
-        0 &                      & r         \\
-        n &                      & n + 1 - r \\
-        0 &                      & 0         \\
-        0 &                      & q         \\
-    \end{NiceMatrix}\]
-\end{minipage}
-where $m = q(n + 1) + r$ is the division with remainder of $m$ by $n+1$.
-
-Lastly, there's a way in which we can express the truncated square root function $\left\lfloor \sqrt{n} \right\rfloor$ in $\RPP$.
-Of course, the square root is not an invertible function, like division - and like division,
-we can get a "remainder" which is the difference $n - \left\lfloor \sqrt{n} \right\rfloor^2$.
-We get $\rppsqrtstep$ by tweaking $\rppcustep$ a little - we start off at $(0,0)$ again,
-but whenever we reach $(x,0)$ we jump to $(0,x+2)$ and increase a counter by one:
-
-\begin{figure}[H]
+\hfill
+    \begin{subfigure}{.225\textwidth}
     \centering
-%    \includegraphics[width=18em]{Immagini/sqrt.png}
+    \begin{tikzpicture}[scale=0.3]
+        % grid
+        \draw[dashed,fill=gray,opacity=.5]  (0,0) grid (4,4);
+        % labels
+        \foreach \x in {1,...,4} { \node [anchor=north] at (\x,0) {\x}; }
+        \foreach \y in {1,...,4} { \node [anchor=east] at (0,\y) {\y}; }
+        \node [anchor=north east] at (0,0) {0};
+        % vertices
+        \foreach \x in {0,...,4} {
+            \foreach \y in {0,...,4} {
+                \node at (\x,\y) [circle,inner sep=0pt,minimum size=3pt,fill=gray,opacity=.3] {};
+            }
+        }
+        % path
+        \draw [->,red] (0,0) -- (0,1);
+        \draw [->,red] (0,1) -- (1,0);
+        \draw [->,red] (1,0) -- (1,1);
+        \draw [->,red] (1,1) -- (0,2);
+        \draw [->,red] (0,2) -- (1,2);
+        \draw [->,red] (1,2) -- (2,0);
+        \draw [->,red] (2,0) -- (2,1);
+        \draw [->,red] (2,1) -- (2,2);
+        \draw [->,red] (2,2) -- (0,3);
+        \draw [->,red] (0,3) -- (1,3);
+        \draw [->,red] (1,3) -- (2,3);
+        \draw [->,red] (2,3) -- (3,0);
+        \draw [->,red] (3,0) -- (3,1);
+        \draw [->,red] (3,1) -- (3,2);
+        \draw [->,red] (3,2) -- (3,3);
+        \draw [->,red] (3,3) -- (0,4);
+        \draw [->,red] (0,4) -- (1,4);
+        \draw [->,red] (1,4) -- (2,4);
+        \draw [->,red] (2,4) -- (3,4);
+        \draw [->,red] (3,4) -- (4,0);
+        \draw [->,red] (4,0) -- (4,1);
+        \draw [->,red] (4,1) -- (4,2);
+        \draw [->,red] (4,2) -- (4,3);
+        \draw [->,red] (4,3) -- (4,4);
+    \end{tikzpicture}
+    \caption{Iso. $ \NN^2\simeq\NN $. }
+    \label{sfig:4}
+\end{subfigure}
+\caption{Paths in a two dimensional space that generate algorithms in \lstinline|RPP|.}
+\label{fig:functions as paths}
 \end{figure}
 
-The first jump is performed $1$ step from the starting position $(0,0)$; the next one is performed after $3$ steps, then $5$, $7$ etc.
-It's well known that for each $k$, the sum of the first $k$ odd numbers is $1 + 3 + \dots + (2k - 1) = k^2$,
-so when we reach the number $k^2$ we've performed $k$ jumps - hence, we calculated a square root (because $k = \sqrt{k^2}$).
+On top of the functions in Figures~\ref{fig:standard functions}, and~\ref{fig:function scheme step} we build the inverse of the two isomorphism Cantor Pairing/Un-pairing, quotient and reminder of Integer division, and integer approximation of Square root. The point is to make the correct instance of \lstinline|step[_]| in order to visit $ \NN^2 $ with the paths in Figures~\ref{sfig:cantor as a path}, \ref{sfig:Quot./Rem.}, and~\ref{sfig:Square root}, respectively.
 
-Again, we highlight the (minor) differences with $\rppcustep$:
+\paragraph{Cantor (Un-)Pairing}. The standard definition of Cantor Pairing $\rppcp : \NN^2 \to \NN$ and Un-pairing $\rppcu : \NN \to \NN^2$, two bijections one inverse to the other, is:
+\begin{align}
+\label{align: cp analitically}
+\rppcp(x,y) & = \sum_{i=1}^{x+y}i + x = \frac{(x + y)(x + y + 1)}{2} + x
+\\
+\label{align: cu analitically}
+\rppcu(n)  & = \left( n - \frac{i(1+i)}{2}, \frac{i(3+i)}{2} - n \right)
+\enspace ,
+\end{align}
+where $i = \left\lfloor \frac{\sqrt{8n + 1} - 1}{2} \right\rfloor $. Figure~\ref{sfig:cantor as a path} helps to show that we can avoid to see $\rppcu(n)$ analytically, as in \eqref{align: cu analitically}.
+We can see $\rppcu(n)$ as a building-path process that starts at position $(0, 0)$, which successively applies a series of steps, to stop on $ n $-th point of the drown path; given the current point $ (x,y) $, the next one to move to is:
+\begin{align}
+\label{align:next function}
+\mbox{\lstinline|next|}(x,y) & =
+\begin{cases} (x+1,y-1) &  y > 0 \\ (0, x+1) &   y = 0 \end{cases}
+\enspace .
+\end{align}
 
-\noindent\begin{minipage}{.5\linewidth}
-    \begin{align*}
-        \rppsqrtstep = & \rppId_1 \rppPa \rppIf[\rppSu, \rppId_1, \rppId_1] \rppCo \\
-        & \rpprewire{2, 0, 1} \rppCo \\
-        & \rppIf[\rppSu \rppPa \rppPr, \ \boldsymbol{\rppSu \rppCo \rppSu \rppCo \rppSw \rppPa \rppSu}, \ \rppId_1] \rppCo \\
-        & \rppSw \rppCo \rppIf[\rppPr, \rppId_1, \rppId_1] \rppCo \\
-        & \rppId_1 \rppCo \rppSw \\
+\begin{figure}
+\begin{subfigure}{.975\textwidth}
+\centering
+\scalebox{.74}{
+    $\begin{NiceMatrix}
+        & x &                                                              & x & \bloch{3-1}{\rpprewire{2,0,1}} & 1 & \bloch{3-1}{
+            \mbox{\lstinline|If(Su‖Pr)(Su;;Sw)(Id 1)|}
+%            \rppIf[\boldsymbol{\rppSu \rppPa \rppPr}, \mbox{\lstinline|Su;;Sw|}, \ \rppId_1]
+        } & 1     & \bloch{2-1}{
+        \mbox{\lstinline|Sw|}
+%        \rppSw
+        } & x + 1 & \bloch{2-1}{
+        \mbox{\lstinline|If(Pr)(Id 1)(Id 1)|}
+%        \rppIf[\boldsymbol{\rppPr}, \rppId_1, \rppId_1]
+        } & x + 1 &                     & x + 1 \\
+        & \yb & \bloch{2-1}{
+        \mbox{\lstinline|If(Su)(Id 1)(Id 1)|}
+        %            \rppIf[\boldsymbol{\rppSu}, \rppId_1, \rppId_1]
+        } & \yb &&x&& x + 1 &                     & 1     &                                                              & 0     & \bloch{2-1}{
+        \mbox{\lstinline|Sw|}
+%        \rppSw
+        } & \yb - 1 \\
+        & 0&&1&&\yb&& \yb - 1 && \yb - 1 && \yb - 1 && 0
+    \end{NiceMatrix}$
+}
+\caption{Function \lstinline|step[Su;;Sw]|: detailed behavior with $ \yb > 0 $. }
+\label{sfig:cu step y > 0}
+\end{subfigure}
+\hfill
+\begin{subfigure}{.975\textwidth}
+\centering
+\scalebox{.74}{
+$\begin{NiceMatrix}
+    & x && x & \bloch{3-1}{\rpprewire{2,0,1}} & 0 & \bloch{3-1}{
+    \mbox{\lstinline|If(Su‖Pr)(Su;;Sw)(Id 1)|}
+    %    \rppIf[\rppSu \rppPa \rppPr, \mbox{\lstinline|Su;;Sw|} , \ \rppId_1]
+    } & 0     & \bloch{2-1}{
+    \mbox{\lstinline|Sw|}
+    %    \rppSw
+    } & 0 & \bloch{2-1}{
+        \mbox{\lstinline|If(Su)(Id 1)(Id 1)|}
+%        \rppIf[\rppPr, \boldsymbol{\rppId_1}, \rppId_1]
+    } & 0 & & 0
+    \\
+    & \yr & \bloch{2-1}{
+        \mbox{\lstinline|If(Pr)(Id 1)(Id 1)|}
+%        \rppIf[\rppSu, \boldsymbol{\rppId_1}, \rppId_1]
+    } & \yr && x &&\yr&&\yr&&\yr&\bloch{2-1}{
+        \mbox{\lstinline|Sw|}
+%        \rppSw
+   } & x + 1
+    \\
+    & 0 && 0 && 0&& x + 1 && x + 1 && x + 1 && \yr
+\end{NiceMatrix}$
+}
+\caption{Function \lstinline|step[Su;;Sw]|: detailed behavior with $ \yr = 0 $. }
+\label{sfig:cu step y = 0}
+\end{subfigure}
+\hfill
+\begin{subfigure}{.975\textwidth}
+\centering
+$\begin{NiceMatrix}
+    n & \bloch{4-1}{\mbox{\lstinline|It step[Su;;Sw]| }} & n           \\
+    0 &                      & \rppcu_1(n) \\
+    0 &                      & \rppcu_2(n) \\
+    0 &                      & 0
+\end{NiceMatrix}$
+\caption{Function \lstinline|cu_in|}
+\label{sfig:cu input}
+\end{subfigure}
+\hfill
+\begin{subfigure}{.975\textwidth}
+    \centering
+    $\begin{NiceMatrix}
+        x &\bloch{2-1}{\mbox{\lstinline|inc|}}&x&&x&&\bloch{2-1}{\mbox{\lstinline|dec|}}&x& \bloch{4-1}{\rpprewire{0,3,1}} &\bloch{2-1}{\mbox{\lstinline|inc|}} && x
         \\
-        \rppsqrt     = & \rppIt[\rppsqrtstep] \\
-    \end{align*}
-\end{minipage}%
-\begin{minipage}{.5\linewidth}
-    \[\begin{NiceMatrix}
-        n & \bloch{5-1}{\rppsqrt} & n                      \\
-        0 &                       & r                      \\
-        0 &                       & 2 \floor{\sqrt{n}} - r \\
-        0 &                       & 0                      \\
-        0 &                       & \floor{\sqrt{n}}       \\
-    \end{NiceMatrix}\]
-\end{minipage}
+        y && x + y & \bloch{3-1}{
+            \mbox{\lstinline|It(Su;;inc)|}
+%            \rppIt[\rppSu \rppCo \rppinc]
+        } & x + y& \bloch{2-1}{\mbox{\lstinline|dec|}} && y&&& \bloch{2-1}{\mbox{\lstinline|Sw|}} & y
+        \\
+        0 &                      & 0     &                     & x + y                &                      &                      & 0                    &                      &                      &                     & \sum_{i=1}^{x + y} i + x
+        \\
+        0 &                      & 0     &                     & \sum_{i=1}^{x + y} i &                      &                      & \sum_{i=1}^{x + y} i &                      &                      &                     & 0
+    \end{NiceMatrix}$
+\caption{Function \lstinline|cp_in|}
+\label{sfig:cp input}
+\end{subfigure}
+\\
+\begin{subfigure}{.665\textwidth}
+    \centering
+    $ \begin{NiceMatrix}
+        x & \bloch{4-1}{\mbox{\lstinline|cp_in|}} & x           & \bloch{3-1}{\rpprewire{2,0,1}} & \rppcp(x,y) & \bloch{4-1}{\mbox{\lstinline|cu_in⁻¹|}} & \rppcp(x,y) \\
+        y &                       & y           &                      & x           &                            & 0           \\
+        0 &                       & \rppcp(x,y) &                      & y           &                            & 0           \\
+        0 &                       & 0           &                      & 0           &                            & 0           \\
+    \end{NiceMatrix}
+    $    \caption{The function \lstinline|cp|}
+    \label{sfig:cp}
+\end{subfigure}
+\hfill
+\begin{subfigure}{.325\textwidth}
+    \centering
+    $ \begin{NiceMatrix}
+        n & \bloch{4-1}{\mbox{\lstinline|cp⁻¹|}} & \rppcu_1(n)    \\
+        0 &                      & \rppcu_2(n)         \\
+        0 &                      & 0 \\
+        0 &                      & 0
+    \end{NiceMatrix} $
+    \caption{The function \lstinline|cu|}
+    \label{sfig:cu}
+\end{subfigure}
+\caption{Cantor Pairing and Un-pairing.}
+\label{fig:Cantor}
+\end{figure}
 
-where $\floor{\sqrt{n}}$ is the truncated square root and $r = n - \floor{\sqrt{n}}^2$ our "square root remainder".
-% The term $2 \floor{\sqrt{n}} - r$ could be cancelled out by adding $r$ and subtracting two times $\floor{\sqrt{n}}$,
-% but it'll come in hand soon so we leave it.
+Figure~\ref{fig:Cantor} collects all the ingredients to define Cantor Pairing \lstinline|cp:RPP|, and Cantor Un-pairing \lstinline|cu:RPP|.
+Figures~\ref{sfig:cu step y > 0}, and~\ref{sfig:cu step y = 0} represent two runs of the instance \lstinline|step[Su;;Sw]|, giving evidence that \lstinline|step[Su;;Sw]| implements \lstinline|next|$(x,y)$ in~\eqref{align:next function}. Colored occurrences of $ y $ show its flow. If the starting point is $ (x,\yb) $, with $ \yb > 0 $, the next point is $ (x+1,\yb-1) $, as we can read to the right. If the starting point is $ (x,\yr) $, with $ \yr = 0 $, the next point is $ (0, x+1) $, because $ \yr = 0 $ is preserved along the whole process. Figure~\ref{sfig:cu input} defines \lstinline|cu_in| as the $ n $-th iteration of \lstinline|step[Su;;Sw]| that yields both $ \rppcu_1(n) $, and $ \rppcu_2(n) $ which we use as names for the leftmost, and the rightmost component of $ \rppcu $ in~\eqref{align: cu analitically}. The suffix \lstinline|in| in \lstinline|cu_in|,  stands for ``input''. It underlines that besides $ \rppcu_1(n) $, and $ \rppcu_2(n) $ the output also contains the original input $ n $. Figure~\ref{sfig:cp input} defines \lstinline|cp_in|, which is the reversible implementation of $ \rppcp(x,y) $ in~\eqref{align: cp analitically} which preserves the original input pair $(x,y)$ as part of its output.
+
+Figure~\ref{sfig:cp} contains the implementation of $ \rppcp(x,y) $. This definition is new, as compared to \cite{DBLP:journals/tcs/PaoliniPR20}, and has an interesting structure. Its first part \lstinline|cp_in| builds an intermediate state with $ x, y $, and $ \rppcp(x,y) $ in it. The state is reorganized, and the inverse \lstinline|cu_in⁻¹| of \lstinline|cu_in|, not \lstinline|cp_in⁻¹|, serves to drop the input pair $ x, y $ from the output. This is interesting because we do not undo part of what \lstinline|cp_in| has just done by its inverse, but by the seemingly unrelated process \lstinline|cu_in⁻¹|.
+Finally, the existence of the syntactical inverse gives us the implementation of the Cantor Un-pairing in Figure~\ref{sfig:cu} for free, by just inverting \lstinline|cp|.
+
+We now see how \lstinline|step[_]| allows us to implement further functions.
+
+\begin{figure}
+    \begin{subfigure}{.4\linewidth}
+        \centering
+        $ \begin{NiceMatrix}
+            m & \bloch{5-1}{\mbox{\lstinline|It step[Sw‖(Id 1)]|}} & m         \\
+            0 &                      & r         \\
+            n &                      & n + 1 - r \\
+            0 &                      & 0         \\
+            0 &                      & q         \\
+        \end{NiceMatrix} $
+        \caption{Function that computes $ q $ and $ r $ such that $m = q(n + 1) + r$. We obtain it by iterating \lstinline|step[Sw‖(Id 1)]:RPP|.}
+        \label{sfig:div}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{.5\linewidth}
+        \centering
+        $\begin{NiceMatrix}
+            n & \bloch{5-1}{\mbox{\lstinline|It step[Su;;Su;;Sw‖Su]|}} & n      \\
+            0 &                       & r                      \\
+            0 &                       & 2 \floor{\sqrt{n}} - r \\
+            0 &                       & 0                      \\
+            0 &                       & \floor{\sqrt{n}}       \\
+        \end{NiceMatrix}
+        $
+        \caption{Function that computes $ \floor{\sqrt{n}}$ and $ r = n - \floor{\sqrt{n}}^2 $. We obtain it by iterating \lstinline|step[Su;;Su;;Sw‖Su:RPP]|.}
+        \label{sfig:sqrt}
+    \end{subfigure}%
+\end{figure}
+
+%=============================
+\paragraph{Quotient and reminder.}
+%In defining the function $\rppcui$ we framed it as a "path" in a two-dimensional grid.
+Let us focus on the path in Figure~\ref{sfig:Quot./Rem.}.
+It starts at $(0,n)$ (with $ n = 4 $), and, at every step, the next point is in \emph{direction} $(+1,-1)$. When it reaches $(n,0)$ (with $ n = 4 $), instead of jumping to $(0,n+1)$, as in Figure~\ref{sfig:cantor as a path}, we land again on $(0,n)$. The idea is to keep looping on the same diagonal. This behavior can be achieved by iterating \lstinline|step[Sw‖(Id 1)]|. Figure~\ref{sfig:div} shows that we are doing modular arithmetic.
+Globally, it takes $n+1$ steps from $ (0,n) $ to itself by means of \lstinline|step[Sw‖(Id 1)]|.
+Specifically, if we assume we have performed $m$ steps along the diagonal, and we are at point $ (x,y) $, we have that $x \equiv m \pmod{n+1}$ and $0 \le x \le n$.
+So, if we increase a counter by one each time we get back to $(0,n)$ we can calculate quotient and reminder.
+
+%====================
+\paragraph{Truncated Square root.}
+Let us focus on the path in Figure~\ref{sfig:Square root}.
+It starts at $(0,0)$. Whenever it reaches $(x,0)$ it jumps to $(0,x+2)$.
+The behavior can be achieved by iterating \lstinline|step[Su;;Su;;Sw‖Su:RPP]| as in Figure~\ref{sfig:sqrt}.
+In order to compute $ \floor{\sqrt{n}} $, besides implementing the above path, the function \lstinline|step[Su;;Su;;Sw‖Su:RPP]| counts in $ k $ the number of jumps occurred so far along the path. In particular, starting from $ (0,0) $, the first jump occurs after $1$ step; the next one after $3$ steps, then after $5$ steps, after $7$ etc. Since we know that $1 + 3 + \dots + (2k - 1) = k^2$, for any $k$, if $ n = k^2 $, the iteration will stop exactly after $ k $ jumps. I.e. $ k = \sqrt{k^2} = \sqrt{n}$. Otherwise, if $ (k-1)^2 \leq n < k^2 $, the iteration will stop after a count of $ k-1 $ jumps, which approximates $ \sqrt{n} $ from below; i.e. $ k-1 = \floor{\sqrt{n}} $.
+
+\begin{remark}
+The value $2 \floor{\sqrt{n}} - r$ can be canceled out by adding $r$, and subtracting two times $\floor{\sqrt{n}}$.
+What we cannot eliminate is the ``reminder'' $r = n - \left\lfloor \sqrt{n} \right\rfloor^2$ because the \emph{function} Square root
+cannot be inverted in $ \ZZ $, and the algorithm cannot forget it.
+\qeda
+\end{remark}
+
+We conclude by recalling once more that everything we have defined here above has been proved correct. For example, in \cite{MalettoRPPLEAN2021}, one can find the proof of:
+\begin{lstlisting}
+lemma sqrt_def (n : ℕ) (X : list ℤ) :
+ ‹sqrt›(n::0::0::0::0::X) = n::(n-√n*√n)::(√n+√n-(n-√n*√n))::0::√n::X .
+\end{lstlisting}
+
 
 %=====================
 \section{Unary Primitive Recursive Functions (\UPRF) }
@@ -934,55 +1015,6 @@ where $\floor{\sqrt{n}}$ is the truncated square root and $r = n - \floor{\sqrt{
 %=====================
 \section{The \UPRF-completeness of \RPP}
 \label{section:The UPRF-completeness of RPP}
-
-\begin{figure}
-    \begin{subfigure}{.225\textwidth}
-        \centering
-        \begin{tikzpicture}[scale=0.3]
-            % grid
-            \draw[dashed,fill=gray,opacity=.5]  (0,0) grid (4,4);
-            % labels
-            \foreach \x in {1,...,4} { \node [anchor=north] at (\x,0) {\x}; }
-            \foreach \y in {1,...,4} { \node [anchor=east] at (0,\y) {\y}; }
-            \node [anchor=north east] at (0,0) {0};
-            % vertices
-            \foreach \x in {0,...,4} {
-                \foreach \y in {0,...,4} {
-                    \node at (\x,\y) [circle,inner sep=0pt,minimum size=3pt,fill=gray,opacity=.3] {};
-                }
-            }
-            % path
-            \draw [->,red] (0,0) -- (0,1);
-            \draw [->,red] (0,1) -- (1,0);
-            \draw [->,red] (1,0) -- (1,1);
-            \draw [->,red] (1,1) -- (0,2);
-            \draw [->,red] (0,2) -- (1,2);
-            \draw [->,red] (1,2) -- (2,0);
-            \draw [->,red] (2,0) -- (2,1);
-            \draw [->,red] (2,1) -- (2,2);
-            \draw [->,red] (2,2) -- (0,3);
-            \draw [->,red] (0,3) -- (1,3);
-            \draw [->,red] (1,3) -- (2,3);
-            \draw [->,red] (2,3) -- (3,0);
-            \draw [->,red] (3,0) -- (3,1);
-            \draw [->,red] (3,1) -- (3,2);
-            \draw [->,red] (3,2) -- (3,3);
-            \draw [->,red] (3,3) -- (0,4);
-            \draw [->,red] (0,4) -- (1,4);
-            \draw [->,red] (1,4) -- (2,4);
-            \draw [->,red] (2,4) -- (3,4);
-            \draw [->,red] (3,4) -- (4,0);
-            \draw [->,red] (4,0) -- (4,1);
-            \draw [->,red] (4,1) -- (4,2);
-            \draw [->,red] (4,2) -- (4,3);
-            \draw [->,red] (4,3) -- (4,4);
-        \end{tikzpicture}
-        \caption{sfigure4}
-        \label{sfig:4}
-    \end{subfigure}
-    \caption{figure}
-    \label{fig:mkpair}
-\end{figure}
 
 
 %=====================
