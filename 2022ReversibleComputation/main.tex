@@ -314,7 +314,7 @@ x_2&&y_2&\bloch{1-1}{\mbox{\lstinline|Id 1|}}&w_2&
 \enspace .
 \]
 The term we have just defined is a series composition of three parallel compositions.
-We comment the structure of the first one, the others being similar. It is a parallel composition between a ``single wire'' \lstinline|Id 1| and the transposition \lstinline|Sw|.
+We comment the structure of the first one, the others being similar: it is a parallel composition between a ``single wire'' \lstinline|Id 1| and the transposition \lstinline|Sw|.
 \qeda
 \end{example}
 
@@ -388,7 +388,7 @@ The function in Figure~\ref{fig:RPP-arity} computes the arity of any \lstinline|
     \label{fig:multiple-wires}
 \end{figure}
 
-Figure~\ref{fig:multiple-wires}, remarks that \lstinline|RPP| considers \lstinline|n|-ary identities \lstinline|Id n| as primitive; in original \RPP \lstinline|Id n| is the parallel composition of \lstinline|n| unary identities.
+Figure~\ref{fig:multiple-wires}, remarks that \lstinline|RPP| considers \lstinline|n|-ary identities \lstinline|Id n| as primitive; in original \RPP, \lstinline|Id n| is the parallel composition of \lstinline|n| unary identities.
 
 \begin{figure}
 \begin{lstlisting}
@@ -449,7 +449,7 @@ The last line of Figure~\ref{fig:RPP-ev} sets a handy notation for \lstinline|ev
 \begin{remark}[We keep the definition of {\normalfont \lstinline|ev|} simple]
 \label{remark:We keep the definition of ev simple}
 We can prove that the definition of \lstinline|ev| allows us to apply any \lstinline|f:RPP| to any \lstinline|X:list ℤ|.
-If \lstinline|X.length >= f.arity|, i.e. \lstinline|X.length| supplies enough arguments, then \lstinline|f| operates the first elements of \lstinline|X| according to its arity. This justifies \textit{Remark}~\ref{remark:Weakening algorithms of RPP}. If \lstinline|X.length < f.arity|, i.e. \lstinline|X| has not enough elements less, \lstinline|f X| has an unspecified behavior. This might sounds odd, but it simplifies the proofs of must-have properties of \lstinline|RPP|.
+If \lstinline|X.length >= f.arity|, i.e. \lstinline|X| supplies enough arguments, then \lstinline|f| operates on the first elements of \lstinline|X| according to its arity. This justifies \textit{Remark}~\ref{remark:Weakening algorithms of RPP}. If \lstinline|X.length < f.arity|, i.e. \lstinline|X| has not enough elements, \lstinline|f X| has an unspecified behavior. This might sound odd, but it simplifies the proofs of must-have properties of \lstinline|RPP|.
 %This is possible because we can prove:
 %\begin{lstlisting}
 %    lemma ev_length (f: RPP) (X: list ℤ): (‹f› X).length = X.length
@@ -463,7 +463,6 @@ If \lstinline|X.length >= f.arity|, i.e. \lstinline|X.length| supplies enough ar
 
 %======================
 \subsection{The functions {\normalfont \lstinline|inv f|} and {\normalfont \lstinline|f|} are each other inverse}
-The proof of
 Once defined \lstinline|inv| in Figure~\ref{fig:RPP-inv} and \lstinline|ev| in Figure~\ref{fig:RPP-ev} we can prove both:
 \begin{lstlisting}
     theorem inv_co_l (f : RPP) (X : list ℤ) : ‹f ;; f⁻¹› X = X
@@ -566,7 +565,7 @@ The definition of \lstinline|RPP| of \LEAN is really very close to the original 
     On the contrary, if \lstinline|x < 0|, the leftmost \lstinline|It f| does nothing and the iteration is performed by the rightmost iteration, because \lstinline|Ne| in the middle negates \lstinline|x|. In both cases, the last \lstinline|Ne| restores \lstinline|x| to its initial sign. But this is the behavior of \lstinline|ItR|, as we wanted. \qeda
     \end{example}
 
-    Last, but not least, to convince \LEAN that \lstinline|It| terminates, it is much simpler than to convince it about the termination of \lstinline|ItR| or \lstinline|for|.
+    Last, but not least, it's much easier to convince \LEAN that \lstinline|It| terminates, than it is for \lstinline|ItR| or \lstinline|for|.
 \end{itemize}
 
 %=====================
@@ -652,7 +651,7 @@ By definition, $\rpprewire{i_0, \dots, i_n} (x_0, \dots, x_m) = (x_{i_0}, \dots,
 
 \begin{figure}
 %    \centering
-    \scalebox{.85}{
+    \scalebox{.82}{
         $\begin{NiceMatrix}
             & a_0 &\bloch{1-1}{\mbox{\lstinline|Id 1|}}& b_0 & \bloch{3-1}{\rpprewire{2,0,1}} & c_0 & \bloch{3-1}{\mbox{\lstinline|If(Su‖Pr)[_](Id 1)|}}& d_0 & \bloch{2-1}{
                  \mbox{\lstinline|Sw|}
@@ -819,9 +818,9 @@ Figure~\ref{fig:function scheme step} identifies the new scheme of algorithm \ls
 \label{fig:functions as paths}
 \end{figure}
 
-On top of the functions in Figures~\ref{fig:standard functions}, and~\ref{fig:function scheme step} we build the inverse of the two isomorphism Cantor Pairing/Un-pairing, quotient and reminder of Integer division, and integer approximation of Square root. The point is to make the correct instance of \lstinline|step[_]| in order to visit $ \NN^2 $ with the paths in Figures~\ref{sfig:cantor as a path}, \ref{sfig:Quot./Rem.}, and~\ref{sfig:Square root}, respectively.
+On top of the functions in Figures~\ref{fig:standard functions}, and~\ref{fig:function scheme step} we build the Cantor Pairing/Un-pairing, quotient and reminder of integer division, and integer approximation of Square root. The point is to make the correct instance of \lstinline|step[_]| in order to visit $ \NN^2 $ with the paths in Figures~\ref{sfig:cantor as a path}, \ref{sfig:Quot./Rem.}, and~\ref{sfig:Square root}, respectively.
 
-\paragraph{Cantor (Un-)Pairing}. The standard definition of Cantor Pairing $\rppcp : \NN^2 \to \NN$ and Un-pairing $\rppcu : \NN \to \NN^2$, two bijections one inverse to the other, is:
+\paragraph{Cantor (Un-)Pairing}. The standard definition of Cantor Pairing $\rppcp : \NN^2 \to \NN$ and Un-pairing $\rppcu : \NN \to \NN^2$, two bijections one inverse of the other, is:
 \begin{align}
 \label{align: cp analitically}
 \rppcp(x,y) & = \sum_{i=1}^{x+y}i + x = \frac{(x + y)(x + y + 1)}{2} + x
@@ -904,7 +903,7 @@ $\begin{NiceMatrix}
 %        \rppSw
    } & x + 1
     \\
-    & 0 && 0 && 0&& x + 1 && x + 1 && x + 1 && \yr
+    & 0 && 0 && \yr && x + 1 && x + 1 && x + 1 && \yr
 \end{NiceMatrix}$
 }
 \caption{Function \lstinline|step[Su;;Sw]|: detailed behavior with $ \yr = 0 $. }
@@ -960,7 +959,7 @@ $\begin{NiceMatrix}
 \end{figure}
 
 Figure~\ref{fig:Cantor} has all we need to define Cantor Pairing \lstinline|cp:RPP|, and Un-pairing \lstinline|cu:RPP|.
-In Figure~\ref{sfig:cp input}, \lstinline|cp_in| is the natural algorithm in \lstinline|RPP| to implement~\eqref{align: cp analitically}. As expected, the input pair $(x,y)$ is part of \lstinline|cp_in| output. The suffix ``\lstinline|in|'' in the name ``recalls'' exactly this aspect. In order to drop $(x,y)$ from the output, and obtain \lstinline|cp| as in Figure~\ref{sfig:cp}, we need \lstinline|cu_in⁻¹|, i.e. \lstinline|cu_in| which is new, as compared to \cite{DBLP:journals/tcs/PaoliniPR20}. The intuition behind \lstinline|cu_in| works as follows. Let us fix any point $ \rppcp(x, y) \in \NN $. We can realize that, starting from the origin, if we follow as many steps as the value $ \rppcp(x, y) $ in Figure~\ref{sfig:cantor as a path}, we stop exactly at $ (x,y) \in \NN^2 $. The function, expressed in standard functional notation, that, given the current point $ (x,y) $, identifies the next one to move to in the path of Figure~\ref{sfig:cantor as a path} is:
+In Figure~\ref{sfig:cp input}, \lstinline|cp_in| is the natural algorithm in \lstinline|RPP| to implement~\eqref{align: cp analitically}. As expected, the input pair $(x,y)$ is part of \lstinline|cp_in| output. The suffix ``\lstinline|in|'' in the name ``recalls'' exactly this aspect. In order to drop $(x,y)$ from the output, and obtain \lstinline|cp| as in Figure~\ref{sfig:cp}, we need \lstinline|cu_in⁻¹|, i.e. \lstinline|cu_in| which is new, as compared to \cite{DBLP:journals/tcs/PaoliniPR20}. The intuition behind \lstinline|cu_in| is as follows. Let us fix any point $ (x, y) \in \NN^2 $. We can realize that, starting from the origin, if we follow as many steps as the value $ \rppcp(x, y) $ in Figure~\ref{sfig:cantor as a path}, we stop exactly at $ (x,y) \in \NN^2 $. The function, expressed in standard functional notation, that, given the current point $ (x,y) $, identifies the next one to move to in the path of Figure~\ref{sfig:cantor as a path} is:
 \begin{align*}
 %    \label{align:next function}
     \operatorname{step}(x,y) & =
