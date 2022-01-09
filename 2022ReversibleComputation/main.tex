@@ -318,13 +318,14 @@ We comment the structure of the first one, the others being similar. It is a par
 \qeda
 \end{example}
 
-\begin{remark}[``Weakening'' algorithms of {\normalfont \lstinline|RPP|}]
+\begin{remark}[``Weak weakening'' of algorithms in {\normalfont \lstinline|RPP|}]
 \label{remark:Weakening algorithms of RPP}
-We shall typically adopt the most economical way to write elements in \lstinline|RPP|; we shall drop parallel compositions between any \lstinline|Id m|, and any \lstinline|f:RPP| such that \lstinline|f<>Id n|, for some \lstinline|m|, \lstinline|n|. The term and the diagram in \textit{Example}~\ref{example:A first legal term of type RPP} become
-\lstinline|Sw;;(It Su);;(If Su (Id 1) Pr)| and:
+%We can certify that \lstinline|(f‖(Id m)) X = f X|, but not
+%\lstinline|((Id m)‖f) X = f X|, for any $ \lstinline|X| $.
+We typically drop \lstinline|Id m| if it is the last function of a parallel composition. For example, term and diagram in \textit{Example}~\ref{example:A first legal term of type RPP} become \lstinline|(Id 1‖Sw);;(It Su);;(Id 1‖If Su (Id 1) Pr)| and:
 \[
 \begin{NiceMatrix}
-    x_0&&y_0&\bloch{2-1}{\mbox{\lstinline|It  Su|}}&w_0&&z_0
+    x_0&\bloch{1-1}{\mbox{\lstinline|Id 1|}}&y_0&\bloch{2-1}{\mbox{\lstinline|It  Su|}}&w_0&\bloch{1-1}{\mbox{\lstinline|Id 1|}}&z_0
     \\
     x_1&\bloch{2-1}{\mbox{\lstinline|Sw|}}&y_1& &w_1&\bloch{2-1}{\mbox{\lstinline|If Su (Id 1) Pr|}}&z_1
     \\
@@ -333,7 +334,7 @@ We shall typically adopt the most economical way to write elements in \lstinline
 \end{NiceMatrix}
 \enspace .
 \]
-\textit{Remark}~\ref{remark:We keep the definition of ev simple} shall explain why this is possible.
+\textit{Remark}~\ref{remark:We keep the definition of ev simple} explains why.
 \qeda
 \end{remark}
 
@@ -445,9 +446,10 @@ The parallel composition \lstinline|f‖g| splits \lstinline|X| into two parts. 
 The selection \lstinline|If f g h| chooses one among \lstinline|f|, \lstinline|g|, and \lstinline|h|, depending on the argument head \lstinline|x|: it is \lstinline|g| with \lstinline|x = 0|, it is \lstinline|f| with \lstinline|x > 0|, and \lstinline|h| with \lstinline|x < 0|.
 The last line of Figure~\ref{fig:RPP-ev} sets a handy notation for \lstinline|ev|.
 
-\begin{remark}[We keep the definition of {\normalfont \lstinline|ev|}  simple]
+\begin{remark}[We keep the definition of {\normalfont \lstinline|ev|} simple]
 \label{remark:We keep the definition of ev simple}
-Our definition of \lstinline|ev| implies that, for any \lstinline|f:RPP|, we can freely apply \lstinline|f| to any \lstinline|X:list ℤ| even when \lstinline|X.length < f.arity|; in that case \lstinline|f X| has an unspecified behavior. This might sounds odd, but it simplifies the proofs of must-have properties of \lstinline|RPP|.
+We can prove that the definition of \lstinline|ev| allows us to apply any \lstinline|f:RPP| to any \lstinline|X:list ℤ|.
+If \lstinline|X.length >= f.arity|, i.e. \lstinline|X.length| supplies enough arguments, then \lstinline|f| operates the first elements of \lstinline|X| according to its arity. This justifies \textit{Remark}~\ref{remark:Weakening algorithms of RPP}. If \lstinline|X.length < f.arity|, i.e. \lstinline|X| has not enough elements less, \lstinline|f X| has an unspecified behavior. This might sounds odd, but it simplifies the proofs of must-have properties of \lstinline|RPP|.
 %This is possible because we can prove:
 %\begin{lstlisting}
 %    lemma ev_length (f: RPP) (X: list ℤ): (‹f› X).length = X.length
@@ -571,6 +573,18 @@ The definition of \lstinline|RPP| of \LEAN is really very close to the original 
 \section{{\normalfont \lstinline|RPP|} algorithms central to our proofs}
 \label{section:RPP algorithms}
 
+%    Comincio col dire che cp è una biezione N^2 -> N con inversa cu etc, che voglio esprimere dentro RPP.
+%Osservo che è facile fare una funzione cp_in : (x,y,0) |-> (x,y,cp(x,y)), ma invece vorrei una funzione cp : (x,y) |-> (cp(x,y),0), che si sbarazza dell'input. L'obiettivo è quindi trovare una funzione che sia del tipo cu_in : (cp(x,y),0,0) |-> (cp(x,y),x,y) cosicché possiamo sbarazzarci dell'input facendone l'inversa.
+%La formulazione "algebrica"/"analitica" di cu non è facilmente implementabile in RPP.
+%Osserviamo invece che dato (x,y), cp(x,y) non è altro che il numero di passi da seguire in questo percorso per arrivare alla casella (x,y) a partire da (0,0). Allora per ottenere (x,y) a partire da cp(x,y) basta ragionare al contrario: partiamo da (0,0) e iteriamo cp(x,y) volte step, finendo alla fine in (x,y).
+%(*) La difficoltà nel definire step sta nel fatto che la condizione è sulla variabile y, che allo stesso tempo è modificata nel calcolo. Questo va contro la definizione di condizionale di RPP. Il seguente algoritmo (step_[Su;;Sw]) riesce ad evitare questo problema "rigirando le variabili in modo furbo" (l'unico modo che ho trovato di descrivere questa cosa è come nella tesi: "We get around this limitation by using an ancillary variable initially set to 0, which assumes value 1 or 0 depending on whether y > 0 or y = 0, and is then set back to 0 using a variable that we know is positive or equal to zero depending on the case considered.").
+%Avendo definito cp : (x,y) |-> (cp(x,y),0) abbiamo gratis l'inversa cu : (cp(x,y),0) |-> (x,y)
+%
+%L'unica cosa nuova è il punto (*), gli altri sono praticamente un riordinamento di quanto c'è già scritto.
+%Scrivere le cose in questo modo significa esprimere tutto in termini di cp(x,y) anziché usare una variabile "n" e calcolare cu_1(n), cu_2(n).
+%Inoltre renderebbe più chiaro come mai è stato difficile definire cp. Dimmi cosa ne pensi di questo approccio.
+%
+
 \begin{figure}
 \begin{subfigure}{.225\textwidth}
 \centering
@@ -640,13 +654,13 @@ By definition, $\rpprewire{i_0, \dots, i_n} (x_0, \dots, x_m) = (x_{i_0}, \dots,
 %    \centering
     \scalebox{.85}{
         $\begin{NiceMatrix}
-            & a_0 && b_0 & \bloch{3-1}{\rpprewire{2,0,1}} & c_0 & \bloch{3-1}{\mbox{\lstinline|If(Su‖Pr)[_](Id 1)|}}& d_0 & \bloch{2-1}{
+            & a_0 &\bloch{1-1}{\mbox{\lstinline|Id 1|}}& b_0 & \bloch{3-1}{\rpprewire{2,0,1}} & c_0 & \bloch{3-1}{\mbox{\lstinline|If(Su‖Pr)[_](Id 1)|}}& d_0 & \bloch{2-1}{
                  \mbox{\lstinline|Sw|}
 %                \rppSw
             } & e_0 & \bloch{2-1}{
                 \mbox{\lstinline|If(Pr)(Id 1)(Id 1)|}
 %                \rppIf[\boldsymbol{\rppPr}, \rppId_1, \rppId_1]
-                } & f_0 && g_0
+                } & f_0 &\bloch{1-1}{\mbox{\lstinline|Id 1|}}& g_0
             \\
             & a_1 & \bloch{2-1}{
                 \mbox{\lstinline|If(Su)(Id 1)(Id 1)|}
@@ -663,7 +677,7 @@ By definition, $\rpprewire{i_0, \dots, i_n} (x_0, \dots, x_m) = (x_{i_0}, \dots,
     \label{fig:function scheme step}
 \end{figure}
 
-Figure~\ref{fig:function scheme step} identifies the new scheme of algorithm \lstinline|step[_]|. Depending on how we fill the hole \lstinline|[_]| we obtain step functions to iterate in order to draw paths into $ \NN^2 $. The names listed in the diagram are just place holder, currently.
+Figure~\ref{fig:function scheme step} identifies the new scheme of algorithm \lstinline|step[_]|. Depending on how we fill the hole \lstinline|[_]|, we obtain step functions that, once iterated draw paths into $ \NN^2 $. The names $ a_0, \ldots, b_0, \ldots $ are just place holders, currently.
 
 \begin{figure}
 \begin{subfigure}{.225\textwidth}
@@ -816,21 +830,34 @@ On top of the functions in Figures~\ref{fig:standard functions}, and~\ref{fig:fu
 \rppcu(n)  & = \left( n - \frac{i(1+i)}{2}, \frac{i(3+i)}{2} - n \right)
 \enspace ,
 \end{align}
-where $i = \left\lfloor \frac{\sqrt{8n + 1} - 1}{2} \right\rfloor $. Figure~\ref{sfig:cantor as a path} helps to show that we can avoid to see $\rppcu(n)$ analytically, as in \eqref{align: cu analitically}.
-We can see $\rppcu(n)$ as a building-path process that starts at position $(0, 0)$, which successively applies a series of steps, to stop on $ n $-th point of the drown path; given the current point $ (x,y) $, the next one to move to is:
-\begin{align}
-\label{align:next function}
-\mbox{\lstinline|next|}(x,y) & =
-\begin{cases} (x+1,y-1) &  y > 0 \\ (0, x+1) &   y = 0 \end{cases}
-\enspace .
-\end{align}
+where $i = \left\lfloor \frac{\sqrt{8n + 1} - 1}{2} \right\rfloor $.
 
 \begin{figure}
 \begin{subfigure}{.975\textwidth}
-\centering
-\scalebox{.74}{
+    \centering
+\scalebox{.82}{
     $\begin{NiceMatrix}
-        & x &                                                              & x & \bloch{3-1}{\rpprewire{2,0,1}} & 1 & \bloch{3-1}{
+        x &\bloch{2-1}{\mbox{\lstinline|inc|}}&x&\bloch{1-1}{\mbox{\lstinline|Id 1|}}&x&\bloch{1-1}{\mbox{\lstinline|Id 1|}}&\bloch{2-1}{\mbox{\lstinline|dec|}}&x& \bloch{4-1}{\rpprewire{0,3,1}} &\bloch{2-1}{\mbox{\lstinline|inc|}} &\bloch{1-1}{\mbox{\lstinline|Id 1|}} & x
+        \\
+        y && x + y & \bloch{3-1}{
+            \mbox{\lstinline|It(Su;;inc)|}
+            %            \rppIt[\rppSu \rppCo \rppinc]
+        } & x + y& \bloch{2-1}{\mbox{\lstinline|dec|}} && y&&& \bloch{2-1}{\mbox{\lstinline|Sw|}} & y
+        \\
+        0 &                      & 0     &                     & x + y                &                      &                      & 0                    &                      &                      &                     & \sum_{i=1}^{x + y} i + x
+        \\
+        0 &                      & 0     &                     & \sum_{i=1}^{x + y} i &                      &                      & \sum_{i=1}^{x + y} i &                      &                      &                     & 0
+    \end{NiceMatrix}$
+}
+    \caption{Function \lstinline|cp_in|}
+    \label{sfig:cp input}
+\end{subfigure}
+\\
+\begin{subfigure}{.975\textwidth}
+\centering
+\scalebox{.72}{
+    $\begin{NiceMatrix}
+        & x &\bloch{1-1}{\mbox{\lstinline|Id 1|}}& x & \bloch{3-1}{\rpprewire{2,0,1}} & 1 & \bloch{3-1}{
             \mbox{\lstinline|If(Su‖Pr)(Su;;Sw)(Id 1)|}
 %            \rppIf[\boldsymbol{\rppSu \rppPa \rppPr}, \mbox{\lstinline|Su;;Sw|}, \ \rppId_1]
         } & 1     & \bloch{2-1}{
@@ -839,7 +866,7 @@ We can see $\rppcu(n)$ as a building-path process that starts at position $(0, 0
         } & x + 1 & \bloch{2-1}{
         \mbox{\lstinline|If(Pr)(Id 1)(Id 1)|}
 %        \rppIf[\boldsymbol{\rppPr}, \rppId_1, \rppId_1]
-        } & x + 1 &                     & x + 1 \\
+        } & x + 1 &\bloch{1-1}{\mbox{\lstinline|Id 1|}} & x + 1 \\
         & \yb & \bloch{2-1}{
         \mbox{\lstinline|If(Su)(Id 1)(Id 1)|}
         %            \rppIf[\boldsymbol{\rppSu}, \rppId_1, \rppId_1]
@@ -853,12 +880,12 @@ We can see $\rppcu(n)$ as a building-path process that starts at position $(0, 0
 \caption{Function \lstinline|step[Su;;Sw]|: detailed behavior with $ \yb > 0 $. }
 \label{sfig:cu step y > 0}
 \end{subfigure}
-\hfill
+\\
 \begin{subfigure}{.975\textwidth}
 \centering
-\scalebox{.74}{
+\scalebox{.72}{
 $\begin{NiceMatrix}
-    & x && x & \bloch{3-1}{\rpprewire{2,0,1}} & 0 & \bloch{3-1}{
+    & x &\bloch{1-1}{\mbox{\lstinline|Id 1|}}& x & \bloch{3-1}{\rpprewire{2,0,1}} & 0 & \bloch{3-1}{
     \mbox{\lstinline|If(Su‖Pr)(Su;;Sw)(Id 1)|}
     %    \rppIf[\rppSu \rppPa \rppPr, \mbox{\lstinline|Su;;Sw|} , \ \rppId_1]
     } & 0     & \bloch{2-1}{
@@ -867,7 +894,7 @@ $\begin{NiceMatrix}
     } & 0 & \bloch{2-1}{
         \mbox{\lstinline|If(Su)(Id 1)(Id 1)|}
 %        \rppIf[\rppPr, \boldsymbol{\rppId_1}, \rppId_1]
-    } & 0 & & 0
+    } & 0 & \bloch{1-1}{\mbox{\lstinline|Id 1|}} & 0
     \\
     & \yr & \bloch{2-1}{
         \mbox{\lstinline|If(Pr)(Id 1)(Id 1)|}
@@ -883,87 +910,85 @@ $\begin{NiceMatrix}
 \caption{Function \lstinline|step[Su;;Sw]|: detailed behavior with $ \yr = 0 $. }
 \label{sfig:cu step y = 0}
 \end{subfigure}
-\hfill
+\\
 \begin{subfigure}{.975\textwidth}
 \centering
+\scalebox{.82}{
 $\begin{NiceMatrix}
-    n & \bloch{4-1}{\mbox{\lstinline|It step[Su;;Sw]| }} & n           \\
-    0 &                      & \rppcu_1(n) \\
-    0 &                      & \rppcu_2(n) \\
+     \rppcp(x,y)
+      & \bloch{4-1}{\mbox{\lstinline|It step[Su;;Sw]| }} &
+      \rppcp(x,y)\\
+    0 &                      & x \\
+    0 &                      & y \\
     0 &                      & 0
 \end{NiceMatrix}$
+}
 \caption{Function \lstinline|cu_in|}
 \label{sfig:cu input}
-\end{subfigure}
-\hfill
-\begin{subfigure}{.975\textwidth}
-    \centering
-    $\begin{NiceMatrix}
-        x &\bloch{2-1}{\mbox{\lstinline|inc|}}&x&&x&&\bloch{2-1}{\mbox{\lstinline|dec|}}&x& \bloch{4-1}{\rpprewire{0,3,1}} &\bloch{2-1}{\mbox{\lstinline|inc|}} && x
-        \\
-        y && x + y & \bloch{3-1}{
-            \mbox{\lstinline|It(Su;;inc)|}
-%            \rppIt[\rppSu \rppCo \rppinc]
-        } & x + y& \bloch{2-1}{\mbox{\lstinline|dec|}} && y&&& \bloch{2-1}{\mbox{\lstinline|Sw|}} & y
-        \\
-        0 &                      & 0     &                     & x + y                &                      &                      & 0                    &                      &                      &                     & \sum_{i=1}^{x + y} i + x
-        \\
-        0 &                      & 0     &                     & \sum_{i=1}^{x + y} i &                      &                      & \sum_{i=1}^{x + y} i &                      &                      &                     & 0
-    \end{NiceMatrix}$
-\caption{Function \lstinline|cp_in|}
-\label{sfig:cp input}
 \end{subfigure}
 \\
 \begin{subfigure}{.665\textwidth}
     \centering
+\scalebox{.82}{
     $ \begin{NiceMatrix}
         x & \bloch{4-1}{\mbox{\lstinline|cp_in|}} & x           & \bloch{3-1}{\rpprewire{2,0,1}} & \rppcp(x,y) & \bloch{4-1}{\mbox{\lstinline|cu_in⁻¹|}} & \rppcp(x,y) \\
         y &                       & y           &                      & x           &                            & 0           \\
         0 &                       & \rppcp(x,y) &                      & y           &                            & 0           \\
         0 &                       & 0           &                      & 0           &                            & 0           \\
     \end{NiceMatrix}
-    $    \caption{The function \lstinline|cp|}
-    \label{sfig:cp}
+    $
+}
+\caption{The function \lstinline|cp|}
+\label{sfig:cp}
 \end{subfigure}
 \hfill
 \begin{subfigure}{.325\textwidth}
-    \centering
+\centering
+\scalebox{.82}{
     $ \begin{NiceMatrix}
         n & \bloch{4-1}{\mbox{\lstinline|cp⁻¹|}} & \rppcu_1(n)    \\
         0 &                      & \rppcu_2(n)         \\
         0 &                      & 0 \\
         0 &                      & 0
     \end{NiceMatrix} $
-    \caption{The function \lstinline|cu|}
-    \label{sfig:cu}
+}
+\caption{The function \lstinline|cu|}
+\label{sfig:cu}
 \end{subfigure}
 \caption{Cantor Pairing and Un-pairing.}
 \label{fig:Cantor}
 \end{figure}
 
-Figure~\ref{fig:Cantor} collects all the ingredients to define Cantor Pairing \lstinline|cp:RPP|, and Cantor Un-pairing \lstinline|cu:RPP|.
-Figures~\ref{sfig:cu step y > 0}, and~\ref{sfig:cu step y = 0} represent two runs of the instance \lstinline|step[Su;;Sw]|, giving evidence that \lstinline|step[Su;;Sw]| implements \lstinline|next|$(x,y)$ in~\eqref{align:next function}. Colored occurrences of $ y $ show its flow. If the starting point is $ (x,\yb) $, with $ \yb > 0 $, the next point is $ (x+1,\yb-1) $, as we can read to the right. If the starting point is $ (x,\yr) $, with $ \yr = 0 $, the next point is $ (0, x+1) $, because $ \yr = 0 $ is preserved along the whole process. Figure~\ref{sfig:cu input} defines \lstinline|cu_in| as the $ n $-th iteration of \lstinline|step[Su;;Sw]| that yields both $ \rppcu_1(n) $, and $ \rppcu_2(n) $ which we use as names for the leftmost, and the rightmost component of $ \rppcu $ in~\eqref{align: cu analitically}. The suffix \lstinline|in| in \lstinline|cu_in|,  stands for ``input''. It underlines that besides $ \rppcu_1(n) $, and $ \rppcu_2(n) $ the output also contains the original input $ n $. Figure~\ref{sfig:cp input} defines \lstinline|cp_in|, which is the reversible implementation of $ \rppcp(x,y) $ in~\eqref{align: cp analitically} which preserves the original input pair $(x,y)$ as part of its output.
-
-Figure~\ref{sfig:cp} contains the implementation of $ \rppcp(x,y) $. This definition is new, as compared to \cite{DBLP:journals/tcs/PaoliniPR20}, and has an interesting structure. Its first part \lstinline|cp_in| builds an intermediate state with $ x, y $, and $ \rppcp(x,y) $ in it. The state is reorganized, and the inverse \lstinline|cu_in⁻¹| of \lstinline|cu_in|, not \lstinline|cp_in⁻¹|, serves to drop the input pair $ x, y $ from the output. This is interesting because we do not undo part of what \lstinline|cp_in| has just done by its inverse, but by the seemingly unrelated process \lstinline|cu_in⁻¹|.
-Finally, the existence of the syntactical inverse gives us the implementation of the Cantor Un-pairing in Figure~\ref{sfig:cu} for free, by just inverting \lstinline|cp|.
-
-We now see how \lstinline|step[_]| allows us to implement further functions.
+Figure~\ref{fig:Cantor} has all we need to define Cantor Pairing \lstinline|cp:RPP|, and Un-pairing \lstinline|cu:RPP|.
+In Figure~\ref{sfig:cp input}, \lstinline|cp_in| is the natural algorithm in \lstinline|RPP| to implement~\eqref{align: cp analitically}. As expected, the input pair $(x,y)$ is part of \lstinline|cp_in| output. The suffix ``\lstinline|in|'' in the name ``recalls'' exactly this aspect. In order to drop $(x,y)$ from the output, and obtain \lstinline|cp| as in Figure~\ref{sfig:cp}, we need \lstinline|cu_in⁻¹|, i.e. \lstinline|cu_in| which is new, as compared to \cite{DBLP:journals/tcs/PaoliniPR20}. The intuition behind \lstinline|cu_in| works as follows. Let us fix any point $ \rppcp(x, y) \in \NN $. We can realize that, starting from the origin, if we follow as many steps as the value $ \rppcp(x, y) $ in Figure~\ref{sfig:cantor as a path}, we stop exactly at $ (x,y) \in \NN^2 $. The function, expressed in standard functional notation, that, given the current point $ (x,y) $, identifies the next one to move to in the path of Figure~\ref{sfig:cantor as a path} is:
+\begin{align*}
+%    \label{align:next function}
+    \operatorname{step}(x,y) & =
+    \begin{cases} (x+1,y-1) &  y > 0 \\ (0, x+1) &   y = 0 \end{cases}
+    \enspace .
+\end{align*}
+We implement $ \operatorname{step}(x,y) $ in \lstinline|RPP| as \lstinline|step[Su;;Sw]|. Figures~\ref{sfig:cu step y > 0}, and~\ref{sfig:cu step y = 0} represent two runs of \lstinline|step[Su;;Sw]| to give visual evidence that \lstinline|step[Su;;Sw]| implements $\operatorname{step}(x,y)$. Colored occurrences of $ y $ show the relevant part of the computational flow. Let the starting point be $ (x,\yb) $, with $ \yb > 0 $. The next point we reach  is $ (x+1,\yb-1) $, as we can read in the output: the initial value of $ \yb $ is updated and supplied as the second element of the Cartesian coordinates. Let the starting point be $ (x,\yr) $, with $ \yr = 0 $. The next point is $ (0, x+1) $, but it is crucial to observe where the coordinate $ 0 $ of $ (0, x+1) $ comes from.
+It is not $ \yr = 0 $; it is the ancilla set to $ 0 $ in the input. The $ \yr = 0 $ in the output becomes the set-to-$ 0 $-ancilla in the input the next time we need to reset the final point to $ (0,x+1) $, for some $ x $. So, as soon as we get \lstinline|cu_in| by iterating \lstinline|step[Su;;Sw]| as in Figure~\ref{sfig:cu input}, we can define \lstinline|cp| (Figure~\ref{sfig:cp}), and \lstinline|cu| (Figure~\ref{sfig:cu}).
+\begin{remark}
+Our need to write a simple ``garbage collecting'' reversible function \lstinline|cp_in|, which correctly works on the output of \lstinline|cp_in|, we end up with ignoring completely the analytical definition of $ \rppcu(n) $ in~\eqref{align: cu analitically}.
+\qeda
+\end{remark}
 
 \begin{figure}
-    \begin{subfigure}{.4\linewidth}
+    \begin{subfigure}{.475\linewidth}
         \centering
         $ \begin{NiceMatrix}
-            m & \bloch{5-1}{\mbox{\lstinline|It step[Sw‖(Id 1)]|}} & m         \\
+            m & \bloch{5-1}{\mbox{\lstinline|It step[Sw‖Su]|}} & m         \\
             0 &                      & r         \\
             n &                      & n + 1 - r \\
             0 &                      & 0         \\
             0 &                      & q         \\
         \end{NiceMatrix} $
-        \caption{Function that computes $ q $ and $ r $ such that $m = q(n + 1) + r$. We obtain it by iterating \lstinline|step[Sw‖(Id 1)]:RPP|.}
+        \caption{Function that computes $ q $ and $ r $ such that $m = q(n + 1) + r$. We obtain it by iterating \lstinline|step[Sw‖Su]:RPP|.}
         \label{sfig:div}
     \end{subfigure}
     \hfill
-    \begin{subfigure}{.5\linewidth}
+    \begin{subfigure}{.475\linewidth}
         \centering
         $\begin{NiceMatrix}
             n & \bloch{5-1}{\mbox{\lstinline|It step[Su;;Su;;Sw‖Su]|}} & n      \\
@@ -982,8 +1007,8 @@ We now see how \lstinline|step[_]| allows us to implement further functions.
 \paragraph{Quotient and reminder.}
 %In defining the function $\rppcui$ we framed it as a "path" in a two-dimensional grid.
 Let us focus on the path in Figure~\ref{sfig:Quot./Rem.}.
-It starts at $(0,n)$ (with $ n = 4 $), and, at every step, the next point is in \emph{direction} $(+1,-1)$. When it reaches $(n,0)$ (with $ n = 4 $), instead of jumping to $(0,n+1)$, as in Figure~\ref{sfig:cantor as a path}, we land again on $(0,n)$. The idea is to keep looping on the same diagonal. This behavior can be achieved by iterating \lstinline|step[Sw‖(Id 1)]|. Figure~\ref{sfig:div} shows that we are doing modular arithmetic.
-Globally, it takes $n+1$ steps from $ (0,n) $ to itself by means of \lstinline|step[Sw‖(Id 1)]|.
+It starts at $(0,n)$ (with $ n = 4 $), and, at every step, the next point is in \emph{direction} $(+1,-1)$. When it reaches $(n,0)$ (with $ n = 4 $), instead of jumping to $(0,n+1)$, as in Figure~\ref{sfig:cantor as a path}, we land again on $(0,n)$. The idea is to keep looping on the same diagonal. This behavior can be achieved by iterating \lstinline|step[Sw‖Su]|. Figure~\ref{sfig:div} shows that we are doing modular arithmetic.
+Globally, it takes $n+1$ steps from $ (0,n) $ to itself by means of \lstinline|step[Sw‖Su]|.
 Specifically, if we assume we have performed $m$ steps along the diagonal, and we are at point $ (x,y) $, we have that $x \equiv m \pmod{n+1}$ and $0 \le x \le n$.
 So, if we increase a counter by one each time we get back to $(0,n)$ we can calculate quotient and reminder.
 
@@ -1012,9 +1037,162 @@ lemma sqrt_def (n : ℕ) (X : list ℤ) :
 \section{Unary Primitive Recursive Functions (\UPRF) }
 \label{section:Unary Primitive Recursive Functions}
 
+From \cite{Carneiro-primrecMathlib}
+\begin{quote}
+The primitive recursive functions are the least collection of functions nat → nat which are closed under projections (using the mkpair pairing function), composition, zero, successor, and primitive recursion (i.e. nat.rec where the motive is C n := nat).
+\end{quote}
+
+\begin{figure}
+\begin{lstlisting}
+inductive primrec : (ℕ → ℕ) → Prop
+| zero : primrec (λ n, 0)
+| succ : primrec succ
+| left : primrec (λ n, n.unpair.1)
+| right : primrec (λ n, n.unpair.2)
+| pair {f g} : primrec f → primrec g → primrec (λ n, mkpair (f n) (g n))
+| comp {f g} : primrec f → primrec g → primrec (λ n, f (g n))
+| prec {f g} : primrec f → primrec g → primrec (unpaired (λ z n,
+n.elim (f z) (λ y IH, g (mkpair z (mkpair y IH)))))
+\end{lstlisting}
+\caption{The definition of \UPRF in \cite{Carneiro-primrecMathlib}.}
+\label{fig: primrec}
+\end{figure}
+
+
 %=====================
 \section{The \UPRF-completeness of \RPP}
 \label{section:The UPRF-completeness of RPP}
+
+The most complicated - and the most interesting - case is the last one,
+about primitive recursion.
+Let's look at the definition again:
+\begin{lstlisting}
+    prec {f g} : primrec f → primrec g →
+    primrec (unpaired (λ z n, n.elim (f z)
+    (λ (y IH : N), g (nat.mkpair z (nat.mkpair y IH)))
+    n))
+\end{lstlisting}
+Given $F, G \in \PRF$ let's call $H$ the function given by \lstinline|primrec.prec|
+(which isn't just standard primitive recursion!).
+Let $\gl x, y \gr = \rppmkpair(x,y)$ and $\big( (n)_1, (n)_2 \big) = \rppunpair(n)$,
+then $H$ is given by
+\[ H(x) = \prPrec[F,G]\big( (x)_1, (x)_2 \big) \]
+where we define $\prPrec[F,G] : \NN^2 \to \NN$ as
+\begin{align*}
+    \prPrec[F,G](z,0) \ = \ & F(z) \\
+    \prPrec[F,G](z, n+1) \ = \ & G \big( \gl z, \gl n, \prPrec[F,G](z,n) \gr \gr \big)
+\end{align*}
+
+Let's assume that $f, g \in \RPP$ encode respectively $F, G \in \PRF$, i.e.
+$f(z, n, \boldsymbol{0}) = (z+F(n), n, \boldsymbol{0})$ and $g(z, n, \boldsymbol{0}) = (z+G(n), n, \boldsymbol{0})$.
+Then, we simulate a single iteration of $\prPrec[F,G]$ by $\rppprecstep[g] \in \RPP$ given by
+
+\begin{align*}
+    \rppprecstep[g] \ = \ & \rppId_2 \rppPa \rppmkpair \rppCo                               \\
+    & \rppId_1 \rppPa \rppmkpair \rppCo                               \\
+    & \rppId_1 \rppPa (\rppSw \rppCo g) \rppCo                        \\
+    & \rppId_2 \rppPa \rppunpair \rppCo                               \\
+    & \rppId_3 \rppPa \rppunpair \rppCo                               \\
+    & \rpprewire{2, 3, 1, 0, 4} \rppCo                                \\
+    & \rppId_1 \rppPa \rppSu \rppPa \rppId_1 \rppPa \rppmkpair \rppCo \\
+    & \rpprewire{3, 0, 1, 2}                                          \\
+\end{align*}
+
+Below is a diagram showing each step of the computations of $\rppprecstep[g]$.
+The variables $s, s' \in \NN$ are "junk" whose values we don't care about.
+
+\makebox[\textwidth][c]{\begin{NiceMatrixBlock}
+        $\begin{array}{c}
+            \begin{NiceMatrix}
+                s                 &                         &                         & s                                       &                     &                & s                                       \\
+                z                 &                         & \bloch{5-1}{\rppmkpair} & \gl z, \gl n, \prPrec[F,G](z,n) \gr \gr & \bloch{2-1}{\rppSw} & \bloch{5-1}{g} & \prPrec[F,G](z,n+1)                     \\
+                n                 & \bloch{4-1}{\rppmkpair} &                         & 0                                       &                     &                & \gl z, \gl n, \prPrec[F,G](z,n) \gr \gr \\
+                \prPrec[F,G](z,n) &                         &                         & 0                                       &                     &                & 0                                       \\
+                0                 &                         &                         & 0                                       &                     &                & 0                                       \\
+                \boldsymbol{0}    &                         &                         & \boldsymbol{0}                          &                     &                & \boldsymbol{0}                          \\
+            \end{NiceMatrix}
+            \\ \\
+            \begin{NiceMatrix}
+                s                                       &                         &                         & s                   & \bloch{5-1}{2\\3\\1\\0\\4} & z                   \\
+                \prPrec[F,G](z,n+1)                     &                         &                         & \prPrec[F,G](z,n+1) &                            & n                   \\
+                \gl z, \gl n, \prPrec[F,G](z,n) \gr \gr & \bloch{4-1}{\rppunpair} &                         & z                   &                            & \prPrec[F,G](z,n+1) \\
+                0                                       &                         & \bloch{3-1}{\rppunpair} & n                   &                            & s                   \\
+                0                                       &                         &                         & \prPrec[F,G](z,n)   &                            & \prPrec[F,G](z,n)   \\
+                \boldsymbol{0}                          &                         &                         & \boldsymbol{0}      &                            & \boldsymbol{0}      \\
+            \end{NiceMatrix}
+            \\ \\
+            \begin{NiceMatrix}
+                z                   &                         & z                   & \bloch{4-1}{3\\0\\1\\2} & s'                  \\
+                n                   & \bloch{1-1}{\rppSu}     & n + 1               &                         & z                   \\
+                \prPrec[F,G](z,n+1) &                         & \prPrec[F,G](z,n+1) &                         & n + 1               \\
+                s                   & \bloch{3-1}{\rppmkpair} & s'                  &                         & \prPrec[F,G](z,n+1) \\
+                \prPrec[F,G](z,n)   &                         & 0                   &                         & 0                   \\
+                \boldsymbol{0}      &                         & \boldsymbol{0}      &                         & \boldsymbol{0}      \\
+            \end{NiceMatrix}
+            \\ \\
+        \end{array}$
+\end{NiceMatrixBlock}}
+
+What's interesting about this procedure is that we use the function \lstinline|mkpair| for
+two completely different purposes:
+\begin{itemize}
+    \item The first two calls to $\rppmkpair$ are just there to create the value
+    \[ \gl z, \gl n, \prPrec[F,G](z,n) \gr \gr \]
+    which is needed in order to calculate $\prPrec[F,G](z,n+1)$, while the two $\rppunpair$ unwind the previous pairings.
+    \item The last $\rppmkpair$ is instead our answer to the problem of how to store information in excess.
+    Because we have a problem: there's a point in which both $\prPrec[F,G](z,n+1)$ and $\prPrec[F,G](z,n)$ are present at the same time.
+    We're interested in going forward with the iteration, so we don't need $\prPrec[F,G](z,n)$ anymore;
+    but we can't just replace it with $0$ because that's not a reversible action,
+    and we also can't store each iteration $\prPrec[F,G](z,0)$, $\prPrec[F,G](z,1)$, $\dots$ in
+    separate cells because there's a limited number of them.
+    So instead, we put all our "junk" in the same cell using the pairing function:
+    by calling $\rppmkpair$ with arguments $s$, $\prPrec[F,G](n,z)$ we obtain in the first cell a new junk value $s'$, but more importantly
+    we free our second cell so that we have the same number of free cells as before the iteration.
+\end{itemize}
+
+After having defined $\rppprecstep[g]$ which performs a single step of the iteration,
+we use the iterator $\rppIt$ to get to the result we're interested in,
+and finally use Bennet's trick to retrieve the result and then revert everything back.
+
+\noindent\begin{minipage}{.5\linewidth}
+    \begin{align*}
+        \rppprecfwd[f,g] \ = \ & \rppId_1 \rppPa \rppunpair \rppCo             \\
+        & \rpprewire{0, 2, 3, 1} \rppCo                 \\
+        & \rppId_2 \rppPa f \rppCo                      \\
+        & \rpprewire{0, 1, 4, 3, 5, 2} \rppCo           \\
+        & \rppId_1 \rppPa \rppIt[\rppprecstep[g]] \rppCo \\
+        & \rpprewire{5, 0}                              \\
+    \end{align*}
+\end{minipage}%
+\begin{minipage}{.5\linewidth}
+    \[\begin{NiceMatrix}
+        z                 & \bloch{7-1}{\rppprecfwd[f,g]} & H (x)  \\
+        x                 &                               & z                                      \\
+        0                 &                               & (x)_2                                  \\
+        0                 &                               & s                                      \\
+        0                 &                               & (x)_1                                  \\
+        0                 &                               & (x)_2                                  \\
+        \boldsymbol{0}    &                               & \boldsymbol{0}                         \\
+    \end{NiceMatrix}\]
+\end{minipage}
+
+\noindent\begin{minipage}{.5\linewidth}
+    \begin{align*}
+        \rppprec[f,g] \ = \ & \rppprecfwd[f,g] \rppCo \\
+        & \rppinc \rppCo \\
+        & \rppprecfwd[f,g]^{-1} \\
+    \end{align*}
+\end{minipage}%
+\begin{minipage}{.5\linewidth}
+    \[\begin{NiceMatrix}
+        z                 & \bloch{3-1}{\rppprec[f,g]} & z + H (x)  \\
+        x                 &                            & x                               \\
+        \boldsymbol{0}    &                            & \boldsymbol{0}                  \\
+    \end{NiceMatrix}\]
+\end{minipage}
+
+Proof-wise, we use techniques similar to the ones discussed in the \lstinline|primrec.comp| case.
+This concludes our discussion of the proof of \lstinline|completeness|.
 
 
 %=====================
