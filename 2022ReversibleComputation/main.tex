@@ -217,46 +217,43 @@
 Studies focused on questions posed by Maxwell, regarding the sensibility of the principles which Thermodynamics is based on, recognized the fundamental role that Reversible Computation can play to that purpose.
 
 Once identified, it has been apparent that Reversible Computation constitutes the context in which to frame relevant aspects in areas of Computer Science; they can span from reversible hardware design which can offer a greener foot-print, as compared to classical hardware, to unconventional computational models --- we think to quantum or bio-inspired ones, for example ---, passing through parallel computation and the synchronization issues that it rises, or debuggers that help tracing back to the origin of a bug, or the consistent transactions roll-back in data-base management systems, just to name some. The book \cite{perumalla2013chc} is a comprehensive introduction to the subject; the book \cite{DBLP:books/daglib/0025734}, focused on the low-level aspects of Reversible Computation, concerning the realization of reversible hardware, and
-\cite{DBLP:series/eatcs/Morita17}, focused on how models of Reversible Computation like Reversible Turing Machines (RTM), and Reversible Cellular Automata (RCA) can be considered universal and how to prove that they enjoy such a property, can be considered complementary and integrate \cite{perumalla2013chc}.
+\cite{DBLP:series/eatcs/Morita17}, focused on how models of Reversible Computation like Reversible Turing Machines (RTM), and Reversible Cellular Automata (RCA) can be considered universal and how to prove that they enjoy such a property, are complementary to, and integrate \cite{perumalla2013chc}.
 
 This work focuses on the \emph{functional model} \RPP \cite{DBLP:journals/tcs/PaoliniPR20} of Reversible Computation.
 \RPP stands for (the class of) Reversible Primitive Permutations, which can be seen as a possible reversible counterpart of \PRF, the class of Primitive Recursive functions \cite{rogers1967theory}.
-We recall that \RPP, in analogy with \PRF, is defined as the smallest class built on some given basic reversible function,
-and which is closed under suitable composition schemes.
+We recall that \RPP, in analogy with \PRF, is defined as the smallest class built on some given basic reversible function, closed under suitable composition schemes.
 
 The very functional nature of the elements in \RPP is at the base of reasonably accessible proofs of the following properties:
 \begin{itemize}
-\item \RPP is \PRF-complete, i.e. every function $ f $ in \PRF has a counterpart $ \hat{f} $ in \RPP that simulates $ f $ \cite{DBLP:journals/tcs/PaoliniPR20};
+\item \RPP is \PRF-complete, i.e. every function $ f $ in \PRF has a counterpart in \RPP that simulates $ f $ \cite{DBLP:journals/tcs/PaoliniPR20};
 
 \item \RPP can be naturally extended to become Turing-complete \cite{Paolini2018NGC} by means of a composition scheme analogous to the one that extends \PRF to the Turing-complete class \PR of Partial Recursive functions;
 
 \item According to \cite{MatosRC2020}, \RPP and the reversible programming language \SRL \cite{matos03tcs} are equivalent, so the fix-point problem is undecidable for \RPP as well \cite{2318_1734164MatosPaoliniRoversiTCSICTCS18}.
 \end{itemize}
 
-The motivation to write this work is to bring evidence that expressing Reversible Computation by means of recursively defined computational models, like the class \RPP, \emph{naturally} offers the possibility to certify the correctness, or other interesting properties, of reversible algorithms, by means of some proof-assistant.
-We recall that proof-assistants supply an integrated environment to formalize data-types, to implement algorithms that work on those data-types, to formalize specifications of the implementations, and to prove in full detail that those implementation match their specifications, increasing their dependability.
+The motivation to write this work is to bring evidence that expressing Reversible Computation by means of recursively defined computational models, like the class \RPP, \emph{naturally} offers the possibility to certify the correctness, or other interesting properties, of algorithms in \RPP, by means of some proof-assistant.
+We recall that a typical proof-assistant is an integrated environment to formalize data-types, to implement algorithms that work on those data-types, to formalize specifications of the implementations, and to prove in full detail that those implementation match their specifications, increasing their dependability.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paragraph{Contributions.}
 Roughly, we show how to express \RPP and its evaluation mechanism inside the proof-assistant \LEAN \cite{Lean3}. On one side we are able to certify the correctness of every reversible function that we write in \RPP with respect to a given specification. On the other, we certify the correctness of the main result in \cite{DBLP:journals/tcs/PaoliniPR20} which states that \RPP is \PRF-complete. In more detail:
 \begin{itemize}
-    \item we give a strong guarantee that \RPP is \PRF-complete.
-    Relying on existing proofs that the classes \PRF and \UPRF --- the class of \emph{Unary} Primitive recursive Functions ---, are equivalent, using the library \MATHLIB of the proof-assistant \LEAN, we prove that, for every function $ f $ of \UPRF, a function in \RPP exists that represents and simulates $ f $.
-    Apart from fixing some small bugs, we provide a \PRF-completeness proof of \RPP \cite{DBLP:journals/tcs/PaoliniPR20} which is fully detailed, conceptually, and technically simpler;
+    \item we give a strong guarantee that \RPP is \PRF-complete in three macro steps. We exploit that in \LEAN \MATHLIB library, \PRF is proved equivalent to a class of recursive \emph{unary} functions called \lstinline|primrec|. We define a data-type \lstinline|RPP| in \LEAN to represent \RPP. Then, we certify that, for any function \lstinline|f:primrec|, i.e. any unary \lstinline|f| with type \lstinline|primrec| in \LEAN, a function exists with type \lstinline|RPP| that encodes \lstinline|f:primrec|. Apart from fixing some bugs, our proof is fully detailed as compared to \cite{DBLP:journals/tcs/PaoliniPR20}. Moreover its conceptually, and technically simpler;
 
-    \item on one side the simplification is a consequence of the representation of \UPRF in \MATHLIB \LEAN library. On the other, and more remarkably,  the two following aspects characterize the simplifications:
+    \item concerning simplification, it follows from how the elements in \lstinline|primrec| work and is characterized by the following aspects:
     \begin{itemize}
         \item we introduce a finite reversible iteration scheme which is more primitive, but expressive enough to encode the finite reversible iteration schemes originally in \RPP, and \SRL;
-        \item we completely rework and simplify the algorithm that implements Cantor Pairing \cite{Cantor1878,DBLP:journals/corr/Szudzik17} in \RPP \cite{DBLP:journals/tcs/PaoliniPR20}.
-        We recall that Cantor Pairing is an isomorphism $ \mathbb{N}\times\mathbb{N} \simeq \mathbb{N} $. Inside the original proof of \PRF-completeness, Cantor Pairing works as a stack in order to correctly manage the computation of a recursive scheme of \UPRF by means of an element in \RPP. The \PRF-completeness that we develop in \LEAN does not rely on Cantor Pairing, but on an isomorphism $ \mathbb{N}\times\mathbb{N} \simeq \mathbb{N} $ in \MATHLIB \LEAN library.
+        \item we can take advantage of \lstinline|mkpair|, \lstinline|unpair|, and their properties in \MATHLIB; they implement an isomorphism $ \NN \simeq \NN^2 $ that we uses as a stack to encode any \lstinline|f:primrec| as a function in \lstinline|RPP|. Instead of \lstinline|mkpair|/\lstinline|unpair|, the original proof in \cite{DBLP:journals/tcs/PaoliniPR20} relies on Cantor Pairing \cite{Cantor1878,DBLP:journals/corr/Szudzik17} in \RPP.
+%        We recall that Cantor Pairing is an isomorphism $ \mathbb{N}\times\mathbb{N} \simeq \mathbb{N} $. Inside the original proof of \PRF-completeness, Cantor Pairing works as a stack in order to correctly manage the computation of a recursive scheme of \UPRF by means of an element in \RPP. The \PRF-completeness that we develop in \LEAN does not rely on Cantor Pairing, but on an isomorphism $ \mathbb{N}\times\mathbb{N} \simeq \mathbb{N} $ in \MATHLIB \LEAN library.
     \end{itemize}
 
-    \item we show that the \RPP function that we define to implement Cantor Pairing is one possible instance of a more general pattern that allows us to uniquely associate pairs of $ \mathbb{N}\times\mathbb{N}$ to a single element of $ \mathbb{N}$. This means that we are able to show further isomorphism $ \mathbb{N}\times\mathbb{N}\simeq \mathbb{N}$ in \RPP by just modifying a core of Cantor Pairing.
+    \item if we had no \lstinline|mkpair|/\lstinline|unpair| available, however, we would had to rely on some implementation of Cantor Pairing as in the original proof. We see as a further result the definition of a Cantor Pairing constructor \lstinline|cp|, and of a Cantor Pairing destructor \lstinline|cu| which we obtain as specific instance of a more general pattern which uniquely associates pairs in $ \mathbb{N}\times\mathbb{N}$ to a single element of $ \mathbb{N}$ by counting steps in specific paths.
 \end{itemize}
 
 %---------------------
 \paragraph{Related work.}
-Works that relate algorithms implemented by means of a formalism that can express Reversible Computation seems not to abound. We are aware of \cite{paoliniTYPES2015}. By means of the proof-assistant \Matita \cite{Asperti2007}, it certifies that a denotational semantics for the imperative reversible programming language \Janus \cite[Section 8.3.3]{perumalla2013chc} is fully abstract with respect to the operational semantics.
+Works dealing with reversible algorithms written in formalism that allow to certify their properties seems not to abound. We are aware of \cite{paoliniTYPES2015}. By means of the proof-assistant \Matita \cite{Asperti2007}, it certifies that a denotational semantics for the imperative reversible programming language \Janus \cite[Section 8.3.3]{perumalla2013chc} is fully abstract with respect to the operational semantics.
 
 An early proposal to express reversible computations in a functional formalism is \cite{jacopini89tcs}. It introduces the class \JMF of reversible functions which is as expressive as \PR. So, \JMF is stronger than \RPP, but we see \JMF as less abstract than \RPP for two reasons: (i) the primitive functions of \JMF depend on a given specific binary representation of natural numbers; (ii) unlike \RPP, which we can see as \PRF in a reversible setting, it is not evident to us that \JMF can be considered the natural extension of a total class analogous to \RPP.
 
@@ -264,9 +261,8 @@ An early proposal to express reversible computations in a functional formalism i
 \paragraph{Contents.}
 This work illustrates the relevant parts of the BSc Thesis \cite{MalettoBSc2021} which comes with \cite{MalettoRPPLEAN2021}, a \LEAN project that certifies algorithms and properties of \RPP.
 Section~\ref{section:Reversible Primitive Permutations} recalls the class \RPP by commenting on the main design aspects that characterize its definition inside \LEAN.
-Section~\ref{section:RPP algorithms} defines and proves correct new reversible algorithms central to prove that \RPP is \PRF-complete.
-Section~\ref{section:Unary Primitive Recursive Functions} recalls the main aspects of \UPRF, with particular attention to the computational behavior of its recursion scheme.
-Section~\ref{section:The UPRF-completeness of RPP} illustrates the points that characterize the porting of the original proof that \RPP is \PRF-complete to \LEAN.
+Section~\ref{section:RPP algorithms} defines and proves correct new reversible algorithms central to the proof.
+Section~\ref{section:The UPRF-completeness of RPP} once recalled and commented the main aspects of \lstinline|primerec|, it illustrates the key step to port the original proof that \RPP is \PRF-complete to \LEAN.
 Section~\ref{section:Conclusion and developments} underlies further more general contribution of the work, a reason why we choose \LEAN,  and natural developments.
 
 %=====================
@@ -275,7 +271,7 @@ Section~\ref{section:Conclusion and developments} underlies further more general
 
 \begin{figure}
     \centering
-        \begin{lstlisting}
+        \begin{lstlisting}[basicstyle=\small]
         inductive RPP : Type
         -- Base functions
         | Id (n : ℕ) : RPP -- Identity
@@ -340,7 +336,7 @@ We typically drop \lstinline|Id m| if it is the last function of a parallel comp
 
 \begin{figure}
 \centering
-\begin{lstlisting}
+\begin{lstlisting}[basicstyle=\small]
       def arity : RPP → ℕ
         | (Id n)     := n
         | Ne         := 1
@@ -412,21 +408,21 @@ For any given \lstinline|f:RPP|, the function \lstinline|inv| in Figure~\ref{fig
 Moreover, the function \lstinline|inv| distributes over finite iteration \lstinline|It|, selection \lstinline|If|, and parallel composition \lstinline|‖|, while it requires to exchange the order of the arguments before distributing over the series composition \lstinline|;;|. The last line with \lstinline|notation| suggests that \lstinline|f⁻¹| is the inverse of \lstinline|f|. We shall prove it once given the operational semantics of \lstinline|RPP|.
 
 \begin{figure}
-\begin{lstlisting}
-def ev : RPP → list ℤ → list ℤ
-| (Id n)     X                    := X
-| Ne         (x :: X)             := -x :: X
-| Su         (x :: X)             := (x + 1) :: X
-| Pr         (x :: X)             := (x - 1) :: X
-| Sw         (x :: y :: X)        := y :: x :: X
-| (f ;; g)   X                    := ev g (ev f X)
-| (f ‖ g)    X         := ev f (take f.arity X) ++ ev g (drop f.arity X)
-| (It f)     (x :: X)             := x :: ((ev f)^[↓x] X)
-| (If f g h) (0 :: X)             := 0 :: ev g X
-| (If f g h) (((n : ℕ) + 1) :: X) := (n + 1) :: ev f X
-| (If f g h) (-[1 + n] :: X)      := -[1 + n] :: ev h X
-| _          X                    := X
-notation `‹` f `›` := ev f -- ‹ \f ›
+\begin{lstlisting}[basicstyle=\small]
+   def ev : RPP → list ℤ → list ℤ
+   | (Id n)     X                    := X
+   | Ne         (x :: X)             := -x :: X
+   | Su         (x :: X)             := (x + 1) :: X
+   | Pr         (x :: X)             := (x - 1) :: X
+   | Sw         (x :: y :: X)        := y :: x :: X
+   | (f ;; g)   X                    := ev g (ev f X)
+   | (f ‖ g)    X                    := ev f (take f.arity X) ++ ev g (drop f.arity X)
+   | (It f)     (x :: X)             := x :: ((ev f)^[↓x] X)
+   | (If f g h) (0 :: X)             := 0 :: ev g X
+   | (If f g h) (((n : ℕ) + 1) :: X) := (n + 1) :: ev f X
+   | (If f g h) (-[1 + n] :: X)      := -[1 + n] :: ev h X
+   | _          X                    := X
+   notation `‹` f `›` := ev f -- ‹ \f ›
 \end{lstlisting}
 \caption{Operational semantics of elements in \lstinline|RPP|.}
 \label{fig:RPP-ev}
@@ -588,51 +584,58 @@ The definition of \lstinline|RPP| of \LEAN is really very close to the original 
 \begin{figure}
 \begin{subfigure}{.225\textwidth}
 \centering
-$\begin{NiceMatrix}
+\scalebox{.8}
+{$\begin{NiceMatrix}
     n & \bloch{2-1}{\mbox{\lstinline|It Su|}} & n     \\
     x &                      & x + n \\
  \end{NiceMatrix}$
-\caption{Increment \lstinline|inc|}
+}\caption{Increment \lstinline|inc|}
 \label{sfig:inc}
 \end{subfigure}
 \hfill
 \begin{subfigure}{.225\textwidth}
 \centering
-$ \begin{NiceMatrix}
+\scalebox{.8}
+{$ \begin{NiceMatrix}
     n & \bloch{2-1}{\mbox{\lstinline|It Pr|}} & n     \\
     x &                      & x - n \\
   \end{NiceMatrix} $
+}
 \caption{Decrement \lstinline|dec|}
 \label{sfig:dec}
 \end{subfigure}
 \hfill
 \begin{subfigure}{.325\textwidth}
 \centering
-$ \begin{NiceMatrix}
+\scalebox{.8}
+{$ \begin{NiceMatrix}
     n & \bloch{3-1}{\mbox{\lstinline|It inc|}} & n             \\
     m &                     & m             \\
     x &                     & x + n \cdot m \\
   \end{NiceMatrix} $
-\caption{Multiplication \lstinline|mul|}
+}\caption{Multiplication \lstinline|mul|}
 \label{sfig:mul}
 \end{subfigure}
 \\
 \begin{subfigure}{.6\textwidth}
 \centering
-$\begin{NiceMatrix}
+\scalebox{.8}
+{$\begin{NiceMatrix}
     n &  \bloch{1-1}{\mbox{\lstinline|Id 1|}}  & n & \bloch{2-1}{\mbox{\lstinline|inc|}} & n & \bloch{3-1}{\mbox{\lstinline|mul|}} & n             & \bloch{2-1}{\mbox{\lstinline|dec|}} & n             & \bloch{1-1}{\mbox{\lstinline|Id 1|}}   & n
     \\
     x & \bloch{2-1}{\mbox{\lstinline|Sw|}} & 0 &   & n &                      & n             &                      & 0             & \bloch{2-1}{\mbox{\lstinline|Sw|}} & x + n \cdot n
     \\
     0 &                     & x &   & x &                      & x + n \cdot n &   \      & x + n \cdot n &                     & 0
 \end{NiceMatrix}$
+}
 \caption{\lstinline|square|}
 \label{fig:square}
 \end{subfigure}
 \hfill
 \begin{subfigure}{.325\textwidth}
     \centering
-    $\begin{NiceMatrix}
+\scalebox{.8}
+{    $\begin{NiceMatrix}
         x_0 & \bloch{6-1}{\rpprewire{i_0, \ldots, i_n}} & x_{i_0} \\
       \cdot &                                & \vdots  \\
       \cdot &                                & x_{i_n} \\
@@ -640,7 +643,7 @@ $\begin{NiceMatrix}
       \cdot &                                & \vdots  \\
         x_m &                                & x_{j_{m-n}}
     \end{NiceMatrix}$
-    \caption{Rewiring $ \rpprewire{i_0 \ldots i_n} $}
+}    \caption{Rewiring $ \rpprewire{i_0 \ldots i_n} $}
     \label{fig:rewiring}
 \end{subfigure}
 \caption{Some useful functions of \lstinline|RPP|}
@@ -651,23 +654,19 @@ Figure~\ref{fig:standard functions} recalls definition and behavior of some \lst
 By definition, $\rpprewire{i_0, \dots, i_n} (x_0, \dots, x_m) = (x_{i_0}, \dots, x_{i_n},$ $x_{j_1}, \dots, x_{j_{m-n}})$, i.e. rewiring brings every input with index in $ \{ i_0, \dots, i_n \} $ before all the remaining inputs, by preserving order.
 
 \begin{figure}
-%    \centering
-    \scalebox{.85}{
+    \centering
+    \scalebox{.825}{
         $\begin{NiceMatrix}
             & a_0 &\bloch{1-1}{\mbox{\lstinline|Id 1|}}& b_0 & \bloch{3-1}{\rpprewire{2,0,1}} & c_0 & \bloch{3-1}{\mbox{\lstinline|If(Su‖Pr)[_](Id 1)|}}& d_0 & \bloch{2-1}{
                  \mbox{\lstinline|Sw|}
-%                \rppSw
             } & e_0 & \bloch{2-1}{
                 \mbox{\lstinline|If(Pr)(Id 1)(Id 1)|}
-%                \rppIf[\boldsymbol{\rppPr}, \rppId_1, \rppId_1]
                 } & f_0 &\bloch{1-1}{\mbox{\lstinline|Id 1|}}& g_0
             \\
             & a_1 & \bloch{2-1}{
                 \mbox{\lstinline|If(Su)(Id 1)(Id 1)|}
-%                \rppIf[\boldsymbol{\rppSu}, \rppId_1, \rppId_1]
             } & b_1 &&c_1&& d_1 & & e_1     &&f_1     & \bloch{2-1}{
                 \mbox{\lstinline|Sw|}
-%            \rppSw
         } & g_1
             \\
             & a_2&&b_2&&c_2&& d_2 && e_2 && f_2 && g_2
@@ -812,8 +811,8 @@ Figure~\ref{fig:function scheme step} identifies the new scheme of algorithm \ls
         \draw [->,red] (4,2) -- (4,3);
         \draw [->,red] (4,3) -- (4,4);
     \end{tikzpicture}
-    \caption{Iso. $ \NN^2\simeq\NN $. }
-    \label{sfig:4}
+    \caption{\lstinline|mkpair|}
+    \label{sfig:mkpair}
 \end{subfigure}
 \caption{Paths in a two dimensional space that generate algorithms in \lstinline|RPP|.}
 \label{fig:functions as paths}
@@ -970,27 +969,29 @@ In Figure~\ref{sfig:cp input}, \lstinline|cp_in| is the natural algorithm in \ls
 We implement $ \operatorname{step}(x,y) $ in \lstinline|RPP| as \lstinline|step[Su;;Sw]|. Figures~\ref{sfig:cu step y > 0}, and~\ref{sfig:cu step y = 0} represent two runs of \lstinline|step[Su;;Sw]| to give visual evidence that \lstinline|step[Su;;Sw]| implements $\operatorname{step}(x,y)$. Colored occurrences of $ y $ show the relevant part of the computational flow. Let the starting point be $ (x,\yb) $, with $ \yb > 0 $. The next point we reach  is $ (x+1,\yb-1) $, as we can read in the output: the initial value of $ \yb $ is updated and supplied as the second element of the Cartesian coordinates. Let the starting point be $ (x,\yr) $, with $ \yr = 0 $. The next point is $ (0, x+1) $, but it is crucial to observe where the coordinate $ 0 $ of $ (0, x+1) $ comes from.
 It is not $ \yr = 0 $; it is the ancilla set to $ 0 $ in the input. The $ \yr = 0 $ in the output becomes the set-to-$ 0 $-ancilla in the input the next time we need to reset the final point to $ (0,x+1) $, for some $ x $. So, as soon as we get \lstinline|cu_in| by iterating \lstinline|step[Su;;Sw]| as in Figure~\ref{sfig:cu input}, we can define \lstinline|cp| (Figure~\ref{sfig:cp}), and \lstinline|cu| (Figure~\ref{sfig:cu}).
 \begin{remark}
-Our need to write a simple ``garbage collecting'' reversible function \lstinline|cp_in|, which correctly works on the output of \lstinline|cp_in|, we end up with ignoring completely the analytical definition of $ \rppcu(n) $ in~\eqref{align: cu analitically}.
+Driven by need to write a simple reversible function \lstinline|cu_in⁻¹| able to collect the ``garbage'' that \lstinline|cp_in|, we ended up with ignoring completely the analytical definition of $ \rppcu(n) $ in~\eqref{align: cu analitically}.
 \qeda
 \end{remark}
 
 \begin{figure}
     \begin{subfigure}{.475\linewidth}
         \centering
-        $ \begin{NiceMatrix}
+\scalebox{.85}
+{        $ \begin{NiceMatrix}
             m & \bloch{5-1}{\mbox{\lstinline|It step[Sw‖Su]|}} & m         \\
             0 &                      & r         \\
             n &                      & n + 1 - r \\
             0 &                      & 0         \\
             0 &                      & q         \\
         \end{NiceMatrix} $
-        \caption{Function that computes $ q $ and $ r $ such that $m = q(n + 1) + r$. We obtain it by iterating \lstinline|step[Sw‖Su]:RPP|.}
+}        \caption{Function that computes $ q $ and $ r $ such that $m = q(n + 1) + r$. We obtain it by iterating \lstinline|step[Sw‖Su]:RPP|.}
         \label{sfig:div}
     \end{subfigure}
     \hfill
     \begin{subfigure}{.475\linewidth}
         \centering
-        $\begin{NiceMatrix}
+ \scalebox{.85}
+ {       $\begin{NiceMatrix}
             n & \bloch{5-1}{\mbox{\lstinline|It step[Su;;Su;;Sw‖Su]|}} & n      \\
             0 &                       & r                      \\
             0 &                       & 2 \floor{\sqrt{n}} - r \\
@@ -998,6 +999,7 @@ Our need to write a simple ``garbage collecting'' reversible function \lstinline
             0 &                       & \floor{\sqrt{n}}       \\
         \end{NiceMatrix}
         $
+}
         \caption{Function that computes $ \floor{\sqrt{n}}$ and $ r = n - \floor{\sqrt{n}}^2 $. We obtain it by iterating \lstinline|step[Su;;Su;;Sw‖Su:RPP]|.}
         \label{sfig:sqrt}
     \end{subfigure}%
@@ -1032,167 +1034,271 @@ lemma sqrt_def (n : ℕ) (X : list ℤ) :
  ‹sqrt›(n::0::0::0::0::X) = n::(n-√n*√n)::(√n+√n-(n-√n*√n))::0::√n::X .
 \end{lstlisting}
 
-
 %=====================
-\section{Unary Primitive Recursive Functions (\UPRF) }
+\section{Proving in \LEAN that \RPP is \PRF-complete}
+\label{section:The UPRF-completeness of RPP}
+We formally show in \LEAN that the class of functions we can express as (algorithms) in \RPP contains at least \PRF; so, we say ``\RPP is \PRF-complete''. The definition of \PRF that we take as reference is one of the two available in \MATHLIB library of \LEAN. Once recalled and commented it briefly, we shall proceed with the main aspects of the \PRF-completeness of \RPP.
+%=====================
+\subsection{Primitive Recursive Functions {\normalfont \lstinline|primrec|} of \MATHLIB }
 \label{section:Unary Primitive Recursive Functions}
 
-From \cite{Carneiro-primrecMathlib}
-\begin{quote}
-The primitive recursive functions are the least collection of functions nat → nat which are closed under projections (using the mkpair pairing function), composition, zero, successor, and primitive recursion (i.e. nat.rec where the motive is C n := nat).
-\end{quote}
-
 \begin{figure}
-\begin{lstlisting}
-inductive primrec : (ℕ → ℕ) → Prop
-| zero : primrec (λ n, 0)
-| succ : primrec succ
-| left : primrec (λ n, n.unpair.1)
-| right : primrec (λ n, n.unpair.2)
-| pair {f g} : primrec f → primrec g → primrec (λ n, mkpair (f n) (g n))
-| comp {f g} : primrec f → primrec g → primrec (λ n, f (g n))
-| prec {f g} : primrec f → primrec g → primrec (unpaired (λ z n,
-n.elim (f z) (λ y IH, g (mkpair z (mkpair y IH)))))
+\begin{lstlisting}[basicstyle=\small]
+inductive primrec:(ℕ → ℕ) → Prop
+| zero: primrec (λ (n:ℕ), 0)
+| succ: primrec succ
+| left: primrec (λ (n:ℕ), (unpair n).fst)
+| right: primrec (λ (n:ℕ), (unpair n).snd)
+| pair {F G}: primrec F → primrec G → primrec (λ (n:ℕ), mkpair (F n) (G n))
+| comp {F G}: primrec F → primrec G → primrec (λ (n:ℕ), F (G n))
+| prec {F G}: primrec F → primrec G → primrec
+      (unpaired (λ (z n:ℕ), nat.rec (F z) (λ (y IH:ℕ), G (mkpair z (mkpair y IH))) n))
 \end{lstlisting}
-\caption{The definition of \UPRF in \cite{Carneiro-primrecMathlib}.}
+\caption{\lstinline|primrec| defines \PRF in \MATHLIB of \LEAN.}
 \label{fig: primrec}
 \end{figure}
 
+Figure~\ref{fig: primrec} recalls from \cite{Carneiro-primrecMathlib} the definition of \PRF available in \MATHLIB that we take as reference. It is an inductively defined \lstinline|Prop|osition \lstinline|primrec| that requires a \emph{unary} function with type \lstinline|ℕ → ℕ| as argument. Specifically, \lstinline|primrec| is the least collection of functions \lstinline|ℕ → ℕ| with a given set of base elements, closed under some composition schemes.
 
-%=====================
-\section{The \UPRF-completeness of \RPP}
-\label{section:The UPRF-completeness of RPP}
+\paragraph{Base functions.}
+The \emph{constant} function \lstinline|zero| yields \lstinline|0| on every of its inputs.
+The \lstinline|succ|\emph{essor} gives the natural number next to the one taken as input.
+The two \emph{projections} \lstinline|left|, and \lstinline|right| take an argument \lstinline|n|, and extract a left, or a right, component from it as \lstinline|n| was the result of pairing two values \lstinline|x,y:ℕ|. The functions that \lstinline|primrec| relies on to encode/decode pairs on natural numbers as a single natural one are \lstinline|mkpair:ℕ → ℕ → ℕ|, and \lstinline|unpair:ℕ → ℕ * ℕ|. The first one builds the value \lstinline|mkpair x y|, i.e. the number of steps from the origin to reach the point with coordinates \lstinline|(x,y)| in the path of Figure~\ref{sfig:mkpair}. The function \lstinline|unpair:ℕ → ℕ * ℕ| takes the number of steps to perform on the same path. Once it stops, the coordinates of that point are the two natural numbers we are looking for. So, \lstinline|makpair|/\lstinline|unpair| are an alternative to Cantor Pairing/Un-pairing.
 
-The most complicated - and the most interesting - case is the last one,
-about primitive recursion.
-Let's look at the definition again:
+\paragraph{Composition schemes}.
+There are three of them, each depending on parameters \lstinline|f,g:primrec|.
+The scheme \lstinline|pair| builds the function that, taken a value \lstinline|n:ℕ|, gives the unique value in \lstinline|ℕ| that encodes the pair of values \lstinline|G n|, and \lstinline|G n|; everything we might pack up by means of \lstinline|pair|, we can unpack with \lstinline|left|, and \lstinline|right|.
+
+The scheme \lstinline|comp| composes \lstinline|F,G:primrec|.
+
+The \emph{primitive recursion} scheme \lstinline|prec| can be ``unfolded'' to understand how it works; this reading will ease the description of how to encode it in \lstinline|RPP|.
+Let \lstinline|F|, \lstinline|G| be two elements of \lstinline|primrec|. We see \lstinline|prec| as encoding the function:
+\begin{align}
+\label{align:function H}
+H[\mbox{\lstinline|F|},\mbox{\lstinline|G|}](x) & =
+R[\mbox{\lstinline|G|}]\big( (x)_1 , \mbox{\lstinline|F|} (x)_2 \big)
+\end{align}
+where:
+(i) $(x)_1$ denotes \lstinline|(unpair| x\lstinline|).fst|,
+(ii) $(x)_2$ denotes \lstinline|(unpair| x\lstinline|).snd|,
+and
+(iii) $R [\mbox{\lstinline|G|}] $, which behaves as follows:
+\begin{equation}
+\label{equation:function R}
+\begin{aligned}
+    R[\mbox{\lstinline|G|}](z,0) & = z \\
+    R[\mbox{\lstinline|G|}](z,n+1) &
+    = \mbox{\lstinline|G|} \big(
+      \gl z, \gl n, R[\mbox{\lstinline|G|}](z,n) \gr \gr
+      \big)
+   \enspace ,
+\end{aligned}
+\end{equation}
+where is the built-in recursive scheme \lstinline|nat.rec| on \lstinline|ℕ|, and $ \gl a, b \gr $ denotes $ (\mbox{\lstinline|mkpair|}\ a\ b) $.
+
+%=================
+\subsection{The main point of the proof}
+In order to formally state what we mean for \lstinline|RPP| to be \PRF-complete we need to say when, given \lstinline|F:ℕ → ℕ|, we can \emph{encode} it by means of some \lstinline|f:RPP|:
 \begin{lstlisting}
-    prec {f g} : primrec f → primrec g →
-    primrec (unpaired (λ z n, n.elim (f z)
-    (λ (y IH : N), g (nat.mkpair z (nat.mkpair y IH)))
-    n))
+  def encode (F:ℕ → ℕ) (f:RPP) :=
+     ∀ (z:ℤ) (n:ℕ), ‹f› (z::n::repeat 0 (f.arity-2))
+                            = (z+(F n))::n::repeat 0 (f.arity-2)
 \end{lstlisting}
-Given $F, G \in \PRF$ let's call $H$ the function given by \lstinline|primrec.prec|
-(which isn't just standard primitive recursion!).
-Let $\gl x, y \gr = \rppmkpair(x,y)$ and $\big( (n)_1, (n)_2 \big) = \rppunpair(n)$,
-then $H$ is given by
-\[ H(x) = \prPrec[F,G]\big( (x)_1, (x)_2 \big) \]
-where we define $\prPrec[F,G] : \NN^2 \to \NN$ as
-\begin{align*}
-    \prPrec[F,G](z,0) \ = \ & F(z) \\
-    \prPrec[F,G](z, n+1) \ = \ & G \big( \gl z, \gl n, \prPrec[F,G](z,n) \gr \gr \big)
-\end{align*}
+says that, fixed \lstinline|F:ℕ → ℕ|, and \lstinline|f|, the statement \lstinline|(encode F f)| holds if the evaluation of \lstinline|‹f›|, applied to any argument \lstinline|(z::n::0::...::0)|, with as many occurrences of trailing \lstinline|0|s as \lstinline|f.arity-2|, gives a list with form \lstinline|((z+(F n))::n::0::...::0)| such that: (i) the first element is the original value \lstinline|z| increased with the result \lstinline|(F n)| of the function we want to encode; (ii) the second element is the initial \lstinline|n|; (iii) the trailing \lstinline|0|s are again as many as \lstinline|f.arity-2|. In \LEAN we can prove:
+\begin{lstlisting}
+theorem completeness (F:ℕ → ℕ): primrec F → ∃ f:RPP, encode F f
+\end{lstlisting}
+which says that we know how to build \lstinline|f:RPP| which \lstinline|encode|s \lstinline|F|, for every well formed \lstinline|F:ℕ → ℕ|, i.e. such that \lstinline|primrec F| holds.
 
-Let's assume that $f, g \in \RPP$ encode respectively $F, G \in \PRF$, i.e.
-$f(z, n, \boldsymbol{0}) = (z+F(n), n, \boldsymbol{0})$ and $g(z, n, \boldsymbol{0}) = (z+G(n), n, \boldsymbol{0})$.
-Then, we simulate a single iteration of $\prPrec[F,G]$ by $\rppprecstep[g] \in \RPP$ given by
+The proof proceeds by induction on the proposition \lstinline|primrec|, which generates 7 sub-goals. We illustrate the main arguments to conclude the most interesting case which requires to encode the composition scheme \lstinline|prec|.
 
-\begin{align*}
-    \rppprecstep[g] \ = \ & \rppId_2 \rppPa \rppmkpair \rppCo                               \\
-    & \rppId_1 \rppPa \rppmkpair \rppCo                               \\
-    & \rppId_1 \rppPa (\rppSw \rppCo g) \rppCo                        \\
-    & \rppId_2 \rppPa \rppunpair \rppCo                               \\
-    & \rppId_3 \rppPa \rppunpair \rppCo                               \\
-    & \rpprewire{2, 3, 1, 0, 4} \rppCo                                \\
-    & \rppId_1 \rppPa \rppSu \rppPa \rppId_1 \rppPa \rppmkpair \rppCo \\
-    & \rpprewire{3, 0, 1, 2}                                          \\
-\end{align*}
+The inductive hypothesis to show that we can encode \lstinline|prec| is that, for any given \lstinline|F,G:ℕ → ℕ| such that \lstinline|(primrec F):Prop|, and \lstinline|(primrec G):Prop|, both \lstinline|f,g:RPP| exist such that \lstinline|(encode F f)|, and \lstinline|(encode G g)| hold. This means that
+$ \mbox{\lstinline|f|}\ z\mbox{\lstinline|::|}n\mbox{\lstinline|::|}\boldsymbol{0} =
+(z+\mbox{\lstinline|F|}\ n)\mbox{\lstinline|::|}n\mbox{\lstinline|::|}\boldsymbol{0} $, and
+$ \mbox{\lstinline|g|}\ z\mbox{\lstinline|::|}n\mbox{\lstinline|::|}\boldsymbol{0} =
+(z+\mbox{\lstinline|G|}\ n)\mbox{\lstinline|::|}n\mbox{\lstinline|::|}\boldsymbol{0} $, where $ \boldsymbol{0} $ stands for a sufficiently long list of $ 0 $s.
 
-Below is a diagram showing each step of the computations of $\rppprecstep[g]$.
-The variables $s, s' \in \NN$ are "junk" whose values we don't care about.
+\begin{figure}
+\newcommand{\bz}{\boldsymbol{0}}
+\newcommand{\by}{\boldsymbol{y}}
+\newcommand{\bid}{\bloch{1-1}{\mbox{\lstinline|Id 1|}}}
+\newcommand{\bidt}{\bloch{2-1}{\mbox{\lstinline|Id 2|}}}
+\newcommand{\bsw}{\bloch{2-1}{\mbox{\lstinline|Sw|}}}
+\newcommand{\bpi}{\bloch{3-1}{\mbox{\lstinline|H[f,g]|}}}
+\newcommand{\binc}{\bloch{2-1}{\mbox{\lstinline|inc|}}}
+\newcommand{\bup}{\bloch{5-1}{\mbox{\lstinline|unpair|}}}
+\newcommand{\bpiinv}{\bloch{3-1}{\mbox{\lstinline|H⁻¹|}}}
+\newcommand{\bff}{\bloch{5-1}{\mbox{\lstinline|f|}}}
+\newcommand{\bfg}{\bloch{3-1}{\mbox{\lstinline|g|}}}
+\newcommand{\bre}{\bloch{4-1}{\rpprewire{0,2,3,1}}}
+\newcommand{\brs}{\bloch{6-1}{\rpprewire{0,1,4,3,5,2}}}
+\newcommand{\brc}{\bloch{6-1}{\rpprewire{5,0}}}
+\newcommand{\bipsg}{\bloch{5-1}{\mbox{\lstinline|It R[g]|}}}
 
-\makebox[\textwidth][c]{\begin{NiceMatrixBlock}
-        $\begin{array}{c}
-            \begin{NiceMatrix}
-                s                 &                         &                         & s                                       &                     &                & s                                       \\
-                z                 &                         & \bloch{5-1}{\rppmkpair} & \gl z, \gl n, \prPrec[F,G](z,n) \gr \gr & \bloch{2-1}{\rppSw} & \bloch{5-1}{g} & \prPrec[F,G](z,n+1)                     \\
-                n                 & \bloch{4-1}{\rppmkpair} &                         & 0                                       &                     &                & \gl z, \gl n, \prPrec[F,G](z,n) \gr \gr \\
-                \prPrec[F,G](z,n) &                         &                         & 0                                       &                     &                & 0                                       \\
-                0                 &                         &                         & 0                                       &                     &                & 0                                       \\
-                \boldsymbol{0}    &                         &                         & \boldsymbol{0}                          &                     &                & \boldsymbol{0}                          \\
-            \end{NiceMatrix}
-            \\ \\
-            \begin{NiceMatrix}
-                s                                       &                         &                         & s                   & \bloch{5-1}{2\\3\\1\\0\\4} & z                   \\
-                \prPrec[F,G](z,n+1)                     &                         &                         & \prPrec[F,G](z,n+1) &                            & n                   \\
-                \gl z, \gl n, \prPrec[F,G](z,n) \gr \gr & \bloch{4-1}{\rppunpair} &                         & z                   &                            & \prPrec[F,G](z,n+1) \\
-                0                                       &                         & \bloch{3-1}{\rppunpair} & n                   &                            & s                   \\
-                0                                       &                         &                         & \prPrec[F,G](z,n)   &                            & \prPrec[F,G](z,n)   \\
-                \boldsymbol{0}                          &                         &                         & \boldsymbol{0}      &                            & \boldsymbol{0}      \\
-            \end{NiceMatrix}
-            \\ \\
-            \begin{NiceMatrix}
-                z                   &                         & z                   & \bloch{4-1}{3\\0\\1\\2} & s'                  \\
-                n                   & \bloch{1-1}{\rppSu}     & n + 1               &                         & z                   \\
-                \prPrec[F,G](z,n+1) &                         & \prPrec[F,G](z,n+1) &                         & n + 1               \\
-                s                   & \bloch{3-1}{\rppmkpair} & s'                  &                         & \prPrec[F,G](z,n+1) \\
-                \prPrec[F,G](z,n)   &                         & 0                   &                         & 0                   \\
-                \boldsymbol{0}      &                         & \boldsymbol{0}      &                         & \boldsymbol{0}      \\
-            \end{NiceMatrix}
-            \\ \\
-        \end{array}$
-\end{NiceMatrixBlock}}
+\begin{subfigure}{.95\textwidth}
+\centering
+\scalebox{.9}
+{$\begin{NiceMatrix}
+ z  &\bid&\bid&\binc&\bid   &\bid& z + z'+ H[\mbox{\lstinline|F|},\mbox{\lstinline|G|}] (n)\\
+ n  &\bsw&\bpi&     &\bpiinv&\bsw& n           \\
+ z' &    &    &     &       &    & z'          \\
+ \bz&    &    &     &       &    &\bz
+ \end{NiceMatrix}$}
+\caption{The function \lstinline|prec[f,g]:RPP|.}
+\label{sfig:prec[f,g]}
+\end{subfigure}
+\\
+\begin{subfigure}{.95\textwidth}
+\centering
+\scalebox{.9}{
+$\begin{NiceMatrix}
+ z' &\bid&\bre&\bidt&\brs&\bid  &\brc& H[\mbox{\lstinline|F|},\mbox{\lstinline|G|}] (n)  \\
+ n  &\bup&    &     &    &\bipsg&    & z'     \\
+ 0  &    &    &\bff &    &      &    & (n)_2  \\
+ 0  &    &    &     &    &      &    & s      \\
+ 0  &    &    &     &    &      &    & (n)_1  \\
+ 0  &    &    &     &    &      &    & (n)_2  \\
+ \bz&    &    &     &    &      &    & \bz
+\end{NiceMatrix}$
+ }
+\caption{The function \lstinline|H[f,g]| with parameters \lstinline|f, g|.}
+\label{sfig:precfwd[f,g]}
+\end{subfigure}
+\caption{Encoding \lstinline|prec| of Figure~\ref{fig: primrec} in \lstinline|RPP|.}
+\label{fig:composing encode prec}
+\end{figure}
 
-What's interesting about this procedure is that we use the function \lstinline|mkpair| for
-two completely different purposes:
-\begin{itemize}
-    \item The first two calls to $\rppmkpair$ are just there to create the value
-    \[ \gl z, \gl n, \prPrec[F,G](z,n) \gr \gr \]
-    which is needed in order to calculate $\prPrec[F,G](z,n+1)$, while the two $\rppunpair$ unwind the previous pairings.
-    \item The last $\rppmkpair$ is instead our answer to the problem of how to store information in excess.
-    Because we have a problem: there's a point in which both $\prPrec[F,G](z,n+1)$ and $\prPrec[F,G](z,n)$ are present at the same time.
-    We're interested in going forward with the iteration, so we don't need $\prPrec[F,G](z,n)$ anymore;
-    but we can't just replace it with $0$ because that's not a reversible action,
-    and we also can't store each iteration $\prPrec[F,G](z,0)$, $\prPrec[F,G](z,1)$, $\dots$ in
-    separate cells because there's a limited number of them.
-    So instead, we put all our "junk" in the same cell using the pairing function:
-    by calling $\rppmkpair$ with arguments $s$, $\prPrec[F,G](n,z)$ we obtain in the first cell a new junk value $s'$, but more importantly
-    we free our second cell so that we have the same number of free cells as before the iteration.
-\end{itemize}
+\noindent
+Figure~\ref{sfig:prec[f,g]}, where we assume $ z, z'= 0 $, defines \lstinline|prec[f,g]:RPP| such that \lstinline|(encode (prec F G) prec[f,g]):Prop| holds, and \lstinline|H[f,g]| encodes
+$ H[\mbox{\lstinline|F|},\mbox{\lstinline|G|}]$ as in~\eqref{align:function H}.
+The term \lstinline|It R[g]| in \lstinline|H[f,g]| encodes~\eqref{equation:function R} by iterating \lstinline|R[g]| from the initial value given by \lstinline|f|.
 
-After having defined $\rppprecstep[g]$ which performs a single step of the iteration,
-we use the iterator $\rppIt$ to get to the result we're interested in,
-and finally use Bennet's trick to retrieve the result and then revert everything back.
+\begin{figure}
+\begin{subfigure}{.975\textwidth}
+    \centering
+\scalebox{.9}{
+$\begin{NiceMatrix}
+    s&\bloch{2-1}{\mbox{\lstinline|Id 2|}}&\bloch{1-1}{\mbox{\lstinline|Id 1|}}& s &\bloch{1-1}{\mbox{\lstinline|Id 1|}}&\bloch{1-1}{\mbox{\lstinline|Id 1|}}& s
+    \\
+    z&& \bloch{5-1}{\mbox{\lstinline|mkpair|}} & \gl z, \gl n, R[\mbox{\lstinline|G|}](z,n) \gr \gr & \bloch{2-1}{\mbox{\lstinline|Sw|}} & \bloch{5-1}{\mbox{\lstinline|g|}}&R[\mbox{\lstinline|G|}](z,n+1)
+    \\
+    n& \bloch{4-1}{\mbox{\lstinline|mkpair|}} &&0&&& \gl z, \gl n, R[\mbox{\lstinline|G|}](z,n) \gr \gr
+    \\
+    R[\mbox{\lstinline|G|}](z,n) &                         &                         & 0                                       &                     &                & 0                                       \\
+    0                 &                         &                         & 0                                       &                     &                & 0                                       \\
+    \boldsymbol{0}    &                         &                         & \boldsymbol{0}                          &                     &                & \boldsymbol{0}                          \\
+\end{NiceMatrix}$
+}
+    \caption{Build the argument $ R[\mbox{\lstinline|G|}](z,n) $ of \lstinline|g|.}
+    \label{sfig:encode prec 1st step}
+\end{subfigure}
+\\
+\begin{subfigure}{.975\textwidth}
+    \centering
+\scalebox{.9}{
+$   \begin{NiceMatrix}
+    s &\bloch{2-1}{\mbox{\lstinline|Id 2|}}&\bloch{3-1}{\mbox{\lstinline|Id 3|}}&s& \bloch{5-1}{\rpprewire{2,3,1,0,4}} & z                   \\
+    R[\mbox{\lstinline|G|}](z,n+1)                     &                         &                         & R[\mbox{\lstinline|G|}](z,n+1) &                            & n                   \\
+    \gl z, \gl n, R[\mbox{\lstinline|G|}](z,n) \gr \gr & \bloch{4-1}{\mbox{\lstinline|unpair|}} &                         & z                   &                            & R[\mbox{\lstinline|G|}](z,n+1) \\
+    0                                       &                         & \bloch{3-1}{\mbox{\lstinline|unpair|}} & n                   &                            & s                   \\
+    0                                       &                         &                         & R[\mbox{\lstinline|G|}](z,n)   &                            & R[\mbox{\lstinline|G|}](z,n)   \\
+    \boldsymbol{0}                          &                         &                         & \boldsymbol{0}      &                            & \boldsymbol{0}      \\
+\end{NiceMatrix}$
+}
+    \caption{Unpack $ \gl z, \gl n, R[\mbox{\lstinline|G|}](z,n) \gr \gr $ to let its elements available.}
+    \label{sfig:encode prec 2nd step}
+\end{subfigure}
+\\
+\begin{subfigure}{.975\textwidth}
+    \centering
+\scalebox{.9}{
+$    \begin{NiceMatrix}
+    z&\bloch{1-1}{\mbox{\lstinline|Id 1|}}& z& \bloch{4-1}{\rpprewire{3,0,1,2}} & s'                  \\
+    n                   & \bloch{1-1}{\mbox{\lstinline|Su|}}     & n + 1               &                         & z                   \\
+    R[\mbox{\lstinline|G|}](z,n+1) &\bloch{1-1}{\mbox{\lstinline|Id 1|}} & R[\mbox{\lstinline|G|}](z,n+1) &                         & n + 1               \\
+    s                   & \bloch{3-1}{\mbox{\lstinline|mkpair|}} & s'                  &                         & R[\mbox{\lstinline|G|}](z,n+1) \\
+    R[\mbox{\lstinline|G|}](z,n)   &                         & 0                   &                         & 0                   \\
+    \boldsymbol{0}      &                         & \boldsymbol{0}      &                         & \boldsymbol{0}      \\
+\end{NiceMatrix}$
+}
+    \caption{Increment $ n $, and store $ R[\mbox{\lstinline|G|}](z,n) $ to keep the whole process reversible.}
+    \label{sfig:encode prec 3rd step}
+\end{subfigure}
+\caption{Encoding $ R[\mbox{\lstinline|G|}] $ in~\eqref{equation:function R} as \lstinline|R[g]:RPP|.}
+\label{fig:main step RPF-completeness}
+\end{figure}
 
-\noindent\begin{minipage}{.5\linewidth}
-    \begin{align*}
-        \rppprecfwd[f,g] \ = \ & \rppId_1 \rppPa \rppunpair \rppCo             \\
-        & \rpprewire{0, 2, 3, 1} \rppCo                 \\
-        & \rppId_2 \rppPa f \rppCo                      \\
-        & \rpprewire{0, 1, 4, 3, 5, 2} \rppCo           \\
-        & \rppId_1 \rppPa \rppIt[\rppprecstep[g]] \rppCo \\
-        & \rpprewire{5, 0}                              \\
-    \end{align*}
-\end{minipage}%
-\begin{minipage}{.5\linewidth}
-    \[\begin{NiceMatrix}
-        z                 & \bloch{7-1}{\rppprecfwd[f,g]} & H (x)  \\
-        x                 &                               & z                                      \\
-        0                 &                               & (x)_2                                  \\
-        0                 &                               & s                                      \\
-        0                 &                               & (x)_1                                  \\
-        0                 &                               & (x)_2                                  \\
-        \boldsymbol{0}    &                               & \boldsymbol{0}                         \\
-    \end{NiceMatrix}\]
-\end{minipage}
+Figure~\ref{fig:main step RPF-completeness} splits the definition of \lstinline|R[g]| into three logical parts.
+Figure~\ref{sfig:encode prec 1st step} packs everything up by means of \lstinline|mkpair| to build the argument $ R[\mbox{\lstinline|G|}](z,n) $ of \lstinline|g|; by induction we get
+$ R[\mbox{\lstinline|G|}](z,n+1) $.
+In Figure~\ref{sfig:encode prec 2nd step}, \lstinline|unpair| unpacks $ \gl z, \gl n, R[\mbox{\lstinline|G|}](z,n) \gr \gr $ to expose its component to the last part.
+Figure~\ref{sfig:encode prec 3rd step} both increments $ n $, and packs $ R[\mbox{\lstinline|G|}](z,n) $ into $ s $, by means of \lstinline|mkpair|, because $ R[\mbox{\lstinline|G|}](z,n) $ has become useless once obtained $ R[\mbox{\lstinline|G|}](z,n+1) $ from it. Packing $ R[\mbox{\lstinline|G|}](z,n) $ into $ s $, so that we can eventually recover it is mandatory. We cannot ``replace'' $ R[\mbox{\lstinline|G|}](z,n) $ with $ 0 $ because that would not be a reversible action.
 
-\noindent\begin{minipage}{.5\linewidth}
-    \begin{align*}
-        \rppprec[f,g] \ = \ & \rppprecfwd[f,g] \rppCo \\
-        & \rppinc \rppCo \\
-        & \rppprecfwd[f,g]^{-1} \\
-    \end{align*}
-\end{minipage}%
-\begin{minipage}{.5\linewidth}
-    \[\begin{NiceMatrix}
-        z                 & \bloch{3-1}{\rppprec[f,g]} & z + H (x)  \\
-        x                 &                            & x                               \\
-        \boldsymbol{0}    &                            & \boldsymbol{0}                  \\
-    \end{NiceMatrix}\]
-\end{minipage}
+\begin{remark}
+For example, \lstinline|cp| in Figure~\ref{sfig:cp} could replace \lstinline|mkpair| in Figure~\ref{sfig:encode prec 3rd step} because both are an isomorphism $ \NN \simeq \NN^2 $.
+The proof of \PRF-completeness of \RPP in \cite{DBLP:journals/tcs/PaoliniPR20} relies on \lstinline|cp|. We favor \lstinline|mkpair| to better exploit its properties in \MATHLIB.
+\qeda
+\end{remark}
 
-Proof-wise, we use techniques similar to the ones discussed in the \lstinline|primrec.comp| case.
-This concludes our discussion of the proof of \lstinline|completeness|.
+
+
+%
+%What's interesting about this procedure is that we use the function \lstinline|mkpair| for
+%two completely different purposes:
+%\begin{itemize}
+%    \item The first two calls to $\rppmkpair$ are just there to create the value
+%    \[ \gl z, \gl n, \prPrec[F,G](z,n) \gr \gr \]
+%    which is needed in order to calculate $\prPrec[F,G](z,n+1)$, while the two $\rppunpair$ unwind the previous pairings.
+%    \item The last $\rppmkpair$ is instead our answer to the problem of how to store information in excess.
+%    Because we have a problem: there's a point in which both $\prPrec[F,G](z,n+1)$ and $\prPrec[F,G](z,n)$ are present at the same time.
+%    We're interested in going forward with the iteration, so we don't need $\prPrec[F,G](z,n)$ anymore;
+%    but we can't just replace it with $0$ because that's not a reversible action,
+%    and we also can't store each iteration $\prPrec[F,G](z,0)$, $\prPrec[F,G](z,1)$, $\dots$ in
+%    separate cells because there's a limited number of them.
+%    So instead, we put all our "junk" in the same cell using the pairing function:
+%    by calling $\rppmkpair$ with arguments $s$, $\prPrec[F,G](n,z)$ we obtain in the first cell a new junk value $s'$, but more importantly
+%    we free our second cell so that we have the same number of free cells as before the iteration.
+%\end{itemize}
+
+%\noindent\begin{minipage}{.5\linewidth}
+%    \begin{align*}
+%        \rppprecfwd[f,g] \ = \ & \rppId_1 \rppPa \rppunpair \rppCo             \\
+%        & \rpprewire{0, 2, 3, 1} \rppCo                 \\
+%        & \rppId_2 \rppPa f \rppCo                      \\
+%        & \rpprewire{0, 1, 4, 3, 5, 2} \rppCo           \\
+%        & \rppId_1 \rppPa \rppIt[\rppprecstep[g]] \rppCo \\
+%        & \rpprewire{5, 0}                              \\
+%    \end{align*}
+%\end{minipage}%
+%\begin{minipage}{.5\linewidth}
+%    \[\begin{NiceMatrix}
+%        z                 & \bloch{7-1}{\rppprecfwd[f,g]} & H (x)  \\
+%        x                 &                               & z                                      \\
+%        0                 &                               & (x)_2                                  \\
+%        0                 &                               & s                                      \\
+%        0                 &                               & (x)_1                                  \\
+%        0                 &                               & (x)_2                                  \\
+%        \boldsymbol{0}    &                               & \boldsymbol{0}                         \\
+%    \end{NiceMatrix}\]
+%\end{minipage}
+%
+%\noindent\begin{minipage}{.5\linewidth}
+%    \begin{align*}
+%        \rppprec[f,g] \ = \ & \rppprecfwd[f,g] \rppCo \\
+%        & \rppinc \rppCo \\
+%        & \rppprecfwd[f,g]^{-1} \\
+%    \end{align*}
+%\end{minipage}%
+%\begin{minipage}{.5\linewidth}
+%    \[\begin{NiceMatrix}
+%        z                 & \bloch{3-1}{\rppprec[f,g]} & z + H (x)  \\
+%        x                 &                            & x                               \\
+%        \boldsymbol{0}    &                            & \boldsymbol{0}                  \\
+%    \end{NiceMatrix}\]
+%\end{minipage}
+%
+%Proof-wise, we use techniques similar to the ones discussed in the \lstinline|primrec.comp| case.
+%This concludes our discussion of the proof of \lstinline|completeness|.
 
 
 %=====================
