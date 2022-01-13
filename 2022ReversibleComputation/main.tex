@@ -121,7 +121,7 @@
 
 \maketitle
 \begin{abstract}
-Reversible Primitive Permutations (\RPP) are recursively defined functions to model Reversible Computation. We illustrate a proof, fully developed with the proof-assistant \LEAN, certifying that: ``\RPP can encode every Primitive Recursive Function''. Our reworking of the original proof of that statement, is conceptually simpler, fixes some bugs, suggests a new more primitive reversible iteration scheme for \RPP, and, in order to keep formalization and semi-automatic proofs simple, led us to identify a single pattern that can generate some useful reversible algorithms in \RPP: Cantor Pairing, Quotient/Reminder of integer division, truncated Square Root. Our \LEAN source code is freely available for experiments on Reversible Computation whose properties can be certified.
+Reversible Primitive Permutations (\RPP) are recursively defined functions designed to model Reversible Computation. We illustrate a proof, fully developed with the proof-assistant \LEAN, certifying that: ``\RPP can encode every Primitive Recursive Function''. Our reworking of the original proof of that statement, is conceptually simpler, fixes some bugs, suggests a new more primitive reversible iteration scheme for \RPP, and, in order to keep formalization and semi-automatic proofs simple, led us to identify a single pattern that can generate some useful reversible algorithms in \RPP: Cantor Pairing, Quotient/Reminder of integer division, truncated Square Root. Our \LEAN source code is freely available for experiments on Reversible Computation whose properties can be certified.
 \end{abstract}
 
 %=====================
@@ -152,9 +152,9 @@ We recall that a proof-assistant is an integrated environment to formalize data-
 \paragraph{Contributions.}
 Roughly, we show how to express \RPP and its evaluation mechanism inside the proof-assistant \LEAN \cite{Lean3}. On one side we are able to certify the correctness of every reversible function that we write in \RPP with respect to a given specification. On the other, we certify the correctness of the main result in \cite{DBLP:journals/tcs/PaoliniPR20} which states that \RPP is \PRF-complete. In more detail:
 \begin{itemize}
-    \item we give a strong guarantee that \RPP is \PRF-complete in three macro steps. We exploit that in \LEAN \MATHLIB library, \PRF is proved equivalent to a class of recursive \emph{unary} functions called \lstinline|primrec|. We define a data-type \lstinline|RPP| in \LEAN to represent \RPP. Then, we certify that, for any function \lstinline|f:primrec|, i.e. any unary \lstinline|f| with type \lstinline|primrec| in \LEAN, a function exists with type \lstinline|RPP| that encodes \lstinline|f:primrec|. Apart from fixing some bugs, our proof is fully detailed as compared to \cite{DBLP:journals/tcs/PaoliniPR20}. Moreover its conceptually, and technically simpler;
+    \item we give a strong guarantee that \RPP is \PRF-complete in three macro steps. We exploit that in \LEAN \MATHLIB library, \PRF is proved equivalent to a class of recursive \emph{unary} functions called \lstinline|primrec|. We define a data-type \lstinline|RPP| in \LEAN to represent \RPP. Then, we certify that, for any function \lstinline|f:primrec|, i.e. any unary \lstinline|f| with type \lstinline|primrec| in \LEAN, a function exists with type \lstinline|RPP| that encodes \lstinline|f:primrec|. Apart from fixing some bugs, our proof is fully detailed as compared to \cite{DBLP:journals/tcs/PaoliniPR20}. Moreover it's conceptually and technically simpler;
 
-    \item concerning simplification, it follows from how the elements in \lstinline|primrec| work and is characterized by the following aspects:
+    \item concerning simplification, it follows from how the elements in \lstinline|primrec| work and additionally is characterized by the following aspects:
     \begin{itemize}
         \item we introduce a finite reversible iteration scheme which is more primitive, but expressive enough to subsume the finite reversible iteration schemes originally in \RPP, and \SRL;
 
@@ -175,10 +175,10 @@ An early proposal to express reversible computations in a \emph{functional forma
 
 %---------------------
 \paragraph{Contents.}
-This work illustrates the relevant parts of the BSc Thesis \cite{MalettoBSc2021} which comes with \cite{MalettoRPPLEAN2021}, a \LEAN project that certifies properties,and algorithms of \RPP.
+This work illustrates the relevant parts of the BSc Thesis \cite{MalettoBSc2021} which comes with \cite{MalettoRPPLEAN2021}, a \LEAN project that certifies properties, and algorithms of \RPP.
 Section~\ref{section:Reversible Primitive Permutations} recalls the class \RPP by commenting on the main design aspects that characterize its definition inside \LEAN.
 Section~\ref{section:RPP algorithms} defines and proves correct new reversible algorithms central to the proof.
-Section~\ref{section:The UPRF-completeness of RPP}, once recalled, and commented the main aspects of \lstinline|primerec|, illustrates the key step to port the original proof that \RPP is \PRF-complete to \LEAN.
+Section~\ref{section:The UPRF-completeness of RPP}, once recalled, and commented the main aspects of \lstinline|primrec|, illustrates the key step to port the original proof that \RPP is \PRF-complete to \LEAN.
 Section~\ref{section:Conclusion and developments} comments on possible, and natural developments.
 
 %=====================
@@ -338,7 +338,7 @@ Moreover, the function \lstinline|inv| distributes over finite iteration \lstinl
    | (If f g h) (((n : ℕ) + 1) :: X) := (n + 1) :: ev f X
    | (If f g h) (-[1 + n] :: X)      := -[1 + n] :: ev h X
    | _          X                    := X
-   notation `‹` f `›` := ev f -- ‹ \f ›
+   notation `‹` f `›` := ev f
 \end{lstlisting}
 \caption{Operational semantics of elements in \lstinline|RPP|.}
 \label{fig:RPP-ev}
@@ -349,7 +349,7 @@ The function \lstinline|ev| in Figure~\ref{fig:RPP-ev} interprets an element of 
 
 Let us give a look at the clauses in Figure~\ref{fig:RPP-ev}.
 \lstinline|Id n| leaves the input list \lstinline|X| untouched.
-\lstinline|Ne| negates the head of the list, \lstinline|Su| increments, and \lstinline|Su| decrements it.
+\lstinline|Ne| negates the head of the list, \lstinline|Su| increments, and \lstinline|Pr| decrements it.
 \lstinline|Sw| is the transposition that switches the first two elements of its argument.
 The series composition \lstinline|f;;g| first applies \lstinline|f| and then
 \lstinline|g|.
@@ -398,12 +398,13 @@ Some comments about two of the more challenging cases follow.
 
 \paragraph{Parallel composition.} Let \lstinline|f| be \lstinline|Pa|. The step-wise proof of \lstinline|inv_co_l| is:
 \begin{lstlisting}
-‹f‖g;;(f‖g)⁻¹› X              -- by definition
-     = ‹f‖g;;f⁻¹‖g⁻¹› X       -- not obvious
- (!) = ‹(f;;f⁻¹)‖(g;;g⁻¹)› X  -- by definition
-     = ‹f;;f⁻¹›(take f.arity X)++‹g;;g⁻¹›(drop f.arity X) -- by ind. hyp.
-     = take f.arity X ++ drop f.arity X -- property of ++ (append)
-     = X ,
+‹f‖g;;(f‖g)⁻¹› X              
+     = ‹f‖g;;f⁻¹‖g⁻¹› X       -- by definition
+ (!) = ‹(f;;f⁻¹)‖(g;;g⁻¹)› X  -- not obvious
+     = ‹f;;f⁻¹›(take f.arity X) ++ ‹g;;g⁻¹›(drop f.arity X)
+                              -- by definition
+     = take f.arity X ++ drop f.arity X -- by ind. hyp.
+     = X                      -- property of ++ (append),
 \end{lstlisting}
 where the equivalence \lstinline|(!)| holds because we can prove both:
 \begin{lstlisting}
@@ -432,7 +433,7 @@ which says that applying \lstinline|inv| twice is the identity, and on using \ls
 
 \begin{remark}[On our simplifying choices on {\normalfont \lstinline|ev|}]
 \label{remark:On our simplifying choices on ev}
-A less general, but semantically more appropriate versions of  \lstinline|inv_co_l| and \lstinline|inv_co_r| could be:
+A less general, but semantically more appropriate version of  \lstinline|inv_co_l| and \lstinline|inv_co_r| could be:
 \begin{lstlisting}
     theorem inv_co_l (f : RPP) (X : list ℤ) :
                 f.arity ≤ X.length → ‹f ;; f⁻¹› X = X
@@ -440,7 +441,7 @@ A less general, but semantically more appropriate versions of  \lstinline|inv_co
                 f.arity ≤ X.length → ‹f⁻¹ ;; f› X = X
 \end{lstlisting}
 because, recalling \textit{Remark}~\ref{remark:We keep the definition of ev simple}, \lstinline|f X| makes sense when \lstinline|f.arity ≤ X.length|.
-Fortunately, the way we defined \lstinline|RPP| allows us to state \lstinline|inv_co_l| or \lstinline|inv_co_r| in full generality
+Fortunately, the way we defined \lstinline|RPP| allow us to state \lstinline|inv_co_l| or \lstinline|inv_co_r| in full generality
 with no reference to \lstinline|f.arity ≤ X.length|.
 \qeda
 \end{remark}
@@ -453,7 +454,7 @@ The definition of \lstinline|RPP| of \LEAN is really very close to the original 
 
     \item \lstinline|Id n|, for any \lstinline|n:ℕ|, is primitive in \lstinline|RPP| and derived in \RPP. In some cases it is useful to have \lstinline|Id 0| available.
 
-    \item Using \lstinline|list ℤ → list ℤ| as the domain of the function that interpets any given element \lstinline|f:RPP| avoids to let the type of \lstinline|f:RPP| depend on the arity of \lstinline|f|. To know the arity of \lstinline|f| it is enough to invoke \lstinline|arity f|. Finally, we observe that getting rid of a dependent type like, say, \lstinline|RPP n|, allows us to escape situations in which we would need to prove that \lstinline|RPP (n+1)| and \lstinline|RPP (1+n)| are the same type.
+    \item Using \lstinline|list ℤ → list ℤ| as the domain of the function that interpets any given element \lstinline|f:RPP| avoids to let the type of \lstinline|f:RPP| depend on the arity of \lstinline|f|. To know the arity of \lstinline|f| it is enough to invoke \lstinline|arity f|. Finally, we observe that getting rid of a dependent type like, say, \lstinline|RPP n|, allows us to escape situations in which we would need to compare equal but not definitionally equal types like \lstinline|RPP (n+1)| and \lstinline|RPP (1+n)|.
 
     \item The finite iterator \lstinline|It f (x::t): list ℤ| subsumes the finite iterators \lstinline|ItR| in \RPP, and \lstinline|for| in \SRL.
 
@@ -477,7 +478,7 @@ The definition of \lstinline|RPP| of \LEAN is really very close to the original 
     On the contrary, if \lstinline|x < 0|, the leftmost \lstinline|It f| does nothing and the iteration is performed by the rightmost iteration, because \lstinline|Ne| in the middle negates \lstinline|x|. In both cases, the last \lstinline|Ne| restores \lstinline|x| to its initial sign. But this is the behavior of \lstinline|ItR|, as we wanted. \qeda
     \end{example}
 
-    Last, the termination of \lstinline|It| is simpler to check \LEAN, as compare to \lstinline|ItR|, \lstinline|for|.
+    Last, the termination of \lstinline|It| is simpler to check in \LEAN, as compare to \lstinline|ItR| or \lstinline|for|.
 %    Last, it is much easier to convince \LEAN that \lstinline|It| terminates, than it is for \lstinline|ItR| or \lstinline|for|.
 \end{itemize}
 
@@ -554,8 +555,8 @@ The definition of \lstinline|RPP| of \LEAN is really very close to the original 
 \label{fig:standard functions}
 \end{figure}
 
-Figure~\ref{fig:standard functions} recalls definition and behavior of some \lstinline|RPP| functions already in \cite{DBLP:journals/tcs/PaoliniPR20}. It is worth commenting $ \rpprewire{i_0 \ldots i_n} $  Rewiring. Let $\{ i_0, \dots, i_n \} \subseteq \{ 0, \dots, m \}$; let $\{ j_1, \dots, j_{m-n} \}$ be $\{ 0, \dots, m \} \setminus \{ i_0, \dots, i_n \}$, i.e. the set of remaining indices, ordered such that $j_k < j_{k+1}$.
-By definition, $\rpprewire{i_0, \dots, i_n} (x_0, \dots, x_m) = (x_{i_0}, \dots, x_{i_n},$ $x_{j_1}, \dots, x_{j_{m-n}})$, i.e. rewiring brings every input with index in $ \{ i_0, \dots, i_n \} $ before all the remaining inputs, by preserving order.
+Figure~\ref{fig:standard functions} recalls definition and behavior of some \lstinline|RPP| functions already in \cite{DBLP:journals/tcs/PaoliniPR20}. It is worth commenting the rewiring $ \rpprewire{i_0 \ldots i_n} $. Let $\{ i_0, \dots, i_n \} \subseteq \{ 0, \dots, m \}$; let $\{ j_1, \dots, j_{m-n} \}$ be $\{ 0, \dots, m \} \setminus \{ i_0, \dots, i_n \}$, i.e. the set of remaining indices, ordered such that $j_k < j_{k+1}$.
+By definition, $\rpprewire{i_0, \dots, i_n} (x_0, \dots, x_m) = (x_{i_0}, \dots, x_{i_n},$ $x_{j_1}, \dots, x_{j_{m-n}})$, i.e. rewiring brings every input with index in $ \{ i_0, \dots, i_n \} $ before all the remaining inputs, whose order is preserved.
 
 Figure~\ref{fig:function scheme step} identifies the new scheme of algorithm \lstinline|step[_]|. Depending on how we fill the hole \lstinline|[_]|, we obtain step functions that, once iterated draw paths into $ \NN^2 $. The names $ a_0, \ldots, b_0, \ldots $ are just place holders, currently.
 
@@ -795,20 +796,20 @@ $\begin{NiceMatrix}
     } & 0     & \bloch{2-1}{
     \mbox{\lstinline|Sw|}
     %    \rppSw
-    } & 0 & \bloch{2-1}{
+    } & \yr & \bloch{2-1}{
         \mbox{\lstinline|If(Su)(Id 1)(Id 1)|}
 %        \rppIf[\rppPr, \boldsymbol{\rppId_1}, \rppId_1]
-    } & 0 & \bloch{1-1}{\mbox{\lstinline|Id 1|}} & 0
+    } & \yr & \bloch{1-1}{\mbox{\lstinline|Id 1|}} & \yr
     \\
     & \yr & \bloch{2-1}{
         \mbox{\lstinline|If(Pr)(Id 1)(Id 1)|}
 %        \rppIf[\rppSu, \boldsymbol{\rppId_1}, \rppId_1]
-    } & \yr && x &&\yr&&\yr&&\yr&\bloch{2-1}{
+    } & \yr && x &&\yr&&0&&0&\bloch{2-1}{
         \mbox{\lstinline|Sw|}
 %        \rppSw
    } & x + 1
     \\
-    & 0 && 0 && \yr && x + 1 && x + 1 && x + 1 && \yr
+    & 0 && 0 && \yr && x + 1 && x + 1 && x + 1 && 0
 \end{NiceMatrix}$
 }
 \caption{Function \lstinline|step[Su;;Sw]|: detailed behavior with $ \yr = 0 $. }
@@ -864,17 +865,16 @@ $\begin{NiceMatrix}
 \end{figure}
 
 Figure~\ref{fig:Cantor} has all we need to define Cantor Pairing \lstinline|cp:RPP|, and Un-pairing \lstinline|cu:RPP|.
-In Figure~\ref{sfig:cp input}, \lstinline|cp_in| is the natural algorithm in \lstinline|RPP| to implement~\eqref{align: cp analitically}. As expected, the input pair $(x,y)$ is part of \lstinline|cp_in| output. The suffix ``\lstinline|in|'' in the name ``recalls'' exactly this aspect. In order to drop $(x,y)$ from the output, and obtain \lstinline|cp| as in Figure~\ref{sfig:cp}, we need \lstinline|cu_in⁻¹|, i.e. \lstinline|cu_in| which is new, as compared to \cite{DBLP:journals/tcs/PaoliniPR20}. The intuition behind \lstinline|cu_in| is as follows. Let us fix any point $ (x, y) \in \NN^2 $. We can realize that, starting from the origin, if we follow as many steps as the value $ \rppcp(x, y) $ in Figure~\ref{sfig:cantor as a path}, we stop exactly at $ (x,y) \in \NN^2 $. The function, expressed in standard functional notation, that, given the current point $ (x,y) $, identifies the next one to move to in the path of Figure~\ref{sfig:cantor as a path} is:
+In Figure~\ref{sfig:cp input}, \lstinline|cp_in| is the natural algorithm in \lstinline|RPP| to implement~\eqref{align: cp analitically}. As expected, the input pair $(x,y)$ is part of \lstinline|cp_in| output. The suffix ``\lstinline|in|'' in the name ``recalls'' exactly this aspect. In order to drop $(x,y)$ from the output, and obtain \lstinline|cp| as in Figure~\ref{sfig:cp}, we need \lstinline|cu_in⁻¹|, i.e. \lstinline|cu_in| which is new, as compared to \cite{DBLP:journals/tcs/PaoliniPR20}. The intuition behind \lstinline|cu_in| is as follows. Let us fix any point $ (x, y) \in \NN^2 $. We can realize that, starting from the origin, if we follow as many steps as the value $ \rppcp(x, y) $ in Figure~\ref{sfig:cantor as a path}, we stop exactly at $ (x,y) $. The function, expressed in standard functional notation, that, given the current point $ (x,y) $, identifies the next one to move to in the path of Figure~\ref{sfig:cantor as a path} is:
 \begin{align*}
 %    \label{align:next function}
     \operatorname{step}(x,y) & =
     \begin{cases} (x+1,y-1) &  y > 0 \\ (0, x+1) &   y = 0 \end{cases}
     \enspace .
 \end{align*}
-We implement $ \operatorname{step}(x,y) $ in \lstinline|RPP| as \lstinline|step[Su;;Sw]|. Figures~\ref{sfig:cu step y > 0}, and~\ref{sfig:cu step y = 0} represent two runs of \lstinline|step[Su;;Sw]| to give visual evidence that \lstinline|step[Su;;Sw]| implements $\operatorname{step}(x,y)$. Colored occurrences of $ y $ show the relevant part of the computational flow. Let the starting point be $ (x,\yb) $, with $ \yb > 0 $. The next point we reach  is $ (x+1,\yb-1) $, as we can read in the output: the initial value of $ \yb $ is updated and supplied as the second element of the Cartesian coordinates. Let the starting point be $ (x,\yr) $, with $ \yr = 0 $. The next point is $ (0, x+1) $, but it is crucial to observe where the coordinate $ 0 $ of $ (0, x+1) $ comes from.
-It is not $ \yr = 0 $; it is the ancilla set to $ 0 $ in the input. The $ \yr = 0 $ in the output becomes the set-to-$ 0 $-ancilla in the input the next time we need to reset the final point to $ (0,x+1) $, for some $ x $. So, as soon as we get \lstinline|cu_in| by iterating \lstinline|step[Su;;Sw]| as in Figure~\ref{sfig:cu input}, we can define \lstinline|cp| (Figure~\ref{sfig:cp}), and \lstinline|cu| (Figure~\ref{sfig:cu}).
+We implement $ \operatorname{step}(x,y) $ in \lstinline|RPP| as \lstinline|step[Su;;Sw]|. Figures~\ref{sfig:cu step y > 0}, and~\ref{sfig:cu step y = 0} represent two runs of \lstinline|step[Su;;Sw]| to give visual evidence that \lstinline|step[Su;;Sw]| implements $\operatorname{step}(x,y)$. Colored occurrences of $ y $ show the relevant part of the computational flow. Note that we can't implement $ \operatorname{step}(x,y) $ by using the conditional \lstinline|It| directly on $y$, because in the computation we also want to modify the value of $y$. Finally, as soon as we get \lstinline|cu_in| by iterating \lstinline|step[Su;;Sw]| as in Figure~\ref{sfig:cu input}, we can define \lstinline|cp| (Figure~\ref{sfig:cp}), and \lstinline|cu| (Figure~\ref{sfig:cu}).
 \begin{remark}
-Driven by need to write a simple reversible function \lstinline|cu_in⁻¹| able to collect the ``garbage'' that \lstinline|cp_in|, we ended up with ignoring completely the analytical definition of $ \rppcu(n) $ in~\eqref{align: cu analitically}.
+Driven by need to write a simple reversible function \lstinline|cu_in⁻¹| able to collect the ``garbage'' input left by \lstinline|cp_in|, we ended up with ignoring completely the analytical definition of $ \rppcu(n) $ in~\eqref{align: cu analitically}.
 \qeda
 \end{remark}
 
@@ -889,7 +889,7 @@ Driven by need to write a simple reversible function \lstinline|cu_in⁻¹| able
             0 &                      & 0         \\
             0 &                      & q         \\
         \end{NiceMatrix} $
-}        \caption{Function that computes $ q $ and $ r $ such that $m = q(n + 1) + r$. We obtain it by iterating \lstinline|step[Sw‖Su]:RPP|.}
+}        \caption{Function that computes $ q $ and $ r $ such that $m = q(n + 1) + r$. We obtain it by iterating \lstinline|step[Sw‖Su]|.}
         \label{sfig:div}
     \end{subfigure}
     \hfill
@@ -905,7 +905,7 @@ Driven by need to write a simple reversible function \lstinline|cu_in⁻¹| able
         \end{NiceMatrix}
         $
 }
-        \caption{Function that computes $ \floor{\sqrt{n}}$ and $ r = n - \floor{\sqrt{n}}^2 $. We obtain it by iterating \lstinline|step[Su;;Su;;Sw‖Su:RPP]|.}
+        \caption{Function that computes $ \floor{\sqrt{n}}$ and $ r = n - \floor{\sqrt{n}}^2 $. We obtain it by iterating \lstinline|step[Su;;Su;;Sw‖Su]|.}
         \label{sfig:sqrt}
     \end{subfigure}%
 \end{figure}
@@ -914,7 +914,7 @@ Driven by need to write a simple reversible function \lstinline|cu_in⁻¹| able
 \paragraph{Quotient and reminder.}
 %In defining the function $\rppcui$ we framed it as a "path" in a two-dimensional grid.
 Let us focus on the path in Figure~\ref{sfig:Quot./Rem.}.
-It starts at $(0,n)$ (with $ n = 4 $), and, at every step, the next point is in \emph{direction} $(+1,-1)$. When it reaches $(n,0)$ (with $ n = 4 $), instead of jumping to $(0,n+1)$, as in Figure~\ref{sfig:cantor as a path}, we land again on $(0,n)$. The idea is to keep looping on the same diagonal. This behavior can be achieved by iterating \lstinline|step[Sw‖Su]|. Figure~\ref{sfig:div} shows that we are doing modular arithmetic.
+It starts at $(0,n)$ (with $ n = 4 $), and, at every step, the next point is in \emph{direction} $(+1,-1)$. When it reaches $(n,0)$ (with $ n = 4 $), instead of jumping to $(0,n+1)$, as in Figure~\ref{sfig:cantor as a path}, it lands again on $(0,n)$. The idea is to keep looping on the same diagonal. This behavior can be achieved by iterating \lstinline|step[Sw‖Su]|. Figure~\ref{sfig:div} shows that we are doing modular arithmetic.
 Globally, it takes $n+1$ steps from $ (0,n) $ to itself by means of \lstinline|step[Sw‖Su]|.
 Specifically, if we assume we have performed $m$ steps along the diagonal, and we are at point $ (x,y) $, we have that $x \equiv m \pmod{n+1}$ and $0 \le x \le n$.
 So, if we increase a counter by one each time we get back to $(0,n)$ we can calculate quotient and reminder.
@@ -923,12 +923,12 @@ So, if we increase a counter by one each time we get back to $(0,n)$ we can calc
 \paragraph{Truncated Square root.}
 Let us focus on the path in Figure~\ref{sfig:Square root}.
 It starts at $(0,0)$. Whenever it reaches $(x,0)$ it jumps to $(0,x+2)$.
-The behavior can be achieved by iterating \lstinline|step[Su;;Su;;Sw‖Su:RPP]| as in Figure~\ref{sfig:sqrt}.
-In order to compute $ \floor{\sqrt{n}} $, besides implementing the above path, the function \lstinline|step[Su;;Su;;Sw‖Su:RPP]| counts in $ k $ the number of jumps occurred so far along the path. In particular, starting from $ (0,0) $, the first jump occurs after $1$ step; the next one after $3$ steps, then after $5$ steps, after $7$ etc. Since we know that $1 + 3 + \dots + (2k - 1) = k^2$, for any $k$, if $ n = k^2 $, the iteration will stop exactly after $ k $ jumps. I.e. $ k = \sqrt{k^2} = \sqrt{n}$. Otherwise, if $ (k-1)^2 \leq n < k^2 $, the iteration will stop after a count of $ k-1 $ jumps, which approximates $ \sqrt{n} $ from below; i.e. $ k-1 = \floor{\sqrt{n}} $.
+The behavior can be achieved by iterating \lstinline|step[Su;;Su;;Sw‖Su]| as in Figure~\ref{sfig:sqrt}.
+In order to compute $ \floor{\sqrt{n}} $, besides implementing the above path, the function \lstinline|step[Su;;Su;;Sw‖Su]| counts in $ k $ the number of jumps occurred so far along the path. In particular, starting from $ (0,0) $, the first jump occurs after $1$ step; the next one after $3$ steps, then after $5$ steps, after $7$ etc. Since we know that $1 + 3 + \dots + (2k - 1) = k^2$, for any $k$, if $ n = k^2 $, the iteration will stop exactly after $ k $ jumps. I.e. $ k = \sqrt{k^2} = \sqrt{n}$. Otherwise, if $ (k-1)^2 \leq n < k^2 $, the iteration will stop after a count of $ k-1 $ jumps, which approximates $ \sqrt{n} $ from below; i.e. $ k-1 = \floor{\sqrt{n}} $.
 
 \begin{remark}
 The value $2 \floor{\sqrt{n}} - r$ can be canceled out by adding $r$, and subtracting two times $\floor{\sqrt{n}}$.
-What we cannot eliminate is the ``reminder'' $r = n - \left\lfloor \sqrt{n} \right\rfloor^2$ because the \emph{function} Square root
+What we cannot eliminate is the ``remainder'' $r = n - \left\lfloor \sqrt{n} \right\rfloor^2$ because the \emph{function} Square root
 cannot be inverted in $ \ZZ $, and the algorithm cannot forget it.
 \qeda
 \end{remark}
@@ -975,7 +975,7 @@ The two \emph{projections} \lstinline|left|, and \lstinline|right| take an argum
 
 \paragraph{Composition schemes}.
 There are three of them, each depending on parameters \lstinline|f,g:primrec|.
-The scheme \lstinline|pair| builds the function that, taken a value \lstinline|n:ℕ|, gives the unique value in \lstinline|ℕ| that encodes the pair of values \lstinline|G n|, and \lstinline|G n|; everything we might pack up by means of \lstinline|pair|, we can unpack with \lstinline|left|, and \lstinline|right|.
+The scheme \lstinline|pair| builds the function that, taken a value \lstinline|n:ℕ|, gives the unique value in \lstinline|ℕ| that encodes the pair of values \lstinline|F n|, and \lstinline|G n|; everything we might pack up by means of \lstinline|pair|, we can unpack with \lstinline|left|, and \lstinline|right|.
 
 The scheme \lstinline|comp| composes \lstinline|F,G:primrec|.
 
@@ -1002,7 +1002,7 @@ and
    \enspace ,
 \end{aligned}
 \end{equation}
-where is the built-in recursive scheme \lstinline|nat.rec| on \lstinline|ℕ|, and $ \gl a, b \gr $ denotes $ (\mbox{\lstinline|mkpair|}\ a\ b) $.
+defined using the built-in recursive scheme \lstinline|nat.rec| on \lstinline|ℕ|, and $ \gl a, b \gr $ denotes $ (\mbox{\lstinline|mkpair|}\ a\ b) $.
 
 %=================
 \subsection{The main point of the proof}
@@ -1032,10 +1032,10 @@ $ \mbox{\lstinline|g|}\ z\mbox{\lstinline|::|}n\mbox{\lstinline|::|}\boldsymbol{
 \newcommand{\bid}{\bloch{1-1}{\mbox{\lstinline|Id 1|}}}
 \newcommand{\bidt}{\bloch{2-1}{\mbox{\lstinline|Id 2|}}}
 \newcommand{\bsw}{\bloch{2-1}{\mbox{\lstinline|Sw|}}}
-\newcommand{\bpi}{\bloch{3-1}{\mbox{\lstinline|H[f,g]|}}}
+\newcommand{\bpi}{\bloch{2-1}{\mbox{\lstinline|H[f,g]|}}}
 \newcommand{\binc}{\bloch{2-1}{\mbox{\lstinline|inc|}}}
 \newcommand{\bup}{\bloch{5-1}{\mbox{\lstinline|unpair|}}}
-\newcommand{\bpiinv}{\bloch{3-1}{\mbox{\lstinline|H⁻¹|}}}
+\newcommand{\bpiinv}{\bloch{2-1}{\mbox{\lstinline|H[f,g]⁻¹|}}}
 \newcommand{\bff}{\bloch{5-1}{\mbox{\lstinline|f|}}}
 \newcommand{\bfg}{\bloch{3-1}{\mbox{\lstinline|g|}}}
 \newcommand{\bre}{\bloch{4-1}{\rpprewire{0,2,3,1}}}
@@ -1046,10 +1046,9 @@ $ \mbox{\lstinline|g|}\ z\mbox{\lstinline|::|}n\mbox{\lstinline|::|}\boldsymbol{
 \centering
 \scalebox{.9}
 {$\begin{NiceMatrix}
- z  &\bid&\bid&\binc&\bid   &\bid& z + z'+ H[\mbox{\lstinline|F|},\mbox{\lstinline|G|}] (n)\\
- n  &\bsw&\bpi&     &\bpiinv&\bsw& n           \\
- z' &    &    &     &       &    & z'          \\
- \bz&    &    &     &       &    &\bz
+ z  &\bid&\binc&\bid   & z + H[\mbox{\lstinline|F|},\mbox{\lstinline|G|}] (n)\\
+ n  &\bpi&     &\bpiinv& n           \\
+ \bz&    &     &       &\bz
  \end{NiceMatrix}$}
 \caption{The function \lstinline|prec[f,g]:RPP|.}
 \label{sfig:prec[f,g]}
@@ -1059,8 +1058,8 @@ $ \mbox{\lstinline|g|}\ z\mbox{\lstinline|::|}n\mbox{\lstinline|::|}\boldsymbol{
 \centering
 \scalebox{.9}{
 $\begin{NiceMatrix}
- z' &\bid&\bre&\bidt&\brs&\bid  &\brc& H[\mbox{\lstinline|F|},\mbox{\lstinline|G|}] (n)  \\
- n  &\bup&    &     &    &\bipsg&    & z'     \\
+ z  &\bid&\bre&\bidt&\brs&\bid  &\brc& H[\mbox{\lstinline|F|},\mbox{\lstinline|G|}] (n)  \\
+ n  &\bup&    &     &    &\bipsg&    & z      \\
  0  &    &    &\bff &    &      &    & (n)_2  \\
  0  &    &    &     &    &      &    & s      \\
  0  &    &    &     &    &      &    & (n)_1  \\
@@ -1075,7 +1074,7 @@ $\begin{NiceMatrix}
 \label{fig:composing encode prec}
 \end{figure}
 
-Figure~\ref{sfig:prec[f,g]}, where we assume $ z, z'= 0 $, defines \lstinline|prec[f,g]:RPP| such that \lstinline|(encode (prec F G) prec[f,g]):Prop| holds, and \lstinline|H[f,g]| encodes
+Figure~\ref{sfig:prec[f,g]}, where we assume $ z = 0 $, defines \lstinline|prec[f,g]:RPP| such that \lstinline|(encode (prec F G) prec[f,g]):Prop| holds, and \lstinline|H[f,g]| encodes
 $ H[\mbox{\lstinline|F|},\mbox{\lstinline|G|}]$ as in~\eqref{align:function H}.
 The term \lstinline|It R[g]| in \lstinline|H[f,g]| encodes~\eqref{equation:function R} by iterating \lstinline|R[g]| from the initial value given by \lstinline|f|.
 
@@ -1084,10 +1083,10 @@ Figure~\ref{fig:main step RPF-completeness} splits the definition of \lstinline|
 Figure~\ref{sfig:encode prec 1st step} packs everything up by means of \lstinline|mkpair| to build the argument $ R[\mbox{\lstinline|G|}](z,n) $ of \lstinline|g|; by induction we get
 $ R[\mbox{\lstinline|G|}](z,n+1) $.
 In Figure~\ref{sfig:encode prec 2nd step}, \lstinline|unpair| unpacks $ \gl z, \gl n, R[\mbox{\lstinline|G|}](z,n) \gr \gr $ to expose its component to the last part.
-Figure~\ref{sfig:encode prec 3rd step} both increments $ n $, and packs $ R[\mbox{\lstinline|G|}](z,n) $ into $ s $, by means of \lstinline|mkpair|, because $ R[\mbox{\lstinline|G|}](z,n) $ has become useless once obtained $ R[\mbox{\lstinline|G|}](z,n+1) $ from it. Packing $ R[\mbox{\lstinline|G|}](z,n) $ into $ s $, so that we can eventually recover it is mandatory. We cannot ``replace'' $ R[\mbox{\lstinline|G|}](z,n) $ with $ 0 $ because that would not be a reversible action.
+Figure~\ref{sfig:encode prec 3rd step} both increments $ n $, and packs $ R[\mbox{\lstinline|G|}](z,n) $ into $ s $, by means of \lstinline|mkpair|, because $ R[\mbox{\lstinline|G|}](z,n) $ has become useless once obtained $ R[\mbox{\lstinline|G|}](z,n+1) $ from it. Packing $ R[\mbox{\lstinline|G|}](z,n) $ into $ s $, so that we can eventually recover it, is mandatory. We cannot ``replace'' $ R[\mbox{\lstinline|G|}](z,n) $ with $ 0 $ because that would not be a reversible action.
 
 \begin{remark}
-The function \lstinline|cp| in Figure~\ref{sfig:cp} can replace \lstinline|mkpair| in Figure~\ref{sfig:encode prec 3rd step} as both isomorphically map $ \NN^2$ into $\NN$. Indeed, the original \PRF-completeness of \RPP relies on \lstinline|cp|. We favor \lstinline|mkpair| to take the most out of \MATHLIB. \qeda
+The function \lstinline|cp| in Figure~\ref{sfig:cp} can replace \lstinline|mkpair| in Figure~\ref{sfig:encode prec 3rd step} as a bijective map $ \NN^2$ into $\NN$. Indeed, the original \PRF-completeness of \RPP relies on \lstinline|cp|. We favor \lstinline|mkpair| to take the most out of \MATHLIB. \qeda
 \end{remark}
 
 
@@ -1108,7 +1107,7 @@ The function \lstinline|cp| in Figure~\ref{sfig:cp} can replace \lstinline|mkpai
                 \boldsymbol{0}    &                         &                         & \boldsymbol{0}                          &                     &                & \boldsymbol{0}                          \\
             \end{NiceMatrix}$
         }
-        \caption{Build the argument $ R[\mbox{\lstinline|G|}](z,n) $ of \lstinline|g|.}
+        \caption{Build the argument $ \gl z, \gl n, R[\mbox{\lstinline|G|}](z,n) \gr \gr $ of \lstinline|g|.}
         \label{sfig:encode prec 1st step}
     \end{subfigure}
     \\
@@ -1156,7 +1155,7 @@ Our work can migrate to \LEANFour whose stable release is announced in the near 
 
 The most application-oriented obvious goal to mention is to keep developing a Reversible Computa\-tion-centered certified software stack, spanning from a programming formalism more friendly than \lstinline|RPP|, down to a certified emulator of \PISA, passing through compilator, and optimizer whose properties we can certify. For example, we can also think of endowing \PISA emulators with energy-consumption models linked to the entropy that characterize the reversible algorithms we program, or the \PISA object code we can generate from them.
 
-A more speculative direction, is to keep exploring the existence of programming schemes in \lstinline|RPP| able to generate functions, other than Cantor Pairing, etc., which we can see a discrete space-filling functions, whose behavior we can describe as steps along a path in some space.
+A more speculative direction, is to keep exploring the existence of programming schemes in \lstinline|RPP| able to generate functions, other than Cantor Pairing, etc., which we can see as discrete space-filling functions, whose behavior we can describe as steps along a path in some space.
 
 %------------------
 \bibliographystyle{abbrv}
