@@ -1,0 +1,160 @@
+----------------------- REVIEW 1 ---------------------
+SUBMISSION: 8
+TITLE: Certifying algorithms and relevant properties of Reversible Primitive Permutations with Lean
+AUTHORS: Giacomo Maletto and Luca Roversi
+
+----------- Overall evaluation -----------
+SCORE: 0 (borderline paper)
+----- TEXT:
+The paper gives formal proofs in Lean for several properties of a class called reversible primitive permutations (RPPs). The major property of them is that the class of RPPs can represent all primitive recursive functions that are reversible. The formal proof in Lean given by the authors fixes and simplifies the existing proofs. It is expected to contribute to the development of further theories and certified programs.
+
+The subject of this paper is understandable and it is important to provide a formal proof which can be verified mechanically. However, the paper contains the following two major problems, which makes the paper difficult to evaluate. This is why I judged it to be a borderline paper. 
+
+* Why do not you give the concrete definition the step function for Fig. 8(d)? This is more important for mkpair and unpair than Cantor paring/unpairing because it is the part of the proof of PRF-completeness. The lack of the definition disables to follow the correctness of the encoding of the prec function of PRF.  I would like the authors to give a clear explation for the encoding as you do for the Cantor paring/unparing.
+
+* Explain the details on some ideas to mechanize the proofs in the proof assistant.  The paper only describes how the RPP was formalized and what statements were proven in Lean.  Since the subject of this paper is to fully certify the statements on RPP with Lean, it would be better to include more details of some specific ideas and experiences.
+
+* There are some parts where the order of explanations is clearly inappropriate or not sufficient, and as a result, it makes difficult to read.  I would like the authors not to leave it the readers to guess the meaning of every definition. See the comments below for the details.
+
+
+Detailed comments:
+
+p.3, Example 1,
+Please first explain the meaning of many unknown primitives, Id, Sw, It, Su, If, and Pr which will be explained very later in the paper. Do not leave it to the readers to guess their semantics.
+
+p.3, l.-5, "z+z" -> "z+x"
+The same typo is found also in p.4.
+
+p.4, l.-6, "f.arity"
+Explain this notation. Is it a synonym of "arity f"?
+
+p.6, l.4, "This behavior is the meaning of ..."
+Again, please give the semantics of "^" and "[\downarrow x]" formally.  It is difficult for the readers to guess them.
+
+p.6, Remark 2, "theorem ... "
+The condition "f.arity <= X.length" must be required in the statement of the "theorem" to be correct.
+
+p.7, l.1, "Let f be Pa"
+Does it mean that "Let f be Pa h g with some h and g"? The constructor Pa requires two parameters to be an RPP f.
+This kind of typo is found also in the middle of the page.
+
+p.7, l.5,
+The calculation here implicitly assumes that the arity does not change by taking inversion for any RPPs. This fact should be described.
+
+p.8, l.2, "RPP"
+Two kinds of "RPP", a type in Lean or a class in the original proof, should be discriminated not only by the difference of their fonts which is quite subtle.  One of them should be renamed for clarity.
+
+p.9, l.3,
+Again, please do not leave the reader to guess an intuition of step[_]. Explain more details for what this common abstract scheme computes instead of just saying that a0,...,b0,... are place holders, which could be more specific, e.g., a0 = b0 = c1.
+
+p.13, l.11, makpair -> mkpair
+
+p.14, Fig.12(a),
+Is this code correct? It does not change the first component.
+
+p.14, Fig.12(b),
+It would be nicer to add intermediate results explicitly because there is no explanation for this code.
+
+
+
+----------------------- REVIEW 2 ---------------------
+SUBMISSION: 8
+TITLE: Certifying algorithms and relevant properties of Reversible Primitive Permutations with Lean
+AUTHORS: Giacomo Maletto and Luca Roversi
+
+----------- Overall evaluation -----------
+SCORE: 1 (weak accept)
+----- TEXT:
+Summary
+
+The paper presents a formalization in the proof assistant Lean of the
+result that Reversible Primitive Permutations (RPP) can encode any
+Primitive Recursive Function (using a suitable amount of auxiliary
+storage), developed by the authors in previous work. The formalization
+improves on the original presentation in many respects, and as a side
+effect relevant functions (truncated square root, Cantor pairing,
+quotient/remainder of integer division) are defined and proved correct.
+
+    Good points
+
+- the paper formalise a relevant reversibility result in a proof
+  assistant
+
+- the paper is clear, well-written and also understandable for readers
+  with no expertise in proof assistants
+
+    Bad points
+
+- I think the details of the paper are more of interest for the
+  theorem proving community than for the RC community, nevertheless I
+  find the result interesting also for the RC community
+
+    Detailed comments
+
+- p. 2, l. 6: what is z? Why is it needed? Also, you use overline to
+  denote that x is a tuple, and bold for 0. Maybe using the same
+  notation?
+
+- p. 3, l. 12: what is PR?
+
+- p. 4, Fig. 1: why Pa for sequential composition?
+
+- p. 4, Fig. 1: is it not the case that we can derive Pr from Ne and
+  Su?
+
+- p. 4, Fig. 2: could you comment on the arity of It and If?
+
+- p. 5, l. -17: inv let -> inv lets
+
+- p. 6, l. 5: is this ternary choice really needed? Or could you get
+  the same expressive power with a binary choice?
+
+- p. 7, l. -2: RPP allow -> RPP allows
+
+- p. 8, l. 19: please avoid referencing footnotes from a formula, I
+  started thinking with a cube power was needed here...
+
+- p. 9, Fig. 6: I would use Addition instead of Increment (frequently
+  used as +1) and Subtraction instead of Decrement (frequently used as
+  -1)
+
+- p. 10, l. -5: i.e. cu_in -> i.e. cu_in inverse
+
+- p. 10, l. -5: the technique to drop the input is known as Bennet’s
+  trick, you may mention it
+
+- p. 12, l. 12: could you explain the lemma? I was expecting something
+  showing that the inverse of sqrt is the square, here I guess you
+  rely on some pre-defined square root. Proving correctness using
+  square would not rely on such pre-defined function
+
+- p. 12, l. 11: makpair -> mkpair
+
+- p. 15, conclusion: could you comment on what would change if instead
+  of Lean you would use some more well-known (as far as my limited
+  expertise tells me) proof assistant such as Coq or Isabelle?
+
+
+
+----------------------- REVIEW 3 ---------------------
+SUBMISSION: 8
+TITLE: Certifying algorithms and relevant properties of Reversible Primitive Permutations with Lean
+AUTHORS: Giacomo Maletto and Luca Roversi
+
+----------- Overall evaluation -----------
+SCORE: 0 (borderline paper)
+----- TEXT:
+The paper's main contribution is an alternative proof that Reversible Primitive Permutations (RPP) is complete for primitive recursive functions, as originally shown in [16].
+The present work supplies extra details, and is easier and more systematic.
+It is carefully written, well explained, and technically accurate, as far as I can see.
+
+
+Detailed Comments
+
+p1
+'Studies focused on questions posed by Maxwell, regarding the sensibility of the
+principles which Thermodynamics is based on, recognized the fundamental role
+that Reversible Computation can play to that purpose.'  Can this be clarified?  Does 'sensibility' mean 'soundness'?
+
+p13
+makpair -> mkpair
