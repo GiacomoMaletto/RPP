@@ -138,11 +138,11 @@ This work focuses on the \emph{functional model} \RPP \cite{DBLP:journals/tcs/Pa
 We recall that \RPP, in analogy with \PRF, is defined as the smallest class built on some given basic reversible function, closed under suitable composition schemes.
 The very functional nature of the elements in \RPP is at the base of reasonably accessible proofs of the following properties:
 \begin{itemize}
-\item \RPP is \PRF-complete \cite{DBLP:journals/tcs/PaoliniPR20}: for every function $ F \in \PRF $,
-an \lstinline|f| exists in \RPP that encodes $ F $, i.e.
-$ \mbox{\lstinline|f(|}z,\overline{x},\boldsymbol{0}\mbox{\lstinline|) = (|}z+F(\overline{x}),\overline{x},\boldsymbol{0}\mbox{\lstinline|)|}$, for every $ \overline{x}\in \NN^n $; $ \boldsymbol{0} $ is a suitable amount of $ 0 $, typically called \emph{ancille}, which are a temporary storage for intermediate computations of the encoding;
+\item \RPP is \PRF-complete \cite{DBLP:journals/tcs/PaoliniPR20}: for every function $ F \in \PRF $ with arity $ n $, both $ m \in \NN $, and \lstinline|f| in \RPP exist such that \lstinline|f| encodes $ F $, i.e.
+$ \mbox{\lstinline|f(|}z,\overline{x},\overline{y}\mbox{\lstinline|) = (|}z+F(\overline{x}),\overline{x},\overline{y}\mbox{\lstinline|)|}$, for every $ \overline{x}\in \NN^n $, whenever all the variables in $ \overline{y} $ are set to the value $ 0 $.
+Both $ z $ and the tuple $ \overline{y} $ are \emph{ancille}. They can be thought of as temporary storage for intermediate computations of the encoding.
 
-\item \RPP can be naturally extended to become Turing-complete \cite{Paolini2018NGC} by means of a minimization scheme analogous to the one that extends \PRF to the Turing-complete class \PR of Partial Recursive functions;
+\item \RPP can be naturally extended to become Turing-complete \cite{Paolini2018NGC} by means of a minimization scheme analogous to the one that extends \PRF to the Turing-complete class of \emph{Partial} Recursive Functions.
 
 \item According to \cite{MatosRC2020}, \RPP and the reversible programming language \SRL \cite{matos03tcs} are equivalent, so the fix-point problem is undecidable for \RPP as well \cite{2318_1734164MatosPaoliniRoversiTCSICTCS18}.
 \end{itemize}
@@ -172,7 +172,7 @@ We show how to express \RPP and its evaluation mechanism inside the proof-assist
 \paragraph{Related work.}
 Concerning the formalization in a proof-assistant of the semantics, and its properties, of a formalism for Reversible Computation we are aware of \cite{paoliniTYPES2015}. By means of the proof-assistant \Matita \cite{Asperti2007}, it certifies that a denotational semantics for the imperative reversible programming language \Janus \cite[Section 8.3.3]{perumalla2013chc} is fully abstract with respect to the operational semantics.
 
-Concerning \emph{functional models} of Reversible Computation, we are aware of \cite{jacopini89tcs} which introduces the class of reversible functions \JMF, which is as expressive as \PR. So, \JMF is stronger than \RPP, however we see \JMF as less abstract than \RPP for two reasons: (i) the primitive functions of \JMF depend on a given specific binary representation of natural numbers; (ii) unlike \RPP, which we can see as \PRF in a reversible setting, it is not evident to us that \JMF can be considered the natural extension of a total class analogous to \RPP.
+Concerning \emph{functional models} of Reversible Computation, we are aware of \cite{jacopini89tcs} which introduces the class of reversible functions \JMF, which is as expressive as the \emph{Partial} Recursive Functions. So, \JMF is stronger than \RPP, however we see \JMF as less abstract than \RPP for two reasons: (i) the primitive functions of \JMF depend on a given specific binary representation of natural numbers; (ii) unlike \RPP, which we can see as \PRF in a reversible setting, it is not evident to us that \JMF can be considered the natural extension of a total class analogous to \RPP.
 
 %---------------------
 \paragraph{Contents.}
@@ -197,8 +197,8 @@ Section~\ref{section:Conclusion and developments} is about possible developments
         | Pr : RPP         -- Predecessor
         | Sw : RPP         -- Transposition or Swap
         -- Inductively defined functions
-        | Co (f g : RPP) : RPP   -- Parallel composition
-        | Pa (f g : RPP) : RPP   -- Series composition
+        | Co (f g : RPP) : RPP   -- Series composition
+        | Pa (f g : RPP) : RPP   -- Parallel composition
         | It (f : RPP) : RPP     -- Finite iteration
         | If (f g h : RPP) : RPP -- Selection
         infix `‖`  : 55 := Pa -- Notation for the Parallel composition
@@ -228,15 +228,13 @@ z&&y&\bloch{1-1}{\mbox{\lstinline|Id 1|}}&y&& w
 w & = \begin{cases}
  y+1 & \textrm{if}\ z+x>0 \\
    y & \textrm{if}\ z+x=0 \\
- y-1 & \textrm{if}\ z+z<0
+ y-1 & \textrm{if}\ z+x<0
 \end{cases}
 \enspace .
 \end{aligned}
 \]}
 We have just built a series composition of three parallel compositions.
-For example, the first one composes a unary identity \lstinline|Id 1| and \lstinline|Sw|.
-We also informally anticipate how outputs depends on inputs.
-In fact, Figure~\ref{fig:RPP-ev} gives the operational semantics, which defines \lstinline|RPP| formally as a class of functions on $ \ZZ$, not on $ \NN $.
+The first one composes a unary identity \lstinline|Id 1|, which leaves its unique input untouched, and \lstinline|Sw|, which swaps its two arguments. Then, the $ x $-times iteration of the successor \lstinline|Su|, i.e. \lstinline|It Su|, is in parallel with \lstinline|Id 1|: that is why, one of the outputs of \lstinline|It Su| is $ z + x $. Finally, \lstinline|If Su (Id 1) Pr| selects which among \lstinline|Su|, \lstinline|Id 1|, and \lstinline|Pr| to apply to the argument $ y $, depending on the value of $ z+x $; in particular, \lstinline|Pr| is the function that computes the predecessor of the argument. Figure~\ref{fig:RPP-ev} will give the operational semantics which defines \lstinline|RPP| formally as a class of functions on $ \ZZ$, not on $ \NN $.
 \qeda
 \end{example}
 
@@ -257,7 +255,7 @@ We typically drop \lstinline|Id m| if it is the last function of a parallel comp
         w & = \begin{cases}
             y+1 & \textrm{if}\ z+x>0 \\
             y & \textrm{if}\ z+x=0 \\
-            y-1 & \textrm{if}\ z+z<0
+            y-1 & \textrm{if}\ z+x<0
         \end{cases}
         \enspace .
     \end{aligned}
@@ -283,8 +281,8 @@ We typically drop \lstinline|Id m| if it is the last function of a parallel comp
 \caption{Arity of every \lstinline|f: RPP|.}
 \label{fig:RPP-arity}
 \end{figure}
-
-The function in Figure~\ref{fig:RPP-arity} computes the arity of any \lstinline|f:RPP| from the structure of \lstinline|f|, once fixed the arities of the base functions.
+\noindent
+The function in Figure~\ref{fig:RPP-arity} computes the arity of any \lstinline|f:RPP| from the structure of \lstinline|f|, once fixed the arities of the base functions; \lstinline|f.arity| is \LEAN dialect for the more typical notation ``\lstinline|arity(f)|''.
 
 \begin{figure}
     \begin{subfigure}{.5\textwidth}
@@ -315,8 +313,8 @@ The function in Figure~\ref{fig:RPP-arity} computes the arity of any \lstinline|
     \caption{\lstinline|n|-ary identities are base functions of \lstinline|RPP|.}
     \label{fig:multiple-wires}
 \end{figure}
-
-Figure~\ref{fig:multiple-wires}, remarks that \lstinline|RPP| considers \lstinline|n|-ary identities \lstinline|Id n| as primitive; in original \RPP, \lstinline|Id n| is the parallel composition of \lstinline|n| unary identities.
+\noindent
+Figure~\ref{fig:multiple-wires}, remarks that \lstinline|RPP| considers \lstinline|n|-ary identities \lstinline|Id n| as primitive; in original \RPP, the function \lstinline|Id n| is obtained by parallel composition of \lstinline|n| unary identities.
 
 \begin{figure}
 \begin{lstlisting}
@@ -336,7 +334,7 @@ Figure~\ref{fig:multiple-wires}, remarks that \lstinline|RPP| considers \lstinli
 \label{fig:RPP-inv}
 \end{figure}
 
-For any given \lstinline|f:RPP|, the function \lstinline|inv| in Figure~\ref{fig:RPP-inv} builds an element with type \lstinline|RPP|. The definition of \lstinline|inv| let the successor \lstinline|Su| be inverse of the predecessor \lstinline|Pr| and let every other base function be self-dual.
+For any given \lstinline|f:RPP|, the function \lstinline|inv| in Figure~\ref{fig:RPP-inv} builds an element with type \lstinline|RPP|. The definition of \lstinline|inv| lets the successor \lstinline|Su| be inverse of the predecessor \lstinline|Pr| and let every other base function be self-dual.
 Moreover, the function \lstinline|inv| distributes over finite iteration \lstinline|It|, selection \lstinline|If|, and parallel composition \lstinline|‖|, while it requires to exchange the order of the arguments before distributing over the series composition \lstinline|;;|. The last line with \lstinline|notation| suggests that \lstinline|f⁻¹| is the inverse of \lstinline|f|. We shall prove it once given the operational semantics of \lstinline|RPP|.
 
 \begin{figure}
@@ -361,7 +359,7 @@ Moreover, the function \lstinline|inv| distributes over finite iteration \lstinl
 \end{figure}
 
 \paragraph{Operational semantics of {\normalfont \lstinline|RPP|}.}
-The function \lstinline|ev| in Figure~\ref{fig:RPP-ev} interprets an element of \lstinline|RPP| as a function from a list of integers to a list of integers. Originally, in \cite{DBLP:journals/tcs/PaoliniPR20}, \RPP is a class of functions with type $ \ZZ^n \rightarrow \ZZ^n $. We use \lstinline|list ℤ| in place of tuples of \lstinline|ℤ| to exploit  \LEAN library \MATHLIB to save a large amount of formalization.
+The function \lstinline|ev| in Figure~\ref{fig:RPP-ev} interprets an element of \lstinline|RPP| as a function from a list of integers to a list of integers. Originally, in \cite{DBLP:journals/tcs/PaoliniPR20}, \RPP is a class of functions with type $ \ZZ^n \rightarrow \ZZ^n $. We use \lstinline|list ℤ| in place of tuples of \lstinline|ℤ| to exploit  \LEAN library \MATHLIB and save a large amount of formalization.
 
 Let us give a look at the clauses in Figure~\ref{fig:RPP-ev}.
 \lstinline|Id n| leaves the input list \lstinline|X| untouched.
@@ -369,7 +367,7 @@ Let us give a look at the clauses in Figure~\ref{fig:RPP-ev}.
 \lstinline|Sw| is the transposition, or swap, that exchanges the first two elements of its argument.
 The series composition \lstinline|f;;g| first applies \lstinline|f| and then
 \lstinline|g|.
-The parallel composition \lstinline|f‖g| splits \lstinline|X| into two parts. The ``topmost'' one \lstinline|(take f.arity X)| has as many elements as the arity of \lstinline|f|; the ``lowermost'' one \lstinline|(drop f.arity X)| contains the part of \lstinline|X| that can supply the arguments to \lstinline|g|. Finally, it concatenates the two resulting lists by the append \lstinline|++|. Our new finite iteration
+The parallel composition \lstinline|f‖g| splits \lstinline|X| into two parts. The ``topmost'' one \lstinline|(take f.arity X)| has as many elements as the arity of \lstinline|f|; the ``lowermost'' one \lstinline|(drop f.arity X)| contains the part of \lstinline|X| that can supply the arguments to \lstinline|g|. Finally, it concatenates the two resulting lists by the append \lstinline|++|. Our \emph{new finite iteration}
 \lstinline|It f| iterates \lstinline|f| as many times as the value of the head \lstinline|x| of the argument, if \lstinline|x| contains a non negative value; otherwise it is the identity on the whole \lstinline|x::X|. This behavior is the meaning of \lstinline|(ev f)^[↓x]|.
 The selection \lstinline|If f g h| chooses one among \lstinline|f|, \lstinline|g|, and \lstinline|h|, depending on the argument head \lstinline|x|: it is \lstinline|g| with \lstinline|x = 0|, it is \lstinline|f| with \lstinline|x > 0|, and \lstinline|h| with \lstinline|x < 0|.
 The last line of Figure~\ref{fig:RPP-ev} sets a handy notation for \lstinline|ev|.
@@ -418,15 +416,15 @@ Some comments about two of the more challenging cases follow.
 %\lstinline|∀ (X : list ℤ), ‹g;;g⁻¹› X = X|.
 %\qedb
 
-\paragraph{Parallel composition.} Let \lstinline|f| be \lstinline|Pa|. The step-wise proof of \lstinline|inv_co_l| is:
+\paragraph{Parallel composition.} Let \lstinline|f| be some parallel composition, whose main constructor is \lstinline|Pa|. The step-wise proof of \lstinline|inv_co_l| is:
 \begin{lstlisting}
 ‹f‖g;;(f‖g)⁻¹› X
-     = ‹f‖g;;f⁻¹‖g⁻¹› X       -- by definition
- (!) = ‹(f;;f⁻¹)‖(g;;g⁻¹)› X  -- not obvious
-     = ‹f;;f⁻¹›(take f.arity X) ++ ‹g;;g⁻¹›(drop f.arity X)
-                              -- by definition
-     = take f.arity X ++ drop f.arity X -- by ind. hyp.
-     = X                      -- property of ++ (append),
+    = ‹f‖g;;f⁻¹‖g⁻¹› X       -- by definition
+(!) = ‹(f;;f⁻¹)‖(g;;g⁻¹)› X  -- lemma pa_co_pa, arity_inv below
+    = ‹f;;f⁻¹›(take f.arity X) ++ ‹g;;g⁻¹›(drop f.arity X)
+                             -- by definition
+    = take f.arity X ++ drop f.arity X -- by ind. hyp.
+    = X                      -- property of ++ (append),
 \end{lstlisting}
 where the equivalence \lstinline|(!)| holds because we can prove both:
 \begin{lstlisting}
@@ -437,7 +435,7 @@ lemma arity_inv (f : RPP) : f⁻¹.arity = f.arity .
 Proving \lstinline|lemma arity_inv|, i.e. that the arity of a function does not change if we invert it, assures that we can prove \lstinline|lemma pa_co_pa|, i.e. that series and parallel compositions smoothly distribute reciprocally.
 \qedb
 
-\paragraph{Iteration.} Let \lstinline|f| be \lstinline|It|.
+\paragraph{Iteration.} Let \lstinline|f| be a finite iterator whose main constructor is \lstinline|It|.
 In this case, the most complex goal to prove is \lstinline|‹It f;;It f⁻¹› x::X = x::X| which reduces to \lstinline|‹f⁻¹›^[↓x] (‹f›^[↓x] X') = X'|, where, we recall, the notation \lstinline|‹f›^[↓x]| means ``\lstinline|‹f›| applied \lstinline|x| times, if \lstinline|x| is positive''. Luckily this last statement is both formalized as \lstinline|function.left_inverse (g^[n]) (f^[n])|, and proven in the library \MATHLIB of \LEAN, where \lstinline|function.left_inverse| is the proposition \lstinline|∀ (g: β → α) (f: α → β) (x: α), g(f x) = x : Prop|, with \lstinline|α|, and \lstinline|β| generic types.
 \qedb
 
@@ -463,7 +461,7 @@ A less general, but semantically more appropriate version of  \lstinline|inv_co_
                 f.arity ≤ X.length → ‹f⁻¹ ;; f› X = X
 \end{lstlisting}
 because, recalling \textit{Remark}~\ref{remark:We keep the definition of ev simple}, \lstinline|f X| makes sense when \lstinline|f.arity ≤ X.length|.
-Fortunately, the way we defined \lstinline|RPP| allow us to state \lstinline|inv_co_l| or \lstinline|inv_co_r| in full generality
+Fortunately, the way we defined \lstinline|RPP| allows us to state \lstinline|inv_co_l| or \lstinline|inv_co_r| in full generality
 with no reference to \lstinline|f.arity ≤ X.length|.
 \qeda
 \end{remark}
@@ -999,7 +997,7 @@ Figure~\ref{fig: primrec} recalls from \cite{Carneiro-primrecMathlib} the defini
 \paragraph{Base functions.}
 The \emph{constant} function \lstinline|zero| yields \lstinline|0| on every of its inputs.
 The \lstinline|succ|\emph{essor} gives the natural number next to the one taken as input.
-The two \emph{projections} \lstinline|left|, and \lstinline|right| take an argument \lstinline|n|, and extract a left, or a right, component from it as \lstinline|n| was the result of pairing two values \lstinline|x,y:ℕ|. The functions that \lstinline|primrec| relies on to encode/decode pairs on natural numbers as a single natural one are \lstinline|mkpair:ℕ → ℕ → ℕ|, and \lstinline|unpair:ℕ → ℕ * ℕ|. The first one builds the value \lstinline|mkpair x y|, i.e. the number of steps from the origin to reach the point with coordinates \lstinline|(x,y)| in the path of Figure~\ref{sfig:mkpair}. The function \lstinline|unpair:ℕ → ℕ * ℕ| takes the number of steps to perform on the same path. Once it stops, the coordinates of that point are the two natural numbers we are looking for. So, \lstinline|makpair|/\lstinline|unpair| are an alternative to Cantor Pairing/Un-pairing.
+The two \emph{projections} \lstinline|left|, and \lstinline|right| take an argument \lstinline|n|, and extract a left, or a right, component from it as \lstinline|n| was the result of pairing two values \lstinline|x,y:ℕ|. The functions that \lstinline|primrec| relies on to encode/decode pairs on natural numbers as a single natural one are \lstinline|mkpair:ℕ → ℕ → ℕ|, and \lstinline|unpair:ℕ → ℕ * ℕ|. The first one builds the value \lstinline|mkpair x y|, i.e. the number of steps from the origin to reach the point with coordinates \lstinline|(x,y)| in the path of Figure~\ref{sfig:mkpair}. The function \lstinline|unpair:ℕ → ℕ * ℕ| takes the number of steps to perform on the same path. Once it stops, the coordinates of that point are the two natural numbers we are looking for. So, \lstinline|mkpair|/\lstinline|unpair| are an alternative to Cantor Pairing/Un-pairing.
 
 \paragraph{Composition schemes}.
 Three schemes exist, each depending on parameters \lstinline|f,g:primrec|.

@@ -19,14 +19,21 @@ The subject of this paper is understandable and it is important to provide a for
 
 Detailed comments:
 
+-------------------------------------------------
 p.3, Example 1,
 Please first explain the meaning of many unknown primitives, Id, Sw, It, Su, If, and Pr which will be explained very later in the paper. Do not leave it to the readers to guess their semantics.
+------------- AGGIUNTO COMMENTO "COSPICUO"
 
+-------------------------------------------------
 p.3, l.-5, "z+z" -> "z+x"
 The same typo is found also in p.4.
+------------- CORRETTI
 
+-------------------------------------------------
 p.4, l.-6, "f.arity"
 Explain this notation. Is it a synonym of "arity f"?
+------------ SPIEGATO
+
 
 p.6, l.4, "This behavior is the meaning of ..."
 Again, please give the semantics of "^" and "[\downarrow x]" formally.  It is difficult for the readers to guess them.
@@ -34,12 +41,16 @@ Again, please give the semantics of "^" and "[\downarrow x]" formally.  It is di
 p.6, Remark 2, "theorem ... "
 The condition "f.arity <= X.length" must be required in the statement of the "theorem" to be correct.
 
+-------------------------------------------------
 p.7, l.1, "Let f be Pa"
 Does it mean that "Let f be Pa h g with some h and g"? The constructor Pa requires two parameters to be an RPP f.
 This kind of typo is found also in the middle of the page.
+---------------- DOVREI AVERLI SISTEMATI ENTRAMBI
 
+-------------------------------------------------
 p.7, l.5,
 The calculation here implicitly assumes that the arity does not change by taking inversion for any RPPs. This fact should be described.
+---------------- IN REALTÀ È SPIEGATO, RICHIAMANDO ESPLICITAMENTE I LEMMI pa_co_pa e arity_inv. HO MODIFICATO IL COMMENTO ALLA LINEA (1) DELLA FIGURA RICHIAMANDONE L'USO
 
 p.8, l.2, "RPP"
 Two kinds of "RPP", a type in Lean or a class in the original proof, should be discriminated not only by the difference of their fonts which is quite subtle.  One of them should be renamed for clarity.
@@ -47,7 +58,9 @@ Two kinds of "RPP", a type in Lean or a class in the original proof, should be d
 p.9, l.3,
 Again, please do not leave the reader to guess an intuition of step[_]. Explain more details for what this common abstract scheme computes instead of just saying that a0,...,b0,... are place holders, which could be more specific, e.g., a0 = b0 = c1.
 
+-------------------------------------------------
 p.13, l.11, makpair -> mkpair
+------------- FATTO
 
 p.14, Fig.12(a),
 Is this code correct? It does not change the first component.
@@ -91,28 +104,49 @@ quotient/remainder of integer division) are defined and proved correct.
 
     Detailed comments
 
+---------------------------------------
 - p. 2, l. 6: what is z? Why is it needed? Also, you use overline to
   denote that x is a tuple, and bold for 0. Maybe using the same
   notation?
+------------------ FATTO, MI PARE MIGLIORANDO IL TUTTO.
 
+---------------------------------------
 - p. 3, l. 12: what is PR?
+-------- DOVREI AVER ELIMINATO IL NOME 'PR' PR PARTIAL RECURSIVE FUNCTIONS OVUNQUE
 
+---------------------------------------
 - p. 4, Fig. 1: why Pa for sequential composition?
+------- FATTO
 
+---------------------------------------
 - p. 4, Fig. 1: is it not the case that we can derive Pr from Ne and
   Su?
+------------------ IGNOREREI QUESTO COMMENTO
+
 
 - p. 4, Fig. 2: could you comment on the arity of It and If?
 
-- p. 5, l. -17: inv let -> inv lets
 
+---------------------------------------
+- p. 5, l. -17: inv let -> inv lets
+----------------- FATTO
+
+============================
 - p. 6, l. 5: is this ternary choice really needed? Or could you get
   the same expressive power with a binary choice?
+============= METTIAMO UN COMMENTO ALL'ESISTENZA DI ALTRI LINGUAGGI? IMMAGINIAMO DI RISPONDERE ALLA DOMANDA DURANTE LA PRESENTAZIONE? PROBABILMENTE SI PUÒ FARE LA STESSA SEMPLIFICAZIONE CHE HAI FATTO PER L'ITERAZIONE?
 
+---------------------------------------
 - p. 7, l. -2: RPP allow -> RPP allows
+----------------- FATTO
 
+
+============================
 - p. 8, l. 19: please avoid referencing footnotes from a formula, I
   started thinking with a cube power was needed here...
+------------------ QUASI QUASI TOGLIEREI IL footnote E BASTA!
+
+
 
 - p. 9, Fig. 6: I would use Addition instead of Increment (frequently
   used as +1) and Subtraction instead of Decrement (frequently used as
@@ -128,7 +162,9 @@ quotient/remainder of integer division) are defined and proved correct.
   rely on some pre-defined square root. Proving correctness using
   square would not rely on such pre-defined function
 
+---------------------------------------------
 - p. 12, l. 11: makpair -> mkpair
+------------- FATTO
 
 - p. 15, conclusion: could you comment on what would change if instead
   of Lean you would use some more well-known (as far as my limited
@@ -156,5 +192,8 @@ p1
 principles which Thermodynamics is based on, recognized the fundamental role
 that Reversible Computation can play to that purpose.'  Can this be clarified?  Does 'sensibility' mean 'soundness'?
 
+
+-------------------------------------------
 p13
 makpair -> mkpair
+------------- FATTO
