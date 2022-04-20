@@ -888,6 +888,12 @@ In Figure~\ref{sfig:cp input}, \lstinline|cp_in| is the natural algorithm in \ls
 \end{align*}
 We implement $ \operatorname{step}(x,y) $ in \lstinline|rpp| as \lstinline|step[Su;;Sw]|. Figures~\ref{sfig:cu step y > 0}, and~\ref{sfig:cu step y = 0} represent two runs of \lstinline|step[Su;;Sw]| to give visual evidence that \lstinline|step[Su;;Sw]| implements $\operatorname{step}(x,y)$. Colored occurrences of $ y $ show the relevant part of the computational flow. Note that we cannot implement $ \operatorname{step}(x,y) $ by using the conditional \lstinline|It| directly on $y$, because in the computation we also want to modify the value of $y$. Finally, as soon as we get \lstinline|cu_in| by iterating \lstinline|step[Su;;Sw]| as in Figure~\ref{sfig:cu input}, we can define \lstinline|cp| (Figure~\ref{sfig:cp}), and \lstinline|cu| (Figure~\ref{sfig:cu}).  \qed
 
+
+\begin{remark}
+Driven by need to write a simple reversible function \lstinline|cu_in⁻¹| able to collect the ``garbage'' input left by \lstinline|cp_in|, we ended up ignoring completely the analytical, and not so obvious, definition of $ \rppcu(n) $ in~\eqref{align: cu analitically}.
+\qeda
+\end{remark}
+
 \begin{figure}
     \begin{subfigure}{.475\linewidth}
         \centering
