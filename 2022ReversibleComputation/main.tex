@@ -131,7 +131,7 @@ Reversible Primitive Permutations (\RPP) are recursively defined functions desig
 \label{section:Introduction}
 Studies focused on questions posed by Maxwell, regarding the solidity of the principles which Thermodynamics is based on, recognized the fundamental role that Reversible Computation can play to that purpose.
 
-Once identified, it has been apparent that Reversible Computation constitutes the context in which to frame relevant aspects in areas of Computer Science; they can span from reversible hardware design which can offer a greener foot-print, as compared to classical hardware, to unconventional computational models --- we think to quantum or bio-inspired ones, for example ---, passing through parallel computation and the synchronization issues that it rises, or debuggers that help tracing back to the origin of a bug, or the consistent transactions roll-back in data-base management systems, just to name some. The book \cite{perumalla2013chc} is a comprehensive introduction to the subject; the book \cite{DBLP:books/daglib/0025734}, focused on the low-level aspects of Reversible Computation, concerning the realization of reversible hardware, and
+Once identified, it has been apparent that Reversible Computation constitutes the context in which to frame relevant aspects in areas of Computer Science; they can span from reversible hardware design which can offer a greener foot-print, as compared to classical hardware, to unconventional computational models --- we think of quantum or bio-inspired ones, for example ---, passing through parallel computation and the synchronization issues that it rises, or debuggers that help tracing back to the origin of a bug, or the consistent transactions roll-back in data-base management systems, just to name some. The book \cite{perumalla2013chc} is a comprehensive introduction to the subject; the book \cite{DBLP:books/daglib/0025734}, focused on the low-level aspects of Reversible Computation, concerning the realization of reversible hardware, and
 \cite{DBLP:series/eatcs/Morita17}, focused on how models of Reversible Computation like Reversible Turing Machines (RTM), and Reversible Cellular Automata (RCA) can be considered universal and how to prove that they enjoy such a property, are complementary to, and integrate \cite{perumalla2013chc}.
 
 This work focuses on the \emph{functional model} \RPP \cite{DBLP:journals/tcs/PaoliniPR20} of Reversible Computation.
@@ -139,8 +139,8 @@ This work focuses on the \emph{functional model} \RPP \cite{DBLP:journals/tcs/Pa
 We recall that \RPP, in analogy with \PRF, is defined as the smallest class built on some given basic reversible function, closed under suitable composition schemes.
 The very functional nature of the elements in \RPP is at the base of reasonably accessible proofs of the following properties:
 \begin{itemize}
-\item \RPP is \PRF-complete \cite{DBLP:journals/tcs/PaoliniPR20}: for every function $ F \in \PRF $ with arity $ n $, both $ m \in \NN $, and \lstinline|f| in \RPP exist such that \lstinline|f| encodes $ F $, i.e.
-$ \mbox{\lstinline|f(|}z,\overline{x},\overline{y}\mbox{\lstinline|) = (|}z+F(\overline{x}),\overline{x},\overline{y}\mbox{\lstinline|)|}$, for every $ \overline{x}\in \NN^n $, whenever all the variables in $ \overline{y} $ are set to the value $ 0 $.
+\item \RPP is \PRF-complete \cite{DBLP:journals/tcs/PaoliniPR20}: for every function $ F \in \PRF $ with arity $ n \in \NN $, both $ m \in \NN $ and \lstinline|f| in \RPP exist such that \lstinline|f| encodes $ F $, i.e.
+$ \mbox{\lstinline|f(|}z,\overline{x},\overline{y}\mbox{\lstinline|) = (|}z+F(\overline{x}),\overline{x},\overline{y}\mbox{\lstinline|)|}$, for every $ \overline{x}\in \NN^n $, whenever all the $m$ variables in $ \overline{y} $ are set to the value $ 0 $.
 Both $ z $ and the tuple $ \overline{y} $ are \emph{ancille}. They can be thought of as temporary storage for intermediate computations of the encoding.
 
 \item \RPP can be extended to become Turing-complete \cite{Paolini2018NGC} by means of a minimization scheme analogous to the one that extends \PRF to the Turing-complete class of \emph{Partial} Recursive Functions.
@@ -379,7 +379,7 @@ Based on our definition, we can apply any \lstinline|f:rpp| to any \lstinline|X:
 This is based on two observations: first, in \LEAN it holds:
 \begin{lstlisting}
     theorem ev_split (f: rpp) (X: list ℤ):
-    ‹f› X = ‹f› ((take f.arity X) ++ (drop f.arity X))
+    ‹f› X = (‹f› (take f.arity X)) ++ drop f.arity X
 \end{lstlisting}
 so that if \lstinline|X.length >= f.arity|, i.e. \lstinline|X| supplies enough arguments, then \lstinline|f| operates on the first elements of \lstinline|X| according to its arity. This justifies \textit{Remark}~\ref{remark:Weakening algorithms of RPP}.
 Second, if instead \lstinline|X.length < f.arity| holds, i.e. \lstinline|X| has not enough elements, \lstinline|f X| has an unspecified behavior; this might sound odd, but it simplifies the certified proofs of must-have properties of \lstinline|rpp|.
@@ -632,7 +632,7 @@ On top of the functions in Figures~\ref{fig:standard functions}, and~\ref{fig:fu
     \draw [->,red] (2,2) -- (3,1);
     \draw [->,red] (3,1) -- (4,0);
 \end{tikzpicture}
-\caption{Cantor.}
+\caption{Cantor}
 \label{sfig:cantor as a path}
 \end{subfigure}
 \hfill
@@ -688,7 +688,7 @@ On top of the functions in Figures~\ref{fig:standard functions}, and~\ref{fig:fu
 \draw [->,red] (2,2) -- (3,1);
 \draw [->,red] (3,1) -- (4,0);
 \end{tikzpicture}
-\caption{Square root.}
+\caption{Square root}
 \label{sfig:Square root}
 \end{subfigure}
 \hfill
@@ -948,7 +948,7 @@ cannot be inverted in $ \ZZ $, and the algorithm cannot forget it.
 
 \paragraph{The $\rppmkpair$ function.}
 Figure~\ref{sfig:mkpair} shows the behavior of the function $\rppmkpair$.
-It is is very similar to the one of $\rppcp$, but it uses an alternative algorithm described in \cite{Carneiro19}.
+It is very similar to the one of $\rppcp$, but it uses an alternative algorithm described in \cite{Carneiro19}.
 Here we do not describe it in detail because it's just a composition of sums, products and square roots,
 which have already been discussed.
 
@@ -1001,7 +1001,7 @@ Figure~\ref{fig: primrec} recalls the definition of \PRF from \cite{Carneiro-pri
 \paragraph{Base functions.}
 The \emph{constant} function \lstinline|zero| yields \lstinline|0| on every of its inputs.
 The \lstinline|succ|\emph{essor} gives the natural number next to the one taken as input.
-The two \emph{projections} \lstinline|left|, and \lstinline|right| take an argument \lstinline|n|, and extract a left, or a right, component from it as \lstinline|n| was the result of pairing two values \lstinline|x,y:ℕ|. The functions that \lstinline|primrec| relies on to encode/decode pairs on natural numbers as a single natural one are \lstinline|mkpair:ℕ → ℕ → ℕ|, and \lstinline|unpair:ℕ → ℕ * ℕ|. The first one builds the value \lstinline|mkpair x y|, i.e. the number of steps from the origin to reach the point with coordinates \lstinline|(x,y)| in the path of Figure~\ref{sfig:mkpair}. The function \lstinline|unpair:ℕ → ℕ * ℕ| takes the number of steps to perform on the same path. Once it stops, the coordinates of that point are the two natural numbers we are looking for. So, \lstinline|mkpair|/\lstinline|unpair| are an alternative to Cantor Pairing/Un-pairing.
+The two \emph{projections} \lstinline|left|, and \lstinline|right| take an argument \lstinline|n|, and extract a left, or a right, component from it as \lstinline|n| was the result of pairing two values \lstinline|x,y:ℕ|. The functions that \lstinline|primrec| relies on to encode/decode pairs on natural numbers as a single natural one are \lstinline|mkpair:ℕ → ℕ → ℕ|, and \lstinline|unpair:ℕ → ℕ × ℕ|. The first one builds the value \lstinline|mkpair x y|, i.e. the number of steps from the origin to reach the point with coordinates \lstinline|(x,y)| in the path of Figure~\ref{sfig:mkpair}. The function \lstinline|unpair:ℕ → ℕ × ℕ| takes the number of steps to perform on the same path. Once it stops, the coordinates of that point are the two natural numbers we are looking for. So, \lstinline|mkpair|/\lstinline|unpair| are an alternative to Cantor Pairing/Un-pairing.
 
 \paragraph{Composition schemes.}
 Three schemes exist in \lstinline|primrec|, each depending on parameters \lstinline|f,g:primrec|.
@@ -1014,7 +1014,7 @@ Let \lstinline|F|, \lstinline|G| be two elements of \lstinline|primrec|. We see 
 \begin{align}
 \label{align:function H}
 H[\mbox{\lstinline|F|},\mbox{\lstinline|G|}](x) & =
-R[\mbox{\lstinline|G|}]\big( (x)_1 , \mbox{\lstinline|F|} \big((x)_2\big) \big)
+R[\mbox{\lstinline|G|}]\big( \mbox{\lstinline|F|} \big((x)_1 \big) , (x)_2 \big)
 \end{align}
 where:
 (i) $(x)_1$ denotes \lstinline|(unpair| x\lstinline|).fst|,
@@ -1055,7 +1055,7 @@ Many aspects we here detail out were simply missing in the original \PRF-complet
 \end{remark}
 
 The inductive hypothesis to show that we can encode \lstinline|prec| is that, for any given \lstinline|F,G:ℕ → ℕ| such that \lstinline|(primrec F):Prop|, and \lstinline|(primrec G):Prop|, both \lstinline|f,g:rpp| exist such that \lstinline|(encode F f)|, and \lstinline|(encode G g)| hold. This means that
-$ \mbox{\lstinline|f|}\ z\mbox{\lstinline|::|}n\mbox{\lstinline|::|}\boldsymbol{0} =
+$ \mbox{\lstinline|f|}\ (z\mbox{\lstinline|::|}n\mbox{\lstinline|::|}\boldsymbol{0}) =
 (z+\mbox{\lstinline|F|}\ n)\mbox{\lstinline|::|}n\mbox{\lstinline|::|}\boldsymbol{0} $, and
 $ \mbox{\lstinline|g|}\ z\mbox{\lstinline|::|}n\mbox{\lstinline|::|}\boldsymbol{0} =
 (z+\mbox{\lstinline|G|}\ n)\mbox{\lstinline|::|}n\mbox{\lstinline|::|}\boldsymbol{0} $, where $ \boldsymbol{0} $ stands for a sufficiently long list of $ 0 $s.
@@ -1185,7 +1185,7 @@ The function \lstinline|cp| in Figure~\ref{sfig:cp} can replace \lstinline|mkpai
 \section{Conclusion and developments}
 \label{section:Conclusion and developments}
 We give a concrete example of reversible programming in a proof-assistant. We think it is a valuable operation because programming reversible algorithms is not as much wide-spread as classical iterative/recursive programming, in particular by means of a tool that allows us to certify the result.
-Other proof assistants have been considered, and in the fact the same theorems have also been proved in \COQ, but we found that the use of the \MATHLIB library together with the \lstinline|simp| tactic made our experience with \LEAN much smoother.
+Other proof assistants have been considered, and in fact the same theorems have also been proved in \COQ, but we found that the use of the \MATHLIB library together with the \lstinline|simp| tactic made our experience with \LEAN much smoother.
 Furthermore, our work can migrate to \LEANFour whose stable release is announced in the near future. \LEANFour exports its source code as efficient \CPP code \cite{2021-LEAN4-MouraUllrich}; our and other reversible algorithms can become efficient extensions of \LEANFour, or standalone, and \CPP applications.
 
 The most application-oriented obvious goal to mention is to keep developing a Reversible Computa\-tion-centered certified software stack, spanning from a programming formalism more friendly than \lstinline|rpp|, down to a certified emulator of \PISA, passing through compilator, and optimizer whose properties we can certify. For example, we can also think of endowing \PISA emulators with energy-consumption models linked to the entropy that characterize the reversible algorithms we program, or the \PISA object code we can generate from them.
