@@ -136,12 +136,12 @@ Once identified, it has been apparent that Reversible Computation constitutes th
 
 This work focuses on the \emph{functional model} \RPP \cite{DBLP:journals/tcs/PaoliniPR20} of Reversible Computation.
 \RPP stands for (the class of) Reversible Primitive Permutations, which can be seen as a possible reversible counterpart of \PRF, the class of Primitive Recursive functions \cite{rogers1967theory}.
-We recall that \RPP, in analogy with \PRF, is defined as the smallest class built on some given basic reversible function, closed under suitable composition schemes.
+We recall that \RPP, in analogy with \PRF, is defined as the smallest class built on some given basic reversible functions, closed under suitable composition schemes.
 The very functional nature of the elements in \RPP is at the base of reasonably accessible proofs of the following properties:
 \begin{itemize}
 \item \RPP is \PRF-complete \cite{DBLP:journals/tcs/PaoliniPR20}: for every function $ F \in \PRF $ with arity $ n \in \NN $, both $ m \in \NN $ and \lstinline|f| in \RPP exist such that \lstinline|f| encodes $ F $, i.e.
 $ \mbox{\lstinline|f(|}z,\overline{x},\overline{y}\mbox{\lstinline|) = (|}z+F(\overline{x}),\overline{x},\overline{y}\mbox{\lstinline|)|}$, for every $ \overline{x}\in \NN^n $, whenever all the $m$ variables in $ \overline{y} $ are set to the value $ 0 $.
-Both $ z $ and the tuple $ \overline{y} $ are \emph{ancille}. They can be thought of as temporary storage for intermediate computations of the encoding.
+Both $ z $ and the tuple $ \overline{y} $ are \emph{ancillae}. They can be thought of as temporary storage for intermediate computations of the encoding.
 
 \item \RPP can be extended to become Turing-complete \cite{Paolini2018NGC} by means of a minimization scheme analogous to the one that extends \PRF to the Turing-complete class of \emph{Partial} Recursive Functions.
 
@@ -395,30 +395,17 @@ Second, if instead \lstinline|X.length < f.arity| holds, i.e. \lstinline|X| has 
 \end{remark}
 
 %======================
-\subsection{The functions {\normalfont \lstinline|inv f|} and {\normalfont \lstinline|f|} are each other inverse}
+\subsection{The functions {\normalfont \lstinline|inv h|} and {\normalfont \lstinline|h|} are each other inverse}
 Once defined \lstinline|inv| in Figure~\ref{fig:RPP-inv} and \lstinline|ev| in Figure~\ref{fig:RPP-ev} we can prove:
 \begin{lstlisting}
-    theorem inv_co_l (f : rpp) (X : list ℤ) : ‹f ;; f⁻¹› X = X
-    theorem inv_co_r (f : rpp) (X : list ℤ) : ‹f⁻¹ ;; f› X = X
+    theorem inv_co_l (h : rpp) (X : list ℤ) : ‹h ;; h⁻¹› X = X
+    theorem inv_co_r (h : rpp) (X : list ℤ) : ‹h⁻¹ ;; h› X = X
 \end{lstlisting}
-certifying that \lstinline|f| and \lstinline|f⁻¹| are each other inverse.
-We start by focusing on the main details to prove \lstinline|theorem inv_co_l| in \LEAN. The proof proceeds by (structural) induction on \lstinline|f|, which generates 9 cases, one for each clause that defines \lstinline|rpp|. One can go through the majority of them smoothly.
+certifying that \lstinline|h| and \lstinline|h⁻¹| are each other inverse.
+We start by focusing on the main details to prove \lstinline|theorem inv_co_l| in \LEAN. The proof proceeds by (structural) induction on \lstinline|h|, which generates 9 cases, one for each clause that defines \lstinline|rpp|. One can go through the majority of them smoothly.
 Some comments about two of the more challenging cases follow.
 
-%\paragraph{Series composition.} Let \lstinline|f| be \lstinline|Co|. The step-wise proof of \lstinline|inv_co_l| is:
-%\begin{lstlisting}
-%‹(f;;g);;(f;;g)⁻¹› X
-%     = ‹f⁻¹›(‹g⁻¹›(‹g›(‹f› X))) -- by definition
-%     = ‹f⁻¹›(‹g;;g⁻¹ (‹f› X))   -- by a general ind. hyp.
-% (!) = ‹f⁻¹›(‹f› X)             -- by definition
-%     = ‹f;;f⁻¹› X               -- by a general ind. hyp.
-%     = X ,
-%\end{lstlisting}
-%where the equivalence \lstinline|(!)| holds thanks to the right inductive hypothesis on the behavior of \lstinline|g;;g⁻¹| that \emph{must} be
-%\lstinline|∀ (X : list ℤ), ‹g;;g⁻¹› X = X|.
-%\qedb
-
-\paragraph{Parallel composition.} Let \lstinline|f| be some parallel composition, whose main constructor is \lstinline|Pa|. The step-wise proof of \lstinline|inv_co_l| is:
+\paragraph{Parallel composition.} Let \lstinline|h| be some parallel composition, whose main constructor is \lstinline|Pa|. The step-wise proof of \lstinline|inv_co_l| is:
 \begin{lstlisting}
 ‹f‖g;;(f‖g)⁻¹› X
     = ‹f‖g;;f⁻¹‖g⁻¹› X       -- by definition
@@ -437,8 +424,9 @@ lemma arity_inv (f : rpp) : f⁻¹.arity = f.arity .
 Proving \lstinline|lemma arity_inv|, i.e. that the arity of a function does not change if we invert it, assures that we can prove \lstinline|lemma pa_co_pa|, i.e. that series and parallel compositions smoothly distribute reciprocally.
 \qedb
 
-\paragraph{Iteration.} Let \lstinline|f| be a finite iterator whose main constructor is \lstinline|It|.
-In this case, the most complex goal to prove is \lstinline|‹It f;;It f⁻¹› x::X = x::X| which reduces to \lstinline|‹f⁻¹›^[↓x] (‹f›^[↓x] X') = X'|, where, we recall, the notation \lstinline|‹f›^[↓x]| means ``\lstinline|‹f›| applied \lstinline|x| times, if \lstinline|x| is positive''. Luckily this last statement is both formalized as \lstinline|function.left_inverse (g^[n]) (f^[n])|, and proven in the library \MATHLIB of \LEAN, where \lstinline|function.left_inverse| is the proposition \lstinline|∀ (g: β → α) (f: α → β) (x: α), g(f x) = x : Prop|, with \lstinline|α|, and \lstinline|β| generic types.
+\paragraph{Iteration.} Let \lstinline|h| be a finite iterator whose main constructor is \lstinline|It|.
+The goal to prove is \lstinline|‹It f;;It f⁻¹› x::X = x::X| which reduces to \lstinline|‹f⁻¹›^[↓x] (‹f›^[↓x] X') = X'|, where, we recall, the notation \lstinline|‹f›^[↓x]| means ``\lstinline|‹f›| applied \lstinline|x| times, if \lstinline|x| is positive''. Luckily this last statement is both formalized as \lstinline|function.left_inverse g^[n] f^[n]|, available in the library \MATHLIB of \LEAN.
+%, where \lstinline|function.left_inverse g^[n] f^[n]| is the proposition \lstinline|∀ (x: α), g(f x) = x : Prop|, with \lstinline|α|, and \lstinline|β| generic types.
 \qedb
 
 \vspace{\baselineskip}
@@ -477,7 +465,7 @@ The definition of \lstinline|rpp| in \LEAN is really very close to the original 
     \item \lstinline|Id n|, for any \lstinline|n:ℕ|, is primitive in \lstinline|rpp| and derived in \RPP.
 %    In some cases it is useful to have \lstinline|Id 0| available.
 
-    \item Using \lstinline|list ℤ → list ℤ| as the domain of the function that interprets any given element \lstinline|f:rpp| avoids to let the type of \lstinline|f:rpp| depend on the arity of \lstinline|f|. To know the arity of \lstinline|f| it is enough to invoke \lstinline|arity f|. Finally, we observe that getting rid of a dependent type like, say, \lstinline|rpp n|, allows us to escape situations in which we would need to compare equal but not definitionally equal types like \lstinline|rpp (n+1)| and \lstinline|rpp (1+n)|.
+    \item Using \lstinline|list ℤ → list ℤ| as the domain of the function that interprets any given element \lstinline|f:rpp| avoids  letting the type of \lstinline|f:rpp| depend on the arity of \lstinline|f|. To know the arity of \lstinline|f| it is enough to invoke \lstinline|arity f|. Finally, we observe that getting rid of a dependent type like, say, \lstinline|rpp n|, allows us to escape situations in which we would need to compare equal but not definitionally equal types like \lstinline|rpp (n+1)| and \lstinline|rpp (1+n)|.
 
     \item The new finite iterator \lstinline|It f (x::t): list ℤ| \emph{subsumes} the finite iterators \lstinline|ItR| in \RPP, and \lstinline|for| in \SRL, i.e. \lstinline|It| is more primitive, equally expressive and
     simpler for \LEAN to prove that its definition is terminating.
