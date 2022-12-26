@@ -23,234 +23,418 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="0.6877385"
-     inkscape:cx="2082.1868"
-     inkscape:cy="419.49084"
+     inkscape:zoom="0.48630455"
+     inkscape:cx="1886.6778"
+     inkscape:cy="389.6735"
      inkscape:window-width="1366"
      inkscape:window-height="768"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer1" />
+     inkscape:current-layer="layer4"
+     inkscape:snap-global="false" />
   <defs
      id="defs2" />
   <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="Layer 4">
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke-width:0.600001;stroke-miterlimit:4;stroke-dasharray:3.6, 1.2;stroke-dashoffset:0"
+       id="rect43514"
+       width="351.90439"
+       height="175.43681"
+       x="355.97003"
+       y="29.860046"
+       ry="0"
+       inkscape:export-filename="/home/giack/Desktop/drawing.png"
+       inkscape:export-xdpi="144.36"
+       inkscape:export-ydpi="144.36" />
+  </g>
+  <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1"
+     style="display:inline;opacity:1">
     <rect
        id="rect31"
-       width="132.53284"
-       height="103.07733"
-       x="41.614594"
-       y="12.949567"
-       style="stroke-width:0.264583"
-       ry="4.3408179" />
+       width="176.03479"
+       height="159.79997"
+       x="368.95679"
+       y="37.671768"
+       style="opacity:0.529789;fill:#cce6f2;fill-opacity:1;stroke-width:0.404523"
+       ry="6.7614326" />
+    <rect
+       id="rect39464"
+       width="72.3601"
+       height="15.701657"
+       x="402.45297"
+       y="40.147621"
+       style="opacity:0.60027;fill:#a3d3e8;fill-opacity:1;stroke-width:0.404523"
+       ry="6.7614326" />
+    <rect
+       id="rect39568"
+       width="138.48457"
+       height="67.186363"
+       x="402.45297"
+       y="58.607399"
+       style="opacity:0.60027;fill:#a3d3e8;fill-opacity:1;stroke-width:0.404523"
+       ry="6.7614326" />
+    <rect
+       id="rect39674"
+       width="108.5948"
+       height="46.121613"
+       x="428.93649"
+       y="75.636063"
+       style="opacity:1;fill:#81c1df;fill-opacity:1;stroke-width:0.404523"
+       ry="6.7614326" />
+    <rect
+       style="opacity:1;fill:#81c1df;fill-opacity:1;stroke-width:0.600001;stroke-miterlimit:4;stroke-dasharray:3.6, 1.2;stroke-dashoffset:0"
+       id="rect39698"
+       width="19.269827"
+       height="11.269246"
+       x="428.76797"
+       y="60.138245"
+       ry="5.6346231" />
+    <rect
+       id="rect42866"
+       width="138.48457"
+       height="67.186363"
+       x="402.45297"
+       y="126.90183"
+       style="opacity:0.60027;fill:#a3d3e8;fill-opacity:1;stroke-width:0.404523"
+       ry="6.7614326" />
+    <rect
+       id="rect42868"
+       width="108.5948"
+       height="46.121613"
+       x="428.93649"
+       y="143.9305"
+       style="opacity:1;fill:#81c1df;fill-opacity:1;stroke-width:0.404523"
+       ry="6.7614326" />
+    <rect
+       style="opacity:1;fill:#81c1df;fill-opacity:1;stroke-width:0.600001;stroke-miterlimit:4;stroke-dasharray:3.6, 1.2;stroke-dashoffset:0"
+       id="rect42870"
+       width="19.269827"
+       height="11.269246"
+       x="428.76797"
+       y="128.43268"
+       ry="5.6346231" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Layer 2"
+     style="display:inline">
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="381.30219"
-       y="49.613209"
+       x="406.17862"
+       y="50.80336"
        id="text2065"><tspan
          sodipodi:role="line"
          id="tspan2063"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:0.264583"
-         x="381.30219"
-         y="49.613209">list_append</tspan></text>
+         x="406.17862"
+         y="50.80336">list_append</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="343.22592"
-       y="49.420853"
+       x="375.70483"
+       y="50.80336"
        id="text4183"><tspan
          sodipodi:role="line"
          id="tspan4181"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:0.264583"
-         x="343.22592"
-         y="49.420853">comp</tspan></text>
+         x="375.70483"
+         y="50.80336">comp</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="382.45032"
-       y="76.402"
+       x="406.01987"
+       y="68.989754"
        id="text5483"><tspan
          sodipodi:role="line"
          id="tspan5481"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:0.264583"
-         x="382.45032"
-         y="76.402">comp</tspan></text>
+         x="406.01987"
+         y="68.989754">comp</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="427.6438"
-       y="75.63858"
+       x="432.47348"
+       y="69.065247"
        id="text5487"><tspan
          sodipodi:role="line"
          id="tspan5485"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:0.264583"
-         x="427.6438"
-         y="75.63858">hf</tspan></text>
+         x="432.47348"
+         y="69.065247">hf</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="427.6438"
-       y="93.16716"
+       x="431.82791"
+       y="84.6231"
        id="text6939"><tspan
          sodipodi:role="line"
          id="tspan6937"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:0.264583"
-         x="427.6438"
-         y="93.16716">comp</tspan></text>
+         x="431.82791"
+         y="84.6231">comp</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="456.23593"
-       y="93.16716"
+       x="463.86215"
+       y="85.205185"
        id="text7782"><tspan
          sodipodi:role="line"
          id="tspan7780"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:0.264583"
-         x="456.23593"
-         y="93.16716">list_take</tspan></text>
+         x="463.86215"
+         y="85.205185">list_take</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="456.23593"
-       y="106.73588"
+       x="463.70343"
+       y="101.96954"
        id="text8934"><tspan
          sodipodi:role="line"
          id="tspan8932"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:0.264583"
-         x="456.23593"
-         y="106.73588">const f.arity</tspan></text>
+         x="463.70343"
+         y="101.96954">const f.arity</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="456.23593"
-       y="120.3091"
+       x="464.349"
+       y="119.02493"
        id="text9040"><tspan
          sodipodi:role="line"
          id="tspan9038"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:0.264583"
-         x="456.23593"
-         y="120.3091">primrec.id</tspan></text>
+         x="464.349"
+         y="119.02493">primrec.id</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="382.45032"
-       y="142.24988"
+       x="406.01987"
+       y="135.76289"
        id="text9536"><tspan
          sodipodi:role="line"
          id="tspan9534"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:0.264583"
-         x="382.45032"
-         y="142.24988">comp</tspan></text>
+         x="406.01987"
+         y="135.76289">comp</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="427.6438"
-       y="141.48647"
+       x="432.47348"
+       y="136.04329"
        id="text9540"><tspan
          sodipodi:role="line"
          id="tspan9538"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:0.264583"
-         x="427.6438"
-         y="141.48647">hg</tspan></text>
+         x="432.47348"
+         y="136.04329">hg</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="427.6438"
-       y="159.01505"
+       x="431.82791"
+       y="153.05603"
        id="text9544"><tspan
          sodipodi:role="line"
          id="tspan9542"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:0.264583"
-         x="427.6438"
-         y="159.01505">comp</tspan></text>
+         x="431.82791"
+         y="153.05603">comp</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="456.23593"
-       y="159.01505"
+       x="463.86215"
+       y="153.13573"
        id="text9548"><tspan
          sodipodi:role="line"
          id="tspan9546"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:0.264583"
-         x="456.23593"
-         y="159.01505">list_drop</tspan></text>
+         x="463.86215"
+         y="153.13573">list_drop</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="456.23593"
-       y="172.58376"
+       x="463.70343"
+       y="170.19112"
        id="text9552"><tspan
          sodipodi:role="line"
          id="tspan9550"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:0.264583"
-         x="456.23593"
-         y="172.58376">const f.arity</tspan></text>
+         x="463.70343"
+         y="170.19112">const f.arity</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="456.23593"
-       y="186.15698"
+       x="464.349"
+       y="187.24651"
        id="text9556"><tspan
          sodipodi:role="line"
          id="tspan9554"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:0.264583"
-         x="456.23593"
-         y="186.15698">primrec.id</tspan></text>
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:3.6, 1.2;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 460.79694,47.910546 111.17964,0"
-       id="path12782"
-       sodipodi:nodetypes="cc" />
+         x="464.349"
+         y="187.24651">primrec.id</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="580.19232"
+       x="574.67706"
        y="50.887577"
        id="text13761"><tspan
          sodipodi:role="line"
          id="tspan13759"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:0.264583"
-         x="580.19232"
+         x="574.67706"
          y="50.887577">primrec<tspan
    style="font-size:65%;baseline-shift:sub"
    id="tspan27687">2</tspan> list.append</tspan></text>
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:3.6, 1.2;stroke-dashoffset:0;stroke-opacity:1"
-       d="M 460.79694,73.439293 H 571.97658"
-       id="path29493"
-       sodipodi:nodetypes="cc" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="580.19232"
-       y="74.605591"
+       x="574.67706"
+       y="67.865791"
        id="text29499"><tspan
          sodipodi:role="line"
          id="tspan29497"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:0.264583"
-         x="580.19232"
-         y="74.605591">primrec ‹f›</tspan></text>
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:3.6, 1.2;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 517.06001,90.261559 h 54.59046"
-       id="path31154"
-       sodipodi:nodetypes="cc" />
+         x="574.67706"
+         y="67.865791">primrec ‹f›</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="580.19232"
-       y="91.44796"
+       x="574.67706"
+       y="84.780502"
        id="text31297"><tspan
          sodipodi:role="line"
          id="tspan31295"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:0.264583"
-         x="580.19232"
-         y="91.44796">primrec<tspan
+         x="574.67706"
+         y="84.780502">primrec<tspan
    style="font-size:65%;baseline-shift:sub"
    id="tspan31293">2</tspan> list.take</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="574.67706"
+       y="102.48244"
+       id="text32424"><tspan
+         sodipodi:role="line"
+         id="tspan32422"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:0.264583"
+         x="574.67706"
+         y="102.48244">primrec (λ l, f.arity)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="574.67706"
+       y="119.46065"
+       id="text35662"><tspan
+         sodipodi:role="line"
+         id="tspan35660"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:0.264583"
+         x="574.67706"
+         y="119.46065">primrec (λ l, l)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="574.67706"
+       y="135.5511"
+       id="text36701"><tspan
+         sodipodi:role="line"
+         id="tspan36699"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:0.264583"
+         x="574.67706"
+         y="135.5511">primrec ‹g›</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="574.67706"
+       y="152.56638"
+       id="text36709"><tspan
+         sodipodi:role="line"
+         id="tspan36707"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:0.264583"
+         x="574.67706"
+         y="152.56638">primrec<tspan
+   style="font-size:65%;baseline-shift:sub"
+   id="tspan36705">2</tspan> list.drop</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="574.67706"
+       y="170.2683"
+       id="text36715"><tspan
+         sodipodi:role="line"
+         id="tspan36713"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:0.264583"
+         x="574.67706"
+         y="170.2683">primrec (λ l, f.arity)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="574.67706"
+       y="187.24651"
+       id="text36719"><tspan
+         sodipodi:role="line"
+         id="tspan36717"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:0.264583"
+         x="574.67706"
+         y="187.24651">primrec (λ l, l)</tspan></text>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="Layer 3"
+     style="display:inline">
+    <path
+       style="display:inline;fill:none;stroke:#000000;stroke-width:0.6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:3.6, 1.2;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 479.7015,48.669081 92.59468,0"
+       id="path12782"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="display:inline;fill:none;stroke:#000000;stroke-width:0.6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:3.6, 1.2;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 452.23132,65.6947 120.06486,0"
+       id="path29493"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="display:inline;fill:none;stroke:#000000;stroke-width:0.6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:3.6, 1.2;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 518.78164,82.720312 53.51454,0"
+       id="path31154"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="display:inline;fill:none;stroke:#000000;stroke-width:0.6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:3.6, 1.2;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 539.3055,99.745934 32.99068,0"
+       id="path32281"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="display:inline;fill:none;stroke:#000000;stroke-width:0.6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:3.6, 1.2;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 523.43137,116.77155 h 48.86481"
+       id="path36558"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="display:inline;fill:none;stroke:#000000;stroke-width:0.6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:3.6, 1.2;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 453.89524,133.79716 118.40094,0"
+       id="path36697"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="display:inline;fill:none;stroke:#000000;stroke-width:0.6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:3.6, 1.2;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 518.79014,150.82277 53.50604,0"
+       id="path36703"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="display:inline;fill:none;stroke:#000000;stroke-width:0.6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:3.6, 1.2;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 539.23006,167.84839 33.06612,0"
+       id="path36711"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="display:inline;fill:none;stroke:#000000;stroke-width:0.6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:3.6, 1.2;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 525.48066,184.87402 46.81552,0"
+       id="path36721"
+       sodipodi:nodetypes="cc" />
   </g>
 </svg>
