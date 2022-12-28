@@ -60,6 +60,8 @@
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
 \definecolor{backcolour}{rgb}{0.96,0.96,0.96}
+%%%%% Supplies \sout to suggest text erasure, together with comments in some colored text
+\usepackage[normalem]{ulem}
 
 \usepackage{graphicx}
 
@@ -168,13 +170,13 @@ We recall that a proof-assistant is an integrated environment to formalize data-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paragraph{Contributions}
-We show how to express \RPP and its evaluation mechanism inside the proof-assistant \LEAN \cite{Lean3}. We can certify the correctness of every reversible function of \RPP with respect to a given specification which also means certifying that \RPP is \PRF-complete, the main result in \cite{DBLP:journals/tcs/PaoliniPR20}. In more detail:
+We show how to express \RPP and its evaluation mechanism inside the proof-assistant \LEAN \cite{Lean3}. We can certify the correctness of every reversible function of \RPP with respect to a given specification which \textcolor{purple}{\sout{also means certifying that \RPP is \PRF-complete, the main result in \cite{DBLP:journals/tcs/PaoliniPR20}}}. \textcolor{blue}{means certifying all the main results in \cite{DBLP:journals/tcs/PaoliniPR20}. } In more detail:
 \begin{itemize}
     \item We give a strong guarantee that \RPP is \PRF-complete in three macro steps. We exploit that in \LEAN \MATHLIB library, \PRF is proved equivalent to a class of recursive \emph{unary} functions called \lstinline|primrec|. We define a data-type \lstinline|rpp| in \LEAN to represent \RPP. Then, we certify that, for any function \lstinline|f:primrec|, i.e. any unary \lstinline|f| with type \lstinline|primrec| in \LEAN, a function exists with type \lstinline|rpp| that encodes \lstinline|f:primrec|. Apart from fixing some bugs, our proof is fully detailed as compared to \cite{DBLP:journals/tcs/PaoliniPR20}. Moreover it's conceptually and technically simpler.
 
-    \item We also verify that the opposite holds: each \RPP is expressable as \PRF, thus proving that the two classes of functions have the same expressivity. Again, for the proof of this fact we exploit the definitions and theorems in \MATHLIB concerning primitive recursive functions.
+    \item \textcolor{blue}{We also give a strong guarantee that \RPP is \PRF-sound} \textcolor{purple}{\sout{We also verify that the opposite holds}}: each \RPP is expressible as \PRF, thus \textcolor{blue}{completing the work in \cite{MalettoR22} by} proving that the two classes of functions have the same expressivity. Again, for the proof of this fact we exploit the definitions and theorems in \MATHLIB concerning primitive recursive functions.
 
-    \item Concerning simplification, it follows from how the elements in \lstinline|primrec| work, and, additionally, it is characterized by the following aspects:
+    \item Concerning simplification, it follows from how the elements in \lstinline|primrec| work\textcolor{purple}{\sout{, and, additionally, it}} \textcolor{blue}{. It} is characterized by the following aspects:
     \begin{itemize}
         \item we define a \emph{new} finite reversible iteration scheme subsuming the reversible iteration schemes in \RPP, and \SRL, but which is more primitive;
 
@@ -190,15 +192,17 @@ We show how to express \RPP and its evaluation mechanism inside the proof-assist
 \paragraph{Related work}
 Concerning the formalization in a proof-assistant of the semantics, and its properties, of a formalism for Reversible Computation, we are aware of \cite{paoliniTYPES2015}. By means of the proof-assistant \Matita \cite{Asperti2007}, it certifies that a denotational semantics for the imperative reversible programming language \Janus \cite[Section 8.3.3]{perumalla2013chc} is fully abstract with respect to the operational semantics.
 
-Concerning \emph{functional models} of Reversible Computation, we are aware of \cite{jacopini89tcs} which introduces the class of reversible functions \JMF, which is as expressive as the \emph{Partial} Recursive Functions. So, \JMF is stronger than \RPP, however we see \JMF as less abstract than \RPP for two reasons: (i) the primitive functions of \JMF depend on a given specific binary representation of natural numbers; (ii) unlike \RPP, which we can see as \PRF in a reversible setting, it is not evident to us that \JMF can be considered the natural extension of a total class analogous to \RPP.
+Concerning \emph{functional models} of Reversible Computation, we are aware of \cite{jacopini89tcs} which introduces the class of reversible functions \JMF, which is as expressive as the \emph{Partial} Recursive Functions. So, \JMF is stronger than \RPP; however we see \JMF as less abstract than \RPP for two reasons: (i) the primitive functions of \JMF depend on a given specific binary representation of natural numbers; (ii) unlike \RPP, which we can see as \PRF in a reversible setting, it is not evident to us that \JMF can be considered the natural extension of a total class analogous to \RPP.
+
+\textcolor{blue}{Finally, this work, starting from relevant parts of the BSc Thesis \cite{MalettoBSc2021}, which comes with \cite{MalettoRPPLEAN2021}, a \LEAN project that certifies both properties, and algorithms of \RPP, strictly extends \cite{MalettoR22} by certifying that every function in \RPP can be represented by a function of \PRF.}
 
 %---------------------
 \paragraph{Contents}
-This work illustrates the relevant parts of the BSc Thesis \cite{MalettoBSc2021} which comes with \cite{MalettoRPPLEAN2021}, a \LEAN project that certifies properties, and algorithms of \RPP.
+\textcolor{purple}{\sout{This work illustrates the relevant parts of the BSc Thesis \cite{MalettoBSc2021} which comes with \cite{MalettoRPPLEAN2021}, a \LEAN project that certifies properties, and algorithms of \RPP.}}
 Section~\ref{section:Reversible Primitive Permutations} recalls the class \RPP by commenting on the main design aspects that characterize its definition inside \LEAN.
 Section~\ref{section:RPP algorithms} defines and proves correct new reversible algorithms central to the proof.
 Section~\ref{section:The UPRF-completeness of RPP} recalls the main aspects of \lstinline|primrec|, and illustrates the key steps to port the original \PRF-completeness proof of \RPP to \LEAN.
-Section~\ref{section:Each RPP is PRF} shows how we used the constructs present in the \MATHLIB library to prove that each \RPP is primitive recursive.
+Section~\ref{section:Each RPP is PRF} shows how we used the constructs present in the \MATHLIB library to prove \textcolor{purple}{\sout{that each \RPP is primitive recursive}} \textcolor{blue}{the \PRF-soundness of \RPP}.
 Section~\ref{section:Conclusion and developments} is about possible developments.
 
 %=====================
@@ -1226,7 +1230,7 @@ We analyse the case of parallel composition \lstinline|f ‖ g|: given \lstinlin
 
 \begin{lstlisting}
 lemma rpp_pa {f g : rpp} (hf : primrec ‹f›) (hg : primrec ‹g›) :
-    primrec ‹f ‖ g› 
+    primrec ‹f ‖ g›
 \end{lstlisting}
 
 By definition, we have that for each \lstinline|l : list ℤ|,
