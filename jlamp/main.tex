@@ -20,6 +20,8 @@
 \SetSymbolFont{stmry}{bold}{U}{stmry}{m}{n}
 \newtheorem{fact}{Fact}[section]
 \theoremstyle{remark}
+%\newdefinition{remark}{Remark}
+%\newdefinition{example}{Example}
 \newtheorem{remark}{Remark}
 \newtheorem{example}{Example}
 \usepackage{latexsym}
@@ -232,11 +234,12 @@ Section~\ref{section:Conclusion and developments} is about possible developments
 \end{figure}
 
 We use the data-type \lstinline|rpp| in Figure~\ref{fig:RPP-LEAN}, as defined in \LEAN, to recall from \cite{DBLP:journals/tcs/PaoliniPR20} that the class \RPP is the smallest class of functions
-that contains five base functions, named as in the definition, and all the functions that we can generate by the composition schemes whose name is next to the corresponding clause in Figure~\ref{fig:RPP-LEAN}. For ease of use and readability the last two lines in Figure~\ref{fig:RPP-LEAN} introduce infix notations for series and parallel compositions.
+that contains five base functions, named as in in Figure~\ref{fig:RPP-LEAN}, and all the functions that we can generate by the composition schemes whose name is next to the corresponding clause in Figure~\ref{fig:RPP-LEAN}. For ease of use and readability the last two lines in Figure~\ref{fig:RPP-LEAN} introduce infix notations for series and parallel composition.
 
-\begin{example}[A  term of type {\normalfont \lstinline|rpp|}]
+
+\begin{example}[A term of type \texttt{rpp}]
 \label{example:A first legal term of type RPP}
-In \lstinline|rpp| we can write \lstinline|(Id 1‖Sw);;(It Su)‖(Id 1);;(Id 1‖If Su (Id 1) Pr)| which we also represent as a diagram. Its inputs are the names to the left of the blocks. The outputs are to their right:
+In \lstinline|rpp| we can write \lstinline|(Id 1‖Sw);;(It Su)‖(Id 1);;(Id 1‖If Su (Id 1) Pr)| which we also represent as a diagram:
 \scalebox{}{.85}{
 \[
 \begin{NiceMatrix}
@@ -246,21 +249,24 @@ y&\bloch{2-1}{\mbox{\lstinline|Sw|}}&z& &z+x&\bloch{2-1}{\mbox{\lstinline|If Su 
 \\
 z&&y&\bloch{1-1}{\mbox{\lstinline|Id 1|}}&y&& w
 \end{NiceMatrix}
-\qquad
-\begin{aligned}
-w & = \begin{cases}
- y+1 & \textrm{if}\ z+x>0 \\
-   y & \textrm{if}\ z+x=0 \\
- y-1 & \textrm{if}\ z+x<0
-\end{cases}
-\enspace .
-\end{aligned}
+\enspace ,
 \]}
-We have just built a series composition of three parallel compositions.
-The first one composes a unary identity \lstinline|Id 1|, which leaves its unique input untouched, and \lstinline|Sw|, which swaps its two arguments. Then, the $ x $-times iteration of the successor \lstinline|Su|, i.e. \lstinline|It Su|, is in parallel with \lstinline|Id 1|: that is why, one of the outputs of \lstinline|It Su| is $ z + x $. Finally, \lstinline|If Su (Id 1) Pr| selects which among \lstinline|Su|, \lstinline|Id 1|, and \lstinline|Pr| to apply to the argument $ y $, depending on the value of $ z+x $; in particular, \lstinline|Pr| is the function that computes the predecessor of the argument. Figure~\ref{fig:RPP-ev} will give the operational semantics which defines \lstinline|rpp| formally as a class of functions on $ \ZZ$, not on $ \NN $.
+where:
+$$ \begin{aligned}
+    w & = \begin{cases}
+        y+1 & \textrm{if}\ z+x>0 \\
+        y & \textrm{if}\ z+x=0 \\
+        y-1 & \textrm{if}\ z+x<0
+    \end{cases}
+\enspace .
+\end{aligned} $$
+\textcolor{blue}{The inputs are the names to the left-hand side of the blocks; the outputs are to their right-hand side.}
+\textcolor{blue}{The term here above is} a series composition of three parallel compositions.
+The first one composes a unary identity \lstinline|Id 1|, which leaves its unique input untouched, and \lstinline|Sw|, which swaps its two arguments. Then, the $ x $-times iteration of the successor \lstinline|Su|, i.e. \lstinline|It Su|, is in parallel with \lstinline|Id 1|: that is why one of the outputs of \lstinline|It Su| is $ z + x $. Finally, \lstinline|If Su (Id 1) Pr| selects which among \lstinline|Su|, \lstinline|Id 1|, and \lstinline|Pr| to apply to the argument $ y $, depending on the value of $ z+x $; in particular, \lstinline|Pr| is the function that computes the predecessor of the argument. Figure~\ref{fig:RPP-ev} will give the operational semantics which defines \lstinline|rpp| formally as a class of functions on $ \ZZ$, not on $ \NN $.
+\qed
 \end{example}
 
-\begin{remark}[``Weak weakening'' of algorithms in {\normalfont \lstinline|rpp|}]
+\begin{remark}[``Weak weakening'' of algorithms in \texttt{rpp}]
 \label{remark:Weakening algorithms of RPP}
 %We can certify that \lstinline|(f‖(Id m)) X = f X|, but not
 %\lstinline|((Id m)‖f) X = f X|, for any $ \lstinline|X| $.
@@ -272,17 +278,21 @@ We typically drop \lstinline|Id m| if it is the last function of a parallel comp
         \\
         z&&y&&y&& w
     \end{NiceMatrix}
-    \qquad
-    \begin{aligned}
-        w & = \begin{cases}
-            y+1 & \textrm{if}\ z+x>0 \\
-            y & \textrm{if}\ z+x=0 \\
-            y-1 & \textrm{if}\ z+x<0
-        \end{cases}
-        \enspace .
-    \end{aligned}
+    \enspace ,
 \]
+where:
+$$
+\begin{aligned}
+    w & = \begin{cases}
+        y+1 & \textrm{if}\ z+x>0 \\
+        y & \textrm{if}\ z+x=0 \\
+        y-1 & \textrm{if}\ z+x<0
+    \end{cases}
+    \enspace .
+\end{aligned}
+$$
 \textit{Remark}~\ref{remark:We keep the definition of ev simple} explains why.
+\qed
 \end{remark}
 
 \begin{figure}
@@ -379,38 +389,49 @@ Moreover, the function \lstinline|inv| distributes over finite iteration \lstinl
 \label{fig:RPP-ev}
 \end{figure}
 
-\paragraph{Operational semantics of {\normalfont \lstinline|rpp|}}
+\subsection{Operational semantics of {\normalfont \lstinline|rpp|}}
 The function \lstinline|ev| in Figure~\ref{fig:RPP-ev} interprets an element of \lstinline|rpp| as a function from a list of integers to a list of integers. Originally, in \cite{DBLP:journals/tcs/PaoliniPR20}, \RPP is a class of functions with type $ \ZZ^n \rightarrow \ZZ^n $. We use \lstinline|list ℤ| in place of tuples of \lstinline|ℤ| to exploit  \LEAN library \MATHLIB and save a large amount of formalization.
 
 Let us give a look at the clauses in Figure~\ref{fig:RPP-ev}.
-\lstinline|Id n| leaves the input list \lstinline|X| untouched.
-\lstinline|Ne| ``negates'', i.e. takes the opposite sign of, the head of the list, \lstinline|Su| increments, and \lstinline|Pr| decrements it.
+
+The function \lstinline|Id n| leaves the input list \lstinline|X| untouched.
+\lstinline|Ne| ``negates'', i.e.\@ takes the opposite sign of, the head of the list, while \lstinline|Su| increments, and \lstinline|Pr| decrements it.
 \lstinline|Sw| is the transposition, or swap, that exchanges the first two elements of its argument.
 The series composition \lstinline|f;;g| first applies \lstinline|f| and then
 \lstinline|g|.
-The parallel composition \lstinline|f‖g| splits \lstinline|X| into two parts. The ``topmost'' one \lstinline|(take f.arity X)| has as many elements as the arity of \lstinline|f|; the ``lowermost'' one \lstinline|(drop f.arity X)| contains the part of \lstinline|X| that can supply the arguments to \lstinline|g|. Finally, it concatenates the two resulting lists by the append \lstinline|++|. Our \emph{new finite iteration}
-\lstinline|It f| iterates \lstinline|f| as many times as the value of the head \lstinline|x| of the argument, if \lstinline|x| contains a non negative value; otherwise it is the identity on the whole \lstinline|x::X|. This behavior is the meaning of \lstinline|(ev f)^[↓x]|.
+The parallel composition \lstinline|f‖g| splits \lstinline|X| into two parts. The ``topmost'' one \lstinline|(take f.arity X)| has as many elements as the arity of \lstinline|f|; the ``lowermost'' one \lstinline|(drop f.arity X)| contains the part of \lstinline|X| that can supply the arguments to \lstinline|g|. Finally, it concatenates the two resulting lists by the append \lstinline|++|.
+
+\vspace{\baselineskip}
+\noindent
+\textcolor{blue}{\emph{Finite iteration}} \lstinline|It f| \textcolor{blue}{is new:}
+\begin{itemize}
+    \item it iterates \lstinline|f| as many times as the value of the head \lstinline|x| of the argument, if \lstinline|x| contains a non negative value;
+    \item otherwise it is the identity on the whole \lstinline|x::X|.
+\end{itemize}
+We denote this behavior by means of \lstinline|(ev f)^[↓x]|.
+
+\vspace{\baselineskip}
+\noindent
 The selection \lstinline|If f g h| chooses one among \lstinline|f|, \lstinline|g|, and \lstinline|h|, depending on the argument head \lstinline|x|: it is \lstinline|g| with \lstinline|x = 0|, it is \lstinline|f| with \lstinline|x > 0|, and \lstinline|h| with \lstinline|x < 0|.
 The last line of Figure~\ref{fig:RPP-ev} sets a handy notation for \lstinline|ev|.
 
-\begin{remark}[We keep the definition of {\normalfont \lstinline|ev|} simple]
+\begin{remark}[We want to keep the definition of \texttt{ev} simple]
 \label{remark:We keep the definition of ev simple}
-Based on our definition, we can apply any \lstinline|f:rpp| to any \lstinline|X:list ℤ|.
-This is based on two observations: first, in \LEAN it holds:
+\textcolor{blue}{Ho ristrutturato il remark abbastanza ``pesantemente''. Vedi se ti piace.}
+
+Based on our definition, using \LEAN, we show that:
 \begin{lstlisting}
     theorem ev_split (f: rpp) (X: list ℤ):
     ‹f› X = (‹f› (take f.arity X)) ++ drop f.arity X
 \end{lstlisting}
-so that if \lstinline|X.length >= f.arity|, i.e. \lstinline|X| supplies enough arguments, then \lstinline|f| operates on the first elements of \lstinline|X| according to its arity. This justifies \textit{Remark}~\ref{remark:Weakening algorithms of RPP}.
-Second, if instead \lstinline|X.length < f.arity| holds, i.e. \lstinline|X| has not enough elements, \lstinline|f X| has an unspecified behavior; this might sound odd, but it simplifies the certified proofs of must-have properties of \lstinline|rpp|.
-%This is possible because we can prove:
-%\begin{lstlisting}
-%    lemma ev_length (f: RPP) (X: list ℤ): (‹f› X).length = X.length
-%    theorem ev_split (f: RPP) (X: list ℤ):
-%    ‹f› X = ‹f›(take f.arity X) ++ drop f.arity X .
-%\end{lstlisting}
-%\lstinline|lemma ev_length| says that \lstinline|rpp| functions preserve the argument length.
-%One of the most complex property to prove correct, i.e. \lstinline|theorem ev_split|, says that we can apply any \lstinline|‹f›| to \emph{any} \lstinline|X| with at least as many elements as \lstinline|arity f|.
+holds. It is one of the most complex property to prove because it essentially says that we can apply any \lstinline|‹f›| to \emph{any} \lstinline|X| with at least as many elements as \lstinline|arity f|.
+
+The proof is based on two observations.
+
+First, if \lstinline|X.length >= f.arity|, i.e.\@ \lstinline|X| supplies enough arguments, then \lstinline|f| operates on the first elements of \lstinline|X| according to its arity. This justifies \textit{Remark}~\ref{remark:Weakening algorithms of RPP}.
+
+Second, if \lstinline|X.length < f.arity| holds, i.e.\@ \lstinline|X| has not enough elements, then \lstinline|f X| has an unspecified behavior; this might sound odd, but it simplifies the certified proofs of must-have properties of \lstinline|rpp|.
+\qed
 \end{remark}
 
 %======================
@@ -440,7 +461,7 @@ lemma pa_co_pa (f f' g g' : rpp) (X : list ℤ) :
   f.arity = f'.arity → ‹f‖g ;; f'‖g'› X = ‹(f;;f') ‖ (g;;g')› X ,
 lemma arity_inv (f : rpp) : f⁻¹.arity = f.arity .
 \end{lstlisting}
-Proving \lstinline|lemma arity_inv|, i.e. that the arity of a function does not change if we invert it, assures that we can prove \lstinline|lemma pa_co_pa|, i.e. that series and parallel compositions smoothly distribute reciprocally.
+Proving \lstinline|lemma arity_inv|, i.e. that the arity of a function does not change if we invert it, assures that we can prove \lstinline|lemma pa_co_pa|, i.e.\@ that series and parallel compositions smoothly distribute reciprocally.
 
 \paragraph{Iteration} Let \lstinline|h| be a finite iterator whose main constructor is \lstinline|It|.
 The goal to prove is \lstinline|‹It f;;It f⁻¹› x::X = x::X| which reduces to \lstinline|‹f⁻¹›^[↓x] (‹f›^[↓x] X') = X'|, where, we recall, the notation \lstinline|‹f›^[↓x]| means ``\lstinline|‹f›| applied \lstinline|x| times, if \lstinline|x| is positive''. Luckily this last statement is both formalized as \lstinline|function.left_inverse g^[n] f^[n]|, available in the library \MATHLIB of \LEAN.
@@ -476,20 +497,30 @@ with no reference to \lstinline|f.arity ≤ X.length|.
 \subsection{Changes from the original definition}
 The definition of \lstinline|rpp| in \LEAN is really very close to the original \RPP, but not identical. The goal is to simplify the overall task of formalization and certification. The brief list of changes follows.
 \begin{itemize}
-    \item As already outlined, \lstinline|It| and \lstinline|If| use the head of the input list to iterate or choose: taking the head of a list with pattern matching is obvious. In \cite{DBLP:journals/tcs/PaoliniPR20}, the last element in the input tuple drives iteration and selection of \RPP.
+    \item As already outlined, \lstinline|It| and \lstinline|If| use the head of the input list to iterate or choose: taking the head of a list with pattern matching is obvious. In \cite{DBLP:journals/tcs/PaoliniPR20}, it is the last element in the input tuple that drives iteration and selection of \RPP.
 
     \item \lstinline|Id n|, for any \lstinline|n:ℕ|, is primitive in \lstinline|rpp| and derived in \RPP.
 %    In some cases it is useful to have \lstinline|Id 0| available.
 
     \item Using \lstinline|list ℤ → list ℤ| as the domain of the function that interprets any given element \lstinline|f:rpp| avoids  letting the type of \lstinline|f:rpp| depend on the arity of \lstinline|f|. To know the arity of \lstinline|f| it is enough to invoke \lstinline|arity f|. Finally, we observe that getting rid of a dependent type like, say, \lstinline|rpp n|, allows us to escape situations in which we would need to compare equal but not definitionally equal types like \lstinline|rpp (n+1)| and \lstinline|rpp (1+n)|.
 
-    \item The new finite iterator \lstinline|It f (x::t): list ℤ| \emph{subsumes} the finite iterators \lstinline|ItR| in \RPP, and \lstinline|for| in \SRL, i.e. \lstinline|It| is more primitive, equally expressive and
-    simpler for \LEAN to prove that its definition is terminating.
+    \item The new finite iterator \lstinline|It f (x::t): list ℤ| \emph{subsumes} the finite iterators \lstinline|ItR| in \RPP, and \lstinline|for| in \SRL. This means that \lstinline|It| is more primitive, but equally expressive and simpler for \LEAN to prove that its definition is terminating.
 
-    We recall that \lstinline|ItR f (x₀,x₁,...,xₙ₋₂,x)| evaluates to \lstinline|f(f(...f(x₀,x₁,...,xₙ₋₂)...))| with $ \mid\!\!\mbox{\lstinline|x|}\!\!\mid $ occurrences of \lstinline|f|.
-    Instead, \lstinline|for(f) x| evaluates to \lstinline|f(f(...f(x₀,x₁,...,xₙ₋₂)...))|, with \lstinline|x| occurrences of \lstinline|f|, if \lstinline|x > 0|; it evaluates to \lstinline|f⁻¹(f⁻¹(...f⁻¹(x₀,x₁,...,xₙ₋₂)...))|, with \lstinline|-x| occurrences of \lstinline|f⁻¹|, if \lstinline|x < 0|; it behaves like the identity if \lstinline|x = 0|.
+    \textcolor{blue}{More specifically, } we recall that:
+    \begin{itemize}
+        \item \lstinline|ItR f (x₀,x₁,...,xₙ₋₂,x)| simply evaluates to \lstinline|f(f(...f(x₀,x₁,...,xₙ₋₂)...))| with $ \mid\!\!\mbox{\lstinline|x|}\!\!\mid $ occurrences of \lstinline|f|;
 
-    We can define both \lstinline|ItR| and \lstinline|for| in terms of \lstinline|It|:
+        \item \lstinline|for(f) x| is slightly more complex:
+        \begin{enumerate}
+            \item it evaluates to \lstinline|f(f(...f(x₀,x₁,...,xₙ₋₂)...))|, with \lstinline|x| occurrences of \lstinline|f|, if \lstinline|x > 0|;
+
+            \item it evaluates to \lstinline|f⁻¹(f⁻¹(...f⁻¹(x₀,x₁,...,xₙ₋₂)...))|, with \lstinline|-x| occurrences of \lstinline|f⁻¹|, if \lstinline|x < 0|;
+
+            \item it behaves like the identity if \lstinline|x = 0|.
+        \end{enumerate}
+    \end{itemize}
+
+    We know how to define both \lstinline|ItR| and \lstinline|for| in terms of \lstinline|It|:
     \begin{align}
     \label{align:It ItR}
         \mbox{\lstinline|ItR f|}
@@ -505,6 +536,7 @@ The definition of \lstinline|rpp| in \LEAN is really very close to the original 
     \label{example:How align:It ItR works}
     Whenever \lstinline|x > 0|, the leftmost \lstinline|It f| in \eqref{align:It ItR} iterates \lstinline|f|, while the rightmost one does nothing because \lstinline|Ne| in the middle negates \lstinline|x|.
     On the contrary, if \lstinline|x < 0|, the leftmost \lstinline|It f| does nothing and the iteration is performed by the rightmost iteration, because \lstinline|Ne| in the middle negates \lstinline|x|. In both cases, the last \lstinline|Ne| restores \lstinline|x| to its initial sign. But this is the behavior of \lstinline|ItR|, as we wanted.
+    \qed
     \end{example}
 \end{itemize}
 
