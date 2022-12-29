@@ -488,7 +488,7 @@ A less general, but semantically more appropriate version of  \lstinline|inv_co_
     theorem inv_co_r (f : rpp) (X : list ℤ) :
                 f.arity ≤ X.length → ‹f⁻¹ ;; f› X = X
 \end{lstlisting}
-because, recalling \textit{Remark}~\ref{remark:We keep the definition of ev simple}, \lstinline|f X| makes sense when \lstinline|f.arity ≤ X.length|.
+because, recalling \textit{Remark}~\ref{remark:We keep the definition of ev simple}, the application \lstinline|(f X)| makes sense when \lstinline|f.arity ≤ X.length|.
 Fortunately, the way we defined \lstinline|rpp| allows us to state \lstinline|inv_co_l| or \lstinline|inv_co_r| in full generality
 with no reference to \lstinline|f.arity ≤ X.length|.
 \end{remark}
@@ -579,16 +579,23 @@ The definition of \lstinline|rpp| in \LEAN is really very close to the original 
 }\caption{Multiplication \lstinline|mul|}
 \label{sfig:mul}
 \end{subfigure}
-\\
+\\ \\ \\
 \begin{subfigure}{.6\textwidth}
 \centering
 \scalebox{.8}
 {$\begin{NiceMatrix}
-    n &  \bloch{1-1}{\mbox{\lstinline|Id 1|}}  & n & \bloch{2-1}{\mbox{\lstinline|inc|}} & n & \bloch{3-1}{\mbox{\lstinline|mul|}} & n             & \bloch{2-1}{\mbox{\lstinline|dec|}} & n             & \bloch{1-1}{\mbox{\lstinline|Id 1|}}   & n
-    \\
-    x & \bloch{2-1}{\mbox{\lstinline|Sw|}} & 0 &   & n &                      & n             &                      & 0             & \bloch{2-1}{\mbox{\lstinline|Sw|}} & x + n \cdot n
-    \\
-    0 &                     & x &   & x &                      & x + n \cdot n &   \      & x + n \cdot n &                     & 0
+n&\bloch{1-1}{\mbox{\lstinline|Id 1|}}
+  &n
+   &\bloch{2-1}{\mbox{\lstinline|inc|}}
+    &n
+     &\bloch{3-1}{\mbox{\lstinline|mul|}}
+      &n
+       &\bloch{2-1}{\mbox{\lstinline|dec|}}
+        &n
+         &\bloch{1-1}{\mbox{\lstinline|Id 1|}}
+          &n\\
+x&\bloch{2-1}{\mbox{\lstinline|Sw|}}&0&&n&&n&&0&\bloch{2-1}{\mbox{\lstinline|Sw|}}&x+n^2\\
+0&&x&&x&&x+n^2&&x+n^2&& 0
 \end{NiceMatrix}$
 }
 \caption{\lstinline|square|}
@@ -615,13 +622,16 @@ The definition of \lstinline|rpp| in \LEAN is really very close to the original 
 \footnotetext{Note that using our definition, the variable \lstinline|n| must be non-negative in order to have the shown behavior,
 otherwise the function acts as the identity. This is why it's called {\it increment} and not {\it addition}.}
 
-Figure~\ref{fig:standard functions} recalls definition, and behavior of some \lstinline|rpp| functions in \cite{DBLP:journals/tcs/PaoliniPR20}. It is worth commenting on how rewiring $ \rpprewire{i_0 \ldots i_n} $ works. Let $\{ i_0, \dots, i_n \} \subseteq \{ 0, \dots, m \}$. Let $\{ j_1, \dots, j_{m-n} \}$ be the set of remaining indices $\{ 0, \dots, m \} \setminus \{ i_0, \dots, i_n \}$ ordered such that $j_k < j_{k+1}$.
-By definition, $\rpprewire{i_0, \dots, i_n} (x_0, \dots, x_m) = (x_{i_0}, \dots, x_{i_n},$ $x_{j_1}, \dots, x_{j_{m-n}})$, i.e. rewiring brings every input with index in $ \{ i_0, \dots,  i_n \} $ before all the remaining inputs, preserving the order.
+Figure~\ref{fig:standard functions} recalls definition, and behavior of some \lstinline|rpp| functions already introduced in \cite{DBLP:journals/tcs/PaoliniPR20}.
 
-Figure~\ref{fig:function scheme step} identifies the new algorithm scheme \lstinline|step[_]|. Depending on how we fill the hole \lstinline|[_]|, we get step functions that, once iterated, draw paths in $ \NN^2 $.
+\textcolor{blue}{It is worth commenting on how the function \emph{rewiring} $ \rpprewire{i_0 \ldots i_n} $ works. Let $\{ i_0, \dots, i_n \} \subseteq \{ 0, \dots, m \}$, and $\{ j_1, \dots, j_{m-n} \} = \{ 0, \dots, m \} \setminus \{ i_0, \dots, i_n \}$ which we assume such that $j_k < j_{k+1}$, for every $ 1 \leq k < m-n $.}
+By definition, $\rpprewire{i_0, \dots, i_n} (x_0, \dots, x_m) = (x_{i_0}, \dots, x_{i_n},$ $x_{j_1}, \dots, x_{j_{m-n}})$, i.e.\@ rewiring brings every input with index in $ \{ i_0, \dots,  i_n \} $ in front of all the inputs with index in $\{ j_1, \dots, j_{m-n} \}$, preserving the order.
+
+\subsection{The algorithm scheme {\normalfont \texttt{step[\_]}}}
+Figure~\ref{fig:function scheme step} identifies the \emph{new algorithm scheme} \lstinline|step[_]|. Depending on how we fill the hole \lstinline|[_]|, we get step functions that, once iterated, draw paths in $ \NN^2 $.
 %The names $ a_0, \ldots, b_0, \ldots $ are just place holders, currently.
 
-On top of the functions in Figures~\ref{fig:standard functions}, and~\ref{fig:function scheme step} we build Cantor Pairing/Un-pairing, Quotient/Reminder of integer division, and truncated Square Root. It is enough to make the correct instance of \lstinline|step[_]| in order to visit $ \NN^2 $ as in Figures~\ref{sfig:cantor as a path}, \ref{sfig:Quot./Rem.}, and~\ref{sfig:Square root}, respectively. The alternative pairing $\rppmkpair$ has a more complex definition, and is a necessary ingredient for the main proof.
+On top of the functions in Figures~\ref{fig:standard functions}, and~\ref{fig:function scheme step} we build Cantor Pairing/Un-pairing, Quotient/Reminder of integer division, and truncated Square Root. \textcolor{blue}{Suitable instances of \lstinline|step[_]| allow us to visit $ \NN^2 $ as in Figures~\ref{sfig:cantor as a path}, \ref{sfig:Quot./Rem.}, and~\ref{sfig:Square root}, respectively. The pairing function $\rppmkpair$, which behaves as in Figure~\ref{sfig:mkpair}, and which is an alternative to Cantor Pairing/Unpairing, has a more complex definition; it will be a necessary ingredient of our main proof.}
 
 \begin{figure}
     \centering
@@ -777,7 +787,8 @@ On top of the functions in Figures~\ref{fig:standard functions}, and~\ref{fig:fu
 \end{figure}
 
 
-\paragraph{Cantor (Un-)Pairing}. The standard definition of Cantor Pairing $\rppcp : \NN^2 \to \NN$ and Un-pairing $\rppcu : \NN \to \NN^2$, two bijections one inverse of the other, is:
+\paragraph{Cantor (Un-)Pairing}
+The standard definition of Cantor Pairing $\rppcp : \NN^2 \to \NN$ and Un-pairing $\rppcu : \NN \to \NN^2$, two bijections one inverse of the other, is:
 \begin{align}
 \label{align: cp analitically}
 \rppcp(x,y) & = \sum_{i=1}^{x+y}i + x = \frac{(x + y)(x + y + 1)}{2} + x
@@ -808,7 +819,7 @@ where $i = \left\lfloor \frac{\sqrt{8n + 1} - 1}{2} \right\rfloor $.
     \caption{Function \lstinline|cp_in|}
     \label{sfig:cp input}
 \end{subfigure}
-\\
+\\ \\ \\
 \begin{subfigure}{.975\textwidth}
 \centering
 \scalebox{.55}{
@@ -836,7 +847,7 @@ where $i = \left\lfloor \frac{\sqrt{8n + 1} - 1}{2} \right\rfloor $.
 \caption{Function \lstinline|step[Su;;Sw]|: detailed behavior with $ \yb > 0 $. }
 \label{sfig:cu step y > 0}
 \end{subfigure}
-\\
+\\ \\ \\
 \begin{subfigure}{.975\textwidth}
 \centering
 \scalebox{.55}{
@@ -866,7 +877,7 @@ $\begin{NiceMatrix}
 \caption{Function \lstinline|step[Su;;Sw]|: detailed behavior with $ \yr = 0 $. }
 \label{sfig:cu step y = 0}
 \end{subfigure}
-\\
+\\ \\ \\
 \begin{subfigure}{.975\textwidth}
 \centering
 \scalebox{.82}{
@@ -882,7 +893,7 @@ $\begin{NiceMatrix}
 \caption{Function \lstinline|cu_in|}
 \label{sfig:cu input}
 \end{subfigure}
-\\
+\\ \\ \\
 \begin{subfigure}{.665\textwidth}
     \centering
 \scalebox{.82}{
@@ -911,19 +922,19 @@ $\begin{NiceMatrix}
 \caption{The function \lstinline|cu|}
 \label{sfig:cu}
 \end{subfigure}
-\caption{Cantor Pairing and Un-pairing.}
+\caption{Cantor Pairing and Un-pairing.  \textcolor{blue}{Qui sopra, la sottofigura (c) ha un'istanza di \texttt{step[Su;;Sw]} diversa da quella della sottofigura (b). Il primo argomento sia della prima, sia della terza, selezione di (c) non sono invertiti?}}
 \label{fig:Cantor}
 \end{figure}
 
 Figure~\ref{fig:Cantor} has all we need to define Cantor Pairing \lstinline|cp:rpp|, and Un-pairing \lstinline|cu:rpp|.
-In Figure~\ref{sfig:cp input}, \lstinline|cp_in| is the natural algorithm in \lstinline|rpp| to implement~\eqref{align: cp analitically}. As expected, the input pair $(x,y)$ is part of \lstinline|cp_in| output. The suffix ``\lstinline|in|'' in the name ``recalls'' exactly this aspect. In order to drop $(x,y)$ from the output of \lstinline|cp_in|, and obtain \lstinline|cp| as in Figure~\ref{sfig:cp}, applying {\it Bennet's trick}, we need \lstinline|cu_in⁻¹|, i.e. the inverse of \lstinline|cu_in| which is new, as compared to \cite{DBLP:journals/tcs/PaoliniPR20}. The intuition behind \lstinline|cu_in| is as follows. Let us fix any point $ (x, y) \in \NN^2 $. We can realize that, starting from the origin, if we follow as many steps as the value $ \rppcp(x, y) $ in Figure~\ref{sfig:cantor as a path}, we stop exactly at $ (x,y) $. The function, expressed in standard functional notation, that, given the current point $ (x,y) $, identifies the next one to move to in the path of Figure~\ref{sfig:cantor as a path} is:
+In Figure~\ref{sfig:cp input}, \lstinline|cp_in| is the natural algorithm in \lstinline|rpp| to implement~\eqref{align: cp analitically}. As expected, the input pair $(x,y)$ is part of \lstinline|cp_in| output \textcolor{blue}{, feature that the suffix ``\lstinline|in|'' recalls in the name of the function}. In order to drop $(x,y)$ from the output of \lstinline|cp_in|, and to obtain \lstinline|cp| as in Figure~\ref{sfig:cp}, \textcolor{blue}{we apply {\it Bennett's trick} using \lstinline|cu_in⁻¹|, i.e.\@ the inverse of \lstinline|cu_in|, whose definition is completely new, as compared to the corresponding one, define in \cite{DBLP:journals/tcs/PaoliniPR20}}. The intuition behind \lstinline|cu_in| is as follows. Let us fix any point $ (x, y) \in \NN^2 $. We can realize that, starting from the origin, if we follow as many steps as the value $ \rppcp(x, y) $ in Figure~\ref{sfig:cantor as a path}, we stop exactly at $ (x,y) $. A standard functional notation for the function that, given the current point $ (x,y) $, identifies the next one to move to in the path of Figure~\ref{sfig:cantor as a path} is:
 \begin{align*}
 %    \label{align:next function}
     \operatorname{step}(x,y) & =
     \begin{cases} (x+1,y-1) &  y > 0 \\ (0, x+1) &   y = 0 \end{cases}
     \enspace .
 \end{align*}
-We implement $ \operatorname{step}(x,y) $ in \lstinline|rpp| as \lstinline|step[Su;;Sw]|. Figures~\ref{sfig:cu step y > 0}, and~\ref{sfig:cu step y = 0} represent two runs of \lstinline|step[Su;;Sw]| to give visual evidence that \lstinline|step[Su;;Sw]| implements $\operatorname{step}(x,y)$. Colored occurrences of $ y $ show the relevant part of the computational flow. Note that we cannot implement $ \operatorname{step}(x,y) $ by using the conditional \lstinline|It| directly on $y$, because in the computation we also want to modify the value of $y$. Finally, as soon as we get \lstinline|cu_in| by iterating \lstinline|step[Su;;Sw]| as in Figure~\ref{sfig:cu input}, we can define \lstinline|cp| (Figure~\ref{sfig:cp}), and \lstinline|cu| (Figure~\ref{sfig:cu}).
+We implement $ \operatorname{step}(x,y) $ in \lstinline|rpp| as \lstinline|step[Su;;Sw]|. Figures~\ref{sfig:cu step y > 0}, and~\ref{sfig:cu step y = 0} represent two runs of \lstinline|step[Su;;Sw]| to give visual evidence that \lstinline|step[Su;;Sw]| implements $\operatorname{step}(x,y)$. Colored occurrences of $ y $ show the relevant part of the computational flow. Note that we cannot implement $ \operatorname{step}(x,y) $ by using the conditional \textcolor{blue}{sostituire l'originario\lstinline|It| con \lstinline|If|?}  directly on $y$, because in the computation we also want to modify the value of $y$. Finally, as soon as we get \lstinline|cu_in| by iterating \lstinline|step[Su;;Sw]| as in Figure~\ref{sfig:cu input}, we can define \lstinline|cp| (Figure~\ref{sfig:cp}), and \lstinline|cu| (Figure~\ref{sfig:cu}).
 
 \begin{figure}
     \begin{subfigure}{.475\linewidth}
@@ -965,7 +976,7 @@ Let us focus on the path in Figure~\ref{sfig:Quot./Rem.}.
 It starts at $(0,n)$ (with $ n = 4 $), and, at every step, the next point is in \emph{direction} $(+1,-1)$. When it reaches $(n,0)$ (with $ n = 4 $), instead of jumping to $(0,n+1)$, as in Figure~\ref{sfig:cantor as a path}, it lands again on $(0,n)$. The idea is to keep looping on the same diagonal. This behavior can be achieved by iterating \lstinline|step[Sw‖Su]|. Figure~\ref{sfig:div} shows that we are doing modular arithmetic.
 Globally, it takes $n+1$ steps from $ (0,n) $ to itself by means of \lstinline|step[Sw‖Su]|.
 Specifically, if we assume we have performed $m$ steps along the diagonal, and we are at point $ (x,y) $, we have that $x \equiv m \pmod{n+1}$ and $0 \le x \le n$.
-So, if we increase a counter by one each time we get back to $(0,n)$ we can calculate quotient and reminder.
+So, if we increase a counter by one each time we reset our position to $(0,n)$ we can calculate quotient and reminder.
 
 %====================
 \paragraph{Truncated Square root}
@@ -984,24 +995,26 @@ cannot be inverted in $ \ZZ $, and the algorithm cannot forget it.
 Figure~\ref{sfig:mkpair} shows the behavior of the function $\rppmkpair$.
 It is very similar to the one of $\rppcp$, but it uses an alternative algorithm described in \cite{Carneiro19}.
 Here we do not describe it in detail because it's just a composition of sums, products and square roots,
-which have already been discussed.
+just discussed here above.
 
-\paragraph{A note on the mechanization of proofs}
-We recall once more that everything defined here above has been proved correct in \LEAN.
-For example, in \cite{MalettoRPPLEAN2021}, one can define as we did the \lstinline|rpp| term \lstinline|sqrt| and prove its behavior:
+\subsection{A note on the mechanization of proofs}
+We recall once more that everything defined here above has been proved correct in \LEAN (see \cite{MalettoRPPLEAN2021} for the details).
+\textcolor{blue}{For example, once defined \lstinline|sqrt| in \LEAN, the following lemma:}
 \begin{lstlisting}
 lemma sqrt_def (n : ℕ) (X : list ℤ) :
  ‹sqrt›(n::0::0::0::0::X) =
            n::(n-√n*√n)::(√n+√n-(n-√n*√n))::0::√n::X
 \end{lstlisting}
-In order to prove these theorems we make use of a {\it tactic} (which is a command used to build proofs)
-known as \lstinline|simp|, which is able to automatically simplify expressions
-until one gets a trivial identity. What is meant by simplify, is that theorems which state an equality like $LHS = RHS$ (e.g. \lstinline|sqrt_def|)
-can be marked with the attribute \lstinline|@[simp]|, which means that everytime the \lstinline|simp| tactic is invoked in another proof,
-if the equality to be proved has the expression $LHS$ then it will be substituted with $RHS$, often making it simpler.
+\textcolor{blue}{shows that \lstinline|sqrt| behaves as expected, for any \lstinline|n|.}
 
-This technique is really powerful, because it makes it possible to essentially automate many proofs of theorems which in turn can be marked with \lstinline|@[simp]|
-and be used to prove yet more theorems.
+In order to prove the here above lemma, or similar ones, we make use of the {\it tactic} \lstinline|simp|, i.e.\@ a \LEAN command that builds proofs. The tactic \lstinline|simp| can automatically simplify expressions until trivial identities show up. \textcolor{blue}{What is meant by ``simplify'' is that theorems which state an equality with form \texttt{Left\_hand\_side = Right\_hand\_side}, like in \lstinline|sqrt_def|,  can be marked with the attribute \lstinline|@[simp]|; the very useful consequence is that every time \lstinline|simp| is invoked in subsequent proof, if the equality to be proved is \texttt{Left\_hand\_side}, then it will be substituted with \texttt{Right\_hand\_side}, often making it simpler to conclude a proof.}
+
+\textcolor{purple}{\sout{This technique is really powerful, because it makes it possible to essentially automate many proofs of theorems which in turn can be marked with \lstinline|@[simp]|
+and be used to prove yet more theorems.}}
+
+\textcolor{blue}{So, \lstinline|@[simp]| introduces an incremental and quite handy mechanism to automate proofs: the more available proofs exists, the more we can, in principle, label as \lstinline|@[simp]|, widening the possibility to automatically proove further properties.}
+
+
 
 %=====================
 \section{Proving in \LEAN that \RPP is \PRF-complete}
