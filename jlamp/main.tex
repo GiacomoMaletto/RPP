@@ -786,7 +786,6 @@ On top of the functions in Figures~\ref{fig:standard functions}, and~\ref{fig:fu
 \label{fig:functions as paths}
 \end{figure}
 
-
 \paragraph{Cantor (Un-)Pairing}
 The standard definition of Cantor Pairing $\rppcp : \NN^2 \to \NN$ and Un-pairing $\rppcu : \NN \to \NN^2$, two bijections one inverse of the other, is:
 \begin{align}
@@ -1001,9 +1000,9 @@ just discussed here above.
 We recall once more that everything defined here above has been proved correct in \LEAN (see \cite{MalettoRPPLEAN2021} for the details).
 \textcolor{blue}{For example, once defined \lstinline|sqrt| in \LEAN, the following lemma:}
 \begin{lstlisting}
-lemma sqrt_def (n : ℕ) (X : list ℤ) :
- ‹sqrt›(n::0::0::0::0::X) =
-           n::(n-√n*√n)::(√n+√n-(n-√n*√n))::0::√n::X
+   lemma sqrt_def (n : ℕ) (X : list ℤ) :
+     ‹sqrt›(n::0::0::0::0::X) =
+              n::(n-√n*√n)::(√n+√n-(n-√n*√n))::0::√n::X
 \end{lstlisting}
 \textcolor{blue}{shows that \lstinline|sqrt| behaves as expected, for any \lstinline|n|.}
 
@@ -1012,14 +1011,14 @@ In order to prove the here above lemma, or similar ones, we make use of the {\it
 \textcolor{purple}{\sout{This technique is really powerful, because it makes it possible to essentially automate many proofs of theorems which in turn can be marked with \lstinline|@[simp]|
 and be used to prove yet more theorems.}}
 
-\textcolor{blue}{So, \lstinline|@[simp]| introduces an incremental and quite handy mechanism to automate proofs: the more available proofs exists, the more we can, in principle, label as \lstinline|@[simp]|, widening the possibility to automatically proove further properties.}
+\textcolor{blue}{So, \lstinline|@[simp]| introduces an incremental and quite handy mechanism to automate proofs: the more available proofs exist, the more we can, in principle, label as \lstinline|@[simp]|, widening the possibility to automatically prove further properties.}
 
 
 
 %=====================
 \section{Proving in \LEAN that \RPP is \PRF-complete}
 \label{section:The UPRF-completeness of RPP}
-We formally show in \LEAN that the class of functions we can express as (algorithms) in \lstinline|rpp| contains at least \PRF; so, we say ``\lstinline|rpp| is \PRF-complete''. The definition of \PRF that we take as reference is one of the two available in \MATHLIB library of \LEAN. Once recalled and commented it briefly, we shall proceed with the main aspects of the \PRF-completeness of \lstinline|rpp|.
+We formally show in \LEAN that the class of functions we can express as (algorithms) in \lstinline|rpp| contains at least the class \PRF of Primitive Recursive Functions; we say that ``\lstinline|rpp| is \PRF-complete''. The definition of \PRF that we take as reference is one of the two available in \LEAN \MATHLIB library. Once recalled and commented it briefly, we shall proceed with the main aspects of the \PRF-completeness of \lstinline|rpp|.
 
 
 \begin{figure}
@@ -1040,15 +1039,16 @@ inductive primrec:(ℕ → ℕ) → Prop
 
 
 %=====================
-\subsection{Primitive Recursive Functions \texorpdfstring{\normalfont \lstinline|primrec|}{primrec} of \MATHLIB }
+\subsection{Primitive Recursive Functions \texttt{primrec} in \MATHLIB }
 \label{section:Unary Primitive Recursive Functions}
 
 Figure~\ref{fig: primrec} recalls the definition of \PRF from \cite{Carneiro-primrecMathlib} available in \MATHLIB that we take as reference. It is an inductively defined \lstinline|Prop|osition \lstinline|primrec| that requires a \emph{unary} function with type \lstinline|ℕ → ℕ| as argument. Specifically, \lstinline|primrec| is the least collection of functions \lstinline|ℕ → ℕ| with a given set of base elements, closed under some composition schemes.
 
-\paragraph{Base functions}
+\paragraph{Base functions of {\normalfont \texttt{primrec}}}
 The \emph{constant} function \lstinline|zero| yields \lstinline|0| on every of its inputs.
 The \lstinline|succ|\emph{essor} gives the natural number next to the one taken as input.
 The two \emph{projections} \lstinline|left|, and \lstinline|right| take an argument \lstinline|n|, and extract a left, or a right, component from it as \lstinline|n| was the result of pairing two values \lstinline|x,y:ℕ|. The functions that \lstinline|primrec| relies on to encode/decode pairs on natural numbers as a single natural one are \lstinline|mkpair:ℕ → ℕ → ℕ|, and \lstinline|unpair:ℕ → ℕ × ℕ|. The first one builds the value \lstinline|mkpair x y|, i.e. the number of steps from the origin to reach the point with coordinates \lstinline|(x,y)| in the path of Figure~\ref{sfig:mkpair}. The function \lstinline|unpair:ℕ → ℕ × ℕ| takes the number of steps to perform on the same path. Once it stops, the coordinates of that point are the two natural numbers we are looking for. So, \lstinline|mkpair|/\lstinline|unpair| are an alternative to Cantor Pairing/Un-pairing.
+\textcolor{blue}{If we look at Figures~\ref{sfig:cantor as a path}, and~\ref{sfig:mkpair}, we can see that \lstinline|mkpair| fills the Cartesian plane more densely than Cantor.}
 
 \paragraph{Composition schemes}
 Three schemes exist in \lstinline|primrec|, each depending on parameters \lstinline|f,g:primrec|.
@@ -1056,7 +1056,7 @@ The scheme \lstinline|pair| builds the function that, taken a value \lstinline|n
 
 The scheme \lstinline|comp| composes \lstinline|F,G:primrec|.
 
-The \emph{primitive recursion} scheme \lstinline|prec| can be ``unfolded'' to understand how it works; this reading will ease the description of how to encode it in \lstinline|rpp|.
+The \emph{primitive recursion} scheme \lstinline|prec| can be ``unfolded'' to understand how it works. This reading will ease the description of how to encode it in \lstinline|rpp|.
 Let \lstinline|F|, \lstinline|G| be two elements of \lstinline|primrec|. We see \lstinline|prec| as encoding the function:
 \begin{align}
 \label{align:function H}
@@ -1083,30 +1083,45 @@ defined using the built-in recursive scheme \lstinline|nat.rec| on \lstinline|�
 
 %=================
 \subsection{The main point of the proof}
-In order to formally state what we mean for \lstinline|rpp| to be \PRF-complete, in \LEAN we need to say when, given \lstinline|F:ℕ → ℕ|, we can \emph{encode} it by means of some \lstinline|f:rpp|:
+In order to formally state what we mean for \lstinline|rpp| to be \PRF-complete, in \LEAN we need to say when, given \lstinline|F:ℕ → ℕ|, we can \emph{encode} it by means of some \lstinline|f:rpp|. This is done by means of the following definition:
 \begin{lstlisting}
-  def encode (F:ℕ → ℕ) (f:rpp) :=
+ def encode (F:ℕ → ℕ) (f:rpp) :=
      ∀ (z:ℤ) (n:ℕ), ‹f› (z::n::repeat 0 (f.arity-2))
                             = (z+(F n))::n::repeat 0 (f.arity-2)
 \end{lstlisting}
-says that, fixed \lstinline|F:ℕ → ℕ|, and \lstinline|f|, the statement \lstinline|(encode F f)| holds if the evaluation of \lstinline|‹f›|, applied to any argument \lstinline|(z::n::0::...::0)|, with as many occurrences of trailing \lstinline|0|s as \lstinline|f.arity-2|, gives a list with form \lstinline|((z+(F n))::n::0::...::0)| such that: (i) the first element is the original value \lstinline|z| increased with the result \lstinline|(F n)| of the function we want to encode; (ii) the second element is the initial \lstinline|n|; (iii) the trailing \lstinline|0|s are again as many as \lstinline|f.arity-2|. In \LEAN we can prove:
+which says that, fixed \lstinline|F:ℕ → ℕ|, and \lstinline|f:rpp|, the statement \lstinline|(encode F f)| holds if the evaluation of \lstinline|‹f›|, applied to any argument \lstinline|(z::n::0::...::0)| with as many occurrences of trailing \lstinline|0|s as \lstinline|f.arity-2|, gives a list with form \lstinline|((z+(F n))::n::0::...::0)| such that:
+\begin{enumerate}
+    \item[(i)]
+    the first element is the original value \lstinline|z| increased with the result \lstinline|(F n)| of the function we want to encode;
+    \item[(ii)]
+    the second element is the initial \lstinline|n|;
+    \item[(iii)]
+    trailing \lstinline|0|s are again as many as \lstinline|f.arity-2|.
+\end{enumerate}
+In \LEAN we can prove:
 \begin{lstlisting}
-theorem completeness (F:ℕ → ℕ): primrec F → ∃ f:rpp, encode F f
+    theorem completeness (F:ℕ → ℕ):
+                primrec F → ∃ f:rpp, encode F f
 \end{lstlisting}
-which says that we know how to build \lstinline|f:rpp| which \lstinline|encode|s \lstinline|F|, for every well formed \lstinline|F:ℕ → ℕ|, i.e. such that \lstinline|primrec F| holds.
+which says that we know how to build \lstinline|f:rpp| which \lstinline|encode|s \lstinline|F|, for every well formed \lstinline|F:ℕ → ℕ|, i.e.\@ such that \lstinline|primrec F| holds.
 
 The proof proceeds by induction on the proposition \lstinline|primrec|, which generates 7 sub-goals. We illustrate the main arguments to conclude the most interesting case which requires to encode the composition scheme \lstinline|prec|.
 
 \begin{remark}
-Many aspects we here detail out were simply missing in the original \PRF-completeness proof for \RPP in \cite{DBLP:journals/tcs/PaoliniPR20}.
+Many aspects \textcolor{blue}{of the proof that we here detail out, ``forced'' by \LEAN, so to say,} were simply missing in the original \PRF-completeness proof for \RPP in \cite{DBLP:journals/tcs/PaoliniPR20}.
+\qed
 \end{remark}
 
-The inductive hypothesis to show that we can encode \lstinline|prec| is that, for any given \lstinline|F,G:ℕ → ℕ| such that \lstinline|(primrec F):Prop|, and \lstinline|(primrec G):Prop|, both \lstinline|f,g:rpp| exist such that \lstinline|(encode F f)|, and \lstinline|(encode G g)| hold. This means that
-$ \mbox{\lstinline|f|}\ (z\mbox{\lstinline|::|}n\mbox{\lstinline|::|}\boldsymbol{0}) =
-(z+\mbox{\lstinline|F|}\ n)\mbox{\lstinline|::|}n\mbox{\lstinline|::|}\boldsymbol{0} $, and
-$ \mbox{\lstinline|g|}\ z\mbox{\lstinline|::|}n\mbox{\lstinline|::|}\boldsymbol{0} =
-(z+\mbox{\lstinline|G|}\ n)\mbox{\lstinline|::|}n\mbox{\lstinline|::|}\boldsymbol{0} $, where $ \boldsymbol{0} $ stands for a sufficiently long list of $ 0 $s.
-
+The inductive hypothesis to show that we can encode \lstinline|prec| is that, for any given \lstinline|F,G:ℕ → ℕ| such that \lstinline|(primrec F):Prop|, and \lstinline|(primrec G):Prop|, both \lstinline|f,g:rpp| exist such that \lstinline|(encode F f)|, and \lstinline|(encode G g)| hold. This means that both:
+\begin{align*}
+\mbox{\lstinline|f|}\ (z\mbox{\lstinline|::|}n\mbox{\lstinline|::|}\boldsymbol{0})
+& = (z+\mbox{\lstinline|F|}\ n)\mbox{\lstinline|::|}n\mbox{\lstinline|::|}\boldsymbol{0}
+\\
+\mbox{\lstinline|g|}\ z\mbox{\lstinline|::|}n\mbox{\lstinline|::|}\boldsymbol{0}
+& = (z+\mbox{\lstinline|G|}\ n)\mbox{\lstinline|::|}n\mbox{\lstinline|::|}\boldsymbol{0}
+\end{align*}
+hold, where $ \boldsymbol{0} $ stands for a sufficiently long list of $ 0 $s.
+%%%% ---- do not remove this line
 \begin{figure}
 \newcommand{\bz}{\boldsymbol{0}}
 \newcommand{\by}{\boldsymbol{y}}
@@ -1134,7 +1149,7 @@ $ \mbox{\lstinline|g|}\ z\mbox{\lstinline|::|}n\mbox{\lstinline|::|}\boldsymbol{
 \caption{The function \lstinline|prec[f,g]:rpp|.}
 \label{sfig:prec[f,g]}
 \end{subfigure}
-\\
+\\ \\ \\
 \begin{subfigure}{.95\textwidth}
 \centering
 \scalebox{.9}{
@@ -1154,20 +1169,26 @@ $\begin{NiceMatrix}
 \caption{Encoding \lstinline|prec| of Figure~\ref{fig: primrec} in \lstinline|rpp|.}
 \label{fig:composing encode prec}
 \end{figure}
-
-Figure~\ref{sfig:prec[f,g]}, where we assume $ z = 0 $, defines \lstinline|prec[f,g]:rpp| such that \lstinline|(encode (prec F G) prec[f,g]):Prop| holds, and \lstinline|H[f,g]| encodes
-$ H[\mbox{\lstinline|F|},\mbox{\lstinline|G|}]$ as in~\eqref{align:function H}.
-The term \lstinline|It R[g]| in \lstinline|H[f,g]| encodes~\eqref{equation:function R} by iterating \lstinline|R[g]| from the initial value given by \lstinline|f|.
-
+%%%% ---- do not remove this line
+Moreover, Figure~\ref{sfig:prec[f,g]}, in which the assumption is that $ z = 0 $, defines \lstinline|prec[f,g]:rpp| such that:
+\begin{enumerate}
+    \item[(i)]
+    \lstinline|(encode (prec F G) prec[f,g]):Prop| holds, and
+    \item [(ii)]
+    \lstinline|H[f,g]| encodes $ H[\mbox{\lstinline|F|},\mbox{\lstinline|G|}]$
+\end{enumerate}
+as in~\eqref{align:function H}.
+Finally, the term \lstinline|It R[g]| in \lstinline|H[f,g]| encodes~\eqref{equation:function R} by iterating \lstinline|R[g]| from the initial value given by \lstinline|f|.
 
 Figure~\ref{fig:main step RPF-completeness} splits the definition of \lstinline|R[g]| into three logical parts.
 Figure~\ref{sfig:encode prec 1st step} packs everything up by means of \lstinline|mkpair| to build the argument $ R[\mbox{\lstinline|G|}](z,n) $ of \lstinline|g|; by induction we get
 $ R[\mbox{\lstinline|G|}](z,n+1) $.
-In Figure~\ref{sfig:encode prec 2nd step}, \lstinline|unpair| unpacks $ \gl z, \gl n, R[\mbox{\lstinline|G|}](z,n) \gr \gr $ to expose its component to the last part.
+In Figure~\ref{sfig:encode prec 2nd step}, \lstinline|unpair| unpacks $ \gl z, \gl n, R[\mbox{\lstinline|G|}](z,n) \gr \gr $ to expose its components to the last part.
 Figure~\ref{sfig:encode prec 3rd step} both increments $ n $, and packs $ R[\mbox{\lstinline|G|}](z,n) $ into $ s $, by means of \lstinline|mkpair|, because $ R[\mbox{\lstinline|G|}](z,n) $ has become useless once obtained $ R[\mbox{\lstinline|G|}](z,n+1) $ from it. Packing $ R[\mbox{\lstinline|G|}](z,n) $ into $ s $, so that we can eventually recover it, \emph{is mandatory}. We cannot ``replace'' $ R[\mbox{\lstinline|G|}](z,n) $ with $ 0 $ because that would not be a reversible action.
 
 \begin{remark}
-The function \lstinline|cp| in Figure~\ref{sfig:cp} can replace \lstinline|mkpair| in Figure~\ref{sfig:encode prec 3rd step} as a bijective map $ \NN^2$ into $\NN$. Indeed, the original \PRF-completeness of \RPP relies on \lstinline|cp|. We favor \lstinline|mkpair| to take the most out of \MATHLIB.
+The function \lstinline|cp| in Figure~\ref{sfig:cp} can replace \lstinline|mkpair| in Figure~\ref{sfig:encode prec 3rd step} as a bijective map $ \NN^2$ into $\NN$. Indeed, the original \PRF-completeness of \RPP relies on \lstinline|cp|. We favor \lstinline|mkpair| to take the most out of \MATHLIB and \textcolor{blue}{because, as already observed, \lstinline|mkpair| fills the space more densely than Cantor.}
+\qed
 \end{remark}
 
 
@@ -1191,7 +1212,7 @@ The function \lstinline|cp| in Figure~\ref{sfig:cp} can replace \lstinline|mkpai
         \caption{Build the argument $ \gl z, \gl n, R[\mbox{\lstinline|G|}](z,n) \gr \gr $ of \lstinline|g|.}
         \label{sfig:encode prec 1st step}
     \end{subfigure}
-    \\
+    \\ \\ \\
     \begin{subfigure}{.975\textwidth}
         \centering
         \scalebox{.9}{
@@ -1207,7 +1228,7 @@ The function \lstinline|cp| in Figure~\ref{sfig:cp} can replace \lstinline|mkpai
         \caption{Unpack $ \gl z, \gl n, R[\mbox{\lstinline|G|}](z,n) \gr \gr $ to let its elements available.}
         \label{sfig:encode prec 2nd step}
     \end{subfigure}
-    \\
+    \\ \\ \\
     \begin{subfigure}{.975\textwidth}
         \centering
         \scalebox{.9}{
@@ -1231,13 +1252,16 @@ The function \lstinline|cp| in Figure~\ref{sfig:cp} can replace \lstinline|mkpai
 \section{Proving in \LEAN that each \RPP is primitive recursive}
 \label{section:Each RPP is PRF}
 
+\textcolor{blue}{We formally show in \LEAN that the class of functions we can express as (algorithms) in \lstinline|rpp| contains at least the class \PRF of Primitive Recursive Functions; we say that ``\lstinline|rpp| is \PRF-sound''.}
+
+
 In this section we discuss the proof that each function in \RPP can be expressed as a primitive recursive function. This means that, through a suitable embedding of \lstinline|list ℤ| in \lstinline|ℕ| and thus seeing each \lstinline|‹f› list ℤ → list ℤ| as a function of type \lstinline|ℕ → ℕ|, this is always primitive recursive - in \LEAN terms,
 \begin{lstlisting}
 theorem rpp_primrec (f : rpp) : primrec ‹f›
 \end{lstlisting}
 This result seems intuitively obvious, but no full proof of this fact was present before. In order to show it, we make heavy use of previously established theorems present in the \MATHLIB library.
 
-\subsection{The extended definition of \texorpdfstring{\normalfont \lstinline{primrec}}{primrec} in \MATHLIB}
+\subsection{The extended definition of \texttt{primrec} in \MATHLIB}
 
 In the previous section we saw what it means for a function of type \lstinline|ℕ → ℕ| to be \lstinline|primrec|. We're now interested in expressing the fact that a function \lstinline|f : α → β| with more general domain \lstinline|α| and codomain \lstinline|β| can be expressed as a primitive recursive functions. To do this, we must somehow "link" the type \lstinline|α|, \lstinline|β| with \lstinline|ℕ|, otherwise we can't leverage our previous definitions and results. In \LEAN, we thus require that the type \lstinline|α| (and \lstinline|β|) be \lstinline|encodable|, which means that there exists a computable immersion \lstinline|α → ℕ|:
 
