@@ -933,7 +933,7 @@ In Figure~\ref{sfig:cp input}, \lstinline|cp_in| is the natural algorithm in \ls
     \begin{cases} (x+1,y-1) &  y > 0 \\ (0, x+1) &   y = 0 \end{cases}
     \enspace .
 \end{align*}
-We implement $ \operatorname{step}(x,y) $ in \lstinline|rpp| as \lstinline|step[Su;;Sw]|. Figures~\ref{sfig:cu step y > 0}, and~\ref{sfig:cu step y = 0} represent two runs of \lstinline|step[Su;;Sw]| to give visual evidence that \lstinline|step[Su;;Sw]| implements $\operatorname{step}(x,y)$. Colored occurrences of $ y $ show the relevant part of the computational flow. Note that we cannot implement $ \operatorname{step}(x,y) $ by using the conditional \textcolor{blue}{sostituire l'originario\lstinline|It| con \lstinline|If|?}  directly on $y$, because in the computation we also want to modify the value of $y$. Finally, as soon as we get \lstinline|cu_in| by iterating \lstinline|step[Su;;Sw]| as in Figure~\ref{sfig:cu input}, we can define \lstinline|cp| (Figure~\ref{sfig:cp}), and \lstinline|cu| (Figure~\ref{sfig:cu}).
+We implement $ \operatorname{step}(x,y) $ in \lstinline|rpp| as \lstinline|step[Su;;Sw]|. Figures~\ref{sfig:cu step y > 0}, and~\ref{sfig:cu step y = 0} represent two runs of \lstinline|step[Su;;Sw]| to give visual evidence that \lstinline|step[Su;;Sw]| implements $\operatorname{step}(x,y)$. Colored occurrences of $ y $ show the relevant part of the computational flow. Note that we cannot implement $ \operatorname{step}(x,y) $ by using the conditional \textcolor{blue}{sostituire l'originario \lstinline|It| con \lstinline|If|?}  directly on $y$, because in the computation we also want to modify the value of $y$. Finally, as soon as we get \lstinline|cu_in| by iterating \lstinline|step[Su;;Sw]| as in Figure~\ref{sfig:cu input}, we can define \lstinline|cp| (Figure~\ref{sfig:cp}), and \lstinline|cu| (Figure~\ref{sfig:cu}).
 
 \begin{figure}
     \begin{subfigure}{.475\linewidth}
@@ -1249,49 +1249,64 @@ The function \lstinline|cp| in Figure~\ref{sfig:cp} can replace \lstinline|mkpai
 \end{figure}
 
 %=====================
-\section{Proving in \LEAN that each \RPP is primitive recursive}
+\section{Proving in \LEAN that each \RPP is \PRF-sound}
 \label{section:Each RPP is PRF}
 
-\textcolor{blue}{We formally show in \LEAN that the class of functions we can express as (algorithms) in \lstinline|rpp| contains at least the class \PRF of Primitive Recursive Functions; we say that ``\lstinline|rpp| is \PRF-sound''.}
-
-
-In this section we discuss the proof that each function in \RPP can be expressed as a primitive recursive function. This means that, through a suitable embedding of \lstinline|list ℤ| in \lstinline|ℕ| and thus seeing each \lstinline|‹f› list ℤ → list ℤ| as a function of type \lstinline|ℕ → ℕ|, this is always primitive recursive - in \LEAN terms,
+\textcolor{blue}{We formally show in \LEAN that every function we can express as (algorithm) in \lstinline|rpp| can be expressed as an element of \PRF, the class of Primitive Recursive Functions; we say that ``\lstinline|rpp| is \PRF-sound''.}
+\textcolor{purple}{\sout{In this section we discuss the proof that each function in \RPP can be expressed as a primitive recursive function.}} This means that, through a suitable embedding of \lstinline|list ℤ| in \lstinline|ℕ| and thus seeing each \lstinline|‹f›:list ℤ → list ℤ| as a function of type \lstinline|ℕ → ℕ|, this is always primitive recursive. In \LEAN terms, we can prove:
 \begin{lstlisting}
-theorem rpp_primrec (f : rpp) : primrec ‹f›
+        theorem rpp_primrec (f:rpp) : primrec ‹f›
 \end{lstlisting}
-This result seems intuitively obvious, but no full proof of this fact was present before. In order to show it, we make heavy use of previously established theorems present in the \MATHLIB library.
+\textcolor{blue}{As far as we know,} no full proof of this fact was present before, \cite{Paolini2018NGC} included. In order to show it, we make heavy use of previously established theorems present in \LEAN \MATHLIB library.
 
-\subsection{The extended definition of \texttt{primrec} in \MATHLIB}
+%%%%
+\subsection{The extended definition of {\normalfont \texttt{primrec}} in {\normalfont \MATHLIB}}
+Section~\ref{section:The UPRF-completeness of RPP} recalls the meaning for a function of type \lstinline|ℕ → ℕ| to be \lstinline|primrec|. We are now interested in expressing a function \lstinline|f:α → β|, i.e.\@ with some given domain of type \lstinline|α|, and co-domain of type \lstinline|β|, as a primitive recursive function. If we somehow ``link'' both \lstinline|α|, and \lstinline|β| to \lstinline|ℕ|, we can leverage our previous definitions and results.
 
-In the previous section we saw what it means for a function of type \lstinline|ℕ → ℕ| to be \lstinline|primrec|. We're now interested in expressing the fact that a function \lstinline|f : α → β| with more general domain \lstinline|α| and codomain \lstinline|β| can be expressed as a primitive recursive functions. To do this, we must somehow "link" the type \lstinline|α|, \lstinline|β| with \lstinline|ℕ|, otherwise we can't leverage our previous definitions and results. In \LEAN, we thus require that the type \lstinline|α| (and \lstinline|β|) be \lstinline|encodable|, which means that there exists a computable immersion \lstinline|α → ℕ|:
+\textcolor{blue}{Three main steps do the job:}
+
+\begin{enumerate}
+\item
+First, we require that both \lstinline|α|, and \lstinline|β| be \lstinline|encodable|, notion defined in \LEAN by means of:
 
 \begin{lstlisting}
-class encodable (α : Type*) :=
-(encode : α → ℕ)
-(decode [] : ℕ → option α)
-(encodek : ∀ a, decode (encode a) = some a)
+    class encodable (α : Type*) :=
+    (encode : α → ℕ)
+    (decode [] : ℕ → option α)
+    (encodek : ∀ a, decode (encode a) = some a)
 \end{lstlisting}
+\textcolor{blue}{Il costruttore \texttt{encodek} ha il nome giusto?}
+\noindent
+It means that \emph{computable immersions} exist with type \lstinline|α → ℕ|, and \lstinline|β → ℕ|.
 
-It is also important to always work with the same immersion in various proofs, otherwise different immersions could differ by an automorphism of \lstinline|ℕ| which is not primitive recursive. This however is guaranteed by the \LEAN \lstinline|class| mechanism, which is able to simultaneously infer when a new type is \lstinline|encodable| based on previous theorems, and fixes just one embedding for each such type.
+\item
+Second, it is important to work \textcolor{blue}{always with the same instance of \emph{computable immersion} as we proceed with the development of the various proofs: different immersions may differ by some automorphism of} \lstinline|ℕ| \textcolor{blue}{which may not be primitive recursive}. This however is guaranteed by the \LEAN \lstinline|class| mechanism, which is able to simultaneously infer when a new type is \lstinline|encodable| based on previous theorems, and fixes just one embedding for each such type.
 
-In our context it is however not enough to require that the type \lstinline|α| (and \lstinline|β|) be \lstinline|encodable|, because it could happen that the composition \lstinline|encode ∘ decode| is not primitive recursive. Thus we also require that our types be \lstinline|primcodable|:
+\item
+Third, we need to require that our types \lstinline|α|, and \lstinline|β| are \lstinline|primcodable|:
 
 \begin{lstlisting}
 class primcodable (α : Type*) extends encodable α :=
-(prim [] : nat.primrec (λ n, encodable.encode (decode n)))
+  (prim [] : nat.primrec (λ n, encodable.encode (decode n)))
 \end{lstlisting}
+\noindent
+The reason is that, in our context, it is not enough to require that \lstinline|α|, and \lstinline|β| are \lstinline|encodable|, because it may happen that the composition \lstinline|encode ∘ decode| is not primitive recursive.
+\end{enumerate}
 
-This let us extend the definition of \lstinline|primrec| to functions with \lstinline|primcodable| type \lstinline|α|, \lstinline|β|. Such a function \lstinline|f : α → β| is said to be \lstinline|primrec| if the composition \lstinline|encode ∘ primrec ∘ decode : ℕ → ℕ| is primitive recursive:
+\textcolor{purple}{\sout{This let us extend}} \textcolor{blue}{By all that means that} the definition of \lstinline|primrec| can be extended to functions \lstinline|f:α → β| whose types \lstinline|α|, and \lstinline|β| are \lstinline|primcodable|. \textcolor{purple}{\sout{Such a function}} \textcolor{blue}{Specifically, for} \lstinline|f:α → β| to be \lstinline|primrec| requires that the composition \lstinline|encode ∘ primrec ∘ decode : ℕ → ℕ| is primitive recursive. \textcolor{blue}{This is how we can express this requirement in \LEAN:}
 
 \begin{lstlisting}
 def primrec {α β} [primcodable α] [primcodable β]
-    (f : α → β) : Prop :=
-    nat.primrec (λ n, encode ((decode α n).map f))
+(f:α → β):Prop := nat.primrec (λ n, encode ((decode α n).map f))
 \end{lstlisting}
 
-In \MATHLIB it is already established that the type \lstinline|ℤ| is \lstinline{primcodable}, and that if a type \lstinline|α| is \lstinline|primcodable|, then so is \lstinline|list α|. The \lstinline|class| system then automatically deduce that \lstinline|list ℤ| is \lstinline|primcodable|.
+\textcolor{blue}{The relevant consequence of all this formalization is that \LEAN automatically deduces that} \lstinline|list ℤ| is \lstinline|primcodable|; this follows from the \lstinline|class| mechanism, from the fact that \lstinline|ℤ| is \lstinline|primcodable|, and by knowing that if a type \lstinline|α| is \lstinline|primcodable|, then so is \lstinline|list α|.
+\textcolor{blue}{(Ho lasciato il testo originale in un commento latex)}
+%In \MATHLIB it is already established that the type \lstinline|ℤ| is \lstinline|primcodable|, and that if a type \lstinline|α| is \lstinline|primcodable|, then so is \lstinline|list α|. The \lstinline|class| system then automatically deduce that \lstinline|list ℤ| is \lstinline|primcodable|.
 
-It remains to prove that for each \lstinline|f : rpp|, the function \lstinline|‹f› : list ℤ → list ℤ| is \lstinline|primrec|. We proceed by induction on \lstinline|f|, by tackling the base cases \lstinline|Id|, \lstinline|Ne|, \lstinline|Su|, \lstinline|Pr|, \lstinline|Sw| and the inductive cases \lstinline|Co|, \lstinline|Pa|, \lstinline|It|, \lstinline|If|. We start from the inductive cases, since they were the simplest to implement.
+\vspace{\baselineskip}
+Once everything is set up as described, we can eventually prove \lstinline|theorem rpp_primrec| above, i.e.\@
+that for every \lstinline|f:rpp|, \textcolor{blue}{a representation?}\lstinline|‹f›:list ℤ → list ℤ| is \lstinline|primrec|. We proceed by induction on \lstinline|f|, by tackling the base cases \lstinline|Id|, \lstinline|Ne|, \lstinline|Su|, \lstinline|Pr|, \lstinline|Sw| and the inductive cases \lstinline|Co|, \lstinline|Pa|, \lstinline|It|, \lstinline|If|. We start from the inductive cases, since they were the simplest to go through.
 
 \subsection{Inductive cases}
 
