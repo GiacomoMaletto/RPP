@@ -10,6 +10,8 @@
 \usepackage{csquotes}
 \usepackage{caption} % subfigures
 \usepackage{subcaption}
+\usepackage{enumitem}
+
 
 
 \usepackage{amsmath}
@@ -1263,6 +1265,9 @@ The function \lstinline|cp| in Figure~\ref{sfig:cp} can replace \lstinline|mkpai
 \subsection{The extended definition of {\normalfont \texttt{primrec}} in {\normalfont \MATHLIB}}
 Section~\ref{section:The UPRF-completeness of RPP} recalls the meaning for a function of type \lstinline|ℕ → ℕ| to be \lstinline|primrec|. We are now interested in expressing a function \lstinline|f:α → β|, i.e.\@ with some given domain of type \lstinline|α|, and co-domain of type \lstinline|β|, as a primitive recursive function. If we somehow ``link'' both \lstinline|α|, and \lstinline|β| to \lstinline|ℕ|, we can leverage our previous definitions and results.
 
+
+\vspace{\baselineskip}
+\noindent
 \textcolor{blue}{Three main steps do the job:}
 
 \begin{enumerate}
@@ -1275,7 +1280,7 @@ First, we require that both \lstinline|α|, and \lstinline|β| be \lstinline|enc
     (decode [] : ℕ → option α)
     (encodek : ∀ a, decode (encode a) = some a)
 \end{lstlisting}
-\textcolor{blue}{Il costruttore \texttt{encodek} ha il nome giusto?}
+\textcolor{blue}{(Il costruttore \texttt{encodek} ha il nome giusto?)}
 \noindent
 It means that \emph{computable immersions} exist with type \lstinline|α → ℕ|, and \lstinline|β → ℕ|.
 
@@ -1290,6 +1295,8 @@ class primcodable (α : Type*) extends encodable α :=
   (prim [] : nat.primrec (λ n, encodable.encode (decode n)))
 \end{lstlisting}
 \noindent
+i.e.\@ \textcolor{blue}{metti un commento che illustri \lstinline|primencodable|?}
+
 The reason is that, in our context, it is not enough to require that \lstinline|α|, and \lstinline|β| are \lstinline|encodable|, because it may happen that the composition \lstinline|encode ∘ decode| is not primitive recursive.
 \end{enumerate}
 
@@ -1306,46 +1313,56 @@ def primrec {α β} [primcodable α] [primcodable β]
 
 \vspace{\baselineskip}
 Once everything is set up as described, we can eventually prove \lstinline|theorem rpp_primrec| above, i.e.\@
-that for every \lstinline|f:rpp|, \textcolor{blue}{a representation?}\lstinline|‹f›:list ℤ → list ℤ| is \lstinline|primrec|. We proceed by induction on \lstinline|f|, by tackling the base cases \lstinline|Id|, \lstinline|Ne|, \lstinline|Su|, \lstinline|Pr|, \lstinline|Sw| and the inductive cases \lstinline|Co|, \lstinline|Pa|, \lstinline|It|, \lstinline|If|. We start from the inductive cases, since they were the simplest to go through.
+that for every \lstinline|f:rpp|, \textcolor{blue}{(a representation?)} \lstinline|‹f›:list ℤ → list ℤ| \textcolor{blue}{(of \texttt{f}?)} is \lstinline|primrec|. We proceed by induction on \lstinline|f|, by tackling the base cases \lstinline|Id|, \lstinline|Ne|, \lstinline|Su|, \lstinline|Pr|, \lstinline|Sw| and the inductive cases \lstinline|Co|, \lstinline|Pa|, \lstinline|It|, \lstinline|If|.
 
+
+%%%%%
 \subsection{Inductive cases}
-
-We analyse the case of parallel composition \lstinline|f ‖ g|: given \lstinline|f| and \lstinline|g| such that \lstinline|‹f›| and \lstinline|‹g›| are \lstinline|primrec|, we want to prove that \lstinline|f ‖ g| is \lstinline|primrec|; in \LEAN, this amounts to the following:
-
+\textcolor{blue}{(Rileggi tutta la sezione bene, anche se, qua e là ho lasciato testo in ble)}
+We illustrate the details of the most relevant case, i.e.\@ parallel composition \lstinline|f‖g|. Let \lstinline|f|, and \lstinline|g| be such that \lstinline|‹f›| and \lstinline|‹g›| are \lstinline|primrec|. The goal is to prove that \lstinline|f‖g| is \lstinline|primrec|. In \LEAN, this amounts to prove the following lemma:
 \begin{lstlisting}
-lemma rpp_pa {f g : rpp} (hf : primrec ‹f›) (hg : primrec ‹g›) :
-    primrec ‹f ‖ g›
+    lemma rpp_pa {f g:rpp} (hf:primrec ‹f›) (hg:primrec ‹g›) :
+          primrec ‹f‖g›
 \end{lstlisting}
-
-By definition, we have that for each \lstinline|l : list ℤ|,
-
+\noindent
+It starts by applying the definition of the parallel composition. For every fixed \lstinline|l: list ℤ|, we have:
 \begin{lstlisting}
-‹f ‖ g› l = ‹f› (take f.arity l) ++ ‹g› (drop f.arity l)
+    ‹f‖g› l = (‹f› (take f.arity l))++(‹g› (drop f.arity l))
 \end{lstlisting}
-
-so it is natural to break down the problem: to prove that the \lstinline|append| operation \lstinline|++| is primitive recursive, that the functions \lstinline|take| and \lstinline|drop| are primitive recursive, and that the composition of primitive recursive functions is primitive recursive.
-
-In \MATHLIB it's already proven that \lstinline|append| is \lstinline|primrec₂|\footnote{For functions which take two arguments, \lstinline|primrec₂| is used instead of \lstinline|primrec|.}:
-
+\noindent
+So, we are left with the problem of proving that the right-hand side of the equation is \lstinline|primrec|. We break down the problem into three sub-problems:
+\begin{enumerate}
+    \item \label{enumerate: ++ primrec}
+    prove that the \lstinline|append| operation \lstinline|++| is \lstinline|primrec|;
+    \item \label{enumerate: drop primrec}
+    prove that the functions \lstinline|take|, and \lstinline|drop| are are \lstinline|primrec|;
+    \item \label{enumerate: comp primrec}
+    prove that the composition of primitive recursive functions is \lstinline|primrec|.
+\end{enumerate}
+\noindent
+That \lstinline|append| is \lstinline|primrec₂|\footnote{For functions which take two arguments, \lstinline|primrec₂| is used instead of \lstinline|primrec|.} is already proven in \MATHLIB:
 \begin{lstlisting}
-theorem list_append :
-    primrec₂ ((++) : list α → list α → list α)
+    theorem list_append :
+        primrec₂ ((++) : list α → list α → list α)
 \end{lstlisting}
-
-and that the composition of two \lstinline|primrec|, or one \lstinline|primrec₂| with two \lstinline|primrec|, is again \lstinline|primrec|:
-
+\noindent
+Furthermore, \MATHLIB has proofs to demonstrates that the composition of two \lstinline|primrec| elements or the application of one \lstinline|primrec₂| element to two \lstinline|primrec| elements remains within the \lstinline|primrec| set:
 \begin{lstlisting}
-theorem comp {f : β → σ} {g : α → β}
-    (hf : primrec f) (hg : primrec g) : primrec (λ a, f (g a))
+    theorem comp {f:β → σ} {g:α → β}
+        (hf:primrec f) (hg:primrec g) : primrec (λ a, f (g a))
 
-theorem primrec₂.comp
-    {f : β → γ → σ} {g : α → β} {h : α → γ}
-    (hf : primrec₂ f) (hg : primrec g) (hh : primrec h) :
-    primrec (λ a, f (g a) (h a))
+    theorem primrec₂.comp
+        {f:β → γ → σ} {g:α → β} {h:α → γ}
+        (hf:primrec₂ f) (hg:primrec g) (hh:primrec h) :
+        primrec (λ a, f (g a) (h a))
 \end{lstlisting}
+\noindent
+So the sub-problems enumerated here above at points~\ref{enumerate: ++ primrec}, and~\ref{enumerate: drop primrec}, are concluded.
 
-Suppose that have proofs \lstinline|list_take|, \lstinline|list_drop| which states that \lstinline|take|, \lstinline|drop| are \lstinline|primrec|. Then we can conclude by writing
+\vspace{\baselineskip}
+Now, let us focus on how to prove point~\ref{enumerate: comp primrec} here above.
 
+Let us assume that we know how to prove two properties \lstinline|list_take|, and \lstinline|list_drop| which say that two functions \lstinline|take|, and \lstinline|drop| are \lstinline|primrec|, respectively. Under that assumption, we can conclude by writing \textcolor{blue}{(\textbf{Il testo di questo lemma è corretto?})}:
 \begin{lstlisting}
 lemma rpp_pa {f g : rpp} (hf : primrec ‹f›) (hg : primrec ‹g›) :
     primrec ‹f ‖ g› :=
@@ -1354,73 +1371,91 @@ lemma rpp_pa {f g : rpp} (hf : primrec ‹f›) (hg : primrec ‹g›) :
     (comp hg (list_drop.comp (const f.arity) primrec.id))).of_eq $\mbox{\textdollar}$
 λ l, by refl
 \end{lstlisting}
-
-The proof is a highly compound expression which is broken down in Figure~\ref{fig:rpp_pa}. Essentially, the idea is to "build" the definition of the function by composing theorems about simpler functions being \lstinline|primrec|. Finally, the proof is concluded through the function \lstinline|of_eq| by proving that the "built" function is the same as the function we're interested in; this is usually done through tactics after the \lstinline|by| keyword.
+\noindent
+\textcolor{blue}{(Rileggi per bene cosa ho scritto, qui di seguito, per favore.)}
+which is a highly compound expression in \LEAN. Figure~\ref{fig:rpp_pa} brakes it down in a readable form. To catch the idea it relies on, let us recall that a proof of a lemma, or of a theorem, in \LEAN is a function, according to the Curry-Howard correspondence. So, also the proof of \lstinline|lemma rpp_pa| is a function, and it composes proofs showing that some given functions are \lstinline|primrec|.
+Specifically, the function \lstinline|of_eq| proves that the ``built'' function \textcolor{blue}{(Quale ``built'' function? quella che precede il ``.''? Che sia quella o meno, io la ripeterei qui, per identificarla bene)} is the same as the function we are interested in; this is usually done through tactics after the keyword ``\lstinline|by|'' \textcolor{blue}{(Un po' criptica la descrizione dell'uso di \texttt{by}. Forse, potrebbe valere la pena di mettere qualche riferimento in modo da poter dare un'occhiata ad esempio di suo utilizzo? Ricordi che ci hanno anche solo chiesto la notazione \texttt{f.qualcosa}?)}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth]{drawing.png}
-    \caption{Diagram representing \lstinline|rpp_pa|}
+    \caption{Diagram representing \lstinline|rpp_pa|. \textcolor{blue}{Estenderei questa caption in modo da descrivere almeno un blocco \texttt{comp hf com ....}}}
     \label{fig:rpp_pa}
 \end{figure}
 
-In this case, the difficult part is not in \lstinline|rpp_pa| itself but in proving the lemmas \lstinline|list_take| and \lstinline|list_drop|. For example, the first one states:
+We are eventually left with the most difficult part of the proof of \lstinline|lemma rpp_pa|, i.e.\@ the proofs of \lstinline|lemma list_take|, and \lstinline|lemma list_drop|.
 
+\vspace{\baselineskip}
+\noindent
+Let us start by focusing on:
 \begin{lstlisting}
-lemma list_take : primrec₂ list.take
+        lemma list_take : primrec₂ list.take
 \end{lstlisting}
-
-where we recall that \lstinline|list.take| is defined as
-
+\noindent
+in which, we recall, \lstinline|list.take| is defined as:
 \begin{lstlisting}
-def take : ℕ → list α → list α
-| 0        a        := []
-| (succ n) []       := []
-| (succ n) (x :: r) := x :: take n r
+        def take : ℕ → list α → list α
+        | 0        a        := []
+        | (succ n) []       := []
+        | (succ n) (x :: r) := x :: take n r
 \end{lstlisting}
+\noindent
+i.e.\@ a function recursive in both its arguments. The built-in \LEAN recursion principles for \lstinline|ℕ|, and \lstinline|list α| are both proven to be \lstinline|primrec| in \MATHLIB through theorems \lstinline|nat_elim| and \lstinline|list_rec|; unfortunately we cannot use them simultaneously for free in order to reason by induction on \lstinline|take|.
 
-The difficulty lies in the fact that simultaneous recursion is done on both the input number and the input list. The recursion principles of \lstinline{ℕ} and \lstinline|list| are both proven to be \lstinline|primrec| in \MATHLIB through theorems \lstinline{nat_elim} and \lstinline{list_rec}, but we can't use them for simultaneous induction. In this case, the problem can be solved by finding an equivalent definition of \lstinline|list.take| which uses the function \lstinline|list.foldl| (already proven to be \lstinline|primrec|) and then proving that the new definition is equivalent to the old one (which is done by a special induction principle \lstinline|list.reverse_rec_on| which breaks down a list into its last element and all the ones before, instead of the head and the tail).
+\vspace{\baselineskip}
+\noindent
+We overcome the problem into two steps:
+\begin{enumerate}
+    \item we define a function \textcolor{blue}{(Secondo te non varrebbe la pena di richiamarne la definizione qui?)} which relies on the function \lstinline|list.foldl|, already proven to be \lstinline|primrec|;
 
-After having proved \lstinline|list_take|, in order to prove \lstinline|list_drop| we introduce the theorem \lstinline|reverse_drop|, which expresses \lstinline|list.drop| in terms of \lstinline|list.take|:
+    \item we prove that the new definition \textcolor{blue}{(Sì, ne darei proprio la definizione, così abbiamo un nome da usare)} is equivalent to \lstinline|take| here above.
 
+    The proof of equivalence is established through the use of the ``special'' built-in induction principle \lstinline|list.reverse_rec_on| which decomposes a list into its final element and all preceding elements, rather than the head and tail, \textcolor{blue}{feature that helps to reason with} \lstinline|list.foldl|.
+\end{enumerate}
+
+\vspace{\baselineskip}
+\noindent
+Once proven \lstinline|list_take|, we can focus on the proof of \lstinline|list_drop|.
+The key step is \lstinline|lemma reverse_drop| here below:
 \begin{lstlisting}
-lemma reverse_drop {α : Type*} (n : ℕ) (l : list α) :
-    (l.drop n) = reverse (l.reverse.take (l.length - n))
+    lemma reverse_drop {α : Type*} (n : ℕ) (l : list α) :
+        (l.drop n) = reverse (l.reverse.take (l.length - n))
 \end{lstlisting}
+\noindent
+Clearly, it expresses \lstinline|list.drop| in terms of \lstinline|list.take|, so the proof that \lstinline|list.drop| is \lstinline|primrec| proceeds smoothly and this concludes our overview of how the proof of \lstinline|lemma rpp_pa| works.
 
-The other cases \lstinline|Co|, \lstinline|It|, \lstinline|If| are simpler to handle because the relevant functions are already proven to be primitive recursive.
+\vspace{\baselineskip}
+Proving that \lstinline|Co|, \lstinline|It|, and \lstinline|If| are \lstinline|primrec| gets simpler to handle because the relevant functions are already proven to be \lstinline|primrec|.
 
+%%%%%%%
 \subsection{Base cases}
-
+\textcolor{blue}{(Ho letto un paio di volte quanto segue. Credo che i suggerimenti per la sezione 5.2 si adattino anche a questa. Cioè, prova ad essere leggermente meno frettoloso. Dividi meglio in piccoli blocchi la presentazione dicendo cosa stai per fare e come lo fai.)}
 The base cases are handled in a similar way, by building the function from simpler ones. In particular, the operations \lstinline|Ne|, \lstinline|Su|, \lstinline|Pr| which respectively represent negation $x\mapsto-x$, successor $x\mapsto x+1$, predecessor $x\mapsto x-1$, all represent functions of type \lstinline|ℤ → ℤ|. Instead of focusing specifically on those functions, we found that it was actually easier to start from more basic functions close to the definition of integers in \LEAN, and progressively build more complex functions following exactly their definition and development in the \MATHLIB library.
 
-By looking at the definition of integers
-
+By looking at the definition of integers:
 \begin{lstlisting}
-inductive ℤ : Type
-| of_nat : ℕ → ℤ
-| neg_succ_of_nat : ℕ → ℤ
+    inductive ℤ : Type
+    | of_nat : ℕ → ℤ
+    | neg_succ_of_nat : ℕ → ℤ
 \end{lstlisting}
+\noindent
+we see that it is based on two functions, \lstinline|of_nat| \textcolor{blue}{(\texttt{of_nat} è una funzione o un costruttore?)} and \lstinline|neg_succ_of_nat|, which can be proven to be \lstinline|primrec| almost directly by unfolding the definitions of the embedding \lstinline|ℤ → ℕ| and noticing that through the compositions, the functions become \lstinline|nat_bit0| and \lstinline|nat_bit1| which are \lstinline|primrec|.
 
-we see that it is based on two functions, \lstinline|of_nat| and \lstinline|neg_succ_of_nat|, which can be proven to be \lstinline|primrec| almost directly by unfolding the definitions of the embedding \lstinline|ℤ → ℕ| and noticing that through the compositions, the functions become \lstinline|nat_bit0| and \lstinline|nat_bit1| which are \lstinline|primrec|.
-
-Other than \lstinline|of_nat| and \lstinline|neg_succ_of_nat|, the last important building block for functions of type \lstinline|ℤ → ℤ| is the "recursion principle" for integers
-
+Other than \lstinline|of_nat| and \lstinline|neg_succ_of_nat|, the last important building block for functions of type \lstinline|ℤ → ℤ| is the "recursion principle" for integers:
 \begin{lstlisting}
-Π {f : ℤ → Type} (z : ℤ),
-    (Π (n : ℕ), f (int.of_nat n)) →
-    (Π (n : ℕ), f (int.neg_succ_of_nat n)) → f z
+    Π {f:ℤ → Type} (z:ℤ),
+        (Π (n:ℕ), f (int.of_nat n)) →
+        (Π (n:ℕ), f (int.neg_succ_of_nat n)) → f z
 \end{lstlisting}
-
-which states that if a function is defined for natural numbers and for negative numbers, then it is defined for all numbers. We state the relevant theorem as
-
+\noindent
+which states that if a function is defined for natural numbers and for negative numbers, then it is defined for all numbers. We state the relevant theorem as:
 \begin{lstlisting}
-lemma int_cases {f : α → ℤ} {g h : α → ℕ → β}
-    (hf : primrec f) (hg : primrec₂ g) (hh : primrec₂ h) :
-    @primrec _ β _ _ (λ a, int.cases_on (f a) (g a) (h a)) :=
+    lemma int_cases {f:α → ℤ} {g h:α → ℕ → β}
+        (hf : primrec f) (hg : primrec₂ g) (hh : primrec₂ h) :
+        @primrec _ β _ _ (λ a, int.cases_on (f a) (g a) (h a)) :=
 \end{lstlisting}
-
-which is common for theorems of this type concerning primitive recursive functions, in the sense that in order to be as general as possible, additional function arguments \lstinline{f}, \lstinline{g}, \lstinline{h} are introduced. The proof, as usual, is based on the fact that more elementary operations are already proven to be \lstinline|primrec| in \MATHLIB.
+\noindent
+which is common for theorems of this type concerning primitive recursive functions, in the sense that in order to be as general as possible, additional function arguments \lstinline|f|, \lstinline|g|, \lstinline|h| are introduced. The proof, as usual, is based on the fact that more elementary operations are already proven to be \lstinline|primrec| in \MATHLIB.
 
 %=====================
 \section{Conclusion and developments}
