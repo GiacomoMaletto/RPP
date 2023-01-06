@@ -174,13 +174,13 @@ We recall that a proof-assistant is an integrated environment to formalize data-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paragraph{Contributions}
-We show how to express \RPP and its evaluation mechanism inside the proof-assistant \LEAN \cite{Lean3}. We can certify the correctness of every reversible function of \RPP with respect to a given specification which \textcolor{purple}{\sout{also means certifying that \RPP is \PRF-complete, the main result in \cite{DBLP:journals/tcs/PaoliniPR20}}}. \textcolor{blue}{means certifying all the main results in \cite{DBLP:journals/tcs/PaoliniPR20}. } In more detail:
+We show how to express \RPP and its evaluation mechanism inside the proof-assistant \LEAN \cite{Lean3}. We can certify the correctness of every reversible function of \RPP with respect to a given specification which means certifying all the main results in \cite{DBLP:journals/tcs/PaoliniPR20}. In more detail:
 \begin{itemize}
     \item We give a strong guarantee that \RPP is \PRF-complete in three macro steps. We exploit that in \LEAN \MATHLIB library, \PRF is proved equivalent to a class of recursive \emph{unary} functions called \lstinline|primrec|. We define a data-type \lstinline|rpp| in \LEAN to represent \RPP. Then, we certify that, for any function \lstinline|f:primrec|, i.e. any unary \lstinline|f| with type \lstinline|primrec| in \LEAN, a function exists with type \lstinline|rpp| that encodes \lstinline|f:primrec|. Apart from fixing some bugs, our proof is fully detailed as compared to \cite{DBLP:journals/tcs/PaoliniPR20}. Moreover it's conceptually and technically simpler.
 
-    \item \textcolor{blue}{We also give a strong guarantee that \RPP is \PRF-sound} \textcolor{purple}{\sout{We also verify that the opposite holds}}: each \RPP is expressible as \PRF, thus \textcolor{blue}{completing the work in \cite{MalettoR22} by} proving that the two classes of functions have the same expressivity. Again, for the proof of this fact we exploit the definitions and theorems in \MATHLIB concerning primitive recursive functions.
+    \item We also give a strong guarantee that \RPP is \PRF-sound (that is, each \RPP is expressible as \PRF) thus completing the work in \cite{MalettoR22}, by proving that the two classes of functions have the same expressivity. Again, for the proof of this fact we exploit the definitions and theorems in \MATHLIB concerning primitive recursive functions.
 
-    \item Concerning simplification, it follows from how the elements in \lstinline|primrec| work\textcolor{purple}{\sout{, and, additionally, it}} \textcolor{blue}{. It} is characterized by the following aspects:
+    \item Concerning simplification, it follows from how the elements in \lstinline|primrec| work. It is characterized by the following aspects:
     \begin{itemize}
         \item we define a \emph{new} finite reversible iteration scheme subsuming the reversible iteration schemes in \RPP, and \SRL, but which is more primitive;
 
@@ -198,15 +198,14 @@ Concerning the formalization in a proof-assistant of the semantics, and its prop
 
 Concerning \emph{functional models} of Reversible Computation, we are aware of \cite{jacopini89tcs} which introduces the class of reversible functions \JMF, which is as expressive as the \emph{Partial} Recursive Functions. So, \JMF is stronger than \RPP; however we see \JMF as less abstract than \RPP for two reasons: (i) the primitive functions of \JMF depend on a given specific binary representation of natural numbers; (ii) unlike \RPP, which we can see as \PRF in a reversible setting, it is not evident to us that \JMF can be considered the natural extension of a total class analogous to \RPP.
 
-\textcolor{blue}{Finally, this work, starting from relevant parts of the BSc Thesis \cite{MalettoBSc2021}, which comes with \cite{MalettoRPPLEAN2021}, a \LEAN project that certifies both properties, and algorithms of \RPP, strictly extends \cite{MalettoR22} by certifying that every function in \RPP can be represented by a function of \PRF.}
+Finally, this work, starting from relevant parts of the BSc Thesis \cite{MalettoBSc2021}, which comes with a \LEAN project \cite{MalettoRPPLEAN2021} that certifies both properties and algorithms of \RPP, strictly extends \cite{MalettoR22} by certifying that every function in \RPP can be represented by a function of \PRF.
 
 %---------------------
 \paragraph{Contents}
-\textcolor{purple}{\sout{This work illustrates the relevant parts of the BSc Thesis \cite{MalettoBSc2021} which comes with \cite{MalettoRPPLEAN2021}, a \LEAN project that certifies properties, and algorithms of \RPP.}}
 Section~\ref{section:Reversible Primitive Permutations} recalls the class \RPP by commenting on the main design aspects that characterize its definition inside \LEAN.
 Section~\ref{section:RPP algorithms} defines and proves correct new reversible algorithms central to the proof.
 Section~\ref{section:The UPRF-completeness of RPP} recalls the main aspects of \lstinline|primrec|, and illustrates the key steps to port the original \PRF-completeness proof of \RPP to \LEAN.
-Section~\ref{section:Each RPP is PRF} shows how we used the constructs present in the \MATHLIB library to prove \textcolor{purple}{\sout{that each \RPP is primitive recursive}} \textcolor{blue}{the \PRF-soundness of \RPP}.
+Section~\ref{section:Each RPP is PRF} shows how we used the constructs present in the \MATHLIB library to prove the \PRF-soundness of \RPP.
 Section~\ref{section:Conclusion and developments} is about possible developments.
 
 %=====================
@@ -262,8 +261,8 @@ $$ \begin{aligned}
     \end{cases}
 \enspace .
 \end{aligned} $$
-\textcolor{blue}{The inputs are the names to the left-hand side of the blocks; the outputs are to their right-hand side.}
-\textcolor{blue}{The term here above is} a series composition of three parallel compositions.
+The inputs are the names to the left-hand side of the blocks; the outputs are to their right-hand side.
+The term here above is a series composition of three parallel compositions.
 The first one composes a unary identity \lstinline|Id 1|, which leaves its unique input untouched, and \lstinline|Sw|, which swaps its two arguments. Then, the $ x $-times iteration of the successor \lstinline|Su|, i.e. \lstinline|It Su|, is in parallel with \lstinline|Id 1|: that is why one of the outputs of \lstinline|It Su| is $ z + x $. Finally, \lstinline|If Su (Id 1) Pr| selects which among \lstinline|Su|, \lstinline|Id 1|, and \lstinline|Pr| to apply to the argument $ y $, depending on the value of $ z+x $; in particular, \lstinline|Pr| is the function that computes the predecessor of the argument. Figure~\ref{fig:RPP-ev} will give the operational semantics which defines \lstinline|rpp| formally as a class of functions on $ \ZZ$, not on $ \NN $.
 \qed
 \end{example}
@@ -405,7 +404,7 @@ The parallel composition \lstinline|f‖g| splits \lstinline|X| into two parts. 
 
 \vspace{\baselineskip}
 \noindent
-\textcolor{blue}{\emph{Finite iteration}} \lstinline|It f| \textcolor{blue}{is new:}
+\emph{Finite iteration} \lstinline|It f| is new:
 \begin{itemize}
     \item it iterates \lstinline|f| as many times as the value of the head \lstinline|x| of the argument, if \lstinline|x| contains a non negative value;
     \item otherwise it is the identity on the whole \lstinline|x::X|.
@@ -419,7 +418,6 @@ The last line of Figure~\ref{fig:RPP-ev} sets a handy notation for \lstinline|ev
 
 \begin{remark}[We want to keep the definition of \texttt{ev} simple]
 \label{remark:We keep the definition of ev simple}
-\textcolor{blue}{Ho ristrutturato il remark abbastanza ``pesantemente''. Vedi se ti piace.}
 
 Based on our definition, using \LEAN, we show that:
 \begin{lstlisting}
@@ -508,7 +506,7 @@ The definition of \lstinline|rpp| in \LEAN is really very close to the original 
 
     \item The new finite iterator \lstinline|It f (x::t): list ℤ| \emph{subsumes} the finite iterators \lstinline|ItR| in \RPP, and \lstinline|for| in \SRL. This means that \lstinline|It| is more primitive, but equally expressive and simpler for \LEAN to prove that its definition is terminating.
 
-    \textcolor{blue}{More specifically, } we recall that:
+    More specifically, we recall that:
     \begin{itemize}
         \item \lstinline|ItR f (x₀,x₁,...,xₙ₋₂,x)| simply evaluates to \lstinline|f(f(...f(x₀,x₁,...,xₙ₋₂)...))| with $ \mid\!\!\mbox{\lstinline|x|}\!\!\mid $ occurrences of \lstinline|f|;
 
@@ -626,14 +624,14 @@ otherwise the function acts as the identity. This is why it's called {\it increm
 
 Figure~\ref{fig:standard functions} recalls definition, and behavior of some \lstinline|rpp| functions already introduced in \cite{DBLP:journals/tcs/PaoliniPR20}.
 
-\textcolor{blue}{It is worth commenting on how the function \emph{rewiring} $ \rpprewire{i_0 \ldots i_n} $ works. Let $\{ i_0, \dots, i_n \} \subseteq \{ 0, \dots, m \}$, and $\{ j_1, \dots, j_{m-n} \} = \{ 0, \dots, m \} \setminus \{ i_0, \dots, i_n \}$ which we assume such that $j_k < j_{k+1}$, for every $ 1 \leq k < m-n $.}
+It is worth commenting on how the function \emph{rewiring} $ \rpprewire{i_0 \ldots i_n} $ works. Let $\{ i_0, \dots, i_n \} \subseteq \{ 0, \dots, m \}$ be a set of $n+1$ distinct indices between $0$ and $m$, and $\{ j_1, \dots, j_{m-n} \} = \{ 0, \dots, m \} \setminus \{ i_0, \dots, i_n \}$ which we assume such that $j_k < j_{k+1}$, for every $ 1 \leq k < m-n $.
 By definition, $\rpprewire{i_0, \dots, i_n} (x_0, \dots, x_m) = (x_{i_0}, \dots, x_{i_n},$ $x_{j_1}, \dots, x_{j_{m-n}})$, i.e.\@ rewiring brings every input with index in $ \{ i_0, \dots,  i_n \} $ in front of all the inputs with index in $\{ j_1, \dots, j_{m-n} \}$, preserving the order.
 
 \subsection{The algorithm scheme {\normalfont \texttt{step[\_]}}}
 Figure~\ref{fig:function scheme step} identifies the \emph{new algorithm scheme} \lstinline|step[_]|. Depending on how we fill the hole \lstinline|[_]|, we get step functions that, once iterated, draw paths in $ \NN^2 $.
 %The names $ a_0, \ldots, b_0, \ldots $ are just place holders, currently.
 
-On top of the functions in Figures~\ref{fig:standard functions}, and~\ref{fig:function scheme step} we build Cantor Pairing/Un-pairing, Quotient/Reminder of integer division, and truncated Square Root. \textcolor{blue}{Suitable instances of \lstinline|step[_]| allow us to visit $ \NN^2 $ as in Figures~\ref{sfig:cantor as a path}, \ref{sfig:Quot./Rem.}, and~\ref{sfig:Square root}, respectively. The pairing function $\rppmkpair$, which behaves as in Figure~\ref{sfig:mkpair}, and which is an alternative to Cantor Pairing/Unpairing, has a more complex definition; it will be a necessary ingredient of our main proof.}
+On top of the functions in Figures~\ref{fig:standard functions}, and~\ref{fig:function scheme step} we build Cantor Pairing/Un-pairing, Quotient/Reminder of integer division, and truncated Square Root. Suitable instances of \lstinline|step[_]| allow us to visit $ \NN^2 $ as in Figures~\ref{sfig:cantor as a path}, \ref{sfig:Quot./Rem.}, and~\ref{sfig:Square root}, respectively. The pairing function $\rppmkpair$, which behaves as in Figure~\ref{sfig:mkpair}, and which is an alternative to Cantor Pairing/Unpairing, has a more complex definition; it will be a necessary ingredient of our main proof.
 
 \begin{figure}
     \centering
@@ -860,7 +858,7 @@ $\begin{NiceMatrix}
     \mbox{\lstinline|Sw|}
     %    \rppSw
     } & \yr & \bloch{2-1}{
-        \mbox{\lstinline|If(Su)(Id 1)(Id 1)|}
+        \mbox{\lstinline|If(Pr)(Id 1)(Id 1)|}
 %        \rppIf[\rppPr, \boldsymbol{\rppId_1}, \rppId_1]
     } & \yr & \bloch{1-1}{\mbox{\lstinline|Id 1|}} & \yr
     \\
@@ -923,19 +921,19 @@ $\begin{NiceMatrix}
 \caption{The function \lstinline|cu|}
 \label{sfig:cu}
 \end{subfigure}
-\caption{Cantor Pairing and Un-pairing.  \textcolor{blue}{Qui sopra, la sottofigura (c) ha un'istanza di \texttt{step[Su;;Sw]} diversa da quella della sottofigura (b). Il primo argomento sia della prima, sia della terza, selezione di (c) non sono invertiti?}}
+\caption{Cantor Pairing and Un-pairing.}
 \label{fig:Cantor}
 \end{figure}
 
 Figure~\ref{fig:Cantor} has all we need to define Cantor Pairing \lstinline|cp:rpp|, and Un-pairing \lstinline|cu:rpp|.
-In Figure~\ref{sfig:cp input}, \lstinline|cp_in| is the natural algorithm in \lstinline|rpp| to implement~\eqref{align: cp analitically}. As expected, the input pair $(x,y)$ is part of \lstinline|cp_in| output \textcolor{blue}{, feature that the suffix ``\lstinline|in|'' recalls in the name of the function}. In order to drop $(x,y)$ from the output of \lstinline|cp_in|, and to obtain \lstinline|cp| as in Figure~\ref{sfig:cp}, \textcolor{blue}{we apply {\it Bennett's trick} using \lstinline|cu_in⁻¹|, i.e.\@ the inverse of \lstinline|cu_in|, whose definition is completely new, as compared to the corresponding one, define in \cite{DBLP:journals/tcs/PaoliniPR20}}. The intuition behind \lstinline|cu_in| is as follows. Let us fix any point $ (x, y) \in \NN^2 $. We can realize that, starting from the origin, if we follow as many steps as the value $ \rppcp(x, y) $ in Figure~\ref{sfig:cantor as a path}, we stop exactly at $ (x,y) $. A standard functional notation for the function that, given the current point $ (x,y) $, identifies the next one to move to in the path of Figure~\ref{sfig:cantor as a path} is:
+In Figure~\ref{sfig:cp input}, \lstinline|cp_in| is the natural algorithm in \lstinline|rpp| to implement~\eqref{align: cp analitically}. As expected, the input pair $(x,y)$ is part of \lstinline|cp_in| output, a fact that the suffix ``\lstinline|_in|'' recalls in the name of the function. In order to drop $(x,y)$ from the output of \lstinline|cp_in|, and to obtain \lstinline|cp| as in Figure~\ref{sfig:cp}, we apply {\it Bennett's trick} using \lstinline|cu_in⁻¹|, i.e.\@ the inverse of \lstinline|cu_in|, whose definition is completely new, as compared to the corresponding one defined previously in \cite{DBLP:journals/tcs/PaoliniPR20}. The intuition behind \lstinline|cu_in| is as follows. Let us fix any point $ (x, y) \in \NN^2 $. We can realize that, starting from the origin, if we follow as many steps as the value $ \rppcp(x, y) $ in Figure~\ref{sfig:cantor as a path}, we stop exactly at $ (x,y) $. A standard functional notation for the function that, given the current point $ (x,y) $, identifies the next one to move to in the path of Figure~\ref{sfig:cantor as a path} is:
 \begin{align*}
 %    \label{align:next function}
     \operatorname{step}(x,y) & =
     \begin{cases} (x+1,y-1) &  y > 0 \\ (0, x+1) &   y = 0 \end{cases}
     \enspace .
 \end{align*}
-We implement $ \operatorname{step}(x,y) $ in \lstinline|rpp| as \lstinline|step[Su;;Sw]|. Figures~\ref{sfig:cu step y > 0}, and~\ref{sfig:cu step y = 0} represent two runs of \lstinline|step[Su;;Sw]| to give visual evidence that \lstinline|step[Su;;Sw]| implements $\operatorname{step}(x,y)$. Colored occurrences of $ y $ show the relevant part of the computational flow. Note that we cannot implement $ \operatorname{step}(x,y) $ by using the conditional \textcolor{blue}{sostituire l'originario \lstinline|It| con \lstinline|If|?}  directly on $y$, because in the computation we also want to modify the value of $y$. Finally, as soon as we get \lstinline|cu_in| by iterating \lstinline|step[Su;;Sw]| as in Figure~\ref{sfig:cu input}, we can define \lstinline|cp| (Figure~\ref{sfig:cp}), and \lstinline|cu| (Figure~\ref{sfig:cu}).
+We implement $ \operatorname{step}(x,y) $ in \lstinline|rpp| as \lstinline|step[Su;;Sw]|. Figures~\ref{sfig:cu step y > 0}, and~\ref{sfig:cu step y = 0} represent two runs of \lstinline|step[Su;;Sw]| to give visual evidence that \lstinline|step[Su;;Sw]| implements $\operatorname{step}(x,y)$. Colored occurrences of $ y $ show the relevant part of the computational flow. Note that we cannot implement $ \operatorname{step}(x,y) $ by using the conditional directly on $y$, because in the computation we also want to modify the value of $y$. Finally, as soon as we get \lstinline|cu_in| by iterating \lstinline|step[Su;;Sw]| as in Figure~\ref{sfig:cu input}, we can define \lstinline|cp| (Figure~\ref{sfig:cp}), and \lstinline|cu| (Figure~\ref{sfig:cu}).
 
 \begin{figure}
     \begin{subfigure}{.475\linewidth}
@@ -1000,20 +998,17 @@ just discussed here above.
 
 \subsection{A note on the mechanization of proofs}
 We recall once more that everything defined here above has been proved correct in \LEAN (see \cite{MalettoRPPLEAN2021} for the details).
-\textcolor{blue}{For example, once defined \lstinline|sqrt| in \LEAN, the following lemma:}
+For example, once defined \lstinline|sqrt| in \LEAN, the following lemma:
 \begin{lstlisting}
    lemma sqrt_def (n : ℕ) (X : list ℤ) :
      ‹sqrt›(n::0::0::0::0::X) =
               n::(n-√n*√n)::(√n+√n-(n-√n*√n))::0::√n::X
 \end{lstlisting}
-\textcolor{blue}{shows that \lstinline|sqrt| behaves as expected, for any \lstinline|n|.}
+shows that \lstinline|sqrt| behaves as expected, for any \lstinline|n|.
 
-In order to prove the here above lemma, or similar ones, we make use of the {\it tactic} \lstinline|simp|, i.e.\@ a \LEAN command that builds proofs. The tactic \lstinline|simp| can automatically simplify expressions until trivial identities show up. \textcolor{blue}{What is meant by ``simplify'' is that theorems which state an equality with form \texttt{Left\_hand\_side = Right\_hand\_side}, like in \lstinline|sqrt_def|,  can be marked with the attribute \lstinline|@[simp]|; the very useful consequence is that every time \lstinline|simp| is invoked in subsequent proof, if the equality to be proved is \texttt{Left\_hand\_side}, then it will be substituted with \texttt{Right\_hand\_side}, often making it simpler to conclude a proof.}
+In order to prove the here above lemma, or similar ones, we make use of the {\it tactic} \lstinline|simp|, i.e.\@ a \LEAN command that builds proofs. The tactic \lstinline|simp| can automatically simplify expressions until trivial identities show up. What is meant by ``simplify'' is that theorems which state an equality with form \texttt{Left\_hand\_side = Right\_hand\_side}, like in \lstinline|sqrt_def|,  can be marked with the attribute \lstinline|@[simp]|; the very useful consequence is that every time \lstinline|simp| is invoked in a subsequent proof, if the equality to be proved contains an instance of \texttt{Left\_hand\_side}, then it will be substituted with \texttt{Right\_hand\_side}, often making it simpler to conclude a proof.
 
-\textcolor{purple}{\sout{This technique is really powerful, because it makes it possible to essentially automate many proofs of theorems which in turn can be marked with \lstinline|@[simp]|
-and be used to prove yet more theorems.}}
-
-\textcolor{blue}{So, \lstinline|@[simp]| introduces an incremental and quite handy mechanism to automate proofs: the more available proofs exist, the more we can, in principle, label as \lstinline|@[simp]|, widening the possibility to automatically prove further properties.}
+So, \lstinline|@[simp]| introduces an incremental and quite handy mechanism to automate proofs: the more available proofs exist, the more we can, in principle, label as \lstinline|@[simp]|, widening the possibility to automatically prove further properties.
 
 
 
@@ -1050,7 +1045,6 @@ Figure~\ref{fig: primrec} recalls the definition of \PRF from \cite{Carneiro-pri
 The \emph{constant} function \lstinline|zero| yields \lstinline|0| on every of its inputs.
 The \lstinline|succ|\emph{essor} gives the natural number next to the one taken as input.
 The two \emph{projections} \lstinline|left|, and \lstinline|right| take an argument \lstinline|n|, and extract a left, or a right, component from it as \lstinline|n| was the result of pairing two values \lstinline|x,y:ℕ|. The functions that \lstinline|primrec| relies on to encode/decode pairs on natural numbers as a single natural one are \lstinline|mkpair:ℕ → ℕ → ℕ|, and \lstinline|unpair:ℕ → ℕ × ℕ|. The first one builds the value \lstinline|mkpair x y|, i.e. the number of steps from the origin to reach the point with coordinates \lstinline|(x,y)| in the path of Figure~\ref{sfig:mkpair}. The function \lstinline|unpair:ℕ → ℕ × ℕ| takes the number of steps to perform on the same path. Once it stops, the coordinates of that point are the two natural numbers we are looking for. So, \lstinline|mkpair|/\lstinline|unpair| are an alternative to Cantor Pairing/Un-pairing.
-\textcolor{blue}{If we look at Figures~\ref{sfig:cantor as a path}, and~\ref{sfig:mkpair}, we can see that \lstinline|mkpair| fills the Cartesian plane more densely than Cantor.}
 
 \paragraph{Composition schemes}
 Three schemes exist in \lstinline|primrec|, each depending on parameters \lstinline|f,g:primrec|.
@@ -1110,7 +1104,7 @@ which says that we know how to build \lstinline|f:rpp| which \lstinline|encode|s
 The proof proceeds by induction on the proposition \lstinline|primrec|, which generates 7 sub-goals. We illustrate the main arguments to conclude the most interesting case which requires to encode the composition scheme \lstinline|prec|.
 
 \begin{remark}
-Many aspects \textcolor{blue}{of the proof that we here detail out, ``forced'' by \LEAN, so to say,} were simply missing in the original \PRF-completeness proof for \RPP in \cite{DBLP:journals/tcs/PaoliniPR20}.
+Many aspects of the proof that we here detail out, ``forced'' by \LEAN, so to say, were simply missing in the original \PRF-completeness proof for \RPP in \cite{DBLP:journals/tcs/PaoliniPR20}.
 \qed
 \end{remark}
 
@@ -1189,7 +1183,7 @@ In Figure~\ref{sfig:encode prec 2nd step}, \lstinline|unpair| unpacks $ \gl z, \
 Figure~\ref{sfig:encode prec 3rd step} both increments $ n $, and packs $ R[\mbox{\lstinline|G|}](z,n) $ into $ s $, by means of \lstinline|mkpair|, because $ R[\mbox{\lstinline|G|}](z,n) $ has become useless once obtained $ R[\mbox{\lstinline|G|}](z,n+1) $ from it. Packing $ R[\mbox{\lstinline|G|}](z,n) $ into $ s $, so that we can eventually recover it, \emph{is mandatory}. We cannot ``replace'' $ R[\mbox{\lstinline|G|}](z,n) $ with $ 0 $ because that would not be a reversible action.
 
 \begin{remark}
-The function \lstinline|cp| in Figure~\ref{sfig:cp} can replace \lstinline|mkpair| in Figure~\ref{sfig:encode prec 3rd step} as a bijective map $ \NN^2$ into $\NN$. Indeed, the original \PRF-completeness of \RPP relies on \lstinline|cp|. We favor \lstinline|mkpair| to take the most out of \MATHLIB and \textcolor{blue}{because, as already observed, \lstinline|mkpair| fills the space more densely than Cantor.}
+The function \lstinline|cp| in Figure~\ref{sfig:cp} can replace \lstinline|mkpair| in Figure~\ref{sfig:encode prec 3rd step} as a bijective map $ \NN^2$ into $\NN$. Indeed, the original \PRF-completeness of \RPP relies on \lstinline|cp|. We favor \lstinline|mkpair| to take the most out of \MATHLIB.
 \qed
 \end{remark}
 
@@ -1254,12 +1248,12 @@ The function \lstinline|cp| in Figure~\ref{sfig:cp} can replace \lstinline|mkpai
 \section{Proving in \LEAN that each \RPP is \PRF-sound}
 \label{section:Each RPP is PRF}
 
-\textcolor{blue}{We formally show in \LEAN that every function we can express as (algorithm) in \lstinline|rpp| can be expressed as an element of \PRF, the class of Primitive Recursive Functions; we say that ``\lstinline|rpp| is \PRF-sound''.}
-\textcolor{purple}{\sout{In this section we discuss the proof that each function in \RPP can be expressed as a primitive recursive function.}} This means that, through a suitable embedding of \lstinline|list ℤ| in \lstinline|ℕ| and thus seeing each \lstinline|‹f›:list ℤ → list ℤ| as a function of type \lstinline|ℕ → ℕ|, this is always primitive recursive. In \LEAN terms, we can prove:
+We formally show in \LEAN that every function we can express as (algorithm) in \lstinline|rpp| can be expressed as an element of \PRF, the class of Primitive Recursive Functions; we say that ``\lstinline|rpp| is \PRF-sound''.
+This means that, through a suitable embedding of \lstinline|list ℤ| in \lstinline|ℕ| and thus seeing each \lstinline|‹f›:list ℤ → list ℤ| as a function of type \lstinline|ℕ → ℕ|, this is always primitive recursive. In \LEAN terms, we can prove:
 \begin{lstlisting}
         theorem rpp_primrec (f:rpp) : primrec ‹f›
 \end{lstlisting}
-\textcolor{blue}{As far as we know,} no full proof of this fact was present before, \cite{Paolini2018NGC} included. In order to show it, we make heavy use of previously established theorems present in \LEAN \MATHLIB library.
+As far as we know, no full proof of this fact was present before, \cite{Paolini2018NGC} included. In order to show it, we make heavy use of previously established theorems present in \LEAN \MATHLIB library.
 
 %%%%
 \subsection{The extended definition of {\normalfont \texttt{primrec}} in {\normalfont \MATHLIB}}
@@ -1268,7 +1262,7 @@ Section~\ref{section:The UPRF-completeness of RPP} recalls the meaning for a fun
 
 \vspace{\baselineskip}
 \noindent
-\textcolor{blue}{Three main steps do the job:}
+Three main steps do the job:
 
 \begin{enumerate}
 \item
@@ -1280,46 +1274,41 @@ First, we require that both \lstinline|α|, and \lstinline|β| be \lstinline|enc
     (decode [] : ℕ → option α)
     (encodek : ∀ a, decode (encode a) = some a)
 \end{lstlisting}
-\textcolor{blue}{(Il costruttore \texttt{encodek} ha il nome giusto?)}
-\noindent
-It means that \emph{computable immersions} exist with type \lstinline|α → ℕ|, and \lstinline|β → ℕ|.
+It means that \emph{computable immersions} \lstinline|encode| exist with type \lstinline|α → ℕ| (and \lstinline|β → ℕ|). The inverse function \lstinline|decode| need only be defined for those \lstinline|n : ℕ| which are in the image of the immersion: for this reason, \lstinline|decode| has return type \lstinline|option α|, a type in which all elements are of the form \lstinline|none| or \lstinline|some a| for \lstinline|a : α|; the elements of \lstinline|n : ℕ| not in the image can just be mapped to \lstinline|none|.
 
 \item
-Second, it is important to work \textcolor{blue}{always with the same instance of \emph{computable immersion} as we proceed with the development of the various proofs: different immersions may differ by some automorphism of} \lstinline|ℕ| \textcolor{blue}{which may not be primitive recursive}. This however is guaranteed by the \LEAN \lstinline|class| mechanism, which is able to simultaneously infer when a new type is \lstinline|encodable| based on previous theorems, and fixes just one embedding for each such type.
+Second, it is important to work always with the same instance of \emph{computable immersion} as we proceed with the development of the various proofs: different immersions may differ by some automorphism of \lstinline|ℕ| which may not be primitive recursive. This however is guaranteed by the \LEAN \lstinline|class| mechanism, which is able to simultaneously infer when a new type is \lstinline|encodable| based on previous theorems, and fixes just one embedding for each such type.
 
 \item
-Third, we need to require that our types \lstinline|α|, and \lstinline|β| are \lstinline|primcodable|:
+Third, we notice that it may happen that the composition \lstinline|encode ∘ decode| is not primitive recursive, which is undesirable.
+To fix this, we make it a requirement with the \lstinline|primcodable| class:
 
 \begin{lstlisting}
 class primcodable (α : Type*) extends encodable α :=
   (prim [] : nat.primrec (λ n, encodable.encode (decode n)))
 \end{lstlisting}
 \noindent
-i.e.\@ \textcolor{blue}{metti un commento che illustri \lstinline|primencodable|?}
-
-The reason is that, in our context, it is not enough to require that \lstinline|α|, and \lstinline|β| are \lstinline|encodable|, because it may happen that the composition \lstinline|encode ∘ decode| is not primitive recursive.
+and we require \lstinline|α|, and \lstinline|β| to be \lstinline|primcodable|.
 \end{enumerate}
 
-\textcolor{purple}{\sout{This let us extend}} \textcolor{blue}{By all that means that} the definition of \lstinline|primrec| can be extended to functions \lstinline|f:α → β| whose types \lstinline|α|, and \lstinline|β| are \lstinline|primcodable|. \textcolor{purple}{\sout{Such a function}} \textcolor{blue}{Specifically, for} \lstinline|f:α → β| to be \lstinline|primrec| requires that the composition \lstinline|encode ∘ primrec ∘ decode : ℕ → ℕ| is primitive recursive. \textcolor{blue}{This is how we can express this requirement in \LEAN:}
+The definition of \lstinline|primrec| can be extended to functions \lstinline|f:α → β| whose types \lstinline|α|, and \lstinline|β| are \lstinline|primcodable|. Specifically, for \lstinline|f:α → β| to be \lstinline|primrec| requires that the composition \lstinline|encode ∘ f ∘ decode : ℕ → ℕ| is primitive recursive. This is how we can express this requirement in \LEAN:\footnote{The fact that \lstinline|decode| has return type \lstinline|option α| makes this expression more complicated: the function \lstinline|map f| needs to be used.}
 
 \begin{lstlisting}
 def primrec {α β} [primcodable α] [primcodable β]
 (f:α → β):Prop := nat.primrec (λ n, encode ((decode α n).map f))
 \end{lstlisting}
 
-\textcolor{blue}{The relevant consequence of all this formalization is that \LEAN automatically deduces that} \lstinline|list ℤ| is \lstinline|primcodable|; this follows from the \lstinline|class| mechanism, from the fact that \lstinline|ℤ| is \lstinline|primcodable|, and by knowing that if a type \lstinline|α| is \lstinline|primcodable|, then so is \lstinline|list α|.
-\textcolor{blue}{(Ho lasciato il testo originale in un commento latex)}
+The relevant consequence of all this formalization is that \LEAN automatically deduces that \lstinline|list ℤ| is \lstinline|primcodable|; this follows from the \lstinline|class| mechanism, from the fact that \lstinline|ℤ| is \lstinline|primcodable|, and by knowing that if a type \lstinline|α| is \lstinline|primcodable|, then so is \lstinline|list α|.
 %In \MATHLIB it is already established that the type \lstinline|ℤ| is \lstinline|primcodable|, and that if a type \lstinline|α| is \lstinline|primcodable|, then so is \lstinline|list α|. The \lstinline|class| system then automatically deduce that \lstinline|list ℤ| is \lstinline|primcodable|.
 
 \vspace{\baselineskip}
 Once everything is set up as described, we can eventually prove \lstinline|theorem rpp_primrec| above, i.e.\@
-that for every \lstinline|f:rpp|, \textcolor{blue}{(a representation?)} \lstinline|‹f›:list ℤ → list ℤ| \textcolor{blue}{(of \texttt{f}?)} is \lstinline|primrec|. We proceed by induction on \lstinline|f|, by tackling the base cases \lstinline|Id|, \lstinline|Ne|, \lstinline|Su|, \lstinline|Pr|, \lstinline|Sw| and the inductive cases \lstinline|Co|, \lstinline|Pa|, \lstinline|It|, \lstinline|If|.
+that for every \lstinline|f:rpp|, \lstinline|‹f›:list ℤ → list ℤ| is \lstinline|primrec|. We proceed by induction on \lstinline|f|, by tackling the base cases \lstinline|Id|, \lstinline|Ne|, \lstinline|Su|, \lstinline|Pr|, \lstinline|Sw| and the inductive cases \lstinline|Co|, \lstinline|Pa|, \lstinline|It|, \lstinline|If|.
 
 
 %%%%%
 \subsection{Inductive cases}
-\textcolor{blue}{(Rileggi tutta la sezione bene, anche se, qua e là ho lasciato testo in ble)}
-We illustrate the details of the most relevant case, i.e.\@ parallel composition \lstinline|f‖g|. Let \lstinline|f|, and \lstinline|g| be such that \lstinline|‹f›| and \lstinline|‹g›| are \lstinline|primrec|. The goal is to prove that \lstinline|f‖g| is \lstinline|primrec|. In \LEAN, this amounts to prove the following lemma:
+We illustrate the details of the case of parallel composition \lstinline|f‖g|. Let \lstinline|f|, and \lstinline|g| be such that \lstinline|‹f›| and \lstinline|‹g›| are \lstinline|primrec|. The goal is to prove that \lstinline|f‖g| is \lstinline|primrec|. In \LEAN, this amounts to prove the following lemma:
 \begin{lstlisting}
     lemma rpp_pa {f g:rpp} (hf:primrec ‹f›) (hg:primrec ‹g›) :
           primrec ‹f‖g›
@@ -1346,7 +1335,7 @@ That \lstinline|append| is \lstinline|primrec₂|\footnote{For functions which t
         primrec₂ ((++) : list α → list α → list α)
 \end{lstlisting}
 \noindent
-Furthermore, \MATHLIB has proofs to demonstrates that the composition of two \lstinline|primrec| elements or the application of one \lstinline|primrec₂| element to two \lstinline|primrec| elements remains within the \lstinline|primrec| set:
+Furthermore, \MATHLIB has proofs to demonstrate that the composition of two \lstinline|primrec| elements or the application of one \lstinline|primrec₂| element to two \lstinline|primrec| elements remains within the \lstinline|primrec| set:
 \begin{lstlisting}
     theorem comp {f:β → σ} {g:α → β}
         (hf:primrec f) (hg:primrec g) : primrec (λ a, f (g a))
@@ -1357,33 +1346,33 @@ Furthermore, \MATHLIB has proofs to demonstrates that the composition of two \ls
         primrec (λ a, f (g a) (h a))
 \end{lstlisting}
 \noindent
-So the sub-problems enumerated here above at points~\ref{enumerate: ++ primrec}, and~\ref{enumerate: drop primrec}, are concluded.
+So the sub-problems enumerated here above at points~\ref{enumerate: ++ primrec}, and~\ref{enumerate: comp primrec}, are concluded.
 
 \vspace{\baselineskip}
-Now, let us focus on how to prove point~\ref{enumerate: comp primrec} here above.
-
-Let us assume that we know how to prove two properties \lstinline|list_take|, and \lstinline|list_drop| which say that two functions \lstinline|take|, and \lstinline|drop| are \lstinline|primrec|, respectively. Under that assumption, we can conclude by writing \textcolor{blue}{(\textbf{Il testo di questo lemma è corretto?})}:
+For now let us assume that we also know how to deal with point~\ref{enumerate: drop primrec}, i.e.\@ we have proved theorems \lstinline|list_take| and \lstinline|list_drop|. Under that assumption, we can conclude by writing:
 \begin{lstlisting}
 lemma rpp_pa {f g : rpp} (hf : primrec ‹f›) (hg : primrec ‹g›) :
     primrec ‹f ‖ g› :=
 (list_append.comp
     (comp hf (list_take.comp (const f.arity) primrec.id))
-    (comp hg (list_drop.comp (const f.arity) primrec.id))).of_eq $\mbox{\textdollar}$
-λ l, by refl
+    (comp hg (list_drop.comp (const f.arity) primrec.id))).of_eq
+$\mbox{\textdollar}$ λ l, by refl
 \end{lstlisting}
 \noindent
-\textcolor{blue}{(Rileggi per bene cosa ho scritto, qui di seguito, per favore.)}
-which is a highly compound expression in \LEAN. Figure~\ref{fig:rpp_pa} brakes it down in a readable form. To catch the idea it relies on, let us recall that a proof of a lemma, or of a theorem, in \LEAN is a function, according to the Curry-Howard correspondence. So, also the proof of \lstinline|lemma rpp_pa| is a function, and it composes proofs showing that some given functions are \lstinline|primrec|.
-Specifically, the function \lstinline|of_eq| proves that the ``built'' function \textcolor{blue}{(Quale ``built'' function? quella che precede il ``.''? Che sia quella o meno, io la ripeterei qui, per identificarla bene)} is the same as the function we are interested in; this is usually done through tactics after the keyword ``\lstinline|by|'' \textcolor{blue}{(Un po' criptica la descrizione dell'uso di \texttt{by}. Forse, potrebbe valere la pena di mettere qualche riferimento in modo da poter dare un'occhiata ad esempio di suo utilizzo? Ricordi che ci hanno anche solo chiesto la notazione \texttt{f.qualcosa}?)}
-
+The explanation of what this means is the following: what comes before the expression \lstinline|.of_eq| is the statement that a certain "auxiliary" function, which we can call \lstinline|F| for simplicity, is \lstinline|primrec|. Figure~\ref{fig:rpp_pa} represents the structure of \lstinline|F|: each block both defines part of the function and states that that part is \lstinline|primrec|, at the same time. What comes after \lstinline|.of_eq| is instead a proof that \lstinline|F| is equal to \lstinline|‹f ‖ g›| for all inputs \lstinline|l|: this is a definitional equality, so it can be proved easily in \LEAN tactics mode with \lstinline|by refl|. Finally, \lstinline|of_eq| is a theorem which given the hypotheses
+\begin{itemize}
+\item \lstinline|F| is \lstinline|primrec| (what's before \lstinline|.of_eq|)
+\item \lstinline|F| is equal to \lstinline|‹f ‖ g›| for all inputs (what's after \lstinline|.of_eq|)
+\end{itemize}
+concludes that also \lstinline|‹f ‖ g›| is \lstinline|primrec|, which is what we wanted to show.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth]{drawing.png}
-    \caption{Diagram representing \lstinline|rpp_pa|. \textcolor{blue}{Estenderei questa caption in modo da descrivere almeno un blocco \texttt{comp hf com ....}}}
+    \caption{Diagram representing \lstinline|rpp_pa|. For example, the first "\lstinline|comp|" block means that, given the fact that \lstinline|list.take| is \lstinline|primrec₂| and \lstinline|(λ l, f.arity)|, \lstinline|(λ l, l)| are \lstinline|primrec|, then the composition \lstinline|list.take f.arity l| is \lstinline|primrec|.}
     \label{fig:rpp_pa}
 \end{figure}
 
-We are eventually left with the most difficult part of the proof of \lstinline|lemma rpp_pa|, i.e.\@ the proofs of \lstinline|lemma list_take|, and \lstinline|lemma list_drop|.
+We are eventually left with point~\ref{enumerate: drop primrec} of the proof of \lstinline|lemma rpp_pa|, i.e.\@ the proofs of \lstinline|lemma list_take|, and \lstinline|lemma list_drop|.
 
 \vspace{\baselineskip}
 \noindent
@@ -1406,11 +1395,10 @@ i.e.\@ a function recursive in both its arguments. The built-in \LEAN recursion 
 \noindent
 We overcome the problem into two steps:
 \begin{enumerate}
-    \item we define a function \textcolor{blue}{(Secondo te non varrebbe la pena di richiamarne la definizione qui?)} which relies on the function \lstinline|list.foldl|, already proven to be \lstinline|primrec|;
+    \item we define an "auxiliary" function \lstinline|take2| in terms of the known function \lstinline|foldl|, already proven to be \lstinline|primrec|, and prove that \lstinline|take2| is \lstinline|primrec|;
+    \item we prove that \lstinline|take2| is equal to \lstinline|take| for all inputs, and conclude using \lstinline|of_eq|.
 
-    \item we prove that the new definition \textcolor{blue}{(Sì, ne darei proprio la definizione, così abbiamo un nome da usare)} is equivalent to \lstinline|take| here above.
-
-    The proof of equivalence is established through the use of the ``special'' built-in induction principle \lstinline|list.reverse_rec_on| which decomposes a list into its final element and all preceding elements, rather than the head and tail, \textcolor{blue}{feature that helps to reason with} \lstinline|list.foldl|.
+    The proof of equivalence is established through the use of the ``special'' induction principle \lstinline|list.reverse_rec_on| which decomposes a list into its final element and all preceding elements, rather than the head and tail, feature that helps to reason with \lstinline|take2|'s definition.
 \end{enumerate}
 
 \vspace{\baselineskip}
@@ -1429,8 +1417,7 @@ Proving that \lstinline|Co|, \lstinline|It|, and \lstinline|If| are \lstinline|p
 
 %%%%%%%
 \subsection{Base cases}
-\textcolor{blue}{(Ho letto un paio di volte quanto segue. Credo che i suggerimenti per la sezione 5.2 si adattino anche a questa. Cioè, prova ad essere leggermente meno frettoloso. Dividi meglio in piccoli blocchi la presentazione dicendo cosa stai per fare e come lo fai.)}
-The base cases are handled in a similar way, by building the function from simpler ones. In particular, the operations \lstinline|Ne|, \lstinline|Su|, \lstinline|Pr| which respectively represent negation $x\mapsto-x$, successor $x\mapsto x+1$, predecessor $x\mapsto x-1$, all represent functions of type \lstinline|ℤ → ℤ|. Instead of focusing specifically on those functions, we found that it was actually easier to start from more basic functions close to the definition of integers in \LEAN, and progressively build more complex functions following exactly their definition and development in the \MATHLIB library.
+The base cases are handled in a similar way, by building each function from simpler ones. In particular, the operations \lstinline|Ne|, \lstinline|Su|, \lstinline|Pr| which respectively represent negation $x\mapsto-x$, successor $x\mapsto x+1$, predecessor $x\mapsto x-1$, all represent functions of type \lstinline|ℤ → ℤ|. Instead of focusing specifically on those functions, we found that it was actually easier to start from more basic functions close to the definition of integers in \LEAN, and progressively build more complex functions following exactly their definition and development in the \MATHLIB library. We now focus on those more basic functions.
 
 By looking at the definition of integers:
 \begin{lstlisting}
@@ -1439,23 +1426,25 @@ By looking at the definition of integers:
     | neg_succ_of_nat : ℕ → ℤ
 \end{lstlisting}
 \noindent
-we see that it is based on two functions, \lstinline|of_nat| \textcolor{blue}{(\texttt{of_nat} è una funzione o un costruttore?)} and \lstinline|neg_succ_of_nat|, which can be proven to be \lstinline|primrec| almost directly by unfolding the definitions of the embedding \lstinline|ℤ → ℕ| and noticing that through the compositions, the functions become \lstinline|nat_bit0| and \lstinline|nat_bit1| which are \lstinline|primrec|.
+we see that it is based on two functions/constructors, \lstinline|of_nat| and \lstinline|neg_succ_of_nat|, which can be proven to be \lstinline|primrec| almost directly by unfolding the definitions of the embedding \lstinline|ℤ → ℕ| and noticing that through the compositions, the functions become two known functions \lstinline|nat_bit0, nat_bit1 : ℕ → ℕ| which are already proven to be \lstinline|primrec| in \MATHLIB.
 
-Other than \lstinline|of_nat| and \lstinline|neg_succ_of_nat|, the last important building block for functions of type \lstinline|ℤ → ℤ| is the "recursion principle" for integers:
+Other than \lstinline|of_nat| and \lstinline|neg_succ_of_nat|, the last important building block for functions of type \lstinline|ℤ → ℤ| is the "cases principle" \lstinline|int.cases_on| for integers:
 \begin{lstlisting}
-    Π {f:ℤ → Type} (z:ℤ),
-        (Π (n:ℕ), f (int.of_nat n)) →
-        (Π (n:ℕ), f (int.neg_succ_of_nat n)) → f z
+int.cases_on : Π {f:ℤ → Type} (z:ℤ),
+    (Π (n:ℕ), f (int.of_nat n)) →
+    (Π (n:ℕ), f (int.neg_succ_of_nat n)) → f z
 \end{lstlisting}
 \noindent
-which states that if a function is defined for natural numbers and for negative numbers, then it is defined for all numbers. We state the relevant theorem as:
+which states that if a function is defined for natural numbers and for negative numbers, then it is defined for all numbers.
+The reason this is important is that almost all basic functions with domain \lstinline|ℤ| are defined by cases, breaking down the case where the input number is natural and where it is negative. We can express the fact that this cases principle is \lstinline|primrec| in the following way:\footnote{The statement was slightly modified for simplicity. The original statement can be found in \cite{MalettoRPPLEAN2021}.}
 \begin{lstlisting}
     lemma int_cases {f:α → ℤ} {g h:α → ℕ → β}
         (hf : primrec f) (hg : primrec₂ g) (hh : primrec₂ h) :
-        @primrec _ β _ _ (λ a, int.cases_on (f a) (g a) (h a)) :=
+        primrec (λ a, int.cases_on (f a) (g a) (h a))
 \end{lstlisting}
 \noindent
-which is common for theorems of this type concerning primitive recursive functions, in the sense that in order to be as general as possible, additional function arguments \lstinline|f|, \lstinline|g|, \lstinline|h| are introduced. The proof, as usual, is based on the fact that more elementary operations are already proven to be \lstinline|primrec| in \MATHLIB.
+This means that given three \lstinline|primrec|/\lstinline|primrec₂| functions \lstinline|hf, hg, hh|, we can compose them with the cases principle of the integers to get a new function, which the lemma states is \lstinline|primrec|.
+We remark that all other cases/recursion/induction principles in \MATHLIB are stated in a similar fashion. The proof, as usual, is based on the fact that more elementary operations are already proven to be \lstinline|primrec| in \MATHLIB.
 
 %=====================
 \section{Conclusion and developments}
