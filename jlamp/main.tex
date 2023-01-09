@@ -1306,7 +1306,7 @@ The relevant consequence of all this formalization is that \LEAN automatically d
 
 \vspace{\baselineskip}
 Once everything is set up as described, we can eventually prove \lstinline|theorem rpp_primrec| above, i.e.\@
-that every \lstinline|f:rpp|, \lstinline|‹f›:list ℤ → list ℤ| is \lstinline|primrec|. We proceed by induction on \lstinline|f|, by tackling the base cases \lstinline|Id|, \lstinline|Ne|, \lstinline|Su|, \lstinline|Pr|, \lstinline|Sw| and the inductive cases \lstinline|Co|, \lstinline|Pa|, \lstinline|It|, \lstinline|If|.
+that for every \lstinline|f:rpp|, the function \lstinline|‹f›:list ℤ → list ℤ| is \lstinline|primrec|. We proceed by induction on \lstinline|f|, by tackling the base cases \lstinline|Id|, \lstinline|Ne|, \lstinline|Su|, \lstinline|Pr|, \lstinline|Sw| and the inductive cases \lstinline|Co|, \lstinline|Pa|, \lstinline|It|, \lstinline|If|.
 
 
 %%%%%
@@ -1400,9 +1400,8 @@ We overcome the problem into two steps:
 \begin{enumerate}
     \item we define an ``auxiliary'' function \lstinline|take2| in terms of the known function \lstinline|foldl|, already proven to be \lstinline|primrec|, and prove that \lstinline|take2| is \lstinline|primrec|;
     \item we prove that \lstinline|take2| is equal to \lstinline|take| for all inputs, and conclude using \lstinline|of_eq|.
-
-    The proof of equivalence is established through the use of the ``special'' induction principle \lstinline|list.reverse_rec_on| which decomposes a list into its final element and all preceding elements, rather than the head and tail, feature that helps to reason with \lstinline|take2|'s definition.
 \end{enumerate}
+The proof of equivalence is established through the use of the ``special'' induction principle \lstinline|list.reverse_rec_on| which decomposes a list into its final element and all preceding elements, rather than the head and tail, feature that helps to reason with \lstinline|take2|'s definition.
 
 \vspace{\baselineskip}
 \noindent
@@ -1447,7 +1446,7 @@ The reason this is important is that almost all basic functions with domain \lst
         primrec (λ a, int.cases_on (f a) (g a) (h a))
 \end{lstlisting}
 \noindent
-This means that given three \lstinline|primrec|/\lstinline|primrec₂| functions \lstinline|hf, hg, hh|, we can compose them with ``Cases Principle'' to get a new function, which the lemma states is \lstinline|primrec|.
+This means that given three \lstinline|primrec|/\lstinline|primrec₂| functions \lstinline|hf, hg, hh|, we can compose them with the ``Cases Principle'' to get a new function, which the lemma states is \lstinline|primrec|.
 We remark that all other cases/recursion/induction principles in \MATHLIB are stated in a similar fashion. The proof, as usual, is based on the fact that more elementary operations are already proven to be \lstinline|primrec| in \MATHLIB.
 
 %=====================
