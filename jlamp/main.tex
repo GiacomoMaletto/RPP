@@ -4,6 +4,12 @@
 \usepackage[T1]{fontenc}
 \PrerenderUnicode{à}
 
+%\usepackage[utf8]{inputenc}
+%\usepackage[T1]{fontenc}
+%%\PrerenderUnicode{à}
+\usepackage{lineno}
+\linenumbers
+
 
 % Text organization
 \usepackage{comment}
@@ -461,7 +467,7 @@ Some comments about two of the more challenging cases follow.
 where the equivalence \lstinline|(!)| holds because we can prove both:
 \begin{lstlisting}
 lemma pa_co_pa (f f' g g' : rpp) (X : list ℤ) :
-  f.arity = f'.arity → ‹f‖g ;; f'‖g'› X = ‹(f;;f') ‖ (g;;g')› X ,
+ f.arity = f'.arity → ‹f‖g ;; f'‖g'› X = ‹(f;;f') ‖ (g;;g')› X ,
 lemma arity_inv (f : rpp) : f⁻¹.arity = f.arity .
 \end{lstlisting}
 Proving \lstinline|lemma arity_inv|, i.e. that the arity of a function does not change if we invert it, assures that we can prove \lstinline|lemma pa_co_pa|, i.e.\@ that series and parallel compositions smoothly distribute reciprocally.
