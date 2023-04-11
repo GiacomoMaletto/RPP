@@ -145,7 +145,7 @@
 }
 
 \begin{abstract}
-Reversible primitive permutations (\RPP) is a class of recursive functions that models reversible computation. We present a proof, which has been verified using the proof-assistant \LEAN, that demonstrates \RPP can encode every primitive recursive function (\PRF-completeness) and that each \RPP can be encoded as a primitive recursive function (\PRF-soundness). Our proof of \PRF-completeness is simpler and fixes some errors in the original proof, while also introducing a new, more primitive reversible iteration scheme for \RPP. By keeping the formalization and semi-automatic proofs simple, we are able to identify a single programming pattern that can generate a set of reversible algorithms within \RPP: Cantor pairing, integer division quotient/remainder, and truncated square root. The proof of \PRF-soundness is a novel contribution. Finally, \LEAN source code is available for experiments on reversible computation whose properties can be certified.
+Reversible primitive permutations (\RPP) is a class of recursive functions that models reversible computation. We present a proof, which has been verified using the proof-assistant \LEAN, that demonstrates \RPP can encode every primitive recursive function (\PRF-completeness) and that each \RPP can be encoded as a primitive recursive function (\PRF-soundness). Our proof of \PRF-completeness is simpler and fixes some errors in the original proof, while also introducing a new, more primitive reversible iteration scheme for \RPP. By keeping the formalization and semi-automatic proofs simple, we are able to identify a single programming pattern that can generate a set of reversible algorithms within \RPP: Cantor pairing, integer division quotient/remainder, and truncated square root. Finally, \LEAN source code is available for experiments on reversible computation whose properties can be certified.
 \end{abstract}
 
 \begin{keyword}
@@ -157,7 +157,7 @@ Reversible primitive permutations (\RPP) is a class of recursive functions that 
 %=====================
 \section{Introduction}
 \label{section:Introduction}
-Studies focused on questions posed by Maxwell, regarding the solidity of the principles which Thermodynamics is based on, recognized the fundamental role that Reversible Computation can play to that purpose.
+Landauer's studies \cite{5392446,doi:10.1063/1.881299}, which were inspired by Szilard's \cite{Szilard1929berDE} and focused on Maxwell's \cite{maxwell1872theory} questions about the foundations of Thermodynamics, acknowledged the critical role that Reversible Computation can play in addressing these issues.
 
 Reversible Computation is a significant area in Computer Science that encompasses various aspects such as reversible hardware design, unconventional computational models (such as quantum or bio-inspired ones), parallel computation and synchronization issues, debugging techniques, and transaction roll-back in database management systems.
 The book \cite{perumalla2013chc} is a comprehensive introduction to the subject; the book \cite{DBLP:books/daglib/0025734}, focused on the low-level aspects of Reversible Computation, concerning the realization of reversible hardware, and
@@ -174,7 +174,7 @@ Both $ z $ and the tuple $ \overline{y} $ are \emph{ancillae}. They can be thoug
 
 \item \RPP can be extended to become Turing-complete \cite{Paolini2018NGC} by means of a minimization scheme analogous to the one that extends \PRF to the Turing-complete class of \emph{Partial} Recursive Functions.
 
-\item According to \cite{MatosRC2020}, \RPP and the reversible programming language \SRL \cite{matos03tcs} are equivalent, so the fix-point problem is undecidable for \RPP as well \cite{2318_1734164MatosPaoliniRoversiTCSICTCS18}.
+\item According to \cite{MatosRC2020}, \RPP and the reversible programming language \SRL \cite{matos03tcs} are equivalent, meaning that \RPP inherits from \SRL the undecidability of the fix-point problem \cite{2318_1734164MatosPaoliniRoversiTCSICTCS18}. To clarify, the fix-point problem asks for a tuple $\overline{x}$ such that $f(\overline{x}) = \overline{x}$, where $f$ is a function in \RPP. This problem is studied as a step towards determining whether the equivalence of functions in \RPP is decidable or undecidable.
 \end{itemize}
 
 We think that this study provides additional support for the idea that using recursive computational models like \RPP to express Reversible Computation allows for the relatively easy certification of the correctness or other properties of \RPP algorithms through proof-assistants, potentially leading to the discovery of new algorithms.
@@ -309,14 +309,14 @@ $$
 \centering
 \begin{lstlisting}[basicstyle=\small]
       def arity : rpp → ℕ
-        | (Id n)     := n
-        | Ne         := 1
-        | Su         := 1
-        | Pr         := 1
-        | Sw         := 2
-        | (f ‖ g)    := f.arity + g.arity
-        | (f ;; g)   := max f.arity g.arity
-        | (It f)     := 1 + f.arity -- "It f" has an extra argument compared to "f"
+        | (Id n)  := n
+        | Ne      := 1
+        | Su      := 1
+        | Pr      := 1
+        | Sw      := 2
+        | (f ‖ g) := f.arity + g.arity
+        | (f ;; g):= max f.arity g.arity
+        | (It f)  := 1 + f.arity -- `It f' has an extra argument of  as compared to `f'
         | (If f g h) := 1 + max (max f.arity g.arity) h.arity
 \end{lstlisting}
 \caption{Arity of every \lstinline|f: rpp|.}
