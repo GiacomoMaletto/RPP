@@ -404,26 +404,40 @@ The function \lstinline|ev| in Figure~\ref{fig:RPP-ev} interprets an element of 
 
 Let us give a look at the clauses in Figure~\ref{fig:RPP-ev}.
 
-The function \lstinline|Id n| leaves the input list \lstinline|X| untouched.
+The function \lstinline|(Id n)| leaves the input list \lstinline|X| untouched.
 \lstinline|Ne| ``negates'', i.e.\@ takes the opposite sign of, the head of the list, while \lstinline|Su| increments, and \lstinline|Pr| decrements it.
 \lstinline|Sw| is the transposition, or swap, that exchanges the first two elements of its argument.
-The series composition \lstinline|f;;g| first applies \lstinline|f| and then
+The series composition \lstinline|(f;;g)| first applies \lstinline|f| and then
 \lstinline|g|.
-The parallel composition \lstinline|f‖g| splits \lstinline|X| into two parts. The ``topmost'' one \lstinline|(take f.arity X)| has as many elements as the arity of \lstinline|f|; the ``lowermost'' one \lstinline|(drop f.arity X)| contains the part of \lstinline|X| that can supply the arguments to \lstinline|g|. Finally, it concatenates the two resulting lists by the append \lstinline|++|.
+The parallel composition \lstinline|(f‖g)| splits \lstinline|X| into two parts. The ``topmost'' one \lstinline|(take f.arity X)| has as many elements as the arity of \lstinline|f|; the ``lowermost'' one \lstinline|(drop f.arity X)| contains the part of \lstinline|X| that can supply the arguments to \lstinline|g|. Finally, it concatenates the two resulting lists by the append \lstinline|++|.
 
 \vspace{\baselineskip}
 \noindent
-\emph{Finite iteration} \lstinline|It f| is new:
+%\emph{Finite iteration} \lstinline|It f| is new:
+%\begin{itemize}
+%    \item it iterates \lstinline|f| as many times as the value of the head \lstinline|x| of the argument, if \lstinline|x| contains a non negative value;
+%    \item otherwise it is the identity on the whole \lstinline|x::X|.
+%\end{itemize}
+%We denote this behavior by means of \lstinline|(ev f)^[↓x]|: the notation \lstinline|f^n| stands for the \MATHLIB function \lstinline|Nat.iterate|,
+%while \lstinline|↓x| is custom notation for the \MATHLIB function \lstinline|int.to_nat|.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\emph{Finite iteration} \lstinline|(It f)| is interpreted as follows:
+\begin{lstlisting}
+   (It f) (x :: X) := x :: ((ev f)^[↓x] X)
+\end{lstlisting}
+whose meaning we can read according to two cases:
 \begin{itemize}
-    \item it iterates \lstinline|f| as many times as the value of the head \lstinline|x| of the argument, if \lstinline|x| contains a non negative value;
-    \item otherwise it is the identity on the whole \lstinline|x::X|.
+    \item If \lstinline|x| is non negative, then \lstinline|x :: ((ev f)^[↓x] X)| is a new list:
+    \begin{itemize}
+        \item \lstinline|x| is its head;
+        \item the tail results from evaluating the \emph{notation} \lstinline|(ev f)^[↓x] X|. \emph{Defining custom} notations is a feature of \LEAN. The notation is equivalent to \lstinline|(ev f)((ev f)( ... (ev f) X ... ))| with as many occurrences of \lstinline|ev f| as the value of \lstinline|x|.
+    \end{itemize}
+    \item Otherwise, if \lstinline|x| is negative, then \lstinline|x :: ((ev f)^[↓x] X)| is the identity, yielding \lstinline|x :: X|.
 \end{itemize}
-We denote this behavior by means of \lstinline|(ev f)^[↓x]|: the notation \lstinline|f^n| stands for the \MATHLIB function \lstinline|Nat.iterate|,
-while \lstinline|↓x| is custom notation for the \MATHLIB function \lstinline|int.to_nat|.
 
 \vspace{\baselineskip}
 \noindent
-The selection \lstinline|If f g h| chooses one among \lstinline|f|, \lstinline|g|, and \lstinline|h|, depending on the argument head \lstinline|x|: it is \lstinline|g| with \lstinline|x = 0|, it is \lstinline|f| with \lstinline|x > 0|, and \lstinline|h| with \lstinline|x < 0|.
+\emph{Selection} \lstinline|(If f g h)| chooses one among \lstinline|f|, \lstinline|g|, and \lstinline|h|, depending on the argument head \lstinline|x|: it is \lstinline|g| with \lstinline|x = 0|, it is \lstinline|f| with \lstinline|x > 0|, and \lstinline|h| with \lstinline|x < 0|.
 The last line of Figure~\ref{fig:RPP-ev} sets a handy notation for \lstinline|ev|.
 
 \begin{remark}[We want to keep the definition of \texttt{ev} simple]
