@@ -48,6 +48,8 @@ References [1], [2], [3], and [4] added (p.1, l.7--8). Statement and meaning of 
      
      - *L: Ho esteso il dettaglio. Effettivamente non era agevole la lettura. Magari non lo è neanche ora, ma credo di suggerire cosa occorre fare alle righe 153--163.*
 
+     - *G: Non mi soddisfaceva ancora del tutto, quindi l'ho nuovamente cambiata.*
+
 
 7. **Observation/Question**
    
@@ -64,12 +66,15 @@ References [1], [2], [3], and [4] added (p.1, l.7--8). Statement and meaning of 
      
      - *L: Guardando nel file 31-03.pdf non capito quale fosse il problema.*
 
+     - *G: La frase era "Luckily this last statement is both formalized as function.left_inverse g^[n] f^[n], available in the library mathlib of Lean." e non mi era chiara: "both" che cosa? E poi forse chi è poco familiare con Lean trova strana un'espressione che non sia un'uguaglianza, quindi va bene chiarire.*
+
 9. **Observation/Question**
    
    - p. 8, l. 199: I understand your proof technique (and it is interesting), but could you also have used copy-cat from the previous one?
    
      - G: Ho scritto che si potrebbe anche ricopiare la tecnica dimostrativa usata precedentemente, ma a costo di avere molte ripetizioni.
      - L: Puoi mettere le righe? Non capisco dove.
+     - G: Si tratta di riga 222, ho solo aggiunto "which would require a lot of repetition"
 
 ## ## FIN QUI ############################
 

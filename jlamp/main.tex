@@ -425,12 +425,17 @@ The parallel composition \lstinline|(f‖g)| splits \lstinline|X| into two parts
 \begin{lstlisting}
    (It f) (x :: X) := x :: ((ev f)^[↓x] X)
 \end{lstlisting}
-whose meaning we can read according to two cases:
+whose behavior depend on two custom notations (\emph{Defining custom notations} is a feature of \LEAN):
+\begin{itemize}
+    \item for a function \lstinline|f| and a natural number \lstinline|n|, the notation \lstinline|f^[n]| is defined in \MATHLIB and means ``\lstinline|f| iterated \lstinline|n| times'';
+    \item for an integer \lstinline|n : ℤ|, we define the custom notation \lstinline|↓n| to mean the natural number \lstinline|0| if \lstinline|n| is negative, and \lstinline|n| as a natural number otherwise.
+\end{itemize}
+Thus, the meaning \lstinline|x :: ((ev f)^[↓x] X)| can be summarized according to two cases:
 \begin{itemize}
     \item If \lstinline|x| is non negative, then \lstinline|x :: ((ev f)^[↓x] X)| is a new list:
     \begin{itemize}
         \item \lstinline|x| is its head;
-        \item the tail results from evaluating the \emph{notation} \lstinline|(ev f)^[↓x] X|. \emph{Defining custom} notations is a feature of \LEAN. The notation is equivalent to \lstinline|(ev f)((ev f)( ... (ev f) X ... ))| with as many occurrences of \lstinline|ev f| as the value of \lstinline|x|.
+        \item the tail results from evaluating the \emph{notation} \lstinline|(ev f)^[↓x] X|, and is equivalent to \lstinline|(ev f)((ev f)( ... (ev f) X ... ))| with as many occurrences of \lstinline|ev f| as the value of \lstinline|x|.
     \end{itemize}
     \item Otherwise, if \lstinline|x| is negative, then \lstinline|x :: ((ev f)^[↓x] X)| is the identity, yielding \lstinline|x :: X|.
 \end{itemize}
