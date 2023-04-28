@@ -58,7 +58,7 @@ References [1], [2], [3], and [4] added (p.1, l.7--8). Statement and meaning of 
    
    - p. 8, l. 197-198: something seems missing here: there is a both followed by a single item, and also the code seems missing something. Indeed, I was expecting an equality (or maybe this is just my poor understanding of Lean)
      
-*Done.* See p. 8, l. 214 - 218, starting from sentence "This can be stated ...".
+*Done.* See p. 8, l. 214 - 218, starting from sentence "This can be restated ...".
  
 
 9. **Observation/Question**
@@ -83,6 +83,7 @@ References [1], [2], [3], and [4] added (p.1, l.7--8). Statement and meaning of 
        -  *L: Secondo me ci sono due modi per rispondere:*
           -  (Troppo) pesante? Dare una qualche caratterizzazione formale del risultato, ipotizzando una proprietà della funzione che riempie il buco
           -  Più accettabile? Descrivere lo scopo di ciascuno dei blocchi composti in sequenza, avendo la finalità di descrivere cosa si prepara come input del buco, e cosa ci si aspetta che la funzione che riempie il buco produca
+       - *G: Si potrebbe fare in questo modo: enunciare la seguente proprietà. "Let f : list Z^{m+2} \to Z^{m+2} be a function such that for all x >= 0, for all z \in Z^m we have that f(x,0,z)=(0,y',z') for some y' >= 0, z' \in Z^m; suppose that x,y >= 0 and that z \in Z^m. Then (step f)(x,y,0,z)=(x+1,y-1,0,z) if y>0 and (0,y',0,z') if y=0 and f(x,0,z)=(0,y',z')." Lo dimostrerei in Lean e aggiungerei anche un diagramma stile figura 9b/c in cui viene mostrato come ogni assunzione sia utilizzata in un passaggio, e in modo che forse i passaggi siano più chiari. Una volta fatta questa descrizione, diventa anche più facile descrivere cp, divisione e radice quadrata: basta spiegare come l'istruzione step scelta si traduce nell'azione che si desidera. Sicuramente è un po' pesante, ma almeno è preciso.* 
  
 
 12. **Observation/Question**
@@ -91,6 +92,8 @@ References [1], [2], [3], and [4] added (p.1, l.7--8). Statement and meaning of 
     
        - *G: Non l'ho fatto perché come prima mi sembra che sapere la definizione non serva a molto, ma forse sarebbe effettivamente il caso? Cosa ne pensi?*
        - *L: Né io né te abbiamo voglia di farlo, ma mi sa che ci tocca. Però, secondo me non sta chiedendo la definizione. È piuttosto interessato ad una lettura dell'invariante o a una definizione qualitativa come quella della step(x,y) a p. 13, l. 291. Che ne pensi?*
+
+       - *G: Forse potremmo cavarcela dicendo effettivamente come è definita analiticamente la funzione: in effetti, io ho solo usato la definizione analitica per definirla in Lean, senza cercare un modo geometrico di*
 
 
 13. **Observation/Question**
