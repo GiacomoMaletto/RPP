@@ -84,6 +84,7 @@ References [1], [2], [3], and [4] added (p.1, l.7--8). Statement and meaning of 
           -  (Troppo) pesante? Dare una qualche caratterizzazione formale del risultato, ipotizzando una proprietà della funzione che riempie il buco
           -  Più accettabile? Descrivere lo scopo di ciascuno dei blocchi composti in sequenza, avendo la finalità di descrivere cosa si prepara come input del buco, e cosa ci si aspetta che la funzione che riempie il buco produca
        - *G: Si potrebbe fare in questo modo: enunciare la seguente proprietà. "Let f : list Z^{m+2} \to Z^{m+2} be a function such that for all x >= 0, for all z \in Z^m we have that f(x,0,z)=(0,y',z') for some y' >= 0, z' \in Z^m; suppose that x,y >= 0 and that z \in Z^m. Then (step f)(x,y,0,z)=(x+1,y-1,0,z) if y>0 and (0,y',0,z') if y=0 and f(x,0,z)=(0,y',z')." Lo dimostrerei in Lean e aggiungerei anche un diagramma stile figura 9b/c in cui viene mostrato come ogni assunzione sia utilizzata in un passaggio, e in modo che forse i passaggi siano più chiari. Una volta fatta questa descrizione, diventa anche più facile descrivere cp, divisione e radice quadrata: basta spiegare come l'istruzione step scelta si traduce nell'azione che si desidera. Sicuramente è un po' pesante, ma almeno è preciso.* 
+       - *L: Non mi sarei accorto di tale invariante. Se hai voglia, tempo e forza per farlo, secondo me vale la pena. Sai benissimo che io non sono in grado.*
  
 
 12. **Observation/Question**
@@ -94,6 +95,8 @@ References [1], [2], [3], and [4] added (p.1, l.7--8). Statement and meaning of 
        - *L: Né io né te abbiamo voglia di farlo, ma mi sa che ci tocca. Però, secondo me non sta chiedendo la definizione. È piuttosto interessato ad una lettura dell'invariante o a una definizione qualitativa come quella della step(x,y) a p. 13, l. 291. Che ne pensi?*
 
        - *G: Forse potremmo cavarcela dicendo effettivamente come è definita analiticamente la funzione: in effetti, io ho solo usato la definizione analitica per definirla in Lean, senza cercare un modo geometrico di*
+       
+       - *L: Credo proprio che quella che ho chiamato "definizione qualitativa", per te sia la "definizione analitica".* 
 
 
 13. **Observation/Question**
@@ -108,10 +111,10 @@ References [1], [2], [3], and [4] added (p.1, l.7--8). Statement and meaning of 
     -  p. 16, Rem. 6: could you provide a general proof, for each pair of
     packing/unpacking functions satisfying some suitable requirements?
 
-*We interpret this question as a curiosity, not as a request to develop a whole formal reasoning in Lean to prove `theorem completeness` (p. 16, l. 395) with the function `cp` in place of `mkpair`. Of course `cp` can replace `mkpair`, because both have the same identical interface. Clearly, the two isomorphisms have a differente graphs (seen as mathematical functions). However the proof of `theorem completeness` does not rely on a specific strategy to encode pairs of numbers into a single value.*
+*In relation to this question we choose not to modify the text because we interpret the question as a curiosity, not as a request to prove `theorem completeness` (p. 16, l. 395) with the function `cp` in place of `mkpair` in LEAN. Of course `cp` can replace `mkpair`: both functions have identical interface. Clearly, the two isomorphisms have a differente graphs (seen as mathematical functions). However the proof of `theorem completeness` does not rely on a specific strategy to encode pairs of numbers into a single value.*
 
 
-15.  **Observation/Question**
+1.   **Observation/Question**
     
     - p. 18, l. 424: need -> needs
 
@@ -160,10 +163,9 @@ Ho tolto "by" in "by refl" e specificato meglio a cosa serve la tattica "refl".
     
     - p. 23, l. 587: could you provide a citation for Pendulum ISA?
 
-Non so bene di cosa si tratti, puoi darmi una mano?
+*References [26, 27, 28] added.*  
 
-
-21. **Observation/Question**
+1.  **Observation/Question**
 
     - At the end of section 2 the authors claim that It is more primitive, but their arguments are not convincing without having also a definition of It in terms of ItR.
 
