@@ -44,11 +44,7 @@ References [1], [2], [3], and [4] added (p.1, l.7--8). Statement and meaning of 
 6. **Observation/Question**
    - p. 7, l. 152: is this standard Lean syntax? Or did you defined it?
   
-     - *G: Ho cercato di chiarire la faccenda allungando la frase.*
-     
-     - *L: Ho esteso il dettaglio. Effettivamente non era agevole la lettura. Magari non lo è neanche ora, ma credo di suggerire cosa occorre fare alle righe 153--163.*
-
-     - *G: Non mi soddisfaceva ancora del tutto, quindi l'ho nuovamente cambiata.*
+*Done.* See p. 5, l. 153 - 169 where we add a full blown explanation.
 
 
 7. **Observation/Question**
@@ -62,83 +58,88 @@ References [1], [2], [3], and [4] added (p.1, l.7--8). Statement and meaning of 
    
    - p. 8, l. 197-198: something seems missing here: there is a both followed by a single item, and also the code seems missing something. Indeed, I was expecting an equality (or maybe this is just my poor understanding of Lean)
      
-     - *G: In effetti la frase non aveva senso, l'ho riscritta.*
-     
-     - *L: Guardando nel file 31-03.pdf non capito quale fosse il problema.*
-
-     - *G: La frase era "Luckily this last statement is both formalized as function.left_inverse g^[n] f^[n], available in the library mathlib of Lean." e non mi era chiara: "both" che cosa? E poi forse chi è poco familiare con Lean trova strana un'espressione che non sia un'uguaglianza, quindi va bene chiarire.*
+*Done.* See p. 8, l. 214 - 218, starting from sentence "This can be stated ...".
+ 
 
 9. **Observation/Question**
    
    - p. 8, l. 199: I understand your proof technique (and it is interesting), but could you also have used copy-cat from the previous one?
    
-     - G: Ho scritto che si potrebbe anche ricopiare la tecnica dimostrativa usata precedentemente, ma a costo di avere molte ripetizioni.
-     - L: Puoi mettere le righe? Non capisco dove.
-     - G: Si tratta di riga 222, ho solo aggiunto "which would require a lot of repetition"
+*Done.* See p. 9, l. 222 - 223 for a brief answer.
 
-## ## FIN QUI ############################
 
 10. **Observation/Question**
     
     -  p. 9, l. 237: do you miss arguments x0 ... xn-2 ? 
 
-Penso abbia ragione, gli ho aggiunti.
+*Done.* See p. 10, l. 260: arguments added.
 
 
-11. **Observation/Question**
+11.  **Observation/Question**
     
     -  p. 10, l. 260: could you give an intuition about how the general schema works?
-
-Penso che il modo migliore per capire come funziona step sia vedere gli esempi, perciò non ho aggiunto nulla.
+       
+       -  *G: Penso che il modo migliore per capire come funziona step sia vedere gli esempi, perciò non ho aggiunto nulla.*
+       -  *L: Secondo me ci sono due modi per rispondere:*
+          -  (Troppo) pesante? Dare una qualche caratterizzazione formale del risultato, ipotizzando una proprietà della funzione che riempie il buco
+          -  Più accettabile? Descrivere lo scopo di ciascuno dei blocchi composti in sequenza, avendo la finalità di descrivere cosa si prepara come input del buco, e cosa ci si aspetta che la funzione che riempie il buco produca
  
 
 12. **Observation/Question**
     
-    -  p. 13, l. 209-302: since it is relevant for your proof you should provide a description
+    -  p. 13, l. 299 - 302: since it is relevant for your proof you should provide a description
     
-       - G: Non l'ho fatto perché come prima mi sembra che sapere la definizione non serva a molto, ma forse sarebbe effettivamente il caso? Cosa ne pensi?
-       - L: Non ho ancora guardato
+       - *G: Non l'ho fatto perché come prima mi sembra che sapere la definizione non serva a molto, ma forse sarebbe effettivamente il caso? Cosa ne pensi?*
+       - *L: Né io né te abbiamo voglia di farlo, ma mi sa che ci tocca. Però, secondo me non sta chiedendo la definizione. È piuttosto interessato ad una lettura dell'invariante o a una definizione qualitativa come quella della step(x,y) a p. 13, l. 291. Che ne pensi?*
 
 
 13. **Observation/Question**
     
     -  p. 15, l. 364: why do you require forall z, instead of just using 0 for z?
     
+*Because the statement is slightly more general, and it does not substantially increase the complexity of the proof.*
+
+
+14.  **Observation/Question**
+
     -  p. 16, Rem. 6: could you provide a general proof, for each pair of
     packing/unpacking functions satisfying some suitable requirements?
 
-Non mi sembrano questioni molto importanti, non ho cambiato nulla.
+*We interpret this question as a curiosity, not as a request to develop a whole formal reasoning in Lean to prove `theorem completeness` (p. 16, l. 395) with the function `cp` in place of `mkpair`. Of course `cp` can replace `mkpair`, because both have the same identical interface. Clearly, the two isomorphisms have a differente graphs (seen as mathematical functions). However the proof of `theorem completeness` does not rely on a specific strategy to encode pairs of numbers into a single value.*
 
 
-14. **Observation/Question**
+15.  **Observation/Question**
     
     - p. 18, l. 424: need -> needs
 
-Corretto.
+*Done.*
 
 
-15. **Observation/Question**
+## ## FIN QUI ############################
+
+
+16. **Observation/Question**
   
     -  p. 18, l. 431: if you choose different immersions which differ for some non primitive recursive automorphisms, would you get different notions of encodable? If so, in which sense the one you get is good?
 
 Mi sembra una questione abbastanza interessante, ma non approfondirei troppo. Ho aggiunto una frase.
 
 
-16.  **Observation/Question**
+17.  **Observation/Question**
   
     - p. 19, l. 449: could you clarify why the class mechanism is useful here, and how?
 
 Ho cambiato un po' la frase per mostrare meglio il ruolo delle class.
 
 
-17. **Observation/Question**
+18. **Observation/Question**
     
     - p. 19, l. 468: are are
 
-Corretto.
+*Done.*
 
 
-18. **Observation/Question**
+19. **Observation/Question**
     
     -  p. 20, l. 499: Lean tactics mode with by refl: this sentence seems ungrammatical; also, could you clarify what is refl?
 
@@ -149,7 +150,7 @@ Ho tolto "by" in "by refl" e specificato meglio a cosa serve la tattica "refl".
     
     - p. 21, l. 517: into two steps -> in two steps
 
-Corretto.
+*Done.*
 
 
 20.  **Observation/Question**
@@ -170,7 +171,7 @@ Forse non siamo d'accordo sul significato di "primitivo". Se si potesse esprimer
     
     - Line 311. "here " should be removed.
 
-Corretto.
+*Done.*
 
 
 23. **Observation/Question**

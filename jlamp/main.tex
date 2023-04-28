@@ -425,7 +425,7 @@ The parallel composition \lstinline|(f‖g)| splits \lstinline|X| into two parts
 \begin{lstlisting}
    (It f) (x :: X) := x :: ((ev f)^[↓x] X)
 \end{lstlisting}
-whose behavior depend on two custom notations (\emph{Defining custom notations} is a feature of \LEAN):
+whose behavior depends on two custom notations (\emph{Defining custom notations} is a feature of \LEAN):
 \begin{itemize}
     \item for a function \lstinline|f| and a natural number \lstinline|n|, the notation \lstinline|f^[n]| is defined in \MATHLIB and means ``\lstinline|f| iterated \lstinline|n| times'';
     \item for an integer \lstinline|n : ℤ|, we define the custom notation \lstinline|↓n| to mean the natural number \lstinline|0| if \lstinline|n| is negative, and \lstinline|n| as a natural number otherwise.
@@ -493,7 +493,7 @@ lemma arity_inv (f : rpp) : f⁻¹.arity = f.arity .
 Proving \lstinline|lemma arity_inv|, i.e. that the arity of a function does not change if we invert it, assures that we can prove \lstinline|lemma pa_co_pa|, i.e.\@ that series and parallel compositions smoothly distribute reciprocally.
 
 \paragraph{Iteration} Let \lstinline|h| be a finite iterator whose main constructor is \lstinline|It|.
-The goal to prove is \lstinline|‹It f;;It f⁻¹› x::X = x::X| which reduces to \lstinline|‹f⁻¹›^[↓x] (‹f›^[↓x] X') = X'|, where, we recall, the notation \lstinline|‹f›^[↓x]| means ``\lstinline|‹f›| applied \lstinline|x| times, if \lstinline|x| is positive''. This can be restated as the proposition \lstinline|function.left_inverse g^[n] f^[n]|, where
+The goal to prove is \lstinline|‹It f;;It f⁻¹› x::X = x::X| which reduces to \lstinline|‹f⁻¹›^[↓x] (‹f›^[↓x] X') = X'|, where, we recall, the notation \lstinline|‹f›^[↓x]| means ``\lstinline|‹f›| applied \lstinline|x| times, if \lstinline|x| is positive''. This can be restated as the proposition \lstinline|function.left_inverse g^[n] f^[n]|, where:
 \begin{lstlisting}
 def left_inverse (g : β → α) (f : α → β) : Prop :=
     ∀ x, g (f x) = x
@@ -501,7 +501,7 @@ def left_inverse (g : β → α) (f : α → β) : Prop :=
 is defined in \MATHLIB. We can make use of theorem \lstinline{function.left_inverse.iterate}, also present in \MATHLIB, which states that if \lstinline{function.left_inverse g f} is true, then also \lstinline|function.left_inverse g^[n] f^[n]| is.
 
 \vspace{\baselineskip}
-To conclude, let us see how the proof of \lstinline|inv_co_r| works. It does not copy-cat the one of \lstinline|inv_co_l|, which would require a lot of repetition. It instead relies on proving:
+To conclude, let us see how the proof of \lstinline|inv_co_r| works. It does not copy-cat the one of \lstinline|inv_co_l|, which would require a lot of repetitions. It instead relies on proving:
 \begin{lstlisting}
    lemma inv_involute (f : rpp) : (f⁻¹)⁻¹ = f ,
 \end{lstlisting}
