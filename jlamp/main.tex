@@ -191,7 +191,7 @@ We show how to express \RPP and its evaluation mechanism inside the proof-assist
 
     \item Concerning simplification, it follows from how the elements in \lstinline|primrec| work. It is characterized by the following aspects:
     \begin{itemize}
-        \item we define a \emph{new} finite reversible iteration scheme subsuming the reversible iteration schemes in \RPP, and \SRL, but which is more primitive;
+        \item we define a single \emph{new} finite reversible iteration scheme subsuming the reversible iteration schemes in \RPP, and \SRL;
 
         \item we identify an algorithmic pattern which uniquely associates elements of
         $ \mathbb{N}^2$, and $ \mathbb{N}$ by counting steps in specific paths.
@@ -537,7 +537,7 @@ The definition of \lstinline|rpp| in \LEAN is really very close to the original 
 
     \item Using \lstinline|list ℤ → list ℤ| as the domain of the function that interprets any given element \lstinline|f:rpp| avoids  letting the type of \lstinline|f:rpp| depend on the arity of \lstinline|f|. To know the arity of \lstinline|f| it is enough to invoke \lstinline|arity f|. Finally, we observe that getting rid of a dependent type like, say, \lstinline|rpp n|, allows us to escape situations in which we would need to compare equal but not definitionally equal types like \lstinline|rpp (n+1)| and \lstinline|rpp (1+n)|.
 
-    \item The new finite iterator \lstinline|It f (x::t): list ℤ| \emph{subsumes} the finite iterators \lstinline|ItR| in \RPP, and \lstinline|for| in \SRL. This means that \lstinline|It| is more primitive, but equally expressive and simpler for \LEAN to prove that its definition is terminating.
+    \item The new finite iterator \lstinline|It f (x::t): list ℤ| \emph{subsumes} the finite iterators \lstinline|ItR| in \RPP, and \lstinline|for| in \SRL. This means that \lstinline|It| is equally expressive, but it is simpler for \LEAN to prove that its definition is terminating.
 
     More specifically, we recall that:
     \begin{itemize}
@@ -1392,7 +1392,7 @@ lemma rpp_pa {f g : rpp} (hf : primrec ‹f›) (hg : primrec ‹g›) :
 $\mbox{\textdollar}$ λ l, by refl
 \end{lstlisting}
 \noindent
-The explanation of what this means is the following: what comes before the expression \lstinline|.of_eq| is the statement that a certain "auxiliary" function, which we can call \lstinline|F| for simplicity, is \lstinline|primrec|. Figure~\ref{fig:rpp_pa} represents the structure of \lstinline|F|: each block both defines part of the function and states that that part is \lstinline|primrec|, at the same time. What comes after \lstinline|.of_eq| is instead a proof that \lstinline|F| is equal to \lstinline|‹f ‖ g›| for all inputs \lstinline|l|: this is a definitional equality, so it can be proved easily in \LEAN tactics mode with \lstinline|refl|, which is a tactic specifically used for definitional equalities. Finally, \lstinline|of_eq| is a theorem which given the hypotheses
+We illustrate the meaning of this, as follows. Before the expression \lstinline|.of_eq| there is the statement that a certain ``auxiliary'' function, we can call it \lstinline|F| for simplicity, is \lstinline|primrec|. Figure~\ref{fig:rpp_pa} represents the structure of \lstinline|F|: each block both defines part of the function and states that that part is \lstinline|primrec|, at the same time. After \lstinline|.of_eq| there is a proof that \lstinline|F| is equal to \lstinline|‹f ‖ g›| for all inputs \lstinline|l|: this is a definitional equality, so it can be proved easily in \LEAN tactics mode by means of \lstinline|refl|, which is a tactic specifically used for definitional equalities. Finally, \lstinline|of_eq| is a theorem which given the hypotheses
 \begin{itemize}
 \item \lstinline|F| is \lstinline|primrec| (what's before \lstinline|.of_eq|)
 \item \lstinline|F| is equal to \lstinline|‹f ‖ g›| for all inputs (what's after \lstinline|.of_eq|)
