@@ -23,33 +23,133 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="0.48630455"
-     inkscape:cx="1886.6778"
-     inkscape:cy="389.6735"
+     inkscape:zoom="0.5390625"
+     inkscape:cx="1775.3043"
+     inkscape:cy="1622.2609"
      inkscape:window-width="1366"
      inkscape:window-height="768"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer4"
-     inkscape:snap-global="false" />
+     inkscape:snap-global="true"
+     inkscape:object-paths="false"
+     inkscape:snap-intersection-paths="true"
+     inkscape:snap-object-midpoints="true" />
   <defs
-     id="defs2" />
+     id="defs2">
+    <rect
+       x="1275.681"
+       y="1345.6772"
+       width="227.65784"
+       height="107.62817"
+       id="rect16593" />
+    <rect
+       x="1880.1037"
+       y="1941.2142"
+       width="196.329"
+       height="93.920299"
+       id="rect11659" />
+    <marker
+       style="overflow:visible;"
+       id="Arrow2Mend"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend"
+       inkscape:isstock="true">
+      <path
+         transform="scale(0.6) rotate(180) translate(0,0)"
+         d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
+         style="stroke:context-stroke;fill-rule:evenodd;fill:context-stroke;stroke-width:0.62500000;stroke-linejoin:round;"
+         id="path1068" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Sstart"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Sstart"
+       inkscape:isstock="true">
+      <path
+         transform="scale(0.2) translate(6,0)"
+         style="fill-rule:evenodd;fill:context-stroke;stroke:context-stroke;stroke-width:1.0pt"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path1053" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker1319"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mstart"
+       inkscape:isstock="true">
+      <path
+         transform="scale(0.6) translate(0,0)"
+         d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
+         style="stroke:context-stroke;fill-rule:evenodd;fill:context-stroke;stroke-width:0.62500000;stroke-linejoin:round"
+         id="path1317" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow2Mstart"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mstart"
+       inkscape:isstock="true">
+      <path
+         transform="scale(0.6) translate(0,0)"
+         d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
+         style="stroke:context-stroke;fill-rule:evenodd;fill:context-stroke;stroke-width:0.62500000;stroke-linejoin:round"
+         id="path1065" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Lstart"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lstart"
+       inkscape:isstock="true">
+      <path
+         transform="scale(0.8) translate(12.5,0)"
+         style="fill-rule:evenodd;fill:context-stroke;stroke:context-stroke;stroke-width:1.0pt"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path1041" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow2Mstart-3"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mstart"
+       inkscape:isstock="true">
+      <path
+         transform="scale(0.6)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:0.625;stroke-linejoin:round"
+         id="path1065-3" />
+    </marker>
+  </defs>
   <g
      inkscape:groupmode="layer"
-     id="layer4"
-     inkscape:label="Layer 4">
+     id="layer6"
+     inkscape:label="Layer 6"
+     style="display:inline">
     <rect
-       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke-width:0.600001;stroke-miterlimit:4;stroke-dasharray:3.6, 1.2;stroke-dashoffset:0"
-       id="rect43514"
-       width="351.90439"
-       height="175.43681"
-       x="355.97003"
-       y="29.860046"
-       ry="0"
-       inkscape:export-filename="/home/giack/Desktop/drawing.png"
-       inkscape:export-xdpi="144.36"
-       inkscape:export-ydpi="144.36" />
+       style="fill:#ffffff;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect34398"
+       width="184.17683"
+       height="183.09358"
+       x="387.72388"
+       y="328.2348"
+       inkscape:export-filename="/home/giack/Desktop/università/JLAMP/RPP/jlamp/rect34398.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
   </g>
   <g
      inkscape:label="Layer 1"
@@ -120,6 +220,46 @@
        x="428.76797"
        y="128.43268"
        ry="5.6346231" />
+    <path
+       style="display:inline;fill:none;stroke:#b3b3b3;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 437.08628,348.64592 V 498.95831"
+       id="path959-8"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/giack/Desktop/università/JLAMP/RPP/jlamp/rect34398.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
+    <path
+       style="display:inline;fill:none;stroke:#b3b3b3;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 470.4404,348.64592 V 498.95831"
+       id="path1763"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/giack/Desktop/università/JLAMP/RPP/jlamp/rect34398.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
+    <path
+       style="display:inline;fill:none;stroke:#b3b3b3;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 503.79452,348.64592 V 498.95831"
+       id="path1765"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/giack/Desktop/università/JLAMP/RPP/jlamp/rect34398.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
+    <path
+       style="display:inline;fill:none;stroke:#b3b3b3;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 403.73215,348.64592 V 498.95831"
+       id="path1769"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/giack/Desktop/università/JLAMP/RPP/jlamp/rect34398.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
+    <path
+       style="display:inline;fill:none;stroke:#b3b3b3;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 537.14863,348.64592 V 498.95831"
+       id="path1773"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/giack/Desktop/università/JLAMP/RPP/jlamp/rect34398.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
   </g>
   <g
      inkscape:groupmode="layer"
@@ -385,6 +525,77 @@
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:0.264583"
          x="574.67706"
          y="187.24651">primrec (λ l, l)</tspan></text>
+    <path
+       style="display:inline;opacity:1;fill:none;stroke:#b3b3b3;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 554.04454,398.89593 H 403.73215"
+       id="path1779"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/giack/Desktop/università/JLAMP/RPP/jlamp/rect34398.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
+    <path
+       style="display:inline;opacity:1;fill:none;stroke:#b3b3b3;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 554.04454,432.25007 H 403.73215"
+       id="path1781"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/giack/Desktop/università/JLAMP/RPP/jlamp/rect34398.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
+    <path
+       style="display:inline;opacity:1;fill:none;stroke:#b3b3b3;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 554.04454,365.54183 H 403.73215"
+       id="path1783"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/giack/Desktop/università/JLAMP/RPP/jlamp/rect34398.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
+    <path
+       style="display:inline;opacity:1;fill:none;stroke:#b3b3b3;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 554.04454,465.60419 H 403.73215"
+       id="path1785"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/giack/Desktop/università/JLAMP/RPP/jlamp/rect34398.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
+    <path
+       style="display:inline;opacity:1;fill:none;stroke:#b3b3b3;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 554.04454,498.95831 H 403.73215"
+       id="path1787"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/giack/Desktop/università/JLAMP/RPP/jlamp/rect34398.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="Layer 4"
+     style="display:inline">
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke-width:0.600001;stroke-miterlimit:4;stroke-dasharray:3.6, 1.2;stroke-dashoffset:0"
+       id="rect43514"
+       width="351.90439"
+       height="175.43681"
+       x="355.97003"
+       y="29.860046"
+       ry="0"
+       inkscape:export-filename="/home/giack/Desktop/drawing.png"
+       inkscape:export-xdpi="144.36"
+       inkscape:export-ydpi="144.36" />
+    <path
+       style="fill:none;stroke:#808080;stroke-width:1.4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker1319)"
+       d="M 563.59777,498.95831 H 403.73215"
+       id="path957"
+       inkscape:export-filename="/home/giack/Desktop/università/JLAMP/RPP/jlamp/rect34398.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
+    <path
+       style="fill:none;stroke:#808080;stroke-width:1.4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Arrow2Mstart)"
+       d="M 403.73215,339.09269 V 498.95831"
+       id="path959"
+       inkscape:export-filename="/home/giack/Desktop/università/JLAMP/RPP/jlamp/rect34398.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
   </g>
   <g
      inkscape:groupmode="layer"
@@ -393,22 +604,22 @@
      style="display:inline">
     <path
        style="display:inline;fill:none;stroke:#000000;stroke-width:0.6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:3.6, 1.2;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 479.7015,48.669081 92.59468,0"
+       d="m 479.7015,48.669081 h 92.59468"
        id="path12782"
        sodipodi:nodetypes="cc" />
     <path
        style="display:inline;fill:none;stroke:#000000;stroke-width:0.6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:3.6, 1.2;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 452.23132,65.6947 120.06486,0"
+       d="M 452.23132,65.6947 H 572.29618"
        id="path29493"
        sodipodi:nodetypes="cc" />
     <path
        style="display:inline;fill:none;stroke:#000000;stroke-width:0.6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:3.6, 1.2;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 518.78164,82.720312 53.51454,0"
+       d="m 518.78164,82.720312 h 53.51454"
        id="path31154"
        sodipodi:nodetypes="cc" />
     <path
        style="display:inline;fill:none;stroke:#000000;stroke-width:0.6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:3.6, 1.2;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 539.3055,99.745934 32.99068,0"
+       d="m 539.3055,99.745934 h 32.99068"
        id="path32281"
        sodipodi:nodetypes="cc" />
     <path
@@ -418,23 +629,142 @@
        sodipodi:nodetypes="cc" />
     <path
        style="display:inline;fill:none;stroke:#000000;stroke-width:0.6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:3.6, 1.2;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 453.89524,133.79716 118.40094,0"
+       d="M 453.89524,133.79716 H 572.29618"
        id="path36697"
        sodipodi:nodetypes="cc" />
     <path
        style="display:inline;fill:none;stroke:#000000;stroke-width:0.6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:3.6, 1.2;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 518.79014,150.82277 53.50604,0"
+       d="m 518.79014,150.82277 h 53.50604"
        id="path36703"
        sodipodi:nodetypes="cc" />
     <path
        style="display:inline;fill:none;stroke:#000000;stroke-width:0.6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:3.6, 1.2;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 539.23006,167.84839 33.06612,0"
+       d="m 539.23006,167.84839 h 33.06612"
        id="path36711"
        sodipodi:nodetypes="cc" />
     <path
        style="display:inline;fill:none;stroke:#000000;stroke-width:0.6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:3.6, 1.2;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 525.48066,184.87402 46.81552,0"
+       d="m 525.48066,184.87402 h 46.81552"
        id="path36721"
        sodipodi:nodetypes="cc" />
+    <circle
+       style="fill:#000000;stroke-width:0.600001;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path2428"
+       cx="437.08627"
+       cy="432.25006"
+       r="5.042304"
+       inkscape:export-filename="/home/giack/Desktop/università/JLAMP/RPP/jlamp/rect34398.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
+    <circle
+       style="fill:#000000;stroke-width:0.600001;stroke-miterlimit:4;stroke-dasharray:none"
+       id="circle2510"
+       cx="470.4404"
+       cy="465.60419"
+       r="5.042304"
+       inkscape:export-filename="/home/giack/Desktop/università/JLAMP/RPP/jlamp/rect34398.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
+    <circle
+       style="fill:#000000;stroke-width:0.600001;stroke-miterlimit:4;stroke-dasharray:none"
+       id="circle2512"
+       cx="503.79453"
+       cy="498.95831"
+       r="5.042304"
+       inkscape:export-filename="/home/giack/Desktop/università/JLAMP/RPP/jlamp/rect34398.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
+    <circle
+       style="fill:#000000;stroke-width:0.600001;stroke-miterlimit:4;stroke-dasharray:none"
+       id="circle2514"
+       cx="403.73215"
+       cy="365.54184"
+       r="5.042304"
+       inkscape:export-filename="/home/giack/Desktop/università/JLAMP/RPP/jlamp/rect34398.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
+    <circle
+       style="fill:#000000;stroke-width:0.600001;stroke-miterlimit:4;stroke-dasharray:none"
+       id="circle2516"
+       cx="437.08627"
+       cy="398.89594"
+       r="5.042304"
+       inkscape:export-filename="/home/giack/Desktop/università/JLAMP/RPP/jlamp/rect34398.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer5"
+     inkscape:label="Layer 5"
+     style="display:inline">
+    <path
+       style="display:inline;fill:none;stroke:#ff0000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Arrow2Mstart-3)"
+       d="M 464.69435,459.85814 443.48466,438.64847"
+       id="path2584"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/giack/Desktop/università/JLAMP/RPP/jlamp/rect34398.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
+    <path
+       style="display:inline;fill:none;stroke:#ff0000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Arrow2Mstart-3)"
+       d="M 497.65117,492.69114 476.44148,471.48147"
+       id="path3155"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/giack/Desktop/università/JLAMP/RPP/jlamp/rect34398.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
+    <path
+       style="display:inline;fill:none;stroke:#ff0000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Arrow2Mstart-3)"
+       d="M 430.34559,392.52311 409.1359,371.31344"
+       id="path3157"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/giack/Desktop/università/JLAMP/RPP/jlamp/rect34398.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
+    <path
+       style="fill:none;stroke:#ff0000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend)"
+       d="m 503.00331,487.49749 c -3.05567,-27.9895 -17.90898,-99.04461 -90.09577,-119.67765"
+       id="path3200"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/giack/Desktop/università/JLAMP/RPP/jlamp/rect34398.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,11.041074,-34.976085)"
+       id="text11657"
+       style="font-style:normal;font-weight:normal;font-size:60px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;shape-inside:url(#rect11659);display:inline;fill:#000000;fill-opacity:1;stroke:none"
+       inkscape:export-filename="/home/giack/Desktop/università/JLAMP/RPP/jlamp/rect34398.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200"><tspan
+         x="1880.1035"
+         y="1994.7255"
+         id="tspan34658"><tspan
+           style="font-family:MathJax_Math;-inkscape-font-specification:MathJax_Math"
+           id="tspan34656">x</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,71.968852,-11.648368)"
+       id="text16591"
+       style="font-style:normal;font-weight:normal;font-size:50.6667px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;shape-inside:url(#rect16593);display:inline;fill:#000000;fill-opacity:1;stroke:none"
+       inkscape:export-filename="/home/giack/Desktop/università/JLAMP/RPP/jlamp/rect34398.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200"><tspan
+         x="1275.6816"
+         y="1390.8646"
+         id="tspan34672"><tspan
+           style="font-family:MathJax_Math;-inkscape-font-specification:MathJax_Math"
+           id="tspan34660">y</tspan><tspan
+           style="font-family:MathJax_Math;-inkscape-font-specification:MathJax_Math"
+           id="tspan34662">'=</tspan><tspan
+           style="font-family:MathJax_Math;-inkscape-font-specification:MathJax_Math"
+           id="tspan34664">f</tspan><tspan
+           style="font-family:MathJax_Math;-inkscape-font-specification:MathJax_Math"
+           id="tspan34666">(</tspan><tspan
+           style="font-family:MathJax_Math;-inkscape-font-specification:MathJax_Math"
+           id="tspan34668">x</tspan><tspan
+           style="font-family:MathJax_Math;-inkscape-font-specification:MathJax_Math"
+           id="tspan34670">)</tspan></tspan></text>
   </g>
 </svg>

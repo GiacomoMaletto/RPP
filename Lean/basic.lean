@@ -6,18 +6,18 @@ import tactic.omega
 
 open list
 
-inductive RPP
-| Id (n : ℕ) : RPP
-| Ne : RPP
-| Su : RPP
-| Pr : RPP
-| Sw : RPP
-| Co (f g : RPP) : RPP
-| Pa (f g : RPP) : RPP
-| It (f : RPP) : RPP
-| If (f g h : RPP) : RPP
+inductive rpp
+| Id (n : ℕ) : rpp
+| Ne : rpp
+| Su : rpp
+| Pr : rpp
+| Sw : rpp
+| Co (f g : rpp) : rpp
+| Pa (f g : rpp) : rpp
+| It (f : rpp) : rpp
+| If (f g h : rpp) : rpp
 
-namespace RPP
+namespace rpp
 
 infix `;;` : 50 := Co
 infix `‖` : 55 := Pa -- ‖ \Vert
@@ -25,7 +25,7 @@ infix `‖` : 55 := Pa -- ‖ \Vert
 attribute [pp_nodot] It
 attribute [pp_nodot] If
 
-@[simp] def inv : RPP → RPP
+@[simp] def inv : rpp → rpp
 | (Id n)     := Id n
 | Ne         := Ne
 | Su         := Pr
@@ -36,12 +36,12 @@ attribute [pp_nodot] If
 | (It f)     := It (inv f)
 | (If f g h) := If (inv f) (inv g) (inv h)
 
-notation f `⁻¹` : 60 := inv f -- ⁻¹ \-1
+notation (name := inv) f `⁻¹` : 60 := inv f -- ⁻¹ \-1
 
-@[simp] lemma inv_involute (f : RPP) : (f⁻¹)⁻¹ = f :=
+@[simp] lemma inv_involute (f : rpp) : (f⁻¹)⁻¹ = f :=
 by { induction f; simp * }
 
-@[simp] def arity : RPP → ℕ
+@[simp] def arity : rpp → ℕ
 | (Id n)     := n
 | Ne         := 1
 | Su         := 1
@@ -52,12 +52,12 @@ by { induction f; simp * }
 | (It f)     := f.arity + 1
 | (If f g h) := max (max f.arity g.arity) h.arity + 1
 
-@[simp] lemma arity_inv (f : RPP) : f⁻¹.arity = f.arity :=
+@[simp] lemma arity_inv (f : rpp) : f⁻¹.arity = f.arity :=
 by { induction f; simp [*, max_comm] }
 
 prefix `↓` : 70 := int.to_nat
 
-def ev : RPP → list ℤ → list ℤ
+def ev : rpp → list ℤ → list ℤ
 | (Id n)     X                    := X
 | Ne         (x :: X)             := -x :: X
 | Su         (x :: X)             := (x + 1) :: X
@@ -71,12 +71,12 @@ def ev : RPP → list ℤ → list ℤ
 | (If f g h) (-[1+ n] :: X)       := -[1+ n] :: ev h X
 | _          X                    := X
 
-notation `‹` f `›` : 50 := ev f -- ‹ \f › \fr
+notation (name := ev) `‹` f `›` : 50 := ev f -- ‹ \f › \fr
 
-@[simp] lemma ev_nil (f : RPP) : ‹f› [] = [] :=
+@[simp] lemma ev_nil (f : rpp) : ‹f› [] = [] :=
 by { induction f; simp [ev, *] }
 
-@[simp] lemma ev_length (f : RPP) (X : list ℤ) : (‹f› X).length = X.length :=
+@[simp] lemma ev_length (f : rpp) (X : list ℤ) : (‹f› X).length = X.length :=
 begin
   induction f generalizing X; cases X with x X,
   any_goals {simp [ev, *], done},
@@ -86,7 +86,7 @@ begin
   { cases x, cases x, all_goals {simp [ev, *]} }
 end
 
-lemma pa_co_pa (f f' g g' : RPP) (X : list ℤ) : f.arity = f'.arity →
+lemma pa_co_pa (f f' g g' : rpp) (X : list ℤ) : f.arity = f'.arity →
   ‹f ‖ g ;; f' ‖ g'› X = ‹(f ;; f') ‖ (g ;; g')› X :=
 begin
   intro h,
@@ -100,7 +100,7 @@ begin
     all_goals {simp *} }
 end
 
-theorem inv_co_l (f : RPP) (X : list ℤ) : ‹f ;; f⁻¹› X = X :=
+theorem inv_co_l (f : rpp) (X : list ℤ) : ‹f ;; f⁻¹› X = X :=
 begin
   induction f generalizing X; cases X with x X,
   any_goals {simp [ev, *], done},
@@ -111,17 +111,17 @@ begin
   { rcases x with ⟨n, n⟩; simp [ev, *] at * }
 end
 
-lemma inv_co_r (f : RPP) (X : list ℤ) : ‹f⁻¹ ;; f› X = X :=
+lemma inv_co_r (f : rpp) (X : list ℤ) : ‹f⁻¹ ;; f› X = X :=
 by { convert inv_co_l (f⁻¹) X, rw inv_involute }
 
-@[simp] theorem inv_iff (f : RPP) (X Y : list ℤ) : ‹f⁻¹› X = Y ↔ ‹f› Y = X :=
+@[simp] theorem inv_iff (f : rpp) (X Y : list ℤ) : ‹f⁻¹› X = Y ↔ ‹f› Y = X :=
 begin
   split; intro h; rw ←h,
   conv_rhs {rw ←inv_co_r f X}, refl,
   conv_rhs {rw ←inv_co_l f Y}, refl,
 end
 
-lemma take_ev (f : RPP) (n : ℕ) (X : list ℤ) : f.arity ≤ n →
+lemma take_ev (f : rpp) (n : ℕ) (X : list ℤ) : f.arity ≤ n →
   take n (‹f› X) = ‹f› (take n X) :=
 begin
   intro h,
@@ -154,7 +154,7 @@ begin
     cases x, cases x, all_goals {simp [ev, *]} }
 end
 
-lemma drop_ev (f : RPP) (n : ℕ) (X : list ℤ) : f.arity ≤ n →
+lemma drop_ev (f : rpp) (n : ℕ) (X : list ℤ) : f.arity ≤ n →
   drop n (‹f› X) = drop n X :=
 begin
   intro h,
@@ -180,22 +180,22 @@ begin
     rw [ev, drop],
     induction (↓x) generalizing X, refl,
     replace h := nat.succ_le_succ_iff.mp h, simp [arity, *] at * },
-  { cases n, rw arity at h, linarith, cases X with x X, refl,
+  { cases n, rw arity at h, simp at h, contradiction, cases X with x X, refl,
     rw arity at h, replace h := nat.succ_le_succ_iff.mp h, simp [max_le_iff] at h, 
     rcases h with ⟨⟨h₁, h₂⟩, h₃⟩,
     cases x, cases x, all_goals {simp [ev, *]} }
 end
 
-theorem ev_split (f : RPP) (X : list ℤ) :
+theorem ev_split (f : rpp) (X : list ℤ) :
   ‹f› X = ‹f› (take f.arity X) ++ drop f.arity X :=
 begin
   rw [←take_ev, ←drop_ev, take_append_drop], refl, refl 
 end
 
-lemma ev_split_le (f : RPP) (X : list ℤ) (n : ℕ) : f.arity ≤ n →
+lemma ev_split_le (f : rpp) (X : list ℤ) (n : ℕ) : f.arity ≤ n →
   ‹f› X = ‹f› (take n X) ++ drop n X :=
 begin
   intro h, rw [←take_ev, ←drop_ev, take_append_drop], assumption, assumption
 end
 
-end RPP
+end rpp

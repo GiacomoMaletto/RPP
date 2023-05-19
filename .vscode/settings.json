@@ -1,0 +1,7 @@
+{
+    "[tex]": {
+        "diffEditor.wordWrap": "inherit",
+        "editor.wordWrap": "bounded",
+        "editor.wordWrapColumn": 100
+    }
+}

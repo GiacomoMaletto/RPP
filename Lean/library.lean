@@ -2,15 +2,15 @@ import basic
 
 open list
 
-namespace RPP
+namespace rpp
 
 @[simp] def Id₁ := Id 1
 
-@[simp] def call : ℕ → RPP
+@[simp] def call : ℕ → rpp
 | 0       := Id₁
 | (i + 1) := Id i ‖ Sw ;; call i
 
-@[simp] def call_list : list ℕ → RPP
+@[simp] def call_list : list ℕ → rpp
 | []       := Id 0
 | (i :: X) := call i ;; call_list X
 
@@ -18,9 +18,9 @@ namespace RPP
 | []       := []
 | (i :: X) := (i + (X.filter (λ j, i < j)).length) :: prepare X
 
-def rewire (X : list ℕ) : RPP := call_list (reverse (prepare X))
+def rewire (X : list ℕ) : rpp := call_list (reverse (prepare X))
 
--- ⌊ \lf ⌉ \rc
+-- ⌊ \lfl ⌉ \rc
 notation `⌊` X:(foldr `, ` (h t, list.cons h t) list.nil `⌉`) := rewire X
 
 def inc := It Su
@@ -60,7 +60,7 @@ def less := dec ;; Id₁ ‖ If Su Id₁ Id₁ ;; inc
 
 @[simp] lemma less_arity : less.arity = 3 := rfl
 
-@[simp] lemma if_gtz (f g h : RPP) (x : ℤ) (X : list ℤ) (H : 0 < x) :
+@[simp] lemma if_gtz (f g h : rpp) (x : ℤ) (X : list ℤ) (H : 0 < x) :
   ‹If f g h› (x :: X) = x :: ‹f› X :=
 begin
   cases x, cases x,
@@ -69,7 +69,7 @@ begin
   simp at H, contradiction
 end
 
-@[simp] lemma if_ltz (f g h : RPP) (x : ℤ) (X : list ℤ) (H : x < 0) :
+@[simp] lemma if_ltz (f g h : rpp) (x : ℤ) (X : list ℤ) (H : x < 0) :
   ‹If f g h› (x :: X) = x :: ‹h› X :=
 begin
   cases x, cases x,
@@ -78,7 +78,7 @@ begin
   refl
 end
 
-@[simp] lemma if_gez (f g : RPP) (x : ℤ) (X : list ℤ) (H : 0 ≤ x) :
+@[simp] lemma if_gez (f g : rpp) (x : ℤ) (X : list ℤ) (H : 0 ≤ x) :
   ‹If f f g› (x :: X) = x :: ‹f› X :=
 begin
   cases x, cases x,
@@ -97,4 +97,4 @@ begin
   have H : n < m     := by linarith, simp [less, ev, *]
 end
 
-end RPP
+end rpp

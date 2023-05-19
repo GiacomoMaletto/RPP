@@ -1,11 +1,10 @@
-import computability.primrec
-
-import library
+import step
 import sqrt_lemmas
+import computability.primrec
 
 open list
 
-namespace RPP
+namespace rpp
 
 def mkpairᵢ :=
   less ;;
@@ -25,20 +24,13 @@ begin
   simp [mkpairᵢ, ev, nat.mkpair, rewire, *], ring
 end
 
-def sqrt_step :=
-  Su ‖ If Su Id₁ Id₁ ;;
-  ⌊2, 0, 1⌉ ;;
-  If (Id₁ ‖ Pr) (Su ;; Sw ‖ Su) Id₁ ;;
-  Sw ;; If Pr Id₁ Id₁ ;;
-  Id₁ ‖ Sw
-
-def sqrt := It sqrt_step
+def sqrt := It (step ((Su ;; Su) ‖ Su))
 
 local prefix `√` : 70 := nat.sqrt
 
 @[simp] lemma sqrt_def (n : ℕ) (X : list ℤ) :
   ‹sqrt› (n :: 0 :: 0 :: 0 :: 0 :: X) =
-  n :: (n - √n * √n) :: (√n + √n - (n - √n * √n)) :: 0 :: √n :: X :=
+  n :: 0 :: (n - √n * √n) :: (√n + √n - (n - √n * √n)) :: √n :: X :=
 begin
   simp [sqrt, ev],
   induction n with n hn,
@@ -48,16 +40,16 @@ begin
 
   have H₁ := sqrt_lemma_1 n h,
   have H₂ : (0 : ℤ) < n - √n * √n + 1, by { have h := nat.sqrt_le n, norm_cast, linarith },
-  simp[sqrt_step, ev, rewire, *], split, ring, ring,
+  simp[step, ev, rewire, *], split, ring, ring,
 
   have H₁ := sqrt_lemma_2 n h,
   have H₂ : (n : ℤ) = √n + √n + √n * √n, by { symmetry, rw ←sub_eq_zero, rw ←H₁, ring },
-  simp[sqrt_step, ev, rewire, *], split, ring, ring
+  simp[step, ev, rewire, *], split, ring, ring
 end
 
 def unpairᵢ_fwd :=
   sqrt ;;
-  ⌊0, 1, 4, 2, 3⌉ ;;
+  ⌊0, 2, 4, 3, 1⌉ ;;
   Id 2 ‖ dec ;;
   Id 3 ‖ Ne ;;
   Id 3 ‖ If Id₁ Id₁ Pr ;;
@@ -97,9 +89,9 @@ begin
   rw [unpairᵢ, nat.unpair], simp [ev],
   have H := nat.sqrt_le n,
   cases em (n - √n * √n < √n) with h h,
-  norm_cast, simp [ev, rewire, *],
+  norm_cast, simp [ev, rewire, h],
   have h₁ : √n ≤ n - √n * √n, by linarith,
-  norm_cast, simp [ev, rewire, *]
+  norm_cast, simp [ev, rewire, h]
 end
 
 def mkpair := mkpairᵢ ;; ⌊3, 2, 4, 5, 6, 0, 1⌉ ;; unpairᵢ⁻¹
@@ -120,4 +112,4 @@ def unpair := mkpair⁻¹
   (nat.unpair n).1 :: (nat.unpair n).2 :: 0 :: 0 :: 0 :: 0 :: 0 :: X :=
 by simp [unpair]
 
-end RPP
+end rpp

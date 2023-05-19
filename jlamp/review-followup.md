@@ -90,6 +90,8 @@ output: pdf_document
 
     - *L: Non mi sarei accorto di tale invariante. Se hai voglia, tempo e forza per farlo, secondo me vale la pena. Sai benissimo che io non sono in grado.*
 
+    - $G: Ho messo la nuova definizione, cambiando leggermente anche le spiegazioni successive di pairing, divisione e radice quadrata.$
+
 12.   **Observation/Question**
     
 -  p. 13, l. 299 - 302: since it is relevant for your proof you should provide a description
@@ -102,6 +104,7 @@ output: pdf_document
        
     - *L: Credo proprio che quella che ho chiamato "definizione qualitativa", per te sia la "definizione analitica". **Quindi la aggiungiamo?*** 
 
+    - *G: Ho aggiunto la definizione.*
 
 13.  **Observation/Question**
     

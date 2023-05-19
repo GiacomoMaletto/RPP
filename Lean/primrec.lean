@@ -3,7 +3,7 @@ import computability.primrec
 import logic.denumerable
 import tactic
 
-open primrec list RPP sum equiv
+open primrec list rpp sum equiv
 
 namespace list
 
@@ -163,22 +163,22 @@ lemma rpp_sw : primrec ‹Sw› :=
   .to₂).to₂).of_eq $
 λ l, by {cases l with _ l', refl, cases l'; refl}
 
-lemma rpp_co {f g : RPP} (hf : primrec ‹f›) (hg : primrec ‹g›) : primrec ‹f ;; g› :=
+lemma rpp_co {f g : rpp} (hf : primrec ‹f›) (hg : primrec ‹g›) : primrec ‹f ;; g› :=
 (comp hg hf).of_eq $ λ l, by refl
 
-lemma rpp_pa {f g : RPP} (hf : primrec ‹f›) (hg : primrec ‹g›) : primrec ‹f ‖ g› :=
+lemma rpp_pa {f g : rpp} (hf : primrec ‹f›) (hg : primrec ‹g›) : primrec ‹f ‖ g› :=
 (list_append.comp
   (comp hf (list_take.comp (const f.arity) primrec.id))
   (comp hg (list_drop.comp (const f.arity) primrec.id))).of_eq $
 λ l, by refl
 
-lemma rpp_it {f : RPP} (hf : primrec ‹f›) : primrec ‹It f› :=
+lemma rpp_it {f : rpp} (hf : primrec ‹f›) : primrec ‹It f› :=
 (list_cases primrec.id (const [])
   (list_cons.comp (fst.comp snd) ((nat_iterate (int_to_nat.comp $ fst.comp snd)
   (snd.comp snd) (hf.comp snd).to₂))).to₂).of_eq $
 λ l, by cases l; refl
 
-lemma rpp_if {f g h : RPP} (hf : primrec ‹f›) (hg : primrec ‹g›) (hh : primrec ‹h›) :
+lemma rpp_if {f g h : rpp} (hf : primrec ‹f›) (hg : primrec ‹g›) (hh : primrec ‹h›) :
   primrec ‹If f g h› :=
 (list_cases primrec.id (const [])
   (list_cons.comp (fst.comp snd)
@@ -188,7 +188,7 @@ lemma rpp_if {f g h : RPP} (hf : primrec ‹f›) (hg : primrec ‹g›) (hh : p
   (hh.comp $ snd.comp $ snd.comp $ fst).to₂)).to₂).of_eq $
 λ l, by {cases l with n, refl, cases n with n n, cases n; refl, refl}
 
-theorem rpp_primrec (f : RPP) : primrec ‹f› :=
-RPP.rec rpp_id rpp_ne rpp_su rpp_pr rpp_sw @rpp_co @rpp_pa @rpp_it @rpp_if f
+theorem rpp_primrec (f : rpp) : primrec ‹f› :=
+rpp.rec rpp_id rpp_ne rpp_su rpp_pr rpp_sw @rpp_co @rpp_pa @rpp_it @rpp_if f
 
 end primrec

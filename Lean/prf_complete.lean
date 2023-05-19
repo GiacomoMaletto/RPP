@@ -5,18 +5,18 @@ def nat.prec (F G : ℕ → ℕ) (z n : ℕ) :=
 
 open list
 
-namespace RPP
+namespace rpp
 
-def encode (F : ℕ → ℕ) (f : RPP) :=
+def encode (F : ℕ → ℕ) (f : rpp) :=
   ∀ (z : ℤ) (n : ℕ), ‹f› (z :: n :: repeat 0 (f.arity-2)) = (z + F n) :: n :: repeat 0 (f.arity-2)
 
-lemma encode_le (F : ℕ → ℕ) (f : RPP) : encode F f → ∀ (a : ℕ), f.arity-2 ≤ a →
+lemma encode_le (F : ℕ → ℕ) (f : rpp) : encode F f → ∀ (a : ℕ), f.arity-2 ≤ a →
   ∀ (z : ℤ) (n : ℕ), ‹f› (z :: n :: repeat 0 a) = (z + F n) :: n :: repeat 0 a :=
 begin
   rw encode, intros H a h z n,
   cases (le_total f.arity 2) with h₁,
 
-  have h₂ : f.arity-2 = 0, from sub_eq_zero_iff_le.mpr h₁,
+  have h₂ : f.arity-2 = 0, from nat.sub_eq_zero_iff_le.mpr h₁,
   rw h₂ at H, simp at *, rw ev_split_le _ _ 2 h₁, simp, rw H, refl,
 
   rw [←nat.add_sub_of_le h, repeat_add],
@@ -48,31 +48,31 @@ lemma right_def (z : ℤ) (n : ℕ) :
   ‹right› (z :: n :: repeat 0 6) = (z + (nat.unpair n).snd) :: n :: repeat 0 6 :=
 by simp [right, ev, rewire]
 
-def pair_fwd (f g : RPP) :=
+def pair_fwd (f g : rpp) :=
   Id 1 ‖ (Sw ;; f) ;;
   Id 2 ‖ (Sw ;; g) ;;
   ⌊0, 3, 1, 2⌉ ;;
   Id 2 ‖ mkpairᵢ ;;
   ⌊5, 0⌉
 
-lemma pair_fwd_arity_le1 (f g : RPP) : 7 ≤ (pair_fwd f g).arity :=
+lemma pair_fwd_arity_le1 (f g : rpp) : 7 ≤ (pair_fwd f g).arity :=
 by simp [pair_fwd]
 
-lemma pair_fwd_arity_le2 (f g : RPP) : f.arity + 1 ≤ (pair_fwd f g).arity :=
+lemma pair_fwd_arity_le2 (f g : rpp) : f.arity + 1 ≤ (pair_fwd f g).arity :=
 begin
   rw pair_fwd, simp, left, left, left, left,
   rw [add_comm, add_le_add_iff_left],
   apply le_max_right
 end
 
-lemma pair_fwd_arity_le3 (f g : RPP) : g.arity + 2 ≤ (pair_fwd f g).arity :=
+lemma pair_fwd_arity_le3 (f g : rpp) : g.arity + 2 ≤ (pair_fwd f g).arity :=
 begin
   rw pair_fwd, simp, left, left, left, right,
   rw [add_comm, add_le_add_iff_left],
   apply le_max_right
 end
 
-lemma pair_fwd_arity (f g : RPP) : ∃ a,
+lemma pair_fwd_arity (f g : rpp) : ∃ a,
   (pair_fwd f g).arity = a + 7 ∧ f.arity-2 ≤ a + 4 ∧ g.arity-2 ≤ a + 3 :=
 begin
   have h₁ := pair_fwd_arity_le1 f g,
@@ -83,7 +83,7 @@ begin
   split, omega, omega
 end
 
-lemma pair_fwd_def (F G : ℕ → ℕ) (f g : RPP) :
+lemma pair_fwd_def (F G : ℕ → ℕ) (f g : rpp) :
   encode F f → encode G g → ∀ (z : ℤ) (n : ℕ),
   ‹pair_fwd f g› (z :: n :: repeat 0 ((pair_fwd f g).arity-2)) =
   nat.mkpair (F n) (G n) :: z :: n :: F n :: G n :: 0 :: repeat 0 ((pair_fwd f g).arity-6) :=
@@ -95,15 +95,15 @@ begin
   simp [pair_fwd, ev, rewire, *] at *
 end
 
-def pair (f g : RPP) := pair_fwd f g ;; inc ;; (pair_fwd f g)⁻¹
+def pair (f g : rpp) := pair_fwd f g ;; inc ;; (pair_fwd f g)⁻¹
 
-lemma pair_arity_eq (f g : RPP) : (pair f g).arity = (pair_fwd f g).arity :=
+lemma pair_arity_eq (f g : rpp) : (pair f g).arity = (pair_fwd f g).arity :=
 begin
   rw pair, simp [rewire, arity_inv],
   have h := pair_fwd_arity_le1 f g, linarith
 end
 
-lemma pair_def (F G : ℕ → ℕ) (f g : RPP) : encode F f → encode G g → ∀ (z : ℤ) (n : ℕ),
+lemma pair_def (F G : ℕ → ℕ) (f g : rpp) : encode F f → encode G g → ∀ (z : ℤ) (n : ℕ),
   ‹pair f g› (z :: n :: repeat 0 ((pair f g).arity-2)) =
   (z + nat.mkpair (F n) (G n)) :: n :: repeat 0 ((pair f g).arity-2) :=
 begin
@@ -112,32 +112,32 @@ begin
   simp [pair, ev, *]
 end
 
-def comp_fwd (f g : RPP) :=
+def comp_fwd (f g : rpp) :=
   Id 1 ‖ (Sw ;; g ;; Sw) ;;
   Id 2 ‖ (Sw ;; f) ;;
   ⌊2, 0⌉
 
-lemma comp_fwd_arity_le1 (f g : RPP) : 4 ≤ (comp_fwd f g).arity :=
+lemma comp_fwd_arity_le1 (f g : rpp) : 4 ≤ (comp_fwd f g).arity :=
 begin
   rw comp_fwd, simp, left, right,
   rw [show 4 = 2 + 2, by refl], rw add_le_add_iff_left, apply le_max_left
 end
 
-lemma comp_fwd_arity_le2 (f g : RPP) : f.arity + 2 ≤ (comp_fwd f g).arity :=
+lemma comp_fwd_arity_le2 (f g : rpp) : f.arity + 2 ≤ (comp_fwd f g).arity :=
 begin
   rw comp_fwd, simp, left, right,
   rw [add_comm, add_le_add_iff_left],
   apply le_max_right
 end
 
-lemma comp_fwd_arity_le3 (f g : RPP) : g.arity + 1 ≤ (comp_fwd f g).arity :=
+lemma comp_fwd_arity_le3 (f g : rpp) : g.arity + 1 ≤ (comp_fwd f g).arity :=
 begin
   rw comp_fwd, simp, left, left,
   rw [add_comm, add_le_add_iff_left],
   apply le_max_right
 end
 
-lemma comp_fwd_arity (f g : RPP) : ∃ a,
+lemma comp_fwd_arity (f g : rpp) : ∃ a,
   (comp_fwd f g).arity = a + 4 ∧ f.arity-2 ≤ a ∧ g.arity-2 ≤ a + 1 :=
 begin
   have h₁ := comp_fwd_arity_le1 f g,
@@ -148,7 +148,7 @@ begin
   split, omega, omega
 end
 
-lemma comp_fwd_def (F G : ℕ → ℕ) (f g : RPP) : encode F f → encode G g → ∀ (z : ℤ) (n : ℕ),
+lemma comp_fwd_def (F G : ℕ → ℕ) (f g : rpp) : encode F f → encode G g → ∀ (z : ℤ) (n : ℕ),
   ‹comp_fwd f g› (z :: n :: repeat 0 ((comp_fwd f g).arity-2)) =
   F (G n) :: z :: n :: ↑(G n) :: repeat 0 ((comp_fwd f g).arity-4) :=
 begin
@@ -159,15 +159,15 @@ begin
   simp [comp_fwd, ev, rewire, *] at *
 end
 
-def comp (f g : RPP) := comp_fwd f g ;; inc ;; (comp_fwd f g)⁻¹
+def comp (f g : rpp) := comp_fwd f g ;; inc ;; (comp_fwd f g)⁻¹
 
-lemma comp_arity_eq (f g : RPP) : (comp f g).arity = (comp_fwd f g).arity :=
+lemma comp_arity_eq (f g : rpp) : (comp f g).arity = (comp_fwd f g).arity :=
 begin
   rw comp, simp [rewire, arity_inv],
   have h := comp_fwd_arity_le1 f g, linarith
 end
 
-lemma comp_def (F G : ℕ → ℕ) (f g : RPP) : encode F f → encode G g → ∀ (z : ℤ) (n : ℕ),
+lemma comp_def (F G : ℕ → ℕ) (f g : rpp) : encode F f → encode G g → ∀ (z : ℤ) (n : ℕ),
   ‹comp f g› (z :: n :: repeat 0 ((comp f g).arity-2)) =
   (z + F (G n)) :: n :: repeat 0 ((comp f g).arity-2) :=
 begin
@@ -176,7 +176,7 @@ begin
   simp [comp, ev, *]
 end
 
-def prec_step (g : RPP) :=
+def prec_step (g : rpp) :=
   Id 2 ‖ mkpair ;;
   Id 1 ‖ mkpair ;;
   Id 1 ‖ (Sw ;; g) ;;
@@ -186,7 +186,7 @@ def prec_step (g : RPP) :=
   Id 1 ‖ Su ‖ Id 1 ‖ mkpair ;;
   ⌊3, 0, 1, 2⌉
 
-def prec_fwd (f g : RPP) :=
+def prec_fwd (f g : rpp) :=
   Id 1 ‖ unpair ;;
   ⌊0, 2, 3, 1⌉ ;;
   Id 2 ‖ f ;;
@@ -194,19 +194,19 @@ def prec_fwd (f g : RPP) :=
   Id 1 ‖ It (prec_step g) ;;
   ⌊5, 0⌉
 
-lemma prec_fwd_arity_le1 (f g : RPP) : 12 ≤ (prec_fwd f g).arity :=
+lemma prec_fwd_arity_le1 (f g : rpp) : 12 ≤ (prec_fwd f g).arity :=
 begin
   rw [prec_fwd, prec_step], simp,
   left, right, rw [show 12 = 1 + (10 + 1), by refl], simp
 end
 
-lemma prec_fwd_arity_le2 (f g : RPP) : f.arity + 2 ≤ (prec_fwd f g).arity :=
+lemma prec_fwd_arity_le2 (f g : rpp) : f.arity + 2 ≤ (prec_fwd f g).arity :=
 begin
   rw [prec_fwd, prec_step], simp,
   left, left, left, right, rw add_comm
 end
 
-lemma prec_fwd_arity_le3 (f g : RPP) : g.arity + 3 ≤ (prec_fwd f g).arity :=
+lemma prec_fwd_arity_le3 (f g : rpp) : g.arity + 3 ≤ (prec_fwd f g).arity :=
 begin
   rw [prec_fwd, prec_step], simp,
   left, right, rw [show g.arity + 3 = 1 + (g.arity + 1 + 1), by ring], simp,
@@ -215,7 +215,7 @@ begin
   apply le_max_right
 end
 
-lemma prec_fwd_arity (f g : RPP) : ∃ a,
+lemma prec_fwd_arity (f g : rpp) : ∃ a,
   (prec_fwd f g).arity = a + 12 ∧ f.arity-2 ≤ a+8 ∧ g.arity-2 ≤ a+7 :=
 begin
   have h₁ := prec_fwd_arity_le1 f g,
@@ -226,7 +226,7 @@ begin
   split, omega, omega
 end
 
-lemma prec_step_def (F G : ℕ → ℕ) (f g : RPP) : encode G g → ∀ (z n s : ℕ), ∃ (s' : ℕ),
+lemma prec_step_def (F G : ℕ → ℕ) (f g : rpp) : encode G g → ∀ (z n s : ℕ), ∃ (s' : ℕ),
   ‹prec_step g› (s :: z :: n :: nat.prec F G z n :: repeat 0 ((prec_fwd f g).arity-6)) =
   s' :: z :: (n + 1) :: nat.prec F G z (n + 1) :: repeat 0 ((prec_fwd f g).arity-6) :=
 begin
@@ -236,7 +236,7 @@ begin
   simp [prec_step, nat.prec, ev, rewire, *] at *
 end
 
-lemma it_prec_step_def (F G : ℕ → ℕ) (f g : RPP) : encode G g → ∀ (z n : ℕ), ∃ (s : ℕ),
+lemma it_prec_step_def (F G : ℕ → ℕ) (f g : rpp) : encode G g → ∀ (z n : ℕ), ∃ (s : ℕ),
   ‹prec_step g›^[n] (0 :: z :: 0 :: F z :: repeat 0 ((prec_fwd f g).arity-6)) =
   s :: z :: n :: nat.prec F G z n :: repeat 0 ((prec_fwd f g).arity-6) :=
 begin
@@ -247,7 +247,7 @@ begin
   use s', rw [function.iterate_succ_apply', hN, h], refl
 end
 
-lemma prec_fwd_def (F G : ℕ → ℕ) (f g : RPP) :
+lemma prec_fwd_def (F G : ℕ → ℕ) (f g : rpp) :
   encode F f → encode G g → ∀ (n : ℕ), ∃ (s : ℕ), ∀ (z : ℤ),
   ‹prec_fwd f g› (z :: n :: repeat 0 ((prec_fwd f g).arity-2)) =
   nat.prec F G (nat.unpair n).fst (nat.unpair n).snd ::
@@ -262,15 +262,15 @@ begin
   simp [prec_fwd, ev, rewire, *] at *
 end
 
-def prec (f g : RPP) := prec_fwd f g ;; inc ;; (prec_fwd f g)⁻¹
+def prec (f g : rpp) := prec_fwd f g ;; inc ;; (prec_fwd f g)⁻¹
 
-lemma prec_arity_eq (f g : RPP) : (prec f g).arity = (prec_fwd f g).arity :=
+lemma prec_arity_eq (f g : rpp) : (prec f g).arity = (prec_fwd f g).arity :=
 begin
   rw prec, simp [rewire, arity_inv],
   have h := prec_fwd_arity_le1 f g, linarith
 end
 
-lemma prec_def (F G : ℕ → ℕ) (f g : RPP) : encode F f → encode G g → ∀ (z : ℤ) (n : ℕ),
+lemma prec_def (F G : ℕ → ℕ) (f g : rpp) : encode F f → encode G g → ∀ (z : ℤ) (n : ℕ),
   ‹prec f g› (z :: n :: repeat 0 ((prec f g).arity-2)) =
   (z + nat.prec F G (nat.unpair n).fst (nat.unpair n).snd) ::
     n :: repeat 0 ((prec f g).arity-2) :=
@@ -298,4 +298,4 @@ begin
     use prec g₁ g₂, rw encode, exact prec_def _ _ _ _ ih₁ ih₂ }
 end
 
-end RPP
+end rpp
