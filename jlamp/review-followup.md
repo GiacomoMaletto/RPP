@@ -151,6 +151,7 @@ output: pdf_document
     with some non computable immersion.
     ~~~
 
+    - *G: mi sembra un miglioramento: ho messo come hai scritto qua.*
 
 17.   **Observation/Question**
   
@@ -206,5 +207,6 @@ output: pdf_document
 
 *Done.* We investigated a little bit deeply what the designers of LEAN 4 promise. We realized that LEAN 4 does not directly export C code. So, we cannot add any C code snippet to our work. Consequently, we have slightly modified the original sentence. (p. 24 , l. **????**)
 
-    
 - *L: Non ho capito come la frase sia stata modificata rispetto a quella nell'articolo originale.*
+
+- *G: Ho del tutto rimosso i riferimenti a Lean4, dato che a questo punto mi sembrano poco rilevanti.*

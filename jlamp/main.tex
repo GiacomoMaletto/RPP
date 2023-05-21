@@ -195,7 +195,7 @@ We show how to express \RPP and its evaluation mechanism inside the proof-assist
 
         \item we identify an algorithmic pattern which uniquely associates elements of
         $ \mathbb{N}^2$, and $ \mathbb{N}$ by counting steps in specific paths.
-        The pattern becomes a reversible element in \lstinline|rpp| once fixed the parameter it depends on. Slightly different parameter instances generate reversible algorithms whose behavior we can certify in \LEAN. They are truncated Square Root, Quotient/Reminder of integer division, and Cantor Pairing \cite{Cantor1878,DBLP:journals/corr/Szudzik17}.
+        The pattern is obtained through the iteration of \lstinline|step (_)|, and becomes a reversible element in \lstinline|rpp| once fixed the parameter \lstinline|(_)| it depends on. Slightly different parameter instances generate reversible algorithms whose behavior we can certify in \LEAN. They are truncated Square Root, Quotient/Reminder of integer division, and Cantor Pairing \cite{Cantor1878,DBLP:journals/corr/Szudzik17}.
         The original proof in \cite{DBLP:journals/tcs/PaoliniPR20} that \RPP is \PRF-complete relies on Cantor Pairing, used as a stack to keep the representation of a \PRF function as element of \RPP reversible.
         Our proof in \LEAN replaces Cantor Pairing with a reversible representation of functions \lstinline|mkpair|/\lstinline|unpair| that \MATHLIB supplies as isomorphism $ \mathbb{N}\times\mathbb{N} \simeq \mathbb{N} $. The truncated Square Root is the basic ingredient to obtain reversible \lstinline|mkpair|/\lstinline|unpair|.
     \end{itemize}
@@ -672,7 +672,7 @@ A step is a rule that updates the position $(x,y)\mapsto(x',y')$ and the data $\
 \end{itemize}
 This is illustrated in Figure~\ref{fig:path}.
 
-A seemingly straighforward way to implement this behavior in \lstinline|rpp| would be the following: move the argument $y$ to the head; use the conditional \lstinline|If| to perform either a diagonal movement or the jump from the $x$-axis to the $y$-axis, depending on the sign of $y$. Unfortunately this does not work, because \lstinline|rpp| (and more deeply, the constraints of reversibility) prevent a variable to be in both the condition of \lstinline|If| and among the affected variables. The current implementation of \lstinline|step| is illustrated in Figure~\ref{fig:function scheme step}, and avoids the issue by using an additional variable which is set to $0$, resp.\ $1$ depending on whether $y$ is $=0$, resp.\ $>0$, and then is set back to $0$ in either cases based on the affected variables.
+A seemingly straighforward way to implement this behavior in \lstinline|rpp| would be the following: move the argument $y$ to the head; use the conditional \lstinline|If| to perform either a diagonal movement or the jump from the $x$-axis to the $y$-axis, depending on the sign of $y$. Unfortunately this does not work, because \lstinline|rpp| (and more deeply, the constraints of reversibility) prevent a variable to be in both the condition of \lstinline|If| and among the affected variables. The current implementation of \lstinline|step| is illustrated in Figure~\ref{fig:function scheme step}, and avoids the issue by using an additional variable which is set to $1$, resp.\ $0$ depending on whether $y$ is $>0$, resp.\ $=0$, and then is set back to $0$ in either cases based on the affected variables.
 
 Thus, given \lstinline|f : rpp|, we model the behavior of a single step with \lstinline|step f| and we perform an iteration of this step with \lstinline|It (step f)|.
 
@@ -823,7 +823,7 @@ y'\\
 &
 \boldsymbol{z'}\\
 \end{NiceMatrix}$}
-\caption{Function \lstinline|step f|; detailed behavior with $y=0$, assuming $x\ge0$ and $(y',z')=f(x,z)$.}
+\caption{Function \lstinline|step f|; detailed behavior with $y=0$, assuming $x\ge0$ and $(y',\boldsymbol{z'})=f(x,\boldsymbol{z})$.}
 \end{subfigure}
 \caption{Definition and behavior of \lstinline|step f|. The algorithm we can obtain from it depends on the function \lstinline|f|; the notation \lstinline|Id₁| is shorthand for \lstinline|Id 1|.}
 \label{fig:function scheme step}
@@ -976,8 +976,7 @@ The standard definition of Cantor Pairing $\rppcp : \NN^2 \to \NN$ and Un-pairin
 \rppcp(x,y) & = \sum_{i=1}^{x+y}i + x = \frac{(x + y)(x + y + 1)}{2} + x
 \\
 \label{align: cu analitically}
-\rppcu(n)  & = \left( n - \frac{i(1+i)}{2}, \frac{i(3+i)}{2} - n \right)
-\enspace ,
+\rppcu(n)  & = \left( n - \frac{i(1+i)}{2}, \frac{i(3+i)}{2} - n \right),
 \end{align}
 where $i = \left\lfloor \frac{\sqrt{8n + 1} - 1}{2} \right\rfloor $.
 
@@ -1173,7 +1172,7 @@ For example, once defined \lstinline|sqrt| in \LEAN, the following lemma:
 \begin{lstlisting}
    lemma sqrt_def (n : ℕ) (X : list ℤ) :
      ‹sqrt›(n::0::0::0::0::X) =
-              n::(n-√n*√n)::(√n+√n-(n-√n*√n))::0::√n::X
+              0::n::(n-√n*√n)::(√n+√n-(n-√n*√n))::√n::X
 \end{lstlisting}
 shows that \lstinline|sqrt| behaves as expected, for any \lstinline|n|.
 
@@ -1448,7 +1447,19 @@ First, we require that both \lstinline|α|, and \lstinline|β| be \lstinline|enc
 It means that \emph{computable immersions} \lstinline|encode| exist with type \lstinline|α → ℕ| (and \lstinline|β → ℕ|). The inverse function \lstinline|decode| needs only be defined for those \lstinline|n : ℕ| which are in the image of the immersion: for this reason, \lstinline|decode| has return type \lstinline|option α|, a type in which all elements are of the form \lstinline|none| or \lstinline|some a| for \lstinline|a : α|; the elements of \lstinline|n : ℕ| not in the image can just be mapped to \lstinline|none|.
 
 \item
-Second, it is important to work always with the same instance of \emph{computable immersion} as we proceed with the development of the various proofs: different immersions may differ by some automorphism of \lstinline|ℕ| which may not be primitive recursive. This however is guaranteed by the \LEAN \lstinline|class| mechanism, which is able to simultaneously infer when a new type is \lstinline|encodable| based on previous theorems, and fixes just one embedding for each such type (in practice, alternative embeddings beside the most "natural" one are not considered).
+Second, it is important to remark that:
+\begin{itemize}
+\item \lstinline|mathlib| supplies a natural set of encodable types, 
+to start from, in order to build new ones;
+
+\item \LEAN \lstinline|class| mechanism can infer new \lstinline|encodable|
+types from previous types already known to be \lstinline|encodable|.
+\end{itemize}
+\noindent
+So, building on top of instances of \emph{computable immersion} given 
+by \LEAN, we always work up to automorphisms of \lstinline|ℕ| 
+which are primitive recursive, with no worries about the risk to deal 
+with some non computable immersion.
 
 \item
 Third, we notice that it may happen that the composition \lstinline|encode ∘ decode| is not primitive recursive, which is undesirable.
@@ -1622,7 +1633,6 @@ We remark that all other cases/recursion/induction principles in \MATHLIB are st
 \label{section:Conclusion and developments}
 We give a concrete example of reversible programming in a proof-assistant. We think it is a valuable operation because programming reversible algorithms is not as much wide-spread as classical iterative/recursive programming, in particular by means of a tool that allows us to certify the result.
 Other proof assistants have been considered, and in fact the same theorems have also been proved in \COQ, but we found that the use of the \MATHLIB library together with the \lstinline|simp| tactic made our experience with \LEAN much smoother.
-Furthermore, our work can migrate to \LEANFour whose stable release is announced in the near future. \LEANFour exports its source code as efficient \CPP code \cite{2021-LEAN4-MouraUllrich}; our and other reversible algorithms can become efficient extensions of \LEANFour, or standalone.
 
 The most application-oriented obvious goal to mention is to keep developing a Reversible Computa\-tion-centered certified software stack, spanning from a programming formalism more friendly than \lstinline|rpp|, down to a certified emulator of \PISA \cite{Vieri99,vieri1998fully,Ammer2007ASR}, passing through compiler, and optimizer whose properties we can certify. For example, we can also think of endowing \PISA emulators with energy-consumption models linked to the entropy that characterize the reversible algorithms we program, or the \PISA object code we can generate from them.
 
