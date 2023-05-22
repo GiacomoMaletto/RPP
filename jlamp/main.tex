@@ -145,7 +145,7 @@
 }
 
 \begin{abstract}
-Reversible primitive permutations (\RPP) is a class of recursive functions that models reversible computation. We present a proof, which has been verified using the proof-assistant \LEAN, that demonstrates \RPP can encode every primitive recursive function (\PRF-completeness) and that each \RPP can be encoded as a primitive recursive function (\PRF-soundness). Our proof of \PRF-completeness is simpler and fixes some errors in the original proof, while also introducing a new, more primitive reversible iteration scheme for \RPP. By keeping the formalization and semi-automatic proofs simple, we are able to identify a single programming pattern that can generate a set of reversible algorithms within \RPP: Cantor pairing, integer division quotient/remainder, and truncated square root. Finally, \LEAN source code is available for experiments on reversible computation whose properties can be certified.
+Reversible primitive permutations (\RPP) is a class of recursive functions that models reversible computation. We present a proof, which has been verified using the proof-assistant \LEAN, that demonstrates \RPP can encode every primitive recursive function (\PRF-completeness) and that each \RPP can be encoded as a primitive recursive function (\PRF-soundness). Our proof of \PRF-completeness is simpler and fixes some errors in the original proof, while also introducing a new reversible iteration scheme for \RPP. By keeping the formalization and semi-automatic proofs simple, we are able to identify a single programming pattern that can generate a set of reversible algorithms within \RPP: Cantor pairing, integer division quotient/remainder, and truncated square root. Finally, \LEAN source code is available for experiments on reversible computation whose properties can be certified.
 \end{abstract}
 
 \begin{keyword}
@@ -185,7 +185,7 @@ We recall that a proof-assistant is an integrated environment to formalize data-
 \paragraph{Contributions}
 We show how to express \RPP and its evaluation mechanism inside the proof-assistant \LEAN \cite{Lean3}. We can certify the correctness of every reversible function of \RPP with respect to a given specification which means certifying all the main results in \cite{DBLP:journals/tcs/PaoliniPR20}. In more detail:
 \begin{itemize}
-    \item We give a strong guarantee that \RPP is \PRF-complete in three macro steps. We exploit that in \LEAN \MATHLIB library, \PRF is proved equivalent to a class of recursive \emph{unary} functions called \lstinline|primrec|. We define a data-type \lstinline|rpp| in \LEAN to represent \RPP. Then, we certify that, for any function \lstinline|f:primrec|, i.e. any unary \lstinline|f| with type \lstinline|primrec| in \LEAN, a function exists with type \lstinline|rpp| that encodes \lstinline|f:primrec|. Apart from fixing some bugs, our proof is fully detailed as compared to \cite{DBLP:journals/tcs/PaoliniPR20}. Moreover it is conceptually and technically simpler.
+    \item We give a strong guarantee that \RPP is \PRF-complete in three macro steps. We exploit that, in \LEAN \MATHLIB library, \PRF is proved equivalent to a class of recursive \emph{unary} functions called \lstinline|primrec|. We define a data-type \lstinline|rpp| in \LEAN to represent \RPP. Then, we certify that, for any function \lstinline|f:primrec|, i.e. any unary \lstinline|f| with type \lstinline|primrec| in \LEAN, a function exists with type \lstinline|rpp| that encodes \lstinline|f:primrec|. Apart from fixing some bugs, our proof is fully detailed as compared to \cite{DBLP:journals/tcs/PaoliniPR20}. Moreover it is conceptually and technically simpler.
 
     \item We also give a strong guarantee that \RPP is \PRF-sound (that is, each \RPP is expressible as \PRF) thus completing the work in \cite{MalettoR22}, by proving that the two classes of functions have the same expressivity. Again, for the proof of this fact we exploit the definitions and theorems in \MATHLIB concerning primitive recursive functions.
 
@@ -195,7 +195,7 @@ We show how to express \RPP and its evaluation mechanism inside the proof-assist
 
         \item we identify an algorithmic pattern which uniquely associates elements of
         $ \mathbb{N}^2$, and $ \mathbb{N}$ by counting steps in specific paths.
-        The pattern is obtained through the iteration of \lstinline|step (_)|, and becomes a reversible element in \lstinline|rpp| once fixed the parameter \lstinline|(_)| it depends on. Slightly different parameter instances generate reversible algorithms whose behavior we can certify in \LEAN. They are truncated Square Root, Quotient/Reminder of integer division, and Cantor Pairing \cite{Cantor1878,DBLP:journals/corr/Szudzik17}.
+        The pattern is obtained through the iteration of a function \lstinline|step(_)|, and becomes a reversible element in \lstinline|rpp| once fixed the parameter \lstinline|(_)| it depends on. Slightly different parameter instances generate reversible algorithms whose behavior we can certify in \LEAN. They are truncated Square Root, Quotient/Reminder of integer division, and Cantor Pairing \cite{Cantor1878,DBLP:journals/corr/Szudzik17}.
         The original proof in \cite{DBLP:journals/tcs/PaoliniPR20} that \RPP is \PRF-complete relies on Cantor Pairing, used as a stack to keep the representation of a \PRF function as element of \RPP reversible.
         Our proof in \LEAN replaces Cantor Pairing with a reversible representation of functions \lstinline|mkpair|/\lstinline|unpair| that \MATHLIB supplies as isomorphism $ \mathbb{N}\times\mathbb{N} \simeq \mathbb{N} $. The truncated Square Root is the basic ingredient to obtain reversible \lstinline|mkpair|/\lstinline|unpair|.
     \end{itemize}
@@ -316,10 +316,10 @@ $$
         | Sw      := 2
         | (f ‖ g) := f.arity + g.arity
         | (f ;; g):= max f.arity g.arity
-        | (It f)  := 1 + f.arity -- `It f' has an extra argument of  as compared to `f'
+        | (It f)  := 1 + f.arity -- `It f' has an extra argument as compared to `f'
         | (If f g h) := 1 + max (max f.arity g.arity) h.arity
 \end{lstlisting}
-\caption{Arity of every \lstinline|f: rpp|.}
+\caption{Arity of every \lstinline|f : rpp|.}
 \label{fig:RPP-arity}
 \end{figure}
 \noindent
@@ -664,18 +664,6 @@ By definition, $\rpprewire{i_0, \dots, i_n} (x_0, \dots, x_m) = (x_{i_0}, \dots,
 Figure~\ref{fig:function scheme step} identifies the \emph{new algorithm scheme} \lstinline|step (_)|. Depending on how we fill the hole \lstinline|(_)|, we get step functions that, once iterated, draw paths in $ \NN^2 $.
 %The names $ a_0, \ldots, b_0, \ldots $ are just place holders, currently.
 
-More precisely, suppose that $i\in\NN$, that $(x,y)\in\NN^2$ is a point in the $2$-dimensional grid $\NN^2$, that $\boldsymbol z\in\ZZ^n$ is additional data and that $f:\NN\times\ZZ^n\to\NN\times\ZZ^n$ is a function. We would like to have the following behavior: starting from $(x,y)$, we take $i$ ``steps'' in $\NN^2$.
-A step is a rule that updates the position $(x,y)\mapsto(x',y')$ and the data $\boldsymbol z\mapsto\boldsymbol z'$ in the following way:
-\begin{itemize}
-\item if $y>0$, we pose $(x,y)\mapsto(x+1,y-1)$ and $\boldsymbol z\mapsto\boldsymbol z$;
-\item if $y=0$, we pose $(x,0)\mapsto(0,y')$ and $\boldsymbol z\mapsto\boldsymbol z'$ where $(y',\boldsymbol z')=f(x,\boldsymbol z)$.
-\end{itemize}
-This is illustrated in Figure~\ref{fig:path}.
-
-A seemingly straighforward way to implement this behavior in \lstinline|rpp| would be the following: move the argument $y$ to the head; use the conditional \lstinline|If| to perform either a diagonal movement or the jump from the $x$-axis to the $y$-axis, depending on the sign of $y$. Unfortunately this does not work, because \lstinline|rpp| (and more deeply, the constraints of reversibility) prevent a variable to be in both the condition of \lstinline|If| and among the affected variables. The current implementation of \lstinline|step| is illustrated in Figure~\ref{fig:function scheme step}, and avoids the issue by using an additional variable which is set to $1$, resp.\ $0$ depending on whether $y$ is $>0$, resp.\ $=0$, and then is set back to $0$ in either cases based on the affected variables.
-
-Thus, given \lstinline|f : rpp|, we model the behavior of a single step with \lstinline|step f| and we perform an iteration of this step with \lstinline|It (step f)|.
-
 \begin{figure}
     \centering
     \includegraphics[width=0.35\textwidth]{path.png}
@@ -683,9 +671,26 @@ Thus, given \lstinline|f : rpp|, we model the behavior of a single step with \ls
     \label{fig:path}
 \end{figure}
 
+More precisely, suppose that $i\in\NN$, that $(x,y)\in\NN^2$ is a point in the $2$-dimensional grid $\NN^2$, that $\boldsymbol z\in\ZZ^n$ is additional data and, finally, that $f:\NN\times\ZZ^n\to\NN\times\ZZ^n$ is a function. We want the following behavior: starting from $(x,y)$, we take $i$ ``steps'' in $\NN^2$.
+A \emph{step} is an update rule. It move position $(x,y) $ to $(x',y')$, written $(x,y)\mapsto(x',y')$, and data $\boldsymbol z$ to $\boldsymbol z'$, i.e. $\boldsymbol z\mapsto\boldsymbol z'$, as follows:
+\begin{enumerate}
+\item
+\label{enum: downward steps}
+if $y>0$, we pose $(x,y)\mapsto(x+1,y-1)$ and $\boldsymbol z\mapsto\boldsymbol z$;
+\item
+\label{enum: upward step}
+if $y=0$, we pose $(x,0)\mapsto(0,y')$ and $\boldsymbol z\mapsto\boldsymbol z'$ where $(y',\boldsymbol z')=f(x,\boldsymbol z)$.
+\end{enumerate}
+In Figure~\ref{fig:path}, the downward arrows represent steps as described at point~\ref{enum: downward steps} here above, while the upward arrow represents the one defined at point \ref{enum: upward step}.
+
+A seemingly straightforward way to implement this behavior in \lstinline|rpp| would be the following: move the argument $y$ to the head; use the conditional \lstinline|If| to perform either a diagonal movement or the jump from the $x$-axis to the $y$-axis, depending on the sign of $y$. Unfortunately this does not work, because \lstinline|rpp| (and more deeply, the constraints of reversibility) prevent a variable to be in both the condition of \lstinline|If| and among the affected variables. The current implementation of \lstinline|step| is illustrated in Figure~\ref{fig:function scheme step}. It avoids the issue by using an additional variable which is set to $1$ (respectively $0$), depending on whether $y$ is $>0$, (respectively $=0$), eventually setting it back to $0$ in either cases based on the affected variables.
+
+Thus, given \lstinline|f : rpp|, we model the behavior of a single step with \lstinline|step f| and we perform an iteration of this step with \lstinline|It (step f)|.
+
+
 % The behavior of \lstinline|step| is specified by the following proposition.
 
-On top of the functions in Figures~\ref{fig:standard functions}, and~\ref{fig:function scheme step} we build Cantor Pairing/Un-pairing, Quotient/Reminder of integer division, and truncated Square Root. Suitable instances of \lstinline|step (_)| allow us to visit $ \NN^2 $ as in Figures~\ref{sfig:cantor as a path}, \ref{sfig:Quot./Rem.}, and~\ref{sfig:Square root}, respectively. The pairing function $\rppmkpair$, which behaves as in Figure~\ref{sfig:mkpair}, and which is an alternative to Cantor Pairing/Unpairing, has a more complex definition; it will be a necessary ingredient of our main proof.
+On top of the functions in Figures~\ref{fig:standard functions}, and~\ref{fig:function scheme step} we build Cantor Pairing/Un-pairing, Quotient/Reminder of integer division, and truncated Square Root which correspond to visiting $ \NN^2 $ as in Figures~\ref{sfig:cantor as a path}, \ref{sfig:Quot./Rem.}, and~\ref{sfig:Square root}, respectively. The pairing function $\rppmkpair$, which behaves as in Figure~\ref{sfig:mkpair}, and which is an alternative to Cantor Pairing/Unpairing, has a more complex definition; it will be a necessary ingredient of our main proof.
 
 \begin{figure}
 \begin{subfigure}{\linewidth}
@@ -1155,15 +1160,18 @@ cannot be inverted in $ \ZZ $, and the algorithm cannot forget it.
 \paragraph{The $\rppmkpair$ function}
 Figure~\ref{sfig:mkpair} shows the behavior of the function $\rppmkpair$.
 It is very similar to the one of $\rppcp$, but it uses an alternative algorithm described in \cite{Carneiro19}.
-
-An analytic definition of $\rppmkpair:\NN^2\to\NN$ is given by
-
-\[\rppmkpair(x,y)=\begin{cases}y^2+x&\text{if }x<y\\x^2+x+y&\text{otherwise}\end{cases}\]
-
-with inverse $\rppunpair:=\rppmkpair^{-1}:\NN\to\NN^2$ given by
-
-\[\rppunpair(n)=\begin{cases}(n-\floor{\sqrt n}^2,\floor{\sqrt n})&\text{if }n-\floor{\sqrt n}^2<\floor{\sqrt n}\\(\floor{\sqrt n},n-\floor{\sqrt n}^2-\floor{\sqrt n})&\text{otherwise.}\end{cases}\]
-
+An analytic definition of $\rppmkpair:\NN^2\to\NN$ is:
+\[
+\rppmkpair(x,y)=\begin{cases}y^2+x&\text{if }x<y\\x^2+x+y&\text{otherwise}\end{cases}
+\]
+\noindent
+whose inverse $\rppunpair:=\rppmkpair^{-1}:\NN\to\NN^2$ is:
+\[
+\rppunpair(n)=\begin{cases}(n-\floor{\sqrt n}^2,\floor{\sqrt n})&\text{if }n-\floor{\sqrt n}^2<\floor{\sqrt n}\\(\floor{\sqrt n},n-\floor{\sqrt n}^2-\floor{\sqrt n})&\text{otherwise}
+\enspace .
+\end{cases}
+\]
+\noindent
 Since both of these are a composition of sums, products and square roots, we can define them easily by using previously defined functions and \textit{Bennett's trick}.
 
 \subsection{A note on the mechanization of proofs}
@@ -1449,16 +1457,16 @@ It means that \emph{computable immersions} \lstinline|encode| exist with type \l
 \item
 Second, it is important to remark that:
 \begin{itemize}
-\item \lstinline|mathlib| supplies a natural set of encodable types, 
+\item \lstinline|mathlib| supplies a natural set of encodable types,
 to start from, in order to build new ones;
 
 \item \LEAN \lstinline|class| mechanism can infer new \lstinline|encodable|
 types from previous types already known to be \lstinline|encodable|.
 \end{itemize}
 \noindent
-So, building on top of instances of \emph{computable immersion} given 
-by \LEAN, we always work up to automorphisms of \lstinline|ℕ| 
-which are primitive recursive, with no worries about the risk to deal 
+So, building on top of instances of \emph{computable immersion} given
+by \LEAN, we always work up to automorphisms of \lstinline|ℕ|
+which are primitive recursive, with no worries about the risk to deal
 with some non computable immersion.
 
 \item
@@ -1541,7 +1549,7 @@ lemma rpp_pa {f g : rpp} (hf : primrec ‹f›) (hg : primrec ‹g›) :
 $\mbox{\textdollar}$ λ l, by refl
 \end{lstlisting}
 \noindent
-We illustrate the meaning of this, as follows. Before the expression \lstinline|.of_eq| there is the statement that a certain ``auxiliary'' function, we can call it \lstinline|F| for simplicity, is \lstinline|primrec|. Figure~\ref{fig:rpp_pa} represents the structure of \lstinline|F|: each block both defines part of the function and states that that part is \lstinline|primrec|, at the same time. After \lstinline|.of_eq| there is a proof that \lstinline|F| is equal to \lstinline|‹f ‖ g›| for all inputs \lstinline|l|: this is a definitional equality, so it can be proved easily in \LEAN tactics mode by means of \lstinline|refl|, which is a tactic specifically used for definitional equalities. Finally, \lstinline|of_eq| is a theorem which given the hypotheses
+We illustrate the meaning of this, as follows. Before the expression ``\lstinline|.of_eq|'' there is the statement that a certain ``auxiliary'' function, we can call it \lstinline|F| for simplicity, is \lstinline|primrec|. Figure~\ref{fig:rpp_pa} represents the structure of \lstinline|F|: each block both defines part of the function and states that that part is \lstinline|primrec|, at the same time. After ``\lstinline|.of_eq|'' there is a proof that \lstinline|F| is equal to \lstinline|‹f ‖ g›| for all inputs \lstinline|l|: this is a definitional equality, so it can be proved easily in \LEAN tactics mode by means of \lstinline|refl|, which is a tactic specifically used for definitional equalities. Finally, \lstinline|of_eq| is a theorem which given the hypotheses
 \begin{itemize}
 \item \lstinline|F| is \lstinline|primrec| (what's before \lstinline|.of_eq|)
 \item \lstinline|F| is equal to \lstinline|‹f ‖ g›| for all inputs (what's after \lstinline|.of_eq|)
