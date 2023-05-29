@@ -8,7 +8,7 @@ output: pdf_document
 **General remark.** The length of the text has grown mainly because: 
 - we answered referee's observations and questions exhaustively; 
   
-- we reformatted the text in few points, to make it more readable; 
+- we reformatted the text in few points, to make it more readable, sometimes adding itemize environment; 
     
 - we added a new figure, again to ease readability;
 
@@ -63,7 +63,7 @@ output: pdf_document
    
 - p. 8, l. 197-198: something seems missing here: there is a both followed by a single item, and also the code seems missing something. Indeed, I was expecting an equality (or maybe this is just my poor understanding of Lean)
      
-*Done.* See p. 8, l. 214 - 218, starting from sentence "This can be restated ...".
+*Done.* See p. 8, l. 214 - 218, starting from sentence "This can be restated ...". We have cleaned up the text.
  
 9. **Observation/Question**
    
@@ -107,7 +107,7 @@ Factoring out a general behavior of `step (_)`, allows us to slightly improve th
 
 -  p. 16, Rem. 6: could you provide a general proof, for each pair of packing/unpacking functions satisfying some suitable requirements?
 
-*In relation to this question we choose not to modify the text. We interpret the question as a curiosity, not as a request to prove `theorem completeness` (p. 16, l. 417) with the function `cp` in place of `mkpair` in LEAN. Of course `cp` can replace `mkpair`: both functions have identical interface. Clearly, the two isomorphisms have different graphs (seen as mathematical functions). The point is that the proof of `theorem completeness` does not rely on a specific strategy to encode pairs of values into a single value.*
+*In relation to this question we choose not to modify the text. We interpret the question as a curiosity, not as a request to prove `theorem completeness` (p. 17, l. 441) with the function `cp` in place of `mkpair` in LEAN. Of course `cp` can replace `mkpair`: both functions have identical interface. Clearly, the two isomorphisms have different graphs (seen as mathematical functions). The point is that the proof of `theorem completeness` does not rely on a specific strategy to encode pairs of values into a single value.*
 
 15.   **Observation/Question**
     
@@ -119,7 +119,7 @@ Factoring out a general behavior of `step (_)`, allows us to slightly improve th
   
 -  p. 18, l. 431: if you choose different immersions which differ for some non primitive recursive automorphisms, would you get different notions of encodable? If so, in which sense the one you get is good?
 
-*Done.* See p. 20, l. 474 - 481: We recognized that our argument was not sufficiently clear. To provide further precision, we emphasize that mathlib library in LEAN does not permit exiting from primitive recursive definitions, when starting from primitive recursive ones.
+*Done.* See p. 19, l. 474 - 481: We recognized that our argument was not sufficiently clear. To provide further precision, we emphasize that mathlib library in LEAN does not permit exiting from primitive recursive definitions, when starting from primitive recursive ones.
 
 17. **Observation/Question**
   
@@ -149,13 +149,13 @@ Factoring out a general behavior of `step (_)`, allows us to slightly improve th
     
 - p. 23, l. 587: could you provide a citation for Pendulum ISA?
 
-*References [26, 27, 28] added.*  
+*References [25, 26, 27] added.*  
 
 22.  **Observation/Question**
 
 - At the end of section 2 the authors claim that It is more primitive, but their arguments are not convincing without having also a definition of It in terms of ItR.
 
-*Done.* Very likely there is a misunderstanding about an operator being more primitive than another one. Our solution is to avoid stating that our iterator "It" is *more primitive*. We just say that it subsumes the behavior of "ItR", "for", and we explain why. (p. 9, l. 253 - 255)
+*Done.* Very likely there is a misunderstanding about: "an operator being more primitive than another one". Our solution is to avoid stating that our iterator "It" is *more primitive*. We just say that it subsumes the behavior of "ItR", "for", and we explain why. (p. 9, l. 253 - 255)
 
 1.   **Observation/Question**
     

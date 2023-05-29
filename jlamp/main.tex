@@ -1549,10 +1549,10 @@ lemma rpp_pa {f g : rpp} (hf : primrec ‹f›) (hg : primrec ‹g›) :
 $\mbox{\textdollar}$ λ l, by refl
 \end{lstlisting}
 \noindent
-We illustrate the meaning of this, as follows. Before the expression ``\lstinline|.of_eq|'' there is the statement that a certain ``auxiliary'' function, we can call it \lstinline|F| for simplicity, is \lstinline|primrec|. Figure~\ref{fig:rpp_pa} represents the structure of \lstinline|F|: each block both defines part of the function and states that that part is \lstinline|primrec|, at the same time. After ``\lstinline|.of_eq|'' there is a proof that \lstinline|F| is equal to \lstinline|‹f ‖ g›| for all inputs \lstinline|l|: this is a definitional equality, so it can be proved easily in \LEAN tactics mode by means of \lstinline|refl|, which is a tactic specifically used for definitional equalities. Finally, \lstinline|of_eq| is a theorem which given the hypotheses
+We illustrate the meaning of this, as follows. Before the expression ``\lstinline|.of_eq|'' there is the statement that a certain ``auxiliary'' function, we can call it \lstinline|F| for simplicity, is \lstinline|primrec|. Figure~\ref{fig:rpp_pa} represents the structure of \lstinline|F|: each block both defines part of the function and states that that part is \lstinline|primrec|, at the same time. After ``\lstinline|.of_eq|'' there is a proof that \lstinline|F| is equal to \lstinline|‹f ‖ g›| for all inputs \lstinline|l|: this is a definitional equality, so it can be proved easily in \LEAN tactics mode by means of \lstinline|refl|, which is a tactic specifically used for definitional equalities. Finally, \lstinline|of_eq| is a theorem which, given the hypotheses:
 \begin{itemize}
-\item \lstinline|F| is \lstinline|primrec| (what's before \lstinline|.of_eq|)
-\item \lstinline|F| is equal to \lstinline|‹f ‖ g›| for all inputs (what's after \lstinline|.of_eq|)
+\item \lstinline|F| is \lstinline|primrec| (what's before \lstinline|.of_eq|);
+\item \lstinline|F| is equal to \lstinline|‹f ‖ g›| for all inputs (what's after \lstinline|.of_eq|),
 \end{itemize}
 concludes that also \lstinline|‹f ‖ g›| is \lstinline|primrec|, which is what we wanted to show.
 \begin{figure}[H]
